@@ -30,7 +30,7 @@ player.position.set(100, 100);
 player.anchor.set(0.5);
 player.animationSpeed = 0.05;
 player.loop = true; // Set the loop property to true
-player.play();
+
 app.stage.addChild(player);
 
 let targetPosition = new PIXI.Point(player.x, player.y);
@@ -141,10 +141,16 @@ app.ticker.add((delta) => {
   const dy = targetPosition.y - player.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
 
-  if (distance > 1) {
+  if (distance > 3) {
     // Move the player towards the target position
-    player.x += dx * 0.05; // You can adjust the speed
-    player.y += dy * 0.05;
+    const directionX = dx / distance;
+    const directionY = dy / distance;
+    const speed = 6; // Adjust speed if needed
+
+    player.x += directionX * speed;
+    player.y += directionY * speed;
+
+    console.log(player.x, player.y);
   } else {
     // If the player has reached the target, switch back to idle animation
     player.textures = playerIdleFrames;

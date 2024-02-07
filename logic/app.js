@@ -60,8 +60,10 @@ function getItemAtPosition(position) {
 }
 
 function addToInventory(item) {
-  console.log("Item collected!");
-  inventory.push(item);
+  if (!inventory.includes(item)) {
+    console.log("Item collected!");
+    inventory.push(item);
+  }
 
   // Update the inventory UI
   updateInventoryUI();

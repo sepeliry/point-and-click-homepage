@@ -59,14 +59,14 @@ function getItemAtPosition(position) {
   return null;
 }
 
+// Adds item to inventory, checks for duplicates
 function addToInventory(item) {
   if (!inventory.includes(item)) {
     console.log("Item collected!");
     inventory.push(item);
+    // Update the inventory UI
+    updateInventoryUI();
   }
-
-  // Update the inventory UI
-  updateInventoryUI();
 }
 
 function updateInventoryUI() {

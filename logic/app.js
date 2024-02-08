@@ -26,7 +26,7 @@ app.stage.addChild(background);
 
 // Create player sprite with idle animation
 const player = new PIXI.AnimatedSprite(playerIdleFrames);
-player.position.set(100, 100);
+player.position.set(200, 400);
 player.anchor.set(0.5);
 player.animationSpeed = 0.05;
 player.loop = true; // Set the loop property to true
@@ -102,38 +102,6 @@ app.stage.on("pointertap", (event) => {
   }
 });
 
-// Fetch data function
-function fetchData() {
-  // Using JSONPlaceholder's posts endpoint to fetch posts
-  fetch("https://jsonplaceholder.typicode.com/posts")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((posts) => {
-      // Update the span content with the title of the first post
-      updateDataSpan(posts);
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
-}
-
-// Function to update the content of the span element
-function updateDataSpan(posts) {
-  const dataSpan = document.getElementById("data-span");
-  if (dataSpan && posts.length > 0) {
-    dataSpan.textContent = `First post title: ${posts[0].title}`;
-  } else {
-    dataSpan.textContent = "No posts available.";
-  }
-}
-
-// Call the fetchData function to initiate the data fetch
-fetchData();
-
 // Main game loop
 app.ticker.add((delta) => {
   // Calculate the distance to the target position
@@ -145,10 +113,19 @@ app.ticker.add((delta) => {
     // Move the player towards the target position
     const directionX = dx / distance;
     const directionY = dy / distance;
-    const speed = 6; // Adjust speed if needed
+    const speed = 2.5; // Adjust speed if needed
 
     player.x += directionX * speed;
     player.y += directionY * speed;
+
+    // Mirror player Sprite according to the direction of movement
+    if (directionX < 0) {
+      player.rotation = Math.PI;
+      player.scale.y = -1;
+    } else {
+      player.rotation = 0;
+      player.scale.y = 1;
+    }
 
     console.log(player.x, player.y);
   } else {

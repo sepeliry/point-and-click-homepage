@@ -19,4 +19,4 @@ Steps:
 4. Open `index.html` file in Visual Studio Code
 5. Click `Go Live` button located in the bottom right corner of Visual Studio Code
 
-The game should now open on your browser and run locally on port 5500 by default. Happy exploring!
+The game should now open on your browser and run locally on port 5500 by default. Happy exploring! :D

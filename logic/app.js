@@ -6,7 +6,9 @@ const app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
-const backgroundTexture = PIXI.Texture.from("images/background.png");
+const backgroundTexture = PIXI.Texture.from(
+  "images/background_placeholder.png"
+);
 
 // Load player idle and walk animation frames
 const playerIdleFrames = [];
@@ -26,7 +28,7 @@ app.stage.addChild(background);
 
 // Create player sprite with idle animation
 const player = new PIXI.AnimatedSprite(playerIdleFrames);
-player.position.set(200, 400);
+player.position.set(200, 625);
 player.anchor.set(0.5);
 player.animationSpeed = 0.05;
 player.loop = true; // Set the loop property to true
@@ -40,8 +42,8 @@ const inventory = [];
 
 // Create and add an item to the stage
 const item = PIXI.Sprite.from("images/key.png");
-item.x = 800;
-item.y = 500;
+item.x = 900;
+item.y = 590;
 item.interactive = true;
 item.buttonMode = true;
 app.stage.addChild(item);

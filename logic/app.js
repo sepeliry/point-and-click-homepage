@@ -45,38 +45,41 @@ const item = PIXI.Sprite.from("images/key.png");
 item.x = 900;
 item.y = 590;
 item.interactive = true;
-item.buttonMode = true;
 app.stage.addChild(item);
 
-// Inventory UI
+// Inventory system and UI
 const inventoryUI = new PIXI.Container();
 inventoryUI.position.set(0, app.screen.height - 100); // Adjust as needed
 app.stage.addChild(inventoryUI);
 
 function getItemAtPosition(position) {
-  // Check if the click is on the item
-  if (item.getBounds().contains(position.x, position.y)) {
+  // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
+  if (item.getBounds().contains(position.x, position.y) && item.visible) {
     return item;
   }
   return null;
 }
 
-// Adds item to inventory, checks for duplicates
+// Adds item to inventory, checks for distance and duplicates
 function addToInventory(item) {
-  if (!inventory.includes(item)) {
-    console.log("Item collected!");
-    inventory.push(item);
-    // Update the inventory UI
-    updateInventoryUI();
+  const distance = Math.abs(item.x - player.x);
+  console.log(item.x + " " + player.x + " " + distance);
+  // Player can't teleport
+  if (distance < 100) {
+    if (!inventory.includes(item)) {
+      console.log("Item collected!");
+      inventory.push(item);
+      item.visible = false;
+      item.interactive = false;
+      updateInventoryUI();
+    }
   }
 }
-
+// Displays collected items in inventory
 function updateInventoryUI() {
   // Clear the existing inventory UI
   inventoryUI.removeChildren();
-
-  // Display collected items in the inventory UI
-  const itemSize = 50; // Adjust as needed
+  const itemSize = 50;
   for (let i = 0; i < inventory.length; i++) {
     const inventoryItem = PIXI.Sprite.from(inventory[i].texture);
     inventoryItem.width = itemSize;
@@ -96,7 +99,7 @@ app.stage.on("pointertap", (event) => {
     addToInventory(clickedItem);
   } else {
     // Set the new target position on click
-    targetPosition.set(event.data.global.x, event.data.global.y);
+    targetPosition.x = event.data.global.x;
 
     // Play the walk animation when the player moves
     player.textures = playerWalkFrames;
@@ -108,17 +111,14 @@ app.stage.on("pointertap", (event) => {
 app.ticker.add((delta) => {
   // Calculate the distance to the target position
   const dx = targetPosition.x - player.x;
-  const dy = targetPosition.y - player.y;
-  const distance = Math.sqrt(dx * dx + dy * dy);
+  const distance = Math.abs(dx);
 
   if (distance > 3) {
     // Move the player towards the target position
     const directionX = dx / distance;
-    const directionY = dy / distance;
     const speed = 2.5; // Adjust speed if needed
 
     player.x += directionX * speed;
-    player.y += directionY * speed;
 
     // Mirror player Sprite according to the direction of movement
     if (directionX < 0) {
@@ -128,8 +128,6 @@ app.ticker.add((delta) => {
       player.rotation = 0;
       player.scale.y = 1;
     }
-
-    console.log(player.x, player.y);
   } else {
     // If the player has reached the target, switch back to idle animation
     player.textures = playerIdleFrames;

@@ -96,7 +96,7 @@ app.stage.on("pointertap", (event) => {
     addToInventory(clickedItem);
   } else {
     // Set the new target position on click
-    targetPosition.set(event.data.global.x, event.data.global.y);
+    targetPosition.x = event.data.global.x;
 
     // Play the walk animation when the player moves
     player.textures = playerWalkFrames;
@@ -108,17 +108,14 @@ app.stage.on("pointertap", (event) => {
 app.ticker.add((delta) => {
   // Calculate the distance to the target position
   const dx = targetPosition.x - player.x;
-  const dy = targetPosition.y - player.y;
-  const distance = Math.sqrt(dx * dx + dy * dy);
+  const distance = Math.abs(dx);
 
   if (distance > 3) {
     // Move the player towards the target position
     const directionX = dx / distance;
-    const directionY = dy / distance;
     const speed = 2.5; // Adjust speed if needed
 
     player.x += directionX * speed;
-    player.y += directionY * speed;
 
     // Mirror player Sprite according to the direction of movement
     if (directionX < 0) {
@@ -128,8 +125,6 @@ app.ticker.add((delta) => {
       player.rotation = 0;
       player.scale.y = 1;
     }
-
-    console.log(player.x, player.y);
   } else {
     // If the player has reached the target, switch back to idle animation
     player.textures = playerIdleFrames;

@@ -1,0 +1,5 @@
+{
+  "include": ["logic/*"],
+  "reporter": ["lcov", "text"],
+  "all": true
+}

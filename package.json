@@ -1,6 +1,21 @@
 {
+  "name": "sepeli-point-and-click-homepage",
+  "version": "1.0.0",
   "description": "",
   "dependencies": {
     "pixi.js": "^7.3.3"
+  },
+  "type": "module",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha",
+    "coverage": "c8 mocha"
+  },
+  "devDependencies": {
+    "c8": "^9.1.0",
+    "chai": "^5.1.0",
+    "coveralls": "^3.1.1",
+    "mocha": "^10.3.0"
   }
 }

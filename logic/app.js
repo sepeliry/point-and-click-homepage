@@ -45,17 +45,16 @@ const item = PIXI.Sprite.from("images/key.png");
 item.x = 900;
 item.y = 590;
 item.interactive = true;
-item.buttonMode = true;
 app.stage.addChild(item);
 
-// Inventory UI
+// Inventory system and UI
 const inventoryUI = new PIXI.Container();
 inventoryUI.position.set(0, app.screen.height - 100); // Adjust as needed
 app.stage.addChild(inventoryUI);
 
 function getItemAtPosition(position) {
-  // Check if the click is on the item
-  if (item.getBounds().contains(position.x, position.y)) {
+  // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
+  if (item.getBounds().contains(position.x, position.y) && item.visible) {
     return item;
   }
   return null;
@@ -70,18 +69,17 @@ function addToInventory(item) {
     if (!inventory.includes(item)) {
       console.log("Item collected!");
       inventory.push(item);
-      // Update the inventory UI
+      item.visible = false;
+      item.interactive = false;
       updateInventoryUI();
     }
   }
 }
-
+// Displays collected items in inventory
 function updateInventoryUI() {
   // Clear the existing inventory UI
   inventoryUI.removeChildren();
-
-  // Display collected items in the inventory UI
-  const itemSize = 50; // Adjust as needed
+  const itemSize = 50;
   for (let i = 0; i < inventory.length; i++) {
     const inventoryItem = PIXI.Sprite.from(inventory[i].texture);
     inventoryItem.width = itemSize;

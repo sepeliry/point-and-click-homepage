@@ -10,23 +10,20 @@ jobs:
     # env:
     #   COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x, 20.x]
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          node-version: "20"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests with coverage
-        run: npm run coverage
+      - name: Run tests
+        run: npm test
 
       # - name: Send coverage data to Coveralls
       #  run: npx coveralls < ./coverage/lcov.info

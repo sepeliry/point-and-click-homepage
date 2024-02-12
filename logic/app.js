@@ -61,13 +61,18 @@ function getItemAtPosition(position) {
   return null;
 }
 
-// Adds item to inventory, checks for duplicates
+// Adds item to inventory, checks for distance and duplicates
 function addToInventory(item) {
-  if (!inventory.includes(item)) {
-    console.log("Item collected!");
-    inventory.push(item);
-    // Update the inventory UI
-    updateInventoryUI();
+  const distance = Math.abs(item.x - player.x);
+  console.log(item.x + " " + player.x + " " + distance);
+  // Player can't teleport
+  if (distance < 100) {
+    if (!inventory.includes(item)) {
+      console.log("Item collected!");
+      inventory.push(item);
+      // Update the inventory UI
+      updateInventoryUI();
+    }
   }
 }
 

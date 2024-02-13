@@ -32,6 +32,7 @@ player.position.set(200, 625);
 player.anchor.set(0.5);
 player.animationSpeed = 0.05;
 player.loop = true; // Set the loop property to true
+player.play();
 
 app.stage.addChild(player);
 
@@ -128,7 +129,7 @@ app.ticker.add((delta) => {
       player.rotation = 0;
       player.scale.y = 1;
     }
-  } else {
+  } else if (player.textures !== playerIdleFrames) {
     // If the player has reached the target, switch back to idle animation
     player.textures = playerIdleFrames;
     player.animationSpeed = 0.05; // Set animationSpeed for the idle animation

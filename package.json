@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run clean && parcel index.html",
-    "clean": "rm -rf ./dist ./.parcel-cache",
+    "clean": "rimraf ./dist ./.parcel-cache",
     "build": "npm run clean && parcel build ./index.html",
     "build_serve": "npm run build && http-server ./dist",
     "test": "mocha",
@@ -22,6 +22,7 @@
     "coveralls": "^3.1.1",
     "http-server": "^14.1.1",
     "mocha": "^10.3.0",
-    "parcel": "^2.11.0"
+    "parcel": "^2.11.0",
+    "rimraf": "^5.0.5"
   }
 }

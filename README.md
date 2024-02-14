@@ -16,8 +16,6 @@ Prerequitisies:
 - Git
 - Node.js
 
-**Note for Windows Users:** The `start`, `build`, and `build_serve` scripts use `rm -rf` to delete `./dist` and `./.parcel-cache`, which won't work on Windows.
-
 Steps:
 
 1. Clone the repository: `git clone https://github.com/sepeliry/point-and-click-homepage.git`

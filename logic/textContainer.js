@@ -1,7 +1,7 @@
-import * as PIXI from "pixi.js";
+import { Container, TextStyle, Text } from "pixi.js";
 // container containing text for popup/dialogs and to display wiki content / etc
-export const textContainer = new PIXI.Container();
-const style = new PIXI.TextStyle({
+export const textContainer = new Container();
+const style = new TextStyle({
   fontFamily: "Arial",
   fontSize: 24,
   fontWeight: "bold",
@@ -11,20 +11,20 @@ const style = new PIXI.TextStyle({
   wordWrap: true,
   wordWrapWidth: 440,
 });
-const text = new PIXI.Text(
+const text = new Text(
   "Lorem ipsum dolor sit amet, consectetur adipiscing",
   style
 );
 text.anchor.set(0.5);
 
-const urlText = new PIXI.Text("Clickable URL!", style);
+const urlText = new Text("Clickable URL!", style);
 urlText.eventMode = "static";
 urlText.cursor = "pointer";
 urlText.on("pointerdown", openUrl);
 urlText.anchor.set(0.5);
 urlText.y = text.y + text.height;
 
-export const closeText = new PIXI.Text("Close", style);
+export const closeText = new Text("Close", style);
 closeText.eventMode = "static";
 closeText.cursor = "pointer";
 closeText.anchor.set(0.5);

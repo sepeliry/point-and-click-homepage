@@ -11,6 +11,8 @@
   "scripts": {
     "start": "npm run clean && parcel index.html",
     "clean": "rm -rf ./dist ./.parcel-cache",
+    "build": "npm run clean && parcel build ./index.html",
+    "build_serve": "npm run build && http-server ./dist",
     "test": "mocha",
     "coverage": "c8 mocha"
   },
@@ -18,6 +20,7 @@
     "c8": "^9.1.0",
     "chai": "^5.1.0",
     "coveralls": "^3.1.1",
+    "http-server": "^14.1.1",
     "mocha": "^10.3.0",
     "parcel": "^2.11.0"
   }

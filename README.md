@@ -16,11 +16,19 @@ Prerequitisies:
 - Git
 - Node.js
 
+**Note for Windows Users:** The `start`, `build`, and `build_serve` scripts use `rm -rf` to delete `./dist` and `./.parcel-cache`, which won't work on Windows.
+
 Steps:
 
 1. Clone the repository: `git clone https://github.com/sepeliry/point-and-click-homepage.git`
 2. Move to the newly created directory: `cd point-and-click-homepage`
 3. Install packages: `npm install`
-4. Run npm run start to start parcel dev server
+4. Run `npm run start` to start parcel dev server
+   The game should now open in your browser and run locally on port 1234 by default. Happy exploring! :D
 
-The game should now open on your browser and run locally on port 1234 by default. Happy exploring! :D
+## Build and serve using parcel
+
+1. Run `npm run build_serve` to build and start http-server. http-server serves the files in /dist on port 8080
+2. Open browser to `http://localhost:8080` to view the application
+
+Optionally run `npm run build` to build without starting http-server

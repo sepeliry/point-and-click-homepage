@@ -49,6 +49,7 @@ bower_components
 .sass-cache
 connect.lock
 typings
+.parcel-cache/
 
 # Logs
 logs

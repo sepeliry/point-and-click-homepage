@@ -1,3 +1,14 @@
+import * as PIXI from "pixi.js";
+import { textContainer, closeText } from "./textContainer";
+import backgroundImg from "../images/background_placeholder.png";
+import playerIdle1 from "../images/player_idle1.png";
+import playerIdle2 from "../images/player_idle2.png";
+import playerWalk1 from "../images/player_walk1.png";
+import playerWalk2 from "../images/player_walk2.png";
+import playerWalk3 from "../images/player_walk3.png";
+import playerWalk4 from "../images/player_walk4.png";
+import keyImage from "../images/key.png";
+import boxPropImage from "../images/box_prop.png";
 const app = new PIXI.Application({
   width: 1200,
   height: 800,
@@ -6,19 +17,27 @@ const app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
-const backgroundTexture = PIXI.Texture.from(
-  "images/background_placeholder.png"
-);
+const backgroundTexture = PIXI.Texture.from(backgroundImg);
 
 // Load player idle and walk animation frames
-const playerIdleFrames = [];
-for (let i = 1; i <= 2; i++) {
-  playerIdleFrames.push(PIXI.Texture.from(`images/player_idle${i}.png`));
-}
-const playerWalkFrames = [];
-for (let i = 1; i <= 4; i++) {
-  playerWalkFrames.push(PIXI.Texture.from(`images/player_walk${i}.png`));
-}
+const playerIdleFrames = [
+  PIXI.Texture.from(playerIdle1),
+  PIXI.Texture.from(playerIdle2),
+];
+const playerWalkFrames = [
+  PIXI.Texture.from(playerWalk1),
+  PIXI.Texture.from(playerWalk2),
+  PIXI.Texture.from(playerWalk3),
+  PIXI.Texture.from(playerWalk4),
+];
+// const playerIdleFrames = [];
+// for (let i = 1; i <= 2; i++) {
+//   playerIdleFrames.push(PIXI.Texture.from(`../images/player_idle${i}.png`));
+// }
+// const playerWalkFrames = [];
+// for (let i = 1; i <= 4; i++) {
+//   playerWalkFrames.push(PIXI.Texture.from(`../images/player_walk${i}.png`));
+// }
 
 // Create background sprite
 const background = new PIXI.Sprite(backgroundTexture);
@@ -42,14 +61,14 @@ let targetPosition = new PIXI.Point(player.x, player.y);
 const inventory = [];
 
 // Create and add an item to the stage
-const item = PIXI.Sprite.from("images/key.png");
+const item = PIXI.Sprite.from(keyImage);
 item.x = 900;
 item.y = 590;
 item.eventMode = "static";
 item.cursor = "pointer";
 app.stage.addChild(item);
 
-const box_prop = PIXI.Sprite.from("images/box_prop.png");
+const box_prop = PIXI.Sprite.from(boxPropImage);
 box_prop.x = 120;
 box_prop.y = 670;
 box_prop.eventMode = "static";
@@ -58,10 +77,10 @@ box_prop.on("pointerdown", openPopup);
 app.stage.addChild(box_prop);
 
 // Popup for displaying text content
-let popup = window.textContainer;
+let popup = textContainer;
 const popupWidth = app.screen.width / 3;
 const popupHeight = app.screen.height / 3;
-let popupCloseBtn = window.textContainer.closeBtn;
+let popupCloseBtn = closeText;
 let popupBg;
 
 // Opens the popup and adds a background color to it.

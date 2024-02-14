@@ -9,6 +9,8 @@
   "author": "",
   "license": "MIT",
   "scripts": {
+    "start": "npm run clean && parcel index.html",
+    "clean": "rm -rf ./dist ./.parcel-cache",
     "test": "mocha",
     "coverage": "c8 mocha"
   },
@@ -16,6 +18,7 @@
     "c8": "^9.1.0",
     "chai": "^5.1.0",
     "coveralls": "^3.1.1",
-    "mocha": "^10.3.0"
+    "mocha": "^10.3.0",
+    "parcel": "^2.11.0"
   }
 }

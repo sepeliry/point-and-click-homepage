@@ -45,8 +45,54 @@ const inventory = [];
 const item = PIXI.Sprite.from("images/key.png");
 item.x = 900;
 item.y = 590;
-item.interactive = true;
+item.eventMode = "static";
+item.cursor = "pointer";
 app.stage.addChild(item);
+
+const box_prop = PIXI.Sprite.from("images/box_prop.png");
+box_prop.x = 120;
+box_prop.y = 670;
+box_prop.eventMode = "static";
+box_prop.cursor = "pointer";
+box_prop.on("pointerdown", openPopup);
+app.stage.addChild(box_prop);
+
+// Popup for displaying text content
+let popup = window.textContainer;
+const popupWidth = app.screen.width / 3;
+const popupHeight = app.screen.height / 3;
+let popupCloseBtn = window.textContainer.closeBtn;
+let popupBg;
+
+// Opens the popup and adds a background color to it.
+function openPopup() {
+  popup.width = popupWidth;
+  popup.height = popupHeight;
+  popup.x = app.screen.width / 2;
+  popup.y = app.screen.height / 2;
+  popupBg = new PIXI.Graphics();
+  popupBg.beginFill(0xced4da);
+  popupBg.drawRoundedRect(
+    -popup.width / 2,
+    -popup.height / 2,
+    popup.width,
+    popup.height + 75,
+    15
+  );
+  popupBg.endFill();
+  popupBg.alpha = 0.5;
+  popup.addChildAt(popupBg, 0);
+  app.stage.addChild(popup);
+  app.stage.eventMode = "passive"; // To ensure game doesn't register clicks if popup is open
+}
+
+function closePopup() {
+  popup.removeChild(popupBg);
+  app.stage.removeChild(popup);
+  app.stage.eventMode = "static";
+}
+
+popupCloseBtn.on("pointerdown", closePopup);
 
 // Inventory system and UI
 const inventoryUI = new PIXI.Container();
@@ -71,7 +117,7 @@ function addToInventory(item) {
       console.log("Item collected!");
       inventory.push(item);
       item.visible = false;
-      item.interactive = false;
+      item.eventMode = "none";
       updateInventoryUI();
     }
   }
@@ -91,7 +137,7 @@ function updateInventoryUI() {
 }
 
 // Handle click event on the stage
-app.stage.interactive = true; // Enable interaction
+app.stage.eventMode = "static"; // Enable interaction
 app.stage.on("pointertap", (event) => {
   const clickedItem = getItemAtPosition(event.data.global);
 

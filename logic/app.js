@@ -14,10 +14,7 @@ const app = new PIXI.Application({
   height: 800,
   backgroundColor: 0xaaaaaa,
 });
-
 document.body.appendChild(app.view);
-
-const backgroundTexture = PIXI.Texture.from(backgroundImg);
 
 // Load player idle and walk animation frames
 const playerIdleFrames = [
@@ -30,16 +27,9 @@ const playerWalkFrames = [
   PIXI.Texture.from(playerWalk3),
   PIXI.Texture.from(playerWalk4),
 ];
-// const playerIdleFrames = [];
-// for (let i = 1; i <= 2; i++) {
-//   playerIdleFrames.push(PIXI.Texture.from(`../images/player_idle${i}.png`));
-// }
-// const playerWalkFrames = [];
-// for (let i = 1; i <= 4; i++) {
-//   playerWalkFrames.push(PIXI.Texture.from(`../images/player_walk${i}.png`));
-// }
 
 // Create background sprite
+const backgroundTexture = PIXI.Texture.from(backgroundImg);
 const background = new PIXI.Sprite(backgroundTexture);
 background.width = app.screen.width;
 background.height = app.screen.height;
@@ -52,13 +42,8 @@ player.anchor.set(0.5);
 player.animationSpeed = 0.05;
 player.loop = true; // Set the loop property to true
 player.play();
-
 app.stage.addChild(player);
-
 let targetPosition = new PIXI.Point(player.x, player.y);
-
-// Inventory array to store collected items
-const inventory = [];
 
 // Create and add an item to the stage
 const item = PIXI.Sprite.from(keyImage);
@@ -76,44 +61,8 @@ box_prop.cursor = "pointer";
 box_prop.on("pointerdown", openPopup);
 app.stage.addChild(box_prop);
 
-// Popup for displaying text content
-let popup = textContainer;
-const popupWidth = app.screen.width / 3;
-const popupHeight = app.screen.height / 3;
-let popupCloseBtn = closeText;
-let popupBg;
-
-// Opens the popup and adds a background color to it.
-function openPopup() {
-  popup.width = popupWidth;
-  popup.height = popupHeight;
-  popup.x = app.screen.width / 2;
-  popup.y = app.screen.height / 2;
-  popupBg = new PIXI.Graphics();
-  popupBg.beginFill(0xced4da);
-  popupBg.drawRoundedRect(
-    -popup.width / 2,
-    -popup.height / 2,
-    popup.width,
-    popup.height + 75,
-    15
-  );
-  popupBg.endFill();
-  popupBg.alpha = 0.5;
-  popup.addChildAt(popupBg, 0);
-  app.stage.addChild(popup);
-  app.stage.eventMode = "passive"; // To ensure game doesn't register clicks if popup is open
-}
-
-function closePopup() {
-  popup.removeChild(popupBg);
-  app.stage.removeChild(popup);
-  app.stage.eventMode = "static";
-}
-
-popupCloseBtn.on("pointerdown", closePopup);
-
 // Inventory system and UI
+const inventory = [];
 const inventoryUI = new PIXI.Container();
 inventoryUI.position.set(0, app.screen.height - 100); // Adjust as needed
 app.stage.addChild(inventoryUI);
@@ -154,7 +103,42 @@ function updateInventoryUI() {
     inventoryUI.addChild(inventoryItem);
   }
 }
+// Popup for displaying text content
+let popup = textContainer;
+const popupWidth = app.screen.width / 3;
+const popupHeight = app.screen.height / 3;
+let popupCloseBtn = closeText;
+let popupBg;
 
+// Opens the popup and adds a background color to it.
+function openPopup() {
+  popup.width = popupWidth;
+  popup.height = popupHeight;
+  popup.x = app.screen.width / 2;
+  popup.y = app.screen.height / 2;
+  popupBg = new PIXI.Graphics();
+  popupBg.beginFill(0xced4da);
+  popupBg.drawRoundedRect(
+    -popup.width / 2,
+    -popup.height / 2,
+    popup.width,
+    popup.height + 75,
+    15
+  );
+  popupBg.endFill();
+  popupBg.alpha = 0.5;
+  popup.addChildAt(popupBg, 0);
+  app.stage.addChild(popup);
+  app.stage.eventMode = "passive"; // To ensure game doesn't register clicks if popup is open
+}
+
+function closePopup() {
+  popup.removeChild(popupBg);
+  app.stage.removeChild(popup);
+  app.stage.eventMode = "static";
+}
+
+popupCloseBtn.on("pointerdown", closePopup);
 // Handle click event on the stage
 app.stage.eventMode = "static"; // Enable interaction
 app.stage.on("pointertap", (event) => {

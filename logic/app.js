@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import { GlowFilter } from "@pixi/filter-glow";
 import { textContainer, closeText } from "./textContainer";
 import backgroundImg from "../images/background_placeholder.png";
 import playerIdle1 from "../images/player_idle1.png";
@@ -45,12 +46,16 @@ player.play();
 app.stage.addChild(player);
 let targetPosition = new PIXI.Point(player.x, player.y);
 
+// Create a generic glow filter for interactable items and objects
+glowEffect = new GlowFilter({ innerStrength: 0.5, outerStrength: 0.5, quality: 0.1 });
+
 // Create and add an item to the stage
 const item = PIXI.Sprite.from(keyImage);
 item.x = 900;
 item.y = 590;
 item.eventMode = "static";
 item.cursor = "pointer";
+item.filters = [glowEffect];
 app.stage.addChild(item);
 
 const box_prop = PIXI.Sprite.from(boxPropImage);
@@ -59,6 +64,7 @@ box_prop.y = 670;
 box_prop.eventMode = "static";
 box_prop.cursor = "pointer";
 box_prop.on("pointerdown", openPopup);
+box_prop.filters = [glowEffect];
 app.stage.addChild(box_prop);
 
 // Inventory system and UI
@@ -78,7 +84,7 @@ function getItemAtPosition(position) {
 // Adds item to inventory, checks for distance and duplicates
 function addToInventory(item) {
   const distance = Math.abs(item.x - player.x);
-  console.log(item.x + " " + player.x + " " + distance);
+  // console.log(item.x + " " + player.x + " " + distance);
   // Player can't teleport
   if (distance < 100) {
     if (!inventory.includes(item)) {

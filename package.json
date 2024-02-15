@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
+    "@pixi/filter-glow": "^5.2.1",
     "pixi.js": "^7.3.3"
   },
   "type": "module",

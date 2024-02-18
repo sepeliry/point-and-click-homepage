@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { playerCollides } from './collisionUtils';
 import playerIdle1 from "../images/player_idle1.png";
 import playerIdle2 from "../images/player_idle2.png";
 import playerWalk1 from "../images/player_walk1.png";
@@ -21,7 +22,7 @@ class Player {
         ];
         // Create player sprite with idle animation
         this.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
-        this.player.position.set(200, 625);
+        this.player.position.set(360, 620);
         this.player.anchor.set(0.5);
         this.player.animationSpeed = 0.05;
         this.player.loop = true; // Set the loop property to true
@@ -30,14 +31,14 @@ class Player {
         this.targetPosition = new PIXI.Point(this.player.x, this.player.y);
     }
 
-    move(targetPosition) {
+    move(targetPosition, solidObjects) {
         // Calculate the distance to the target position
         const dx = targetPosition.x - this.player.x;
         const dy = targetPosition.y - this.player.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         // Check if the player is moving
-        if (distance > 3) {
+        if (distance > 3 && !playerCollides(this.player, solidObjects).collided) {
             // Switch to the walk animation frames
             if (this.player.textures !== this.playerWalkFrames) {
                 this.player.textures = this.playerWalkFrames;

@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
+import { playerCollides, directionFunctions } from './collisionUtils';
 import Player from './player';
 import Inventory from './inventory';
 import UI from './UI';
@@ -23,10 +24,14 @@ const player = new Player(app);
 const inventory = new Inventory(app);
 const popup = new Popup(app);
 
+let solidObjects = [];
 // Create collectable items
 const key = new Item(app, keyImage, 900, 590);
 // Create interactable objects
-const box_prop = new Object(app, boxPropImage, 120, 670, popup);
+const box_prop = new Object(app, boxPropImage, 600, 650, popup);
+box_prop.height = 100;
+box_prop.width = 100;
+solidObjects.push(box_prop);
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
@@ -42,6 +47,16 @@ let targetPosition;
 // Handle click event on the stage
 app.stage.interactive = true; // Enable interaction
 app.stage.on("pointertap", (event) => {
+  const collisionResult = playerCollides(player.player, solidObjects);
+  if (collisionResult.collided) {
+    const direction = collisionResult.direction;
+    // Set the player position next to the object based on collision direction
+    const moveFunction = directionFunctions[direction];
+    if (moveFunction) {
+      moveFunction(player.player, 20); // Adjust the value as needed
+    }
+  }
+
   const clickedItem = getItemAtPosition(event.global, event.target);
   if (clickedItem) {
     // console.log("tried to pick up", clickedItem);
@@ -54,14 +69,14 @@ app.stage.on("pointertap", (event) => {
     const yCoordinate = (event.global.y > 503) ? event.global.y : 502;
     targetPosition = new PIXI.Point(event.global.x, yCoordinate);
     // Move the player towards the target position
-    player.move(targetPosition);
+    player.move(targetPosition, solidObjects);
   }
 });
 
 // Main game loop
 app.ticker.add((delta) => {
   if (targetPosition) {
-    player.move(targetPosition);
+    player.move(targetPosition, solidObjects);
   }
   inventory.updateInventoryUI();
 });

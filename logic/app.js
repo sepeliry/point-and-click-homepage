@@ -49,7 +49,10 @@ app.stage.on("pointertap", (event) => {
     inventory.addToInventory(clickedItem, player);
   } else {
     // Set the new target position on click
-    targetPosition = new PIXI.Point(event.global.x, event.global.y);
+    // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
+    // has to be adjusted in a different way once final designs are done.
+    const yCoordinate = (event.global.y > 503) ? event.global.y : 502;
+    targetPosition = new PIXI.Point(event.global.x, yCoordinate);
     // Move the player towards the target position
     player.move(targetPosition);
   }

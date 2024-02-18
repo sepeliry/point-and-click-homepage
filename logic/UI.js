@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import backgroundImg from "../images/background_placeholder.png";
+import backgroundImg from "../images/background_placeholder2.png";
 
 class UI {
     constructor(app) {

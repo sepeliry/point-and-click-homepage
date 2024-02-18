@@ -33,7 +33,8 @@ class Player {
     move(targetPosition) {
         // Calculate the distance to the target position
         const dx = targetPosition.x - this.player.x;
-        const distance = Math.abs(dx);
+        const dy = targetPosition.y - this.player.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
         // Check if the player is moving
         if (distance > 3) {
@@ -46,8 +47,10 @@ class Player {
 
             // Move the player towards the target position
             const directionX = dx / distance;
+            const directionY = dy / distance;
             const speed = 2.5; // Adjust speed if needed
             this.player.x += directionX * speed;
+            this.player.y += directionY * speed;
 
             // Mirror player Sprite according to the direction of movement
             if (directionX < 0) {

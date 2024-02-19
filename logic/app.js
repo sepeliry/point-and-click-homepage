@@ -1,11 +1,11 @@
 import * as PIXI from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
-import { playerCollides, directionFunctions } from './collisionUtils';
-import Player from './player';
-import Inventory from './inventory';
-import UI from './UI';
-import Popup from './popup';
-import Item from './item';
+import { playerCollides, directionFunctions } from "./collisionUtils";
+import Player from "./player";
+import Inventory from "./inventory";
+import UI from "./UI";
+import Popup from "./popup";
+import Item from "./item";
 import Object from "./object";
 import keyImage from "../images/key.png";
 import boxPropImage from "../images/box_prop.png";
@@ -28,7 +28,7 @@ let solidObjects = [];
 // Create collectable items
 const key = new Item(app, keyImage, 900, 590);
 // Create interactable objects
-const box_prop = new Object(app, boxPropImage, 600, 650, popup);
+const box_prop = new Object(app, boxPropImage, 1050, 650, popup);
 box_prop.height = 100;
 box_prop.width = 100;
 solidObjects.push(box_prop);
@@ -36,7 +36,11 @@ solidObjects.push(box_prop);
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
   // console.log(item);
-  if (item instanceof PIXI.Sprite && item.getBounds().contains(position.x, position.y) && item.visible) {
+  if (
+    item instanceof PIXI.Sprite &&
+    item.getBounds().contains(position.x, position.y) &&
+    item.visible
+  ) {
     return item;
   }
   return null;
@@ -66,7 +70,7 @@ app.stage.on("pointertap", (event) => {
     // Set the new target position on click
     // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
     // has to be adjusted in a different way once final designs are done.
-    const yCoordinate = (event.global.y > 503) ? event.global.y : 502;
+    const yCoordinate = event.global.y > 503 ? event.global.y : 502;
     targetPosition = new PIXI.Point(event.global.x, yCoordinate);
     // Move the player towards the target position
     player.move(targetPosition, solidObjects);

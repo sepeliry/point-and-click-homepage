@@ -4,9 +4,10 @@ import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
 import Inventory from "./inventory";
 import UI from "./UI";
-import Popup from "./popup";
+import Popup from "./popup.js";
 import Item from "./item";
 import Object from "./object";
+import { popup1TextElements } from "../data/popupTexts";
 import keyImage from "../images/key.png";
 import boxPropImage from "../images/box_prop.png";
 
@@ -22,7 +23,7 @@ document.body.appendChild(app.view);
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
-const popup = new Popup(app);
+const popup = new Popup(app, popup1TextElements);
 
 let solidObjects = [];
 // Create collectable items
@@ -49,7 +50,7 @@ function getItemAtPosition(position, item) {
 let targetPosition;
 
 // Handle click event on the stage
-app.stage.interactive = true; // Enable interaction
+app.stage.eventMode = "static"; // Enable interaction
 app.stage.on("pointertap", (event) => {
   const collisionResult = playerCollides(player.player, solidObjects);
   if (collisionResult.collided) {

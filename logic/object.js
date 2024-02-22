@@ -1,8 +1,20 @@
 import * as PIXI from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
 
-// Objects player can interact with
+/**
+ * Class for objects that can be interacted with or be used to open content
+ * including popups / etc
+ */
 class Object {
+  /**
+   * @constructor Creates the object from image and sets the coordinates
+   * @param {PIXI.Application} app - Pixi application where the object is added to
+   * @param {image} image - Image to be used for the object sprite
+   * @param {number} x - x coordinate where the object is placed in the application
+   * @param {number} y - y coordinate where the object is placed in the application
+   * @param {object} popup - popup / view that opens when object is clicked
+   * @returns {object} - The interactive object created
+   */
   constructor(app, image, x, y, popup) {
     this.obj = PIXI.Sprite.from(image);
     this.glowEffect = new GlowFilter({

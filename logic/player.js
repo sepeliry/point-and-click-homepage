@@ -1,11 +1,11 @@
 import * as PIXI from "pixi.js";
 import { playerCollides } from "./collisionUtils";
-import playerIdle1 from "../images/player_idle1.png";
-import playerIdle2 from "../images/player_idle2.png";
-import playerWalk1 from "../images/player_walk1.png";
-import playerWalk2 from "../images/player_walk2.png";
-import playerWalk3 from "../images/player_walk3.png";
-import playerWalk4 from "../images/player_walk4.png";
+import playerIdle1 from "../resources/images/player_idle1.png";
+import playerIdle2 from "../resources/images/player_idle2.png";
+import playerWalk1 from "../resources/images/player_walk1.png";
+import playerWalk2 from "../resources/images/player_walk2.png";
+import playerWalk3 from "../resources/images/player_walk3.png";
+import playerWalk4 from "../resources/images/player_walk4.png";
 /**
  * Class for players
  */

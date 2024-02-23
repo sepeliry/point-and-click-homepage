@@ -8,8 +8,8 @@ import Popup from "./popup.js";
 import Item from "./item";
 import Object from "./object";
 import { popup1TextElements } from "../data/popupTexts";
-import keyImage from "../images/key.png";
-import boxPropImage from "../images/box_prop.png";
+import keyImage from "../resources/images/key.png";
+import boxPropImage from "../resources/images/box_prop.png";
 
 // Create application on page load
 const app = new PIXI.Application({

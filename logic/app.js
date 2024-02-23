@@ -10,6 +10,8 @@ import Object from "./object";
 import { popup1TextElements } from "../data/popupTexts";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
+import { handleMarkdownClick } from "./wiki/markdownHandler.js";
+import { htmlContent } from "./wiki/content.js";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -17,7 +19,7 @@ const app = new PIXI.Application({
   height: 800,
   backgroundColor: 0xaaaaaa,
 });
-document.body.appendChild(app.view);
+document.getElementById("game-container").appendChild(app.view);
 // Container for main game elements
 const gameContainer = new PIXI.Container();
 app.stage.addChild(gameContainer);
@@ -89,3 +91,11 @@ app.ticker.add((delta) => {
   }
   inventory.updateInventoryUI();
 });
+
+// Object to render wiki content in html format
+const markdownBox = new Item(app, boxPropImage, 900, 650);
+markdownBox.on(
+  "pointerdown",
+  handleMarkdownClick(app, gameContainer, htmlContent)
+);
+app.gameContainer.addChild(markdownBox);

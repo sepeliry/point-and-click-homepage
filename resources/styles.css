@@ -5,3 +5,27 @@ body {
   height: 100vh;
   margin: 0;
 }
+
+#markdown-container {
+  position: relative;
+  display: none;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 60%;
+  height: 100%;
+  padding: 50px;
+  overflow-y: auto;
+  padding-top: 50px;
+}
+
+#back-btn {
+  position: absolute;
+  top: 8%; /* Adjust as needed */
+  left: 8%;
+  display: block;
+  width: 100px;
+  height: 50px;
+  background-color: #e0e0e0; /* Set a background color to make sure the button is visible */
+}

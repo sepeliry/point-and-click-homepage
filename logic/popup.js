@@ -88,8 +88,8 @@ class Popup {
       this.isOpen = true;
       this.popup.x = (app.screen.width - this.popupWidth) / 2;
       this.popup.y = (app.screen.height - this.popupHeight) / 2;
-      app.stage.eventMode = "passive";
-      app.stage.addChild(this.popup);
+      app.gameContainer.eventMode = "passive";
+      app.gameContainer.addChild(this.popup);
     }
   }
 
@@ -108,8 +108,8 @@ class Popup {
    * @param {PIXI.Application} - app PIXI.Application where the popup is located
    */
   close(app) {
-    app.stage.removeChild(this.popup);
-    app.stage.eventMode = "static";
+    app.gameContainer.removeChild(this.popup);
+    app.gameContainer.eventMode = "static";
     this.isOpen = false;
   }
 }

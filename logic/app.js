@@ -18,6 +18,10 @@ const app = new PIXI.Application({
   backgroundColor: 0xaaaaaa,
 });
 document.body.appendChild(app.view);
+// Container for main game elements
+const gameContainer = new PIXI.Container();
+app.stage.addChild(gameContainer);
+app.gameContainer = gameContainer;
 
 // Construct contents in canvas
 const ui = new UI(app);
@@ -50,8 +54,8 @@ function getItemAtPosition(position, item) {
 let targetPosition;
 
 // Handle click event on the stage
-app.stage.eventMode = "static"; // Enable interaction
-app.stage.on("pointertap", (event) => {
+gameContainer.eventMode = "static"; // Enable interaction
+gameContainer.on("pointertap", (event) => {
   const collisionResult = playerCollides(player.player, solidObjects);
   if (collisionResult.collided) {
     const direction = collisionResult.direction;

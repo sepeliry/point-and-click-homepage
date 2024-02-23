@@ -33,7 +33,7 @@ class Player {
     this.player.animationSpeed = 0.05;
     this.player.loop = true; // Set the loop property to true
     this.player.play();
-    app.stage.addChild(this.player);
+    app.gameContainer.addChild(this.player);
     this.targetPosition = new PIXI.Point(this.player.x, this.player.y);
   }
   /**

@@ -28,7 +28,7 @@ class Object {
     this.obj.cursor = "pointer";
     this.obj.on("pointerdown", () => popup.open(app));
     this.obj.filters = [this.glowEffect];
-    app.stage.addChild(this.obj);
+    app.gameContainer.addChild(this.obj);
     return this.obj;
   }
 }

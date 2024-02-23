@@ -27,7 +27,7 @@ class Item {
     this.item.cursor = "pointer";
     this.item.filters = [this.glowEffect];
     this.item.visible = true;
-    app.stage.addChild(this.item);
+    app.gameContainer.addChild(this.item);
     return this.item;
   }
 }

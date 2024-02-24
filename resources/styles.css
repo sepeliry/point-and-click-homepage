@@ -4,28 +4,110 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
+  background-color: #22272e;
+}
+#back-btn {
+  align-self: flex-start;
+  width: 100px;
+  height: 40px;
+  background-color: #9e9e9e; /* Set a background color to make sure the button is visible */
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 #markdown-container {
-  position: relative;
   display: none;
   z-index: 1;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
   flex-direction: column;
+  align-items: flex-start;
   width: 60%;
   height: 100%;
-  padding: 50px;
   overflow-y: auto;
-  padding-top: 50px;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  color: #adbac7; /* Light gray text */
+  background-color: #22272e; /* Dark gray background */
+  /* padding: 10px; */
+}
+#markdown-container h1,
+#markdown-container h2,
+#markdown-container h3,
+#markdown-container h4,
+#markdown-container h5,
+#markdown-container h6 {
+  margin-top: 10px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1;
+  color: #cdd9e5; /* Lighter gray for headers */
 }
 
-#back-btn {
-  position: absolute;
-  top: 8%; /* Adjust as needed */
-  left: 8%;
-  display: block;
-  width: 100px;
-  height: 50px;
-  background-color: #e0e0e0; /* Set a background color to make sure the button is visible */
+#markdown-container h1 {
+  font-size: 2em;
+}
+
+#markdown-container h2 {
+  font-size: 1.5em;
+}
+
+#markdown-container h3 {
+  font-size: 1.25em;
+}
+
+#markdown-container h4 {
+  font-size: 1em;
+}
+
+#markdown-container h5 {
+  font-size: 0.875em;
+}
+
+#markdown-container h6 {
+  font-size: 0.85em;
+  color: #6a737d;
+}
+
+#markdown-container p {
+  margin-top: 16px;
+}
+
+#markdown-container a {
+  color: #539bf5; /* Blue for links */
+  text-decoration: none;
+}
+
+#markdown-container a:hover {
+  text-decoration: underline;
+}
+
+#markdown-container img {
+  max-width: 100%;
+}
+
+#markdown-container pre {
+  padding: 16px;
+  overflow: auto;
+  line-height: 1.45;
+  background-color: #444c56; /* Darker gray for code blocks */
+  border-radius: 3px;
+}
+
+#markdown-container code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(27, 31, 35, 0.05);
+  border-radius: 3px;
+  color: #cdd9e5; /* Lighter gray for code */
+}
+
+#markdown-container pre > code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: break-all;
+  white-space: pre;
+  background: transparent;
+  border: 0;
 }

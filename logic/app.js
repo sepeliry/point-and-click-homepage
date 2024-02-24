@@ -10,8 +10,9 @@ import Object from "./object";
 import { popup1TextElements } from "../data/popupTexts";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
-import { handleMarkdownClick } from "./wiki/markdownHandler.js";
+import { fetchPage, handleMarkdownClick } from "./wiki/markdownHandler.js";
 import { htmlContent } from "./wiki/content.js";
+import { pages } from "./wiki/pages.js";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -93,9 +94,11 @@ app.ticker.add((delta) => {
 });
 
 // Object to render wiki content in html format
-const markdownBox = new Item(app, boxPropImage, 900, 650);
-markdownBox.on(
-  "pointerdown",
-  handleMarkdownClick(app, gameContainer, htmlContent)
-);
+const markdownBox = new Item(app, boxPropImage, 350, 700);
+const pageUrl = pages.url;
+markdownBox.on("pointerdown", async () => {
+  const htmlContent = await fetchPage(pageUrl);
+  handleMarkdownClick(app, gameContainer, htmlContent);
+});
+
 app.gameContainer.addChild(markdownBox);

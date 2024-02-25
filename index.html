@@ -3,13 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="./images/favicon.ico" type="image/x-icon" />
+    <link
+      rel="icon"
+      href="./resources/images/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/resources/styles.css" />
     <title>Sepeli</title>
   </head>
   <body>
     <div id="game-container">
       <script type="module" src="./logic/app.js"></script>
     </div>
-    <!-- <span id="data-span">Loading data...</span> -->
+    <!-- Placeholder, sisällytetään pdf avaaminen pelin sisään -->
+    <button id="show-pdf" class="button">Avaa pdf</button>
+    <div id="markdown-container">
+      <div id="content-container"></div>
+    </div>
+    <div id="pdf-viewer-container">
+      <div id="pdf-container">
+        <object id="pdf-object"></object>
+      </div>
+      <div id="pdf-controls">
+        <button id="close-pdf" class="button">Sulje</button>
+      </div>
+    </div>
   </body>
 </html>

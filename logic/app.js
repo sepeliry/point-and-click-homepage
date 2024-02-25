@@ -10,9 +10,9 @@ import Object from "./object";
 import { popup1TextElements } from "../data/popupTexts";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
-import { fetchPage, handleMarkdownClick } from "./wiki/markdownHandler.js";
-import { htmlContent } from "./wiki/content.js";
+import { fetchPage, handleMarkdownClick } from "./wiki/markdownUtils.js";
 import { pages } from "./wiki/pages.js";
+import { closePdf, showPdf } from "./wiki/pdfUtils.js";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -36,9 +36,16 @@ let solidObjects = [];
 // Create collectable items
 const key = new Item(app, keyImage, 900, 590);
 // Create interactable objects
-const box_prop = new Object(app, boxPropImage, 1050, 650, popup);
+// const box_prop = new Object(app, boxPropImage, 1050, 650, popup);
+const box_prop = new Item(app, boxPropImage, 1050, 650);
 box_prop.height = 100;
 box_prop.width = 100;
+const pageUrl = pages[1].url;
+const pageTitle = pages[1].title;
+box_prop.on("pointerdown", async () => {
+  const htmlContent = await fetchPage(pageUrl);
+  handleMarkdownClick(app, gameContainer, pageTitle, htmlContent);
+});
 solidObjects.push(box_prop);
 
 function getItemAtPosition(position, item) {
@@ -93,12 +100,13 @@ app.ticker.add((delta) => {
   inventory.updateInventoryUI();
 });
 
-// Object to render wiki content in html format
-const markdownBox = new Item(app, boxPropImage, 350, 700);
-const pageUrl = pages.url;
-markdownBox.on("pointerdown", async () => {
-  const htmlContent = await fetchPage(pageUrl);
-  handleMarkdownClick(app, gameContainer, htmlContent);
-});
+const pelienSuunittelu = "/docs/input/pelienSuunnittelu.pdf";
+document
+  .getElementById("show-pdf")
+  .addEventListener("click", () =>
+    showPdf(app, gameContainer, pelienSuunittelu)
+  );
 
-app.gameContainer.addChild(markdownBox);
+document.getElementById("close-pdf").addEventListener("click", () => {
+  closePdf(app, gameContainer);
+});

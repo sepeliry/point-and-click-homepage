@@ -1,18 +1,56 @@
 body {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
   background-color: #22272e;
 }
+.button {
+  background-color: #fff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: 100px;
+}
+
+#pdf-viewer-container {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+#pdf-controls {
+  position: absolute;
+  top: 5%;
+  left: 0;
+}
+#pdf-container {
+  flex-grow: 1;
+}
+#pdf-object {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
 #back-btn {
   align-self: flex-start;
-  width: 100px;
-  height: 40px;
-  background-color: #9e9e9e; /* Set a background color to make sure the button is visible */
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-left: 0px;
 }
 
 #markdown-container {

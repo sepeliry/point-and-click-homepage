@@ -11,10 +11,10 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "start": "npm run clean && parcel index.html",
-    "clean": "rimraf ./dist ./.parcel-cache",
-    "build": "npm run clean && parcel build ./index.html",
-    "build_serve": "npm run build && http-server ./dist",
+    "start": "npm run clean && parcel index.html --dist-dir deployment",
+    "clean": "rimraf ./deployment ./.parcel-cache",
+    "build": "npm run clean && parcel build ./index.html --dist-dir deployment",
+    "build_serve": "npm run build && http-server ./deployment",
     "test": "mocha",
     "coverage": "c8 mocha"
   },

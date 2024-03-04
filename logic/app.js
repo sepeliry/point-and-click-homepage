@@ -21,10 +21,18 @@ const app = new PIXI.Application({
   backgroundColor: 0xaaaaaa,
 });
 document.getElementById("game-container").appendChild(app.view);
+
 // Container for main game elements
 const gameContainer = new PIXI.Container();
 app.stage.addChild(gameContainer);
 app.gameContainer = gameContainer;
+gameContainer.visible = true;
+
+// Container for bookshelf view
+const bookshelfContainer = new PIXI.Container();
+app.stage.addChild(bookshelfContainer);
+app.bookshelfContainer = bookshelfContainer;
+bookshelfContainer.visible = false;
 
 // Construct contents in canvas
 const ui = new UI(app);
@@ -32,9 +40,19 @@ const player = new Player(app);
 const inventory = new Inventory(app);
 const popup = new Popup(app, popup1TextElements);
 
+// Button for view swap testing
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.createElement('button');
+  button.textContent = 'Vaihda näkymää';
+  button.classList.add("button");
+  button.addEventListener("click", ui.toggleViews(app));
+  document.getElementById("game-container").appendChild(button);
+});
+
 let solidObjects = [];
 // Create collectable items
 const key = new Item(app, keyImage, 900, 590);
+
 // Create interactable objects
 // const box_prop = new Object(app, boxPropImage, 1050, 650, popup);
 const box_prop = new Item(app, boxPropImage, 1050, 650);
@@ -77,7 +95,7 @@ gameContainer.on("pointertap", (event) => {
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
-  if (clickedItem) {
+  if (clickedItem && clickedItem !== box_prop) {
     // console.log("tried to pick up", clickedItem);
     // If an item is clicked, add it to the inventory
     inventory.addToInventory(clickedItem, player);

@@ -7,12 +7,11 @@ import UI from "./UI";
 import Popup from "./popup.js";
 import Item from "./item";
 import Object from "./object";
-import { popup1TextElements } from "../data/popupTexts";
+import { popup1TextElements } from "./utils/popupTexts.js";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
-import { fetchPage, handleMarkdownClick } from "./wiki/markdownUtils.js";
-import { pages } from "./wiki/pages.js";
-import { closePdf, showPdf } from "./wiki/pdfUtils.js";
+import { generateList, showList } from "./utils/markdownUtils.js";
+import { closePdf, showPdf } from "./utils/pdfUtils.js";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -38,7 +37,7 @@ bookshelfContainer.visible = false;
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
-const popup = new Popup(app, popup1TextElements);
+// const popup = new Popup(app, popup1TextElements);
 
 // Button for view swap testing
 document.addEventListener("DOMContentLoaded", () => {
@@ -52,18 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
 let solidObjects = [];
 // Create collectable items
 const key = new Item(app, keyImage, 900, 590);
-
 // Create interactable objects
 // const box_prop = new Object(app, boxPropImage, 1050, 650, popup);
 const box_prop = new Item(app, boxPropImage, 1050, 650);
 box_prop.height = 100;
 box_prop.width = 100;
-const pageUrl = pages[1].url;
-const pageTitle = pages[1].title;
-box_prop.on("pointerdown", async () => {
-  const htmlContent = await fetchPage(pageUrl);
-  handleMarkdownClick(app, gameContainer, pageTitle, htmlContent);
-});
+generateList();
+box_prop.on("pointerdown", () => showList(app, gameContainer))
 solidObjects.push(box_prop);
 
 function getItemAtPosition(position, item) {

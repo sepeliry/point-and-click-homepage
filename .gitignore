@@ -4,7 +4,6 @@
 /dist
 /tmp
 /out-tsc
-/deployment
 # Runtime data
 pids
 *.pid

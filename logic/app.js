@@ -7,12 +7,11 @@ import UI from "./UI";
 import Popup from "./popup.js";
 import Item from "./item";
 import Object from "./object";
-import { popup1TextElements } from "../data/popupTexts";
+import { popup1TextElements } from "./utils/popupTexts.js";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
-import { fetchPage, handleMarkdownClick } from "./wiki/markdownUtils.js";
-import { pages } from "./wiki/pages.js";
-import { closePdf, showPdf } from "./wiki/pdfUtils.js";
+import { generateList, showList } from "./utils/markdownUtils.js";
+import { closePdf, showPdf } from "./utils/pdfUtils.js";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -21,16 +20,33 @@ const app = new PIXI.Application({
   backgroundColor: 0xaaaaaa,
 });
 document.getElementById("game-container").appendChild(app.view);
+
 // Container for main game elements
 const gameContainer = new PIXI.Container();
 app.stage.addChild(gameContainer);
 app.gameContainer = gameContainer;
+gameContainer.visible = true;
+
+// Container for bookshelf view
+const bookshelfContainer = new PIXI.Container();
+app.stage.addChild(bookshelfContainer);
+app.bookshelfContainer = bookshelfContainer;
+bookshelfContainer.visible = false;
 
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
-const popup = new Popup(app, popup1TextElements);
+// const popup = new Popup(app, popup1TextElements);
+
+// Button for view swap testing
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.createElement('button');
+  button.textContent = 'Vaihda näkymää';
+  button.classList.add("button");
+  button.addEventListener("click", ui.toggleViews(app));
+  document.getElementById("game-container").appendChild(button);
+});
 
 let solidObjects = [];
 // Create collectable items
@@ -40,12 +56,8 @@ const key = new Item(app, keyImage, 900, 590);
 const box_prop = new Item(app, boxPropImage, 1050, 650);
 box_prop.height = 100;
 box_prop.width = 100;
-const pageUrl = pages[1].url;
-const pageTitle = pages[1].title;
-box_prop.on("pointerdown", async () => {
-  const htmlContent = await fetchPage(pageUrl);
-  handleMarkdownClick(app, gameContainer, pageTitle, htmlContent);
-});
+generateList();
+box_prop.on("pointerdown", () => showList(app, gameContainer))
 solidObjects.push(box_prop);
 
 function getItemAtPosition(position, item) {
@@ -77,7 +89,7 @@ gameContainer.on("pointertap", (event) => {
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
-  if (clickedItem) {
+  if (clickedItem && clickedItem !== box_prop) {
     // console.log("tried to pick up", clickedItem);
     // If an item is clicked, add it to the inventory
     inventory.addToInventory(clickedItem, player);

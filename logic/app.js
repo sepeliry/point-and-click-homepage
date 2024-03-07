@@ -5,15 +5,15 @@ import Player from "./player";
 import Inventory from "./inventory";
 import UI from "./UI";
 import Popup from "./popup.js";
-import Item from "./item.js";
-import Book from "./book.js";
-import { popup1TextElements } from "../data/popupTexts";
+import Item from "./item";
+import Object from "./object";
+import { popup1TextElements } from "./utils/popupTexts.js";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
+import { generateList, showList } from "./utils/markdownUtils.js";
+import { closePdf, showPdf } from "./utils/pdfUtils.js";
+import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
-import { fetchPage, handleMarkdownClick } from "./wiki/markdownUtils.js";
-import { pages } from "./wiki/pages.js";
-import { closePdf, showPdf } from "./wiki/pdfUtils.js";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -39,7 +39,16 @@ bookshelfContainer.visible = false;
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
-const popup = new Popup(app, popup1TextElements);
+// const popup = new Popup(app, popup1TextElements);
+
+// Button for view swap testing
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.createElement('button');
+  button.textContent = 'Vaihda näkymää';
+  button.classList.add("button");
+  button.addEventListener("click", ui.toggleViews(app));
+  document.getElementById("game-container").appendChild(button);
+});
 
 // Button for view swap testing
 const button = document.createElement('button');
@@ -56,12 +65,8 @@ const key = new Item(app, keyImage, 900, 590);
 const box_prop = new Item(app, boxPropImage, 1050, 650);
 box_prop.height = 100;
 box_prop.width = 100;
-const pageUrl = pages[1].url;
-const pageTitle = pages[1].title;
-box_prop.on("pointerdown", async () => {
-  const htmlContent = await fetchPage(pageUrl);
-  handleMarkdownClick(app, gameContainer, pageTitle, htmlContent);
-});
+generateList();
+box_prop.on("pointerdown", () => showList(app, gameContainer))
 solidObjects.push(box_prop);
 
 // Create books for bookshelf
@@ -98,7 +103,7 @@ gameContainer.on("pointertap", (event) => {
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
-  if (clickedItem) {
+  if (clickedItem && clickedItem !== box_prop) {
     // console.log("tried to pick up", clickedItem);
     // If an item is clicked, add it to the inventory
     inventory.addToInventory(clickedItem, player);

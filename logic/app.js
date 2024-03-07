@@ -5,11 +5,12 @@ import Player from "./player";
 import Inventory from "./inventory";
 import UI from "./UI";
 import Popup from "./popup.js";
-import Item from "./item";
-import Object from "./object";
+import Item from "./item.js";
+import Book from "./book.js";
 import { popup1TextElements } from "../data/popupTexts";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
+import bookImg from "../resources/images/book_placeholder.png";
 import { fetchPage, handleMarkdownClick } from "./wiki/markdownUtils.js";
 import { pages } from "./wiki/pages.js";
 import { closePdf, showPdf } from "./wiki/pdfUtils.js";
@@ -62,6 +63,11 @@ box_prop.on("pointerdown", async () => {
   handleMarkdownClick(app, gameContainer, pageTitle, htmlContent);
 });
 solidObjects.push(box_prop);
+
+// Create books for bookshelf
+let books = [];
+const book = new Book(app, bookImg, 440, 400, "Blender");
+books.push(book);
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked

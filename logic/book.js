@@ -39,10 +39,12 @@ class Book {
             fontFamily: 'Consolas',
             fontSize: 18,
             fill: 0xFFFFFF,
+            stroke: 0x000000, // Black outline color
+            strokeThickness: 2,
         };
 
         // Calculate the spacing between each character
-        const characterSpacing = 20;
+        const characterSpacing = 13;
 
         // Loop through each character in the text
         for (let i = 0; i < topic.length; i++) {
@@ -50,12 +52,11 @@ class Book {
 
             // Create a PIXI.Text object for the character
             const textObject = new PIXI.Text(character, textStyle);
-
             // Rotate the text object vertically
             textObject.rotation = Math.PI / 2;
 
             // Calculate the position of the text object along the book spine
-            const x = this.book.x + this.book.width / 2;
+            const x = this.book.x + this.book.width + 15;
             const y = this.book.y + (i + 1) * characterSpacing;
 
             // Set the position of the text object

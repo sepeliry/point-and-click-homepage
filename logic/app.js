@@ -12,11 +12,9 @@ import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
 import { generateList, showList } from "./utils/markdownUtils.js";
 import { closePdf, showPdf } from "./utils/pdfUtils.js";
-<<<<<<< HEAD
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
-=======
->>>>>>> ce387b2490caf3b5f329f8ed21c194220abcbf3c
+import bookImg2 from "../resources/images/book2_placeholder.png";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -52,15 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
   button.addEventListener("click", ui.toggleViews(app));
   document.getElementById("game-container").appendChild(button);
 });
-<<<<<<< HEAD
-
-// Button for view swap testing
-const button = document.createElement('button');
-button.textContent = 'Vaihda näkymää';
-button.addEventListener("click", ui.toggleViews(app));
-document.body.appendChild(button);
-=======
->>>>>>> ce387b2490caf3b5f329f8ed21c194220abcbf3c
 
 let solidObjects = [];
 // Create collectable items
@@ -76,13 +65,15 @@ box_prop.on("pointerdown", () => showList(app, gameContainer))
 solidObjects.push(box_prop);
 
 // Create books for bookshelf
+// TODO: Move to more appropriate module
 let books = [];
-const book = new Book(app, bookImg, 440, 400, "Blender");
-books.push(book);
+const blender = new Book(app, bookImg, 440, 400, "Blender");
+const unity = new Book(app, bookImg2, 630, 650, "Unity");
+books.push(blender);
+books.push(unity);
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
-  // console.log(item);
   if (
     item instanceof PIXI.Sprite &&
     item.getBounds().contains(position.x, position.y) &&
@@ -110,7 +101,6 @@ gameContainer.on("pointertap", (event) => {
 
   const clickedItem = getItemAtPosition(event.global, event.target);
   if (clickedItem && clickedItem !== box_prop) {
-    // console.log("tried to pick up", clickedItem);
     // If an item is clicked, add it to the inventory
     inventory.addToInventory(clickedItem, player);
   } else {

@@ -14,7 +14,6 @@ class UI {
     // Create sprite for bookshelf view
     const bookshelfTexture = PIXI.Texture.from(bookshelfBackgroundImg);
     const bookshelfBackground = new PIXI.Sprite(bookshelfTexture);
-    bookshelfBackground.width = app.screen.width;
     bookshelfBackground.height = app.screen.height;
     app.bookshelfContainer.addChild(bookshelfBackground);
   }

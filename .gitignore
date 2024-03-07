@@ -2,7 +2,6 @@
 
 # compiled output
 /dist
-/deployment
 /tmp
 /out-tsc
 # Runtime data

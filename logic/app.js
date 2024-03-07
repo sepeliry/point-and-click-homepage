@@ -12,8 +12,11 @@ import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
 import { generateList, showList } from "./utils/markdownUtils.js";
 import { closePdf, showPdf } from "./utils/pdfUtils.js";
+<<<<<<< HEAD
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
+=======
+>>>>>>> ce387b2490caf3b5f329f8ed21c194220abcbf3c
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -49,12 +52,15 @@ document.addEventListener("DOMContentLoaded", () => {
   button.addEventListener("click", ui.toggleViews(app));
   document.getElementById("game-container").appendChild(button);
 });
+<<<<<<< HEAD
 
 // Button for view swap testing
 const button = document.createElement('button');
 button.textContent = 'Vaihda näkymää';
 button.addEventListener("click", ui.toggleViews(app));
 document.body.appendChild(button);
+=======
+>>>>>>> ce387b2490caf3b5f329f8ed21c194220abcbf3c
 
 let solidObjects = [];
 // Create collectable items

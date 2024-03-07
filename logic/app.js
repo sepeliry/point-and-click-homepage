@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import { GlowFilter } from "@pixi/filter-glow";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
 import Inventory from "./inventory";
@@ -7,7 +6,6 @@ import UI from "./UI";
 import Popup from "./popup.js";
 import Item from "./item";
 import Object from "./object";
-import { popup1TextElements } from "./utils/popupTexts.js";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
 import { generateList, showList } from "./utils/markdownUtils.js";
@@ -51,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("game-container").appendChild(button);
 });
 
-let solidObjects = [];
 // Create collectable items
 const key = new Item(app, keyImage, 900, 590);
 
@@ -62,6 +59,7 @@ box_prop.height = 100;
 box_prop.width = 100;
 generateList();
 box_prop.on("pointerdown", () => showList(app, gameContainer))
+let solidObjects = [];
 solidObjects.push(box_prop);
 
 // Create books for bookshelf
@@ -122,7 +120,7 @@ app.ticker.add((delta) => {
   inventory.updateInventoryUI();
 });
 
-const pelienSuunittelu = "/docs/input/pelienSuunnittelu.pdf";
+const pelienSuunittelu = "./docs/input/pelienSuunnittelu.pdf";
 document
   .getElementById("show-pdf")
   .addEventListener("click", () =>

@@ -1,10 +1,3 @@
-// TODO: Generate page url from title
-// const baseUrl = "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/";
-// pages = pages.map(page => ({
-//   ...page,
-//   url: `${baseUrl}${encodeURIComponent(page.title)}.md`
-// }));
-
 export const pages = [
   {
     title: "Home",

@@ -6,14 +6,40 @@ import { marked } from "marked";
  * @param {string} url - the rawgithubuserconent url for the markdown wiki page
  * @returns {string} - Markdown content transformed into a html string
  */
+// export const fetchPage = async (url) => {
+//   const response = await fetch(`${url}`);
+//   const data = await response.text();
+//   marked.use({ gfm: true });
+//   const htmlString = marked.parse(data);
+//   return htmlString;
+// };
+
 export const fetchPage = async (url) => {
   const response = await fetch(`${url}`);
   const data = await response.text();
-  marked.use({ gfm: true });
+
+  // Create a custom renderer
+  const renderer = new marked.Renderer();
+  const originalLinkRenderer = renderer.link;
+  renderer.link = function(href, title, text) {
+    if (!href.startsWith('http')) {
+      // If the link is a relative link to another wiki page, add a click event listener
+      const pageUrl = findPageUrlByHref(href);
+      if(!pageUrl) return originalLinkRenderer.call(this, href, title, text);
+      else {
+        return `<a href="${href}" onclick="event.preventDefault(); fetchPage('${pageUrl}');">${text}</a>`;
+      } 
+    } else {
+      // If the link is a normal URL, use the original link renderer
+      return originalLinkRenderer.call(this, href, title, text);
+    }
+  };
+  marked.use({ gfm: true, renderer });
   const htmlString = marked.parse(data);
   return htmlString;
 };
 
+window.fetchPage = fetchPage;
 // Generates list from wiki page titles. Adds a click listener for each to render the page as html
 export const generateList = () => {
   const backBtn = document.getElementById("back-btn")
@@ -25,6 +51,7 @@ export const generateList = () => {
   }).join('');
   ulElem.innerHTML = htmlList;
 
+  // Adds an event listener to each page title. When clicked opens the wikipage in html
   pages.forEach((page, index) => {
     document.getElementById(`page-${index}`).addEventListener('click', async(event) => {
       event.preventDefault();
@@ -68,4 +95,13 @@ export const showList = (app, gameContainer) => {
     app.stage.visible = true;
     gameContainer.eventMode = "static";
   });
+}
+
+
+const findPageUrlByHref = (href) => {
+  const page = pages.find(page => page.url.endsWith(`${href}.md`));
+  if(!page){
+    return null;
+  }
+  return page.url
 }

@@ -1,11 +1,15 @@
 import * as PIXI from "pixi.js";
 import { playerCollides } from "./collisionUtils";
-import playerIdle1 from "../resources/images/player_idle1.png";
-import playerIdle2 from "../resources/images/player_idle2.png";
+//import playerIdle1 from "../resources/images/player_idle1.png";
+import playeridle from "../resources/images/player_idle.png";
+//import playerIdle2 from "../resources/images/player_idle2.png";
 import playerWalk1 from "../resources/images/player_walk1.png";
 import playerWalk2 from "../resources/images/player_walk2.png";
 import playerWalk3 from "../resources/images/player_walk3.png";
 import playerWalk4 from "../resources/images/player_walk4.png";
+import playerWalk5 from "../resources/images/player_walk5.png";
+import playerWalk6 from "../resources/images/player_walk6.png";
+import playerWalk7 from "../resources/images/player_walk7.png";
 /**
  * Class for players
  */
@@ -17,14 +21,17 @@ class Player {
   constructor(app) {
     // Load player idle and walk animation frames
     this.playerIdleFrames = [
-      PIXI.Texture.from(playerIdle1),
-      PIXI.Texture.from(playerIdle2),
+      PIXI.Texture.from(playeridle),
+      // PIXI.Texture.from(playerIdle2),
     ];
     this.playerWalkFrames = [
       PIXI.Texture.from(playerWalk1),
       PIXI.Texture.from(playerWalk2),
       PIXI.Texture.from(playerWalk3),
       PIXI.Texture.from(playerWalk4),
+      PIXI.Texture.from(playerWalk5),
+      PIXI.Texture.from(playerWalk6),
+      PIXI.Texture.from(playerWalk7),
     ];
     // Create player sprite with idle animation
     this.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
@@ -52,14 +59,14 @@ class Player {
       // Switch to the walk animation frames
       if (this.player.textures !== this.playerWalkFrames) {
         this.player.textures = this.playerWalkFrames;
-        this.player.animationSpeed = 0.05; // Set animation speed for walk animation
+        this.player.animationSpeed = 0.11; // Set animation speed for walk animation
         this.player.play();
       }
 
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
-      const speed = 2.5; // Adjust speed if needed
+      const speed = 1.1; // Adjust speed if needed
       this.player.x += directionX * speed;
       this.player.y += directionY * speed;
 

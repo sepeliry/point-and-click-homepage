@@ -45,79 +45,79 @@ export const pages = [
   },
   {
     title: "Peli-idea : Honesty",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Honesty.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Honesty.md",
   },
   {
     title: "Peli–idea : Kyōiku kanji Quest – Quest of the 47 Ronin",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Ky%C5%8Diku-kanji-Quest--%E2%80%93-Quest-of-the-47-Ronin.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Ky%C5%8Diku-kanji-Quest--%E2%80%93-Quest-of-the-47-Ronin.md",
   },
   {
     title: "Peli–idea : S Adventure",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea%20:%20S%20Adventure.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea%20:%20S%20Adventure.md",
   },
   {
     title: "Peli–idea : SuperFighter",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea%20:%20SuperFighter.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea%20:%20SuperFighter.md",
   },
   {
     title: "Tapahtumat 2014-2016",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2014-2016.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2014-2016.md",
   },
   {
     title: "Tapahtumat 2017",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2017.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2017.md",
   },
   {
     title: "Tapatumat 2018",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2018.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2018.md",
   },
   {
     title: "Tapahtumat 2019",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2019.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2019.md",
   },
   {
     title: "Tapahtumat 2020",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2020.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Tapahtumat-2020.md",
   },
   {
     title: "Työkalu : Jypeli",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Ty%C3%B6kalu-:-Jypeli.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Ty%C3%B6kalu-:-Jypeli.md",
   },
   {
     title: "Vuosikertomukset",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomukset.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomukset.md",
   },
   {
     title: "Vuosikertomus2015",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2015.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2015.md",
   },
   {
     title: "Vuosikertomus2016",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2016.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2016.md",
   },
   {
     title: "Vuosikertomus2016",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2017.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2017.md",
   },
   {
     title: "Vuosikertomus2018",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2018.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2018.md",
   },
   {
     title: "Vuosikertomus2019",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2019.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2019.md",
   },
   {
     title: "Vuosikertomus2020",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2020.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2020.md",
   },
   {
     title: "Vuosikertomus2021",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2021.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2021.md",
   },
   {
     title: "Vuosikertomus2022",
-    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2022.md"
+    url: "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomus2022.md",
   },
 ];
 

@@ -8,7 +8,7 @@ import Item from "./item";
 import Object from "./object";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
-import { generateList, showList } from "./utils/markdownUtils.js";
+import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
 import { closePdf, showPdf } from "./utils/pdfUtils.js";
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
@@ -42,8 +42,8 @@ const inventory = new Inventory(app);
 
 // Button for view swap testing
 document.addEventListener("DOMContentLoaded", () => {
-  const button = document.createElement('button');
-  button.textContent = 'Vaihda näkymää';
+  const button = document.createElement("button");
+  button.textContent = "Vaihda näkymää";
   button.classList.add("button");
   button.addEventListener("click", ui.toggleViews(app));
   document.getElementById("game-container").appendChild(button);
@@ -57,8 +57,8 @@ const key = new Item(app, keyImage, 900, 590);
 const box_prop = new Item(app, boxPropImage, 1050, 650);
 box_prop.height = 100;
 box_prop.width = 100;
-generateList();
-box_prop.on("pointerdown", () => showList(app, gameContainer))
+generateWikiList();
+box_prop.on("pointerdown", () => showWikiList(app, gameContainer));
 let solidObjects = [];
 solidObjects.push(box_prop);
 
@@ -119,7 +119,7 @@ app.ticker.add((delta) => {
   }
   inventory.updateInventoryUI();
 });
-
+// PDF tiedoston avaamisen testausta varten
 const pelienSuunittelu = "./docs/input/pelienSuunnittelu.pdf";
 document
   .getElementById("show-pdf")

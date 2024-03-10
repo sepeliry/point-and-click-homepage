@@ -23,6 +23,8 @@ class Item {
     });
     this.item.x = x;
     this.item.y = y;
+    this.item.zIndex = 1;
+
     this.item.eventMode = "static";
     this.item.cursor = "pointer";
     this.item.filters = [this.glowEffect];

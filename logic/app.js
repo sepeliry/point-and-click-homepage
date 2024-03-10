@@ -64,6 +64,13 @@ generateList();
 box_prop.on("pointerdown", () => showList(app, gameContainer))
 solidObjects.push(box_prop);
 
+// Test object for collision
+const box_propCollision = new Item(app, boxPropImage, 500, 650);
+box_propCollision.height = 100;
+box_propCollision.width = 100;
+box_prop.on("pointerdown", () => console.log("box_propCollision"))
+solidObjects.push(box_propCollision);
+
 // Create books for bookshelf
 // TODO: Move to more appropriate module
 let books = [];

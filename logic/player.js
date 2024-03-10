@@ -30,6 +30,8 @@ class Player {
     this.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
     this.player.position.set(360, 620);
     this.player.anchor.set(0.5);
+    this.player.zIndex = 0;
+
     this.player.animationSpeed = 0.05;
     this.player.loop = true; // Set the loop property to true
     this.player.play();
@@ -47,6 +49,15 @@ class Player {
     const dy = targetPosition.y - this.player.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
+    for (const obj of solidObjects) {
+      if (this.player.x - obj.x < 100) {
+        if (this.player.y < obj.y) {
+          this.player.zIndex = 1;
+        } else {
+          this.player.zIndex = 0;
+        }
+      }
+    }
     // Check if the player is moving
     if (distance > 3 && !playerCollides(this.player, solidObjects).collided) {
       // Switch to the walk animation frames

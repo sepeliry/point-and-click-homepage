@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import { GlowFilter } from "@pixi/filter-glow";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
 import Inventory from "./inventory";
@@ -7,10 +6,9 @@ import UI from "./UI";
 import Popup from "./popup.js";
 import Item from "./item";
 import Object from "./object";
-import { popup1TextElements } from "./utils/popupTexts.js";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
-import { generateList, showList } from "./utils/markdownUtils.js";
+import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
 import { closePdf, showPdf } from "./utils/pdfUtils.js";
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
@@ -22,8 +20,6 @@ const app = new PIXI.Application({
   height: 800,
   backgroundColor: 0xaaaaaa,
 });
-// For PIXI.JS debugger extension
-globalThis.__PIXI_APP__ = app;
 
 document.getElementById("game-container").appendChild(app.view);
 
@@ -45,8 +41,8 @@ const key = new Item(app, keyImage, 800, 590);
 const box_prop = new Item(app, boxPropImage, 850, 750);
 box_prop.height = 100;
 box_prop.width = 100;
-generateList();
-box_prop.on("pointerdown", () => showList(app, gameContainer))
+generateWikiList();
+box_prop.on("pointerdown", () => showWikiList(app, gameContainer))
 solidObjects.push(box_prop);
 
 // Test object for collision dev
@@ -70,8 +66,8 @@ const inventory = new Inventory(app);
 
 // Button for view swap testing
 document.addEventListener("DOMContentLoaded", () => {
-  const button = document.createElement('button');
-  button.textContent = 'Vaihda näkymää';
+  const button = document.createElement("button");
+  button.textContent = "Vaihda näkymää";
   button.classList.add("button");
   button.addEventListener("click", ui.toggleViews(app));
   document.getElementById("game-container").appendChild(button);
@@ -135,8 +131,8 @@ app.ticker.add((delta) => {
   }
   inventory.updateInventoryUI();
 });
-
-const pelienSuunittelu = "/docs/input/pelienSuunnittelu.pdf";
+// PDF tiedoston avaamisen testausta varten
+const pelienSuunittelu = "./docs/input/pelienSuunnittelu.pdf";
 document
   .getElementById("show-pdf")
   .addEventListener("click", () =>

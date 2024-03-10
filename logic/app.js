@@ -22,13 +22,39 @@ const app = new PIXI.Application({
   height: 800,
   backgroundColor: 0xaaaaaa,
 });
+// For PIXI.JS debugger extension
+globalThis.__PIXI_APP__ = app;
+
 document.getElementById("game-container").appendChild(app.view);
 
 // Container for main game elements
 const gameContainer = new PIXI.Container();
+gameContainer.sortableChildren = true;
 app.stage.addChild(gameContainer);
 app.gameContainer = gameContainer;
 gameContainer.visible = true;
+
+// Generate content 
+let solidObjects = [];
+solidObjects.sortableChildren = true;
+
+// Create collectable items
+const key = new Item(app, keyImage, 800, 590);
+
+// Create interactable object
+const box_prop = new Item(app, boxPropImage, 850, 750);
+box_prop.height = 100;
+box_prop.width = 100;
+generateList();
+box_prop.on("pointerdown", () => showList(app, gameContainer))
+solidObjects.push(box_prop);
+
+// Test object for collision dev
+const box_propCollision = new Item(app, boxPropImage, 650, 650);
+box_propCollision.height = 100;
+box_propCollision.width = 100;
+box_prop.on("pointerdown", () => console.log("box_propCollision"))
+solidObjects.push(box_propCollision);
 
 // Container for bookshelf view
 const bookshelfContainer = new PIXI.Container();
@@ -50,26 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
   button.addEventListener("click", ui.toggleViews(app));
   document.getElementById("game-container").appendChild(button);
 });
-
-let solidObjects = [];
-// Create collectable items
-const key = new Item(app, keyImage, 900, 590);
-
-// Create interactable objects
-// const box_prop = new Object(app, boxPropImage, 1050, 650, popup);
-const box_prop = new Item(app, boxPropImage, 1050, 650);
-box_prop.height = 100;
-box_prop.width = 100;
-generateList();
-box_prop.on("pointerdown", () => showList(app, gameContainer))
-solidObjects.push(box_prop);
-
-// Test object for collision
-const box_propCollision = new Item(app, boxPropImage, 500, 650);
-box_propCollision.height = 100;
-box_propCollision.width = 100;
-box_prop.on("pointerdown", () => console.log("box_propCollision"))
-solidObjects.push(box_propCollision);
 
 // Create books for bookshelf
 // TODO: Move to more appropriate module
@@ -114,7 +120,7 @@ gameContainer.on("pointertap", (event) => {
     // Set the new target position on click
     // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
     // has to be adjusted in a different way once final designs are done.
-    const yCoordinate = event.global.y > 503 ? event.global.y : 502;
+    const yCoordinate = event.global.y > 603 ? event.global.y : 602;
     targetPosition = new PIXI.Point(event.global.x, yCoordinate);
     // Move the player towards the target position
     player.move(targetPosition, solidObjects);
@@ -125,6 +131,7 @@ gameContainer.on("pointertap", (event) => {
 app.ticker.add((delta) => {
   if (targetPosition) {
     player.move(targetPosition, solidObjects);
+    gameContainer.updateTransform();
   }
   inventory.updateInventoryUI();
 });

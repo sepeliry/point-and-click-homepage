@@ -29,8 +29,8 @@ class Player {
     // Create player sprite with idle animation
     this.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
     this.player.position.set(360, 620);
-    this.player.anchor.set(0.5);
-    this.player.zIndex = 0;
+    this.player.anchor.set(0.5, 1);
+    this.player.zIndex = 2;
 
     this.player.animationSpeed = 0.05;
     this.player.loop = true; // Set the loop property to true
@@ -49,15 +49,26 @@ class Player {
     const dy = targetPosition.y - this.player.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
+    // Variables for finding closest object
+    let closestObj = null;
+    let closestDistance = Infinity;
+
+    // Find the closest object to player
     for (const obj of solidObjects) {
-      if (this.player.x - obj.x < 100) {
-        if (this.player.y < obj.y) {
-          this.player.zIndex = 1;
-        } else {
-          this.player.zIndex = 0;
-        }
+      const objDistance = Math.sqrt((this.player.x - obj.x) ** 2 + (this.player.y - obj.y) ** 2);
+      if (objDistance < closestDistance) {
+        closestObj = obj;
+        closestDistance = objDistance;
       }
     }
+
+    // Show player in front of / behind the closest object
+    if (this.player.y > closestObj.y) {
+      this.player.zIndex = 2;
+    } else {
+      this.player.zIndex = 0;
+    }
+
     // Check if the player is moving
     if (distance > 3 && !playerCollides(this.player, solidObjects).collided) {
       // Switch to the walk animation frames

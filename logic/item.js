@@ -25,6 +25,9 @@ class Item {
     this.item.y = y;
     this.item.zIndex = 1;
 
+    // Anchor to bottom left corner
+    this.item.anchor.set(0.5, 1);
+
     this.item.eventMode = "static";
     this.item.cursor = "pointer";
     this.item.filters = [this.glowEffect];

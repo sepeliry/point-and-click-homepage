@@ -35,7 +35,7 @@ class Player {
     ];
     // Create player sprite with idle animation
     this.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
-    this.player.position.set(360, 620);
+    this.player.position.set(450, 620);
     this.player.anchor.set(0.5, 1);
     this.player.zIndex = 2;
 
@@ -62,7 +62,9 @@ class Player {
 
     // Find the closest object to player
     for (const obj of solidObjects) {
-      const objDistance = Math.sqrt((this.player.x - obj.x) ** 2 + (this.player.y - obj.y) ** 2);
+      const objDistance = Math.sqrt(
+        (this.player.x - obj.x) ** 2 + (this.player.y - obj.y) ** 2
+      );
       if (objDistance < closestDistance) {
         closestObj = obj;
         closestDistance = objDistance;

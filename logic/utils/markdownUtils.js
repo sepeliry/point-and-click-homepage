@@ -1,5 +1,6 @@
 import { pages } from "../../data/pages";
 import { marked } from "marked";
+import { resizeGame } from "./resize";
 
 // Generates list from wiki page titles. Adds a click listener for each to render the page as html
 export const generateWikiList = () => {
@@ -38,6 +39,7 @@ export const showWikiList = (app, gameContainer) => {
     document.getElementById("game-container").style.display = "";
     app.stage.visible = true;
     gameContainer.eventMode = "static";
+    resizeGame(app, gameContainer); // Ensures game becomes visible if window was resized when wikilist was open
   });
 };
 

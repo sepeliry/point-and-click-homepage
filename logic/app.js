@@ -9,7 +9,8 @@ import Object from "./object";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
 import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
-import { closePdf, showPdf } from "./utils/pdfUtils.js";
+import { setupPdf } from "./utils/pdfUtils.js";
+import { resizeGame } from "./utils/resize.js";
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";
@@ -20,7 +21,6 @@ const app = new PIXI.Application({
   height: 800,
   backgroundColor: 0xaaaaaa,
 });
-
 document.getElementById("game-container").appendChild(app.view);
 
 // Container for main game elements
@@ -29,7 +29,6 @@ gameContainer.sortableChildren = true;
 app.stage.addChild(gameContainer);
 app.gameContainer = gameContainer;
 gameContainer.visible = true;
-// Generate content
 let solidObjects = [];
 solidObjects.sortableChildren = true;
 
@@ -45,10 +44,10 @@ box_prop.on("pointerdown", () => showWikiList(app, gameContainer));
 solidObjects.push(box_prop);
 
 // Test object for collision dev
-const box_propCollision = new Item(app, boxPropImage, 0.5, 0.95);
+const box_propCollision = new Item(app, boxPropImage, 0.3, 0.95);
 box_propCollision.height = 100;
 box_propCollision.width = 100;
-box_prop.on("pointerdown", () => console.log("box_propCollision"));
+box_propCollision.eventMode = "none";
 solidObjects.push(box_propCollision);
 
 // Container for bookshelf view
@@ -69,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   button.textContent = "Vaihda näkymää";
   button.classList.add("button");
   button.addEventListener("click", ui.toggleViews(app));
-  document.getElementById("game-container").appendChild(button);
+  document.getElementById("test-controls").appendChild(button);
 });
 
 // Create books for bookshelf
@@ -115,7 +114,8 @@ gameContainer.on("pointertap", (event) => {
     // Set the new target position on click
     // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
     // has to be adjusted in a different way once final designs are done.
-    const yCoordinate = event.global.y > 603 ? event.global.y : 602;
+    const localPosition = gameContainer.toLocal(event.global);
+    const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
     targetPosition = new PIXI.Point(event.global.x, yCoordinate);
     // Move the player towards the target position
     player.move(targetPosition, solidObjects);
@@ -130,14 +130,6 @@ app.ticker.add((delta) => {
   }
   inventory.updateInventoryUI();
 });
-// PDF tiedoston avaamisen testausta varten
-const pelienSuunittelu = "./docs/input/pelienSuunnittelu.pdf";
-document
-  .getElementById("show-pdf")
-  .addEventListener("click", () =>
-    showPdf(app, gameContainer, pelienSuunittelu)
-  );
 
-document.getElementById("close-pdf").addEventListener("click", () => {
-  closePdf(app, gameContainer);
-});
+window.addEventListener("resize", () => resizeGame(app, gameContainer));
+setupPdf(app, gameContainer);

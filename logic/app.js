@@ -16,7 +16,7 @@ import bookImg2 from "../resources/images/book2_placeholder.png";
 
 // Create application on page load
 const app = new PIXI.Application({
-  width: 1200,
+  width: 1400,
   height: 800,
   backgroundColor: 0xaaaaaa,
 });
@@ -29,27 +29,26 @@ gameContainer.sortableChildren = true;
 app.stage.addChild(gameContainer);
 app.gameContainer = gameContainer;
 gameContainer.visible = true;
-
-// Generate content 
+// Generate content
 let solidObjects = [];
 solidObjects.sortableChildren = true;
 
 // Create collectable items
-const key = new Item(app, keyImage, 800, 590);
+const key = new Item(app, keyImage, 0.66, 0.735);
 
 // Create interactable object
-const box_prop = new Item(app, boxPropImage, 850, 750);
+const box_prop = new Item(app, boxPropImage, 0.71, 0.93);
 box_prop.height = 100;
 box_prop.width = 100;
 generateWikiList();
-box_prop.on("pointerdown", () => showWikiList(app, gameContainer))
+box_prop.on("pointerdown", () => showWikiList(app, gameContainer));
 solidObjects.push(box_prop);
 
 // Test object for collision dev
-const box_propCollision = new Item(app, boxPropImage, 650, 650);
+const box_propCollision = new Item(app, boxPropImage, 0.5, 0.95);
 box_propCollision.height = 100;
 box_propCollision.width = 100;
-box_prop.on("pointerdown", () => console.log("box_propCollision"))
+box_prop.on("pointerdown", () => console.log("box_propCollision"));
 solidObjects.push(box_propCollision);
 
 // Container for bookshelf view

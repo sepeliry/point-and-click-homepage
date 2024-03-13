@@ -70,23 +70,26 @@ export const displayWikiPage = async (url) => {
   pageContainer.appendChild(pageBackBtn);
 };
 
-// TODO: [[otsikko]] Syntaxia käyttävien wikilinkkien muuntaminen [teksti](otsikko) muotoon
 export const fetchWikiPage = async (url) => {
   const response = await fetch(`${url}`);
-  const data = await response.text();
+  let data = await response.text();
+  // Replace [[]] links with []()
+  data = data.replace(/\[\[([^\]]+)\]\]/g, (match, p1) => `[${p1}](${p1})`);
+
   // Custom renderer for links pointing to other wikipages
   const renderer = new marked.Renderer();
   const originalLinkRenderer = renderer.link;
   renderer.link = function (href, title, text) {
-    if (!href.startsWith("http")) {
-      // If href points to a wikipage and the pages url is found, clicking the link opens page ingame
+    // If link doesn't start with http and doesn't end in .something etc, treat it as a relative link to a wikipage
+    if (!href.startsWith("http") && !/\.\w+$/.test(href)) {
       const pageUrl = findPageUrlByHref(href);
-      if (!pageUrl) return originalLinkRenderer.call(this, href, title, text);
+      if (!pageUrl)
+        return `<a href="#">${text}</a>`; // To stop redirecting if wikipage with given href is not found
       else {
         return `<a href="${href}" onclick="event.preventDefault(); displayWikiPage('${pageUrl}');">${text}</a>`;
       }
     } else {
-      return originalLinkRenderer.call(this, href, title, text); // Otherwise use normal href
+      return originalLinkRenderer.call(this, href, title, text);
     }
   };
   marked.use({ gfm: true, renderer });
@@ -98,7 +101,7 @@ const findPageUrlByHref = (href) => {
   const page = pages.find((page) => page.url.endsWith(`${href}.md`));
   if (!page) {
     console.error(
-      `Matching wikipage url using href: ${href} not found, using original linkrenderer instead`
+      `Matching wikipage url using href: ${href} not found, using # instead`
     );
     return null;
   }

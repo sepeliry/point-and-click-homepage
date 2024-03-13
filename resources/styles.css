@@ -143,7 +143,12 @@ body {
 }
 
 #page-container a {
-  color: #539bf5; /* Blue for links */
+  color: #539bf5;
+  text-decoration: none;
+}
+
+#page-container a:visited {
+  color: pink;
   text-decoration: none;
 }
 

@@ -33,13 +33,14 @@ body {
 }
 
 #wiki-list,
-#page-container {
+#wiki-page-container {
   max-height: calc(100vh - 50px);
   overflow-y: auto;
   width: 100%;
-  padding-top: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
-#page-container {
+#wiki-page-container {
   position: relative;
   display: none;
   flex-direction: column;
@@ -70,11 +71,8 @@ body {
   width: 150px;
 }
 
-#back-btn,
-#page-back-btn {
-  position: absolute;
-  top: 10;
-  left: 0;
+#back-btn {
+  display: none;
 }
 #wiki-list li {
   list-style-type: none;
@@ -100,12 +98,12 @@ body {
   color: #adbac7;
 }
 
-#page-container h1,
-#page-container h2,
-#page-container h3,
-#page-container h4,
-#page-container h5,
-#page-container h6 {
+#wiki-page-container h1,
+#wiki-page-container h2,
+#wiki-page-container h3,
+#wiki-page-container h4,
+#wiki-page-container h5,
+#wiki-page-container h6 {
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 600;
@@ -113,54 +111,54 @@ body {
   color: #cdd9e5;
 }
 
-#page-container h1 {
+#wiki-page-container h1 {
   font-size: 2em;
 }
 
-#page-container h2 {
+#wiki-page-container h2 {
   font-size: 1.5em;
 }
 
-#page-container h3 {
+#wiki-page-container h3 {
   font-size: 1.25em;
 }
 
-#page-container h4 {
+#wiki-page-container h4 {
   font-size: 1em;
 }
 
-#page-container h5 {
+#wiki-page-container h5 {
   font-size: 0.875em;
 }
 
-#page-container h6 {
+#wiki-page-container h6 {
   font-size: 0.85em;
   color: #6a737d;
 }
 
-#page-container p {
+#wiki-page-container p {
   margin-top: 16px;
 }
 
-#page-container a {
+#wiki-page-container a {
   color: #539bf5;
   text-decoration: none;
 }
 
-#page-container a:visited {
+#wiki-page-container a:visited {
   color: pink;
   text-decoration: none;
 }
 
-#page-container a:hover {
+#wiki-page-container a:hover {
   text-decoration: underline;
 }
 
-#page-container img {
+#wiki-page-container img {
   max-width: 100%;
 }
 
-#page-container pre {
+#wiki-page-container pre {
   padding: 16px;
   overflow: auto;
   line-height: 1.45;
@@ -168,7 +166,7 @@ body {
   border-radius: 3px;
 }
 
-#page-container code {
+#wiki-page-container code {
   padding: 0.2em 0.4em;
   margin: 0;
   font-size: 85%;
@@ -177,7 +175,7 @@ body {
   color: #cdd9e5; /* Lighter gray for code */
 }
 
-#page-container pre > code {
+#wiki-page-container pre > code {
   padding: 0;
   margin: 0;
   font-size: 100%;

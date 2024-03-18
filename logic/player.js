@@ -44,7 +44,7 @@ class Player {
       10, 801,
     ]);
     this.walkableArea.endFill();
-    // Uncomment row below to see visualization in beautiful ogre green
+    // Comment row below to see visualization in beautiful ogre green
     this.walkableArea.visible = false;
     app.gameContainer.addChild(this.walkableArea);
 
@@ -60,12 +60,13 @@ class Player {
     app.gameContainer.addChild(this.player);
     this.targetPosition = new PIXI.Point(this.player.x, this.player.y);
   }
-  /**
+
+  move(targetPosition, solidObjects) {
+    /**
    * Method to move the player to position
    * @param {number} targetPosition - Coordinate where the player is moved to
    * @param {Object[]} solidObjects - Array of solid objects
    */
-  move(targetPosition, solidObjects) {
     // If position outside walkableArea is clicked, adjust position
     targetPosition = this.adjustTargetPosition(targetPosition);
 
@@ -127,12 +128,13 @@ class Player {
       }
     }
   }
-  /**
- * Method to move the player to position
- * @param {number} targetPosition - Coordinate where the player is moved to
- * @return {number} adjustedPosition - CLosest position allowed
- */
+
   adjustTargetPosition(targetPosition) {
+    /**
+     * Method to move the player to position
+     * @param {number} targetPosition - Coordinate where the player is moved to
+     * @returns {number} - CLosest position allowed
+     */
     // Clone the target position
     let adjustedPosition = targetPosition.clone();
 
@@ -164,8 +166,6 @@ class Player {
 
     return adjustedPosition;
   }
-
-
 }
 
 export default Player;

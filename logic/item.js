@@ -3,7 +3,6 @@ import { GlowFilter } from "@pixi/filter-glow";
 
 /**
  * Class to create items
- * TODO: Parameter to choose if item is interactable
  */
 class Item {
   /**
@@ -12,9 +11,10 @@ class Item {
    * @param {image} image - image to be used for item sprite
    * @param {number} x - x coordinate where the object is placed in the application
    * @param {number} y - y coordinate where the object is placed in the application
+   * @param {boolean} interactable - whether object is interactable or not. Default: false
    * @returns {PIXI.Sprite} - The item object
    */
-  constructor(app, image, x, y) {
+  constructor(app, image, x, y, interactable = false) {
     this.item = PIXI.Sprite.from(image);
     this.glowEffect = new GlowFilter({
       innerStrength: 0.5,
@@ -28,7 +28,13 @@ class Item {
     // Anchor to bottom left corner
     this.item.anchor.set(0.5, 1);
 
-    this.item.eventMode = "static";
+    if (interactable) {
+      this.item.eventMode = "interactive";
+    }
+    else {
+      this.item.eventMode = "static";
+    }
+
     this.item.cursor = "pointer";
     this.item.filters = [this.glowEffect];
     this.item.visible = true;

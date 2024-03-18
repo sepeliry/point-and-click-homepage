@@ -4,7 +4,7 @@ import { GlowFilter } from "@pixi/filter-glow";
 class Numpad {
     /**
      * @costructor Creates a numpad instance with a screen and number buttons
-     * @param {PIXI.Application} app - Pixi application where the item is placed
+     * @param {PIXI.Application} app - Pixi application where the numpad is placed
      */
     constructor(app) {
         // Text style for code display
@@ -58,11 +58,14 @@ class Numpad {
         this.reset = this.createNumpadButton(app, 270, 630, 200, 100, "reset");
         this.zero = this.createNumpadButton(app, 500, 630, 200, 100, 0);
         this.ok = this.createNumpadButton(app, 730, 630, 200, 100, "OK");
-
-
     }
 
     enterCode() {
+        /**
+         * Enters the code and checks if it matches the correct code.
+         * If the code is correct, displays "Correct" on the screen.
+         * If the code is incorrect, resets the screen.
+         */
         const correctCode = "1111";
         if (this.screen.text === correctCode) {
             this.screen.text = "**Correct**";
@@ -73,20 +76,41 @@ class Numpad {
     }
 
     resetScreen() {
+        /**
+         * Resets the screen
+         */
         this.screen.text = "";
     }
     updateScreen(numberValue) {
+        /**
+         * Updates the screen when a number button is pressed.
+         * @param {number} numberValue - Numerical value to be added to screen.
+         */
         // Update the above screen with the clicked number
-        if (this.screen.text.length < 4) {
-            if (this.screen.text == "") {
-                this.screen.text = numberValue;
-            }
-            else {
-                this.screen.text += numberValue;
+        if (numberValue !== 'OK') {
+            if (this.screen.text.length < 4) {
+                if (this.screen.text == "") {
+                    this.screen.text = numberValue;
+                }
+                else {
+                    this.screen.text += numberValue;
+                }
             }
         }
     }
     createNumpadButton(app, x, y, width, height, value) {
+        /**
+         * Creates clickable, numbered buttons for numpad instance.
+         * Creates reset and OK buttons
+         * @param {PIXI.Application} app - Pixi application where the object is placed
+         * @param {number} x - button x-position
+         * @param {number} y - button y-position
+         * @param {number} width - button width
+         * @param {number} height - button height
+         * @param {string} value - button value
+         * @returns {PIXI.Graphics} - button as graphics object
+         */
+
         const button = new PIXI.Graphics();
 
         //button.beginFill(0x00FF00);

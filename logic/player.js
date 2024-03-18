@@ -40,7 +40,7 @@ class Player {
     this.walkableArea.drawPolygon([335, 560, 950, 560, 1400, 800, 100, 801]);
     this.walkableArea.endFill();
     // Comment row below to see visualization in beautiful ogre green
-    this.walkableArea.visible = true;
+    this.walkableArea.visible = false;
     app.gameContainer.addChild(this.walkableArea);
 
     // Create player sprite with idle animation

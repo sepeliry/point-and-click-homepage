@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
+    "@pixi/filter-crt": "^5.1.1",
     "@pixi/filter-glow": "^5.2.1",
     "marked": "^12.0.0",
     "pixi.js": "^7.3.3"
@@ -13,7 +14,7 @@
   "scripts": {
     "start": "npm run clean && parcel index.html",
     "clean": "rimraf ./dist ./.parcel-cache",
-    "build": "npm run clean && parcel build ./index.html" ,
+    "build": "npm run clean && parcel build ./index.html",
     "build_serve": "npm run build && http-server ./dist",
     "build_prod": "rimraf ./deployment ./.parcel-cache && parcel build ./index.html --dist-dir deployment --public-url /beta/",
     "test": "mocha",

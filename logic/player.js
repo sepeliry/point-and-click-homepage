@@ -33,6 +33,21 @@ class Player {
       PIXI.Texture.from(playerWalk6),
       PIXI.Texture.from(playerWalk7),
     ];
+
+    // Create walkable area
+    this.walkableArea = new PIXI.Graphics();
+    this.walkableArea.beginFill(0x00FF00);
+    this.walkableArea.drawPolygon([
+      315, 560,
+      850, 560,
+      1200, 800,
+      10, 801,
+    ]);
+    this.walkableArea.endFill();
+    // Uncomment row below to see visualization in beautiful ogre green
+    this.walkableArea.visible = false;
+    app.gameContainer.addChild(this.walkableArea);
+
     // Create player sprite with idle animation
     this.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
     this.player.position.set(360, 620);
@@ -51,6 +66,9 @@ class Player {
    * @param {Object[]} solidObjects - Array of solid objects
    */
   move(targetPosition, solidObjects) {
+    // If position outside walkableArea is clicked, adjust position
+    targetPosition = this.adjustTargetPosition(targetPosition);
+
     // Calculate the distance to the target position
     const dx = targetPosition.x - this.player.x;
     const dy = targetPosition.y - this.player.y;
@@ -77,7 +95,7 @@ class Player {
     }
 
     // Check if the player is moving
-    if (distance > 3 && !playerCollides(this.player, solidObjects).collided) {
+    if (distance > 3 && !playerCollides(this.player, solidObjects).collided && this.walkableArea.containsPoint(targetPosition)) {
       // Switch to the walk animation frames
       if (this.player.textures !== this.playerWalkFrames) {
         this.player.textures = this.playerWalkFrames;
@@ -88,7 +106,7 @@ class Player {
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
-      const speed = 1.1; // Adjust speed if needed
+      const speed = 1.6; // Adjust speed if needed
       this.player.x += directionX * speed;
       this.player.y += directionY * speed;
 
@@ -109,6 +127,45 @@ class Player {
       }
     }
   }
+  /**
+ * Method to move the player to position
+ * @param {number} targetPosition - Coordinate where the player is moved to
+ * @return {number} adjustedPosition - CLosest position allowed
+ */
+  adjustTargetPosition(targetPosition) {
+    // Clone the target position
+    let adjustedPosition = targetPosition.clone();
+
+    // Check if the target position is already within the walkable area
+    if (this.walkableArea.containsPoint(adjustedPosition)) {
+      return adjustedPosition;
+    }
+
+    // Calculate the direction vector from the current player position towards the target position
+    const directionVector = new PIXI.Point(
+      targetPosition.x - this.player.x,
+      targetPosition.y - this.player.y
+    );
+
+    // Calculate the magnitude of the direction vector
+    const magnitude = Math.sqrt(directionVector.x * directionVector.x + directionVector.y * directionVector.y);
+
+    // Check if the magnitude is greater than 0 (to avoid division by zero)
+    if (magnitude > 0) {
+      // Normalize the direction vector
+      directionVector.x /= magnitude;
+      directionVector.y /= magnitude;
+
+      // Scale the direction vector to a desired magnitude (e.g., the radius of the walkable area)
+      const scaleFactor = 100; // Adjust this value as needed
+      adjustedPosition.x = this.player.x + directionVector.x * scaleFactor;
+      adjustedPosition.y = this.player.y + directionVector.y * scaleFactor;
+    }
+
+    return adjustedPosition;
+  }
+
+
 }
 
 export default Player;

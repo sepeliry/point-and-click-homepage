@@ -20,7 +20,7 @@ const app = new PIXI.Application({
   height: 800,
   backgroundColor: 0xaaaaaa,
 });
-
+globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
 
 // Container for main game elements

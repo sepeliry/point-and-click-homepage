@@ -16,6 +16,7 @@ import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";
 import Numpad from "./numpad.js";
 import { CRTFilter } from '@pixi/filter-crt';
+import bookshelf_obj from '../resources/images/bookshelf_obj.png';
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -52,6 +53,13 @@ app.numpadContainer = numpadContainer;
 numpadContainer.filters = [new CRTFilter()];
 numpadContainer.visible = false;
 
+// Construct contents in canvas
+const ui = new UI(app);
+const player = new Player(app);
+const inventory = new Inventory(app);
+const numpad = new Numpad(app);
+// const popup = new Popup(app, popup1TextElements);
+
 // Generate content
 let solidObjects = [];
 solidObjects.sortableChildren = true;
@@ -73,13 +81,6 @@ box_propCollision.height = 100;
 box_propCollision.width = 100;
 box_propCollision.eventMode = "none";
 solidObjects.push(box_propCollision);
-
-// Construct contents in canvas
-const ui = new UI(app);
-const player = new Player(app);
-const inventory = new Inventory(app);
-const numpad = new Numpad(app);
-// const popup = new Popup(app, popup1TextElements);
 
 // Button for testing bookshelf view
 // TODO: bookshelf can be opened from canvas
@@ -138,7 +139,7 @@ gameContainer.on("pointertap", (event) => {
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
-  if (clickedItem && clickedItem !== box_prop) {
+  if (clickedItem && clickedItem.eventMode === "static") {
     // If an item is clicked, add it to the inventory
     inventory.addToInventory(clickedItem, player);
   } else {
@@ -163,4 +164,6 @@ app.ticker.add((delta) => {
 });
 
 window.addEventListener("resize", () => resizeGame(app, gameContainer));
+window.addEventListener("resize", () => resizeGame(app, bookshelfContainer));
+window.addEventListener("resize", () => resizeGame(app, numpadContainer));
 setupPdf(app, gameContainer);

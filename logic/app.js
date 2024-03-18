@@ -13,6 +13,7 @@ import { closePdf, showPdf } from "./utils/pdfUtils.js";
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";
+import Numpad from "./numpad.js";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -23,12 +24,28 @@ const app = new PIXI.Application({
 globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
 
+/** 
+ ** CONTAINERS
+ **/
+
 // Container for main game elements
 const gameContainer = new PIXI.Container();
 gameContainer.sortableChildren = true;
 app.stage.addChild(gameContainer);
 app.gameContainer = gameContainer;
 gameContainer.visible = true;
+
+// Container for bookshelf view
+const bookshelfContainer = new PIXI.Container();
+app.stage.addChild(bookshelfContainer);
+app.bookshelfContainer = bookshelfContainer;
+bookshelfContainer.visible = false;
+
+// Container for numpad view
+const numpadContainer = new PIXI.Container();
+app.stage.addChild(numpadContainer);
+app.numpadContainer = numpadContainer;
+numpadContainer.visible = false;
 
 // Generate content 
 let solidObjects = [];
@@ -52,24 +69,30 @@ box_propCollision.width = 100;
 box_prop.on("pointerdown", () => console.log("box_propCollision"))
 solidObjects.push(box_propCollision);
 
-// Container for bookshelf view
-const bookshelfContainer = new PIXI.Container();
-app.stage.addChild(bookshelfContainer);
-app.bookshelfContainer = bookshelfContainer;
-bookshelfContainer.visible = false;
-
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
+const numpad = new Numpad(app);
 // const popup = new Popup(app, popup1TextElements);
 
-// Button for view swap testing
+// Button for testing bookshelf view
+// TODO: bookshelf can be opened from canvas
 document.addEventListener("DOMContentLoaded", () => {
   const button = document.createElement("button");
-  button.textContent = "Vaihda näkymää";
+  button.textContent = "Avaa kirjahylly";
   button.classList.add("button");
-  button.addEventListener("click", ui.toggleViews(app));
+  button.addEventListener("click", ui.toggleBookshelf(app));
+  document.getElementById("game-container").appendChild(button);
+});
+
+// Button testing numpad view
+// TODO: numpad opened from canvas
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.createElement("button");
+  button.textContent = "Avaa numpad";
+  button.classList.add("button");
+  button.addEventListener("click", ui.toggleNumpad(app));
   document.getElementById("game-container").appendChild(button);
 });
 

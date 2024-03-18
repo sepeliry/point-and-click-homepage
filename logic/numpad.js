@@ -17,9 +17,9 @@ class Numpad {
             fill: "#fff0ff",
             fontFamily: "\"Courier New\", Courier, monospace",
             fontSize: 60,
-            align: "rigth",
+            align: "left",
             fontWeight: "bold",
-            letterSpacing: 50,
+            letterSpacing: 20,
             stroke: "#edceeb",
             strokeThickness: 1,
             wordWrap: false,
@@ -30,7 +30,7 @@ class Numpad {
         // Create screen for code display
         this.screenContainer = new PIXI.Container();
         this.screen = new PIXI.Text('', screenstyle);
-        this.screen.x = app.numpadContainer.width / 2;
+        this.screen.x = app.numpadContainer.width / 4;
         this.screen.y = app.numpadContainer.height / 6.8;
         this.screen.visible = true;
         app.numpadContainer.addChild(this.screen);
@@ -62,7 +62,15 @@ class Numpad {
 
     }
 
-
+    enterCode() {
+        const correctCode = "1111";
+        if (this.screen.text === correctCode) {
+            this.screen.text = "**Correct**";
+        }
+        else {
+            this.resetScreen();
+        }
+    }
 
     resetScreen() {
         this.screen.text = "";
@@ -114,6 +122,11 @@ class Numpad {
         button.addChild(number);
 
         // Number buttons can be clicked -> add clicked number to screen
+        if (value === 'OK') {
+            button.on('pointerdown', () => {
+                this.enterCode();
+            });
+        }
         if (value !== 'reset') {
             button.on('pointerdown', () => {
                 this.updateScreen(button.numberValue);

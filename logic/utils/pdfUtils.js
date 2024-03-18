@@ -25,3 +25,17 @@ export function closePdf(app, gameContainer) {
   app.stage.visible = "true";
   gameContainer.eventMode = "static";
 }
+// Kokeiluja varten setuppaa buttonit pdf avaamiseen ja sulkemiseen
+export const setupPdf = (app, gameContainer) => {
+  const pelienSuunittelu = "./docs/input/pelienSuunnittelu.pdf";
+
+  document
+    .getElementById("show-pdf")
+    .addEventListener("click", () =>
+      showPdf(app, gameContainer, pelienSuunittelu)
+    );
+
+  document.getElementById("close-pdf").addEventListener("click", () => {
+    closePdf(app, gameContainer);
+  });
+};

@@ -9,7 +9,8 @@ import Object from "./object";
 import keyImage from "../resources/images/key.png";
 import boxPropImage from "../resources/images/box_prop.png";
 import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
-import { closePdf, showPdf } from "./utils/pdfUtils.js";
+import { setupPdf } from "./utils/pdfUtils.js";
+import { resizeGame } from "./utils/resize.js";
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";
@@ -17,14 +18,14 @@ import Numpad from "./numpad.js";
 
 // Create application on page load
 const app = new PIXI.Application({
-  width: 1200,
+  width: 1400,
   height: 800,
   backgroundColor: 0xaaaaaa,
 });
 globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
 
-/** 
+/**
  ** CONTAINERS
  **/
 
@@ -47,26 +48,26 @@ app.stage.addChild(numpadContainer);
 app.numpadContainer = numpadContainer;
 numpadContainer.visible = false;
 
-// Generate content 
+// Generate content
 let solidObjects = [];
 solidObjects.sortableChildren = true;
 
 // Create collectable items
-const key = new Item(app, keyImage, 800, 590);
+const key = new Item(app, keyImage, 0.66, 0.735);
 
 // Create interactable object
-const box_prop = new Item(app, boxPropImage, 850, 750);
+const box_prop = new Item(app, boxPropImage, 0.71, 0.93);
 box_prop.height = 100;
 box_prop.width = 100;
 generateWikiList();
-box_prop.on("pointerdown", () => showWikiList(app, gameContainer))
+box_prop.on("pointerdown", () => showWikiList(app, gameContainer));
 solidObjects.push(box_prop);
 
 // Test object for collision dev
-const box_propCollision = new Item(app, boxPropImage, 650, 650);
+const box_propCollision = new Item(app, boxPropImage, 0.3, 0.95);
 box_propCollision.height = 100;
 box_propCollision.width = 100;
-box_prop.on("pointerdown", () => console.log("box_propCollision"))
+box_propCollision.eventMode = "none";
 solidObjects.push(box_propCollision);
 
 // Construct contents in canvas
@@ -83,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   button.textContent = "Avaa kirjahylly";
   button.classList.add("button");
   button.addEventListener("click", ui.toggleBookshelf(app));
-  document.getElementById("game-container").appendChild(button);
+  document.getElementById("test-controls").appendChild(button);
 });
 
 // Button testing numpad view
@@ -93,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
   button.textContent = "Avaa numpad";
   button.classList.add("button");
   button.addEventListener("click", ui.toggleNumpad(app));
-  document.getElementById("game-container").appendChild(button);
+  document.getElementById("test-controls").appendChild(button);
 });
 
 // Create books for bookshelf
@@ -121,6 +122,7 @@ let targetPosition;
 // Handle click event on the stage
 gameContainer.eventMode = "static"; // Enable interaction
 gameContainer.on("pointertap", (event) => {
+  console.log(gameContainer.toLocal(event.global));
   const collisionResult = playerCollides(player.player, solidObjects);
   if (collisionResult.collided) {
     const direction = collisionResult.direction;
@@ -139,7 +141,8 @@ gameContainer.on("pointertap", (event) => {
     // Set the new target position on click
     // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
     // has to be adjusted in a different way once final designs are done.
-    const yCoordinate = event.global.y > 603 ? event.global.y : 602;
+    const localPosition = gameContainer.toLocal(event.global);
+    const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
     targetPosition = new PIXI.Point(event.global.x, yCoordinate);
     // Move the player towards the target position
     player.move(targetPosition, solidObjects);
@@ -154,14 +157,6 @@ app.ticker.add((delta) => {
   }
   inventory.updateInventoryUI();
 });
-// PDF tiedoston avaamisen testausta varten
-const pelienSuunittelu = "./docs/input/pelienSuunnittelu.pdf";
-document
-  .getElementById("show-pdf")
-  .addEventListener("click", () =>
-    showPdf(app, gameContainer, pelienSuunittelu)
-  );
 
-document.getElementById("close-pdf").addEventListener("click", () => {
-  closePdf(app, gameContainer);
-});
+window.addEventListener("resize", () => resizeGame(app, gameContainer));
+setupPdf(app, gameContainer);

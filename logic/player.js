@@ -36,21 +36,16 @@ class Player {
 
     // Create walkable area
     this.walkableArea = new PIXI.Graphics();
-    this.walkableArea.beginFill(0x00FF00);
-    this.walkableArea.drawPolygon([
-      315, 560,
-      850, 560,
-      1200, 800,
-      10, 801,
-    ]);
+    this.walkableArea.beginFill(0x00ff00);
+    this.walkableArea.drawPolygon([335, 560, 950, 560, 1400, 800, 100, 801]);
     this.walkableArea.endFill();
     // Comment row below to see visualization in beautiful ogre green
-    this.walkableArea.visible = false;
+    this.walkableArea.visible = true;
     app.gameContainer.addChild(this.walkableArea);
 
     // Create player sprite with idle animation
     this.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
-    this.player.position.set(360, 620);
+    this.player.position.set(450, 620);
     this.player.anchor.set(0.5, 1);
     this.player.zIndex = 2;
 
@@ -63,10 +58,10 @@ class Player {
 
   move(targetPosition, solidObjects) {
     /**
-   * Method to move the player to position
-   * @param {number} targetPosition - Coordinate where the player is moved to
-   * @param {Object[]} solidObjects - Array of solid objects
-   */
+     * Method to move the player to position
+     * @param {number} targetPosition - Coordinate where the player is moved to
+     * @param {Object[]} solidObjects - Array of solid objects
+     */
     // If position outside walkableArea is clicked, adjust position
     targetPosition = this.adjustTargetPosition(targetPosition);
 
@@ -81,7 +76,9 @@ class Player {
 
     // Find the closest object to player
     for (const obj of solidObjects) {
-      const objDistance = Math.sqrt((this.player.x - obj.x) ** 2 + (this.player.y - obj.y) ** 2);
+      const objDistance = Math.sqrt(
+        (this.player.x - obj.x) ** 2 + (this.player.y - obj.y) ** 2
+      );
       if (objDistance < closestDistance) {
         closestObj = obj;
         closestDistance = objDistance;
@@ -96,7 +93,11 @@ class Player {
     }
 
     // Check if the player is moving
-    if (distance > 3 && !playerCollides(this.player, solidObjects).collided && this.walkableArea.containsPoint(targetPosition)) {
+    if (
+      distance > 3 &&
+      !playerCollides(this.player, solidObjects).collided &&
+      this.walkableArea.containsPoint(targetPosition)
+    ) {
       // Switch to the walk animation frames
       if (this.player.textures !== this.playerWalkFrames) {
         this.player.textures = this.playerWalkFrames;
@@ -150,7 +151,10 @@ class Player {
     );
 
     // Calculate the magnitude of the direction vector
-    const magnitude = Math.sqrt(directionVector.x * directionVector.x + directionVector.y * directionVector.y);
+    const magnitude = Math.sqrt(
+      directionVector.x * directionVector.x +
+        directionVector.y * directionVector.y
+    );
 
     // Check if the magnitude is greater than 0 (to avoid division by zero)
     if (magnitude > 0) {

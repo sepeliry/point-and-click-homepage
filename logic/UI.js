@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import backgroundImg from "../resources/images/background_placeholder2.png";
+import backgroundImg from "../resources/images/background.png";
 import bookshelfBackgroundImg from "../resources/images/bookshelf.jpg";
 import numpadBackgroundImg from "../resources/images/num_pad.png";
 

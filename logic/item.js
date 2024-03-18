@@ -21,8 +21,8 @@ class Item {
       outerStrength: 0.5,
       quality: 0.1,
     });
-    this.item.x = x;
-    this.item.y = y;
+    this.item.x = x * app.renderer.width;
+    this.item.y = y * app.renderer.height;
     this.item.zIndex = 1;
 
     // Anchor to bottom left corner
@@ -30,8 +30,7 @@ class Item {
 
     if (interactable) {
       this.item.eventMode = "interactive";
-    }
-    else {
+    } else {
       this.item.eventMode = "static";
     }
 
@@ -39,6 +38,7 @@ class Item {
     this.item.filters = [this.glowEffect];
     this.item.visible = true;
     app.gameContainer.addChild(this.item);
+
     return this.item;
   }
 }

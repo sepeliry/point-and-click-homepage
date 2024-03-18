@@ -15,7 +15,7 @@ class Numpad {
             dropShadowAngle: 0.6,
             dropShadowDistance: 3,
             fill: "#fff0ff",
-            fontFamily: "\"Courier New\", Courier, monospace",
+            fontFamily: "Lucida Console",
             fontSize: 60,
             align: "left",
             fontWeight: "bold",
@@ -71,7 +71,12 @@ class Numpad {
             this.screen.text = "**Correct**";
         }
         else {
-            this.resetScreen();
+            this.screen.text = "Incorrect";
+
+            // Wait for 5 seconds before resetting the screen
+            setTimeout(() => {
+                this.resetScreen();
+            }, 3000);
         }
     }
 
@@ -128,7 +133,7 @@ class Numpad {
             dropShadowAngle: 0.6,
             dropShadowDistance: 3,
             fill: "#fff0ff",
-            fontFamily: "\"Courier New\", Courier, monospace",
+            fontFamily: "Lucida Console",
             fontSize: 55,
             fontWeight: "bold",
             stroke: "#edceeb",

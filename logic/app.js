@@ -15,6 +15,7 @@ import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";
 import Numpad from "./numpad.js";
+import { CRTFilter } from '@pixi/filter-crt';
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -34,18 +35,21 @@ const gameContainer = new PIXI.Container();
 gameContainer.sortableChildren = true;
 app.stage.addChild(gameContainer);
 app.gameContainer = gameContainer;
+gameContainer.filters = [new CRTFilter()];
 gameContainer.visible = true;
 
 // Container for bookshelf view
 const bookshelfContainer = new PIXI.Container();
 app.stage.addChild(bookshelfContainer);
 app.bookshelfContainer = bookshelfContainer;
+bookshelfContainer.filters = [new CRTFilter()];
 bookshelfContainer.visible = false;
 
 // Container for numpad view
 const numpadContainer = new PIXI.Container();
 app.stage.addChild(numpadContainer);
 app.numpadContainer = numpadContainer;
+numpadContainer.filters = [new CRTFilter()];
 numpadContainer.visible = false;
 
 // Generate content

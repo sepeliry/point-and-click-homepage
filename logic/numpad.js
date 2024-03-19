@@ -43,21 +43,21 @@ class Numpad {
         });
 
         // Create buttons for numpad
-        this.one = this.createNumpadButton(app, 270, 270, 200, 100, 1);
-        this.two = this.createNumpadButton(app, 500, 270, 200, 100, 2);
-        this.three = this.createNumpadButton(app, 730, 270, 200, 100, 3);
+        this.one = this.createNumpadButton(app, 0.31, 0.41, 0.2, 0.1, 1);
+        this.two = this.createNumpadButton(app, 0.50, 0.41, 0.2, 0.1, 2);
+        this.three = this.createNumpadButton(app, 0.7, 0.41, 0.2, 0.1, 3);
 
-        this.four = this.createNumpadButton(app, 270, 390, 200, 100, 4);
-        this.five = this.createNumpadButton(app, 500, 390, 200, 100, 5);
-        this.six = this.createNumpadButton(app, 730, 390, 200, 100, 6);
+        this.four = this.createNumpadButton(app, 0.31, 0.56, 0.2, 0.1, 4);
+        this.five = this.createNumpadButton(app, 0.50, 0.56, 0.2, 0.1, 5);
+        this.six = this.createNumpadButton(app, 0.7, 0.56, 0.2, 0.1, 6);
 
-        this.seven = this.createNumpadButton(app, 270, 510, 200, 100, 7);
-        this.eight = this.createNumpadButton(app, 500, 510, 200, 100, 8);
-        this.nine = this.createNumpadButton(app, 730, 510, 200, 100, 9);
+        this.seven = this.createNumpadButton(app, 0.31, 0.71, 0.2, 0.1, 7);
+        this.eight = this.createNumpadButton(app, 0.50, 0.71, 0.2, 0.1, 8);
+        this.nine = this.createNumpadButton(app, 0.7, 0.71, 0.2, 0.1, 9);
 
-        this.reset = this.createNumpadButton(app, 270, 630, 200, 100, "reset");
-        this.zero = this.createNumpadButton(app, 500, 630, 200, 100, 0);
-        this.ok = this.createNumpadButton(app, 730, 630, 200, 100, "OK");
+        this.reset = this.createNumpadButton(app, 0.31, 0.86, 0.2, 0.1, "reset");
+        this.zero = this.createNumpadButton(app, 0.50, 0.86, 0.2, 0.1, 0);
+        this.ok = this.createNumpadButton(app, 0.7, 0.86, 0.2, 0.1, "OK");
     }
 
     enterCode() {
@@ -73,10 +73,10 @@ class Numpad {
         else {
             this.screen.text = "Incorrect";
 
-            // Wait for 5 seconds before resetting the screen
+            // Wait for 2 seconds before resetting the screen
             setTimeout(() => {
                 this.resetScreen();
-            }, 3000);
+            }, 2000);
         }
     }
 
@@ -120,6 +120,8 @@ class Numpad {
 
         //button.beginFill(0x00FF00);
         button.drawRect(x, y, width, height);
+        button.x = x * app.renderer.width;
+        button.y = y * app.renderer.height;
         button.interactive = true;
         button.buttonMode = true;
         button.cursor = "pointer";

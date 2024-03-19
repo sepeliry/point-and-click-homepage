@@ -15,8 +15,7 @@ import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";
 import Numpad from "./numpad.js";
-import { CRTFilter } from '@pixi/filter-crt';
-import bookshelf_obj from '../resources/images/bookshelf_obj.png';
+import { CRTFilter } from "@pixi/filter-crt";
 
 // Create application on page load
 const app = new PIXI.Application({

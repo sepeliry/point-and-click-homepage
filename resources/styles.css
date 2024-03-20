@@ -185,16 +185,17 @@ body {
   border: 0;
 }
 
+#close-pdf {
+  position: absolute;
+  top: 200px;
+  z-index: 1;
+}
+
 #pdf-viewer-container {
   display: none;
   flex-direction: column;
   height: 100%;
   width: 100%;
-}
-#pdf-controls {
-  position: absolute;
-  top: 5%;
-  left: 0;
 }
 #pdf-container {
   flex-grow: 1;

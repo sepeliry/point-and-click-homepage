@@ -14,6 +14,8 @@ import { resizeGame } from "./utils/resize.js";
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";
+import mouseholeImg from "../resources/images/mousehole_placeholder.png";
+import potionImg from "../resources/images/potion.png";
 import Numpad from "./numpad.js";
 import { CRTFilter } from "@pixi/filter-crt";
 
@@ -52,6 +54,12 @@ app.numpadContainer = numpadContainer;
 numpadContainer.filters = [new CRTFilter()];
 numpadContainer.visible = false;
 
+// Container for mousehole view
+const mouseholeContainer = new PIXI.Container();
+app.stage.addChild(mouseholeContainer);
+app.mouseholeContainer = mouseholeContainer;
+mouseholeContainer.visible = false;
+
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);
@@ -80,6 +88,16 @@ box_propCollision.height = 100;
 box_propCollision.width = 100;
 box_propCollision.eventMode = "none";
 solidObjects.push(box_propCollision);
+
+// Test object for mousehole
+const mousehole = new Item(app, mouseholeImg, 0.78, 0.80);
+mousehole.height = 50;
+mousehole.width = 50;
+
+// Drinkable potion, makes player small
+const potion = new Item(app, potionImg, 0.1, 0.95);
+potion.height = 100;
+potion.width = 100;
 
 // Button for testing bookshelf view
 // TODO: bookshelf can be opened from canvas
@@ -138,9 +156,29 @@ gameContainer.on("pointertap", (event) => {
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
-  if (clickedItem && clickedItem.eventMode === "static") {
-    // If an item is clicked, add it to the inventory
-    inventory.addToInventory(clickedItem, player);
+  if (clickedItem) {
+    // Calculate the distance between the clicked item and the player
+    const distance = Math.abs(clickedItem.x - player.player.x);
+    switch (clickedItem) {
+      case potion:
+        if (distance < 100) {
+          // Minimize the player and hide the potion
+          player.minimizePlayer();
+          potion.visible = false;
+        }
+        break;
+      case mousehole:
+        if (distance < 100 && player.isMiniSize) {
+          // Change to mousehole scene
+          ui.toggleMousehole(app)();
+        }
+        break;
+      case box_prop:
+        break;
+      default:
+        inventory.addToInventory(clickedItem, player);
+        break;
+    }
   } else {
     // Set the new target position on click
     // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This

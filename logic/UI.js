@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import backgroundImg from "../resources/images/background.png";
 import bookshelfBackgroundImg from "../resources/images/bookshelf.jpg";
+import mouseholeImg from "../resources/images/mousehole_background.png";
 import numpadBackgroundImg from "../resources/images/num_pad.png";
 import back_arrowImg from "../resources/images/back_arrow.png";
 
@@ -85,6 +86,21 @@ class UI {
     numpadMapping.cursor = "pointer";
     numpadMapping.addEventListener("click", this.toggleNumpad(app));
     app.gameContainer.addChild(numpadMapping);
+
+    // Create sprite for mousehole view
+    const mouseholeTexture = PIXI.Texture.from(mouseholeImg);
+    const mouseholeBackground = new PIXI.Sprite(mouseholeTexture);
+    mouseholeBackground.width = app.screen.width;
+    mouseholeBackground.height = app.screen.height;
+    app.mouseholeContainer.addChild(mouseholeBackground);
+    const mouseholeButton = PIXI.Sprite.from(backArrowTexture);
+    mouseholeButton.x = 0.03 * app.screen.width;
+    mouseholeButton.y = 0.03 * app.screen.height;
+    mouseholeButton.interactive = true;
+    mouseholeButton.cursor = "pointer";
+    mouseholeButton.buttonMode = true;
+    mouseholeButton.on('pointerdown', this.toggleMousehole(app));
+    app.mouseholeContainer.addChild(mouseholeButton);
   }
 
   toggleBookshelf(app) {
@@ -105,6 +121,16 @@ class UI {
     return () => {
       app.gameContainer.visible = !app.gameContainer.visible;
       app.numpadContainer.visible = !app.numpadContainer.visible;
+    };
+  }
+  toggleMousehole(app) {
+    /**
+     * Function to toggle visibility of mousehole view
+     * @param {PIXI.Application} app - Application where the UI is
+     */
+    return () => {
+      app.gameContainer.visible = !app.gameContainer.visible;
+      app.mouseholeContainer.visible = !app.mouseholeContainer.visible;
     };
   }
 }

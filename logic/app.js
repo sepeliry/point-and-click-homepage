@@ -17,7 +17,7 @@ import bookImg2 from "../resources/images/book2_placeholder.png";
 import mouseholeImg from "../resources/images/mousehole_placeholder.png";
 import potionImg from "../resources/images/potion.png";
 import Numpad from "./numpad.js";
-import { CRTFilter } from '@pixi/filter-crt';
+import { CRTFilter } from "@pixi/filter-crt";
 
 // Create application on page load
 const app = new PIXI.Application({
@@ -60,6 +60,13 @@ app.stage.addChild(mouseholeContainer);
 app.mouseholeContainer = mouseholeContainer;
 mouseholeContainer.visible = false;
 
+// Construct contents in canvas
+const ui = new UI(app);
+const player = new Player(app);
+const inventory = new Inventory(app);
+const numpad = new Numpad(app);
+// const popup = new Popup(app, popup1TextElements);
+
 // Generate content
 let solidObjects = [];
 solidObjects.sortableChildren = true;
@@ -91,13 +98,6 @@ mousehole.width = 50;
 const potion = new Item(app, potionImg, 0.1, 0.95);
 potion.height = 100;
 potion.width = 100;
-
-// Construct contents in canvas
-const ui = new UI(app);
-const player = new Player(app);
-const inventory = new Inventory(app);
-const numpad = new Numpad(app);
-// const popup = new Popup(app, popup1TextElements);
 
 // Button for testing bookshelf view
 // TODO: bookshelf can be opened from canvas
@@ -201,4 +201,6 @@ app.ticker.add((delta) => {
 });
 
 window.addEventListener("resize", () => resizeGame(app, gameContainer));
+window.addEventListener("resize", () => resizeGame(app, bookshelfContainer));
+window.addEventListener("resize", () => resizeGame(app, numpadContainer));
 setupPdf(app, gameContainer);

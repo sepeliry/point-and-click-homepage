@@ -29,7 +29,7 @@ class Item {
     this.item.anchor.set(0.5, 1);
 
     if (interactable) {
-      this.item.eventMode = "interactive";
+      this.item.eventMode = "dynamic";
     } else {
       this.item.eventMode = "static";
     }

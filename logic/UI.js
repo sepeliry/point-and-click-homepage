@@ -2,8 +2,8 @@ import * as PIXI from "pixi.js";
 import backgroundImg from "../resources/images/background.png";
 import bookshelfBackgroundImg from "../resources/images/bookshelf.jpg";
 import mouseholeImg from "../resources/images/mousehole_background.png";
-import backButton from "../resources/images/back_button.png";
 import numpadBackgroundImg from "../resources/images/num_pad.png";
+import back_arrowImg from "../resources/images/back_arrow.png";
 
 class UI {
   constructor(app) {
@@ -25,6 +25,17 @@ class UI {
     bookshelfBackground.height = app.screen.height;
     app.bookshelfContainer.addChild(bookshelfBackground);
 
+    // Back button for bookshelf
+    const backArrowTexture = PIXI.Texture.from(back_arrowImg);
+    const button = new PIXI.Sprite(backArrowTexture);
+    button.x = 0.03 * app.screen.width;
+    button.y = 0.03 * app.screen.height;
+    button.interactive = true;
+    button.cursor = "pointer";
+    button.buttonMode = true;
+    button.addEventListener("click", this.toggleBookshelf(app));
+    app.bookshelfContainer.addChild(button);
+
     // Create sprite for num pad view
     const numpadTexture = PIXI.Texture.from(numpadBackgroundImg);
     const numpadBackground = new PIXI.Sprite(numpadTexture);
@@ -32,21 +43,64 @@ class UI {
     numpadBackground.height = app.screen.height;
     app.numpadContainer.addChild(numpadBackground);
 
+    // Back button for numpad
+    const buttonNumpad = new PIXI.Sprite(backArrowTexture);
+    buttonNumpad.x = 0.03 * app.screen.width;
+    buttonNumpad.y = 0.03 * app.screen.height;
+    buttonNumpad.interactive = true;
+    buttonNumpad.cursor = "pointer";
+    buttonNumpad.buttonMode = true;
+    buttonNumpad.addEventListener("click", this.toggleNumpad(app));
+    app.numpadContainer.addChild(buttonNumpad);
+
+    // Create clickable area on bookshelf
+    const bookshelfMapping = new PIXI.Graphics();
+    const width = (12.5 / 100) * app.screen.width;
+    const height = (30 / 100) * app.screen.height;
+    bookshelfMapping.beginFill(0x00FF00);
+    bookshelfMapping.drawRect(0, 0, width, height);
+    bookshelfMapping.endFill();
+    bookshelfMapping.alpha = 0;
+    bookshelfMapping.visible = true;
+    bookshelfMapping.x = app.screen.width / 3.72;
+    bookshelfMapping.y = app.screen.height / 2.5;
+    bookshelfMapping.interactive = true;
+    bookshelfMapping.buttonMode = true;
+    bookshelfMapping.cursor = "pointer";
+    bookshelfMapping.addEventListener("click", this.toggleBookshelf(app));
+    app.gameContainer.addChild(bookshelfMapping);
+
+    // Create clickable area on door numpad
+    const numpadMapping = new PIXI.Graphics();
+    const w = (2 / 100) * app.screen.width;
+    const h = (6 / 100) * app.screen.height;
+    numpadMapping.beginFill(0x00FF00);
+    numpadMapping.drawRect(0, 0, w, h);
+    numpadMapping.endFill();
+    numpadMapping.alpha = 0;
+    numpadMapping.visible = true;
+    numpadMapping.x = app.screen.width / 1.94;
+    numpadMapping.y = app.screen.height / 1.87;
+    numpadMapping.interactive = true;
+    numpadMapping.buttonMode = true;
+    numpadMapping.cursor = "pointer";
+    numpadMapping.addEventListener("click", this.toggleNumpad(app));
+    app.gameContainer.addChild(numpadMapping);
+
     // Create sprite for mousehole view
     const mouseholeTexture = PIXI.Texture.from(mouseholeImg);
     const mouseholeBackground = new PIXI.Sprite(mouseholeTexture);
     mouseholeBackground.width = app.screen.width;
     mouseholeBackground.height = app.screen.height;
     app.mouseholeContainer.addChild(mouseholeBackground);
-    // TODO: make this accessible for all views
-    const button = PIXI.Sprite.from(backButton);
-    button.width = 200;
-    button.height = 60;
-    button.x = 30;
-    button.y = 700;
-    button.interactive = true;
-    button.on('pointerdown', this.toggleMousehole(app));
-    app.mouseholeContainer.addChild(button);
+    const mouseholeButton = PIXI.Sprite.from(backArrowTexture);
+    mouseholeButton.x = 0.03 * app.screen.width;
+    mouseholeButton.y = 0.03 * app.screen.height;
+    mouseholeButton.interactive = true;
+    mouseholeButton.cursor = "pointer";
+    mouseholeButton.buttonMode = true;
+    mouseholeButton.on('pointerdown', this.toggleMousehole(app));
+    app.mouseholeContainer.addChild(mouseholeButton);
   }
 
   toggleBookshelf(app) {

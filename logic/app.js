@@ -90,7 +90,7 @@ box_propCollision.eventMode = "none";
 solidObjects.push(box_propCollision);
 
 // Test object for mousehole
-const mousehole = new Item(app, mouseholeImg, 0.78, 0.80);
+const mousehole = new Item(app, mouseholeImg, 0.78, 0.8);
 mousehole.height = 50;
 mousehole.width = 50;
 
@@ -203,4 +203,5 @@ app.ticker.add((delta) => {
 window.addEventListener("resize", () => resizeGame(app, gameContainer));
 window.addEventListener("resize", () => resizeGame(app, bookshelfContainer));
 window.addEventListener("resize", () => resizeGame(app, numpadContainer));
+window.addEventListener("resize", () => resizeGame(app, mouseholeContainer));
 setupPdf(app, gameContainer);

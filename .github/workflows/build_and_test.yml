@@ -1,7 +1,9 @@
-name: Test CI
+name: Build and Test CI
 
 on:
   push:
+    branches: ["main"]
+  pull:
     branches: ["main"]
 
 jobs:
@@ -24,6 +26,9 @@ jobs:
 
       - name: Run tests with coverage
         run: npm run coverage
+
+      - name: Build for deployment
+        run: npm run build_prod
 
       - name: Send coverage data to Coveralls
         run: npx coveralls < ./coverage/lcov.info

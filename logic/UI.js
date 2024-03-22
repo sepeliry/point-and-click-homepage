@@ -14,8 +14,10 @@ class UI {
     // Create background sprite
     const backgroundTexture = PIXI.Texture.from(backgroundImg);
     const background = new PIXI.Sprite(backgroundTexture);
-    background.width = app.screen.width;
-    background.height = app.screen.height;
+    // background.width = app.screen.width;
+    // background.height = app.screen.height;
+    background.width = 1400;
+    background.height = 800;
     app.gameContainer.addChild(background);
 
     // Create sprite for bookshelf view
@@ -57,7 +59,7 @@ class UI {
     const bookshelfMapping = new PIXI.Graphics();
     const width = (12.5 / 100) * app.screen.width;
     const height = (30 / 100) * app.screen.height;
-    bookshelfMapping.beginFill(0x00FF00);
+    bookshelfMapping.beginFill(0x00ff00);
     bookshelfMapping.drawRect(0, 0, width, height);
     bookshelfMapping.endFill();
     bookshelfMapping.alpha = 0;
@@ -74,7 +76,7 @@ class UI {
     const numpadMapping = new PIXI.Graphics();
     const w = (2 / 100) * app.screen.width;
     const h = (6 / 100) * app.screen.height;
-    numpadMapping.beginFill(0x00FF00);
+    numpadMapping.beginFill(0x00ff00);
     numpadMapping.drawRect(0, 0, w, h);
     numpadMapping.endFill();
     numpadMapping.alpha = 0;
@@ -99,7 +101,7 @@ class UI {
     mouseholeButton.interactive = true;
     mouseholeButton.cursor = "pointer";
     mouseholeButton.buttonMode = true;
-    mouseholeButton.on('pointerdown', this.toggleMousehole(app));
+    mouseholeButton.on("pointerdown", this.toggleMousehole(app));
     app.mouseholeContainer.addChild(mouseholeButton);
   }
 

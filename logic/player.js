@@ -45,7 +45,7 @@ class Player {
     this.walkableArea.drawPolygon([335, 560, 950, 560, 1400, 800, 100, 801]);
     this.walkableArea.endFill();
     // Comment row below to see visualization in beautiful ogre green
-    this.walkableArea.visible = false;
+    this.walkableArea.visible = true;
     app.gameContainer.addChild(this.walkableArea);
 
     // Create player sprite with idle animation
@@ -68,7 +68,14 @@ class Player {
      * @param {Object[]} solidObjects - Array of solid objects
      */
     // If position outside walkableArea is clicked, adjust position
+
     targetPosition = this.adjustTargetPosition(targetPosition);
+    // console.log(
+    //   "move targetposition" +
+    //     targetPosition +
+    //     "contains:" +
+    //     this.walkableArea.containsPoint(targetPosition)
+    // );
 
     // Calculate the distance to the target position
     const dx = targetPosition.x - this.player.x;
@@ -126,15 +133,17 @@ class Player {
         this.player.scale.y = 1;
       }
     } else {
-      // Switch to the idle animation frames
-      if (this.player.textures !== this.playerIdleFrames) {
-        this.player.textures = this.playerIdleFrames;
-        this.player.animationSpeed = 0.05; // Set animation speed for idle animation
-        this.player.play();
-      }
+      this.setIdle();
     }
   }
 
+  setIdle() {
+    if (this.player.textures !== this.playerIdleFrames) {
+      this.player.textures = this.playerIdleFrames;
+      this.player.animationSpeed = 0.05; // Set animation speed for idle animation
+      this.player.play();
+    }
+  }
   minimizePlayer() {
     this.isMiniSize = true;
     this.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];

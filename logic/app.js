@@ -193,6 +193,7 @@ let targetPosition;
 gameContainer.eventMode = "static"; // Enable interaction
 gameContainer.on("pointertap", (event) => {
   console.log(gameContainer.toLocal(event.global));
+  console.log("localposition:" + gameContainer.toLocal(event.global));
   const collisionResult = playerCollides(player.player, solidObjects);
   if (collisionResult.collided) {
     const direction = collisionResult.direction;
@@ -233,7 +234,8 @@ gameContainer.on("pointertap", (event) => {
     // has to be adjusted in a different way once final designs are done.
     const localPosition = gameContainer.toLocal(event.global);
     const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
-    targetPosition = new PIXI.Point(event.global.x, yCoordinate);
+    targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+    // targetPosition = new PIXI.Point(localPosition.x, localPosition.y);
     // Move the player towards the target position
     // player.move(targetPosition, solidObjects);
   }
@@ -241,12 +243,25 @@ gameContainer.on("pointertap", (event) => {
 
 // Main game loop
 app.ticker.add((delta) => {
+  // To stop player.move method from being called constantly even after destination is reached
+  if (targetPosition) {
+    const distance = Math.sqrt(
+      Math.pow(player.player.x - targetPosition.x, 2) +
+        Math.pow(player.player.y - targetPosition.y, 2)
+    );
+    if (distance < 3) {
+      targetPosition = null;
+      player.setIdle();
+    }
+  }
   if (targetPosition) {
     player.move(targetPosition, solidObjects);
     gameContainer.updateTransform();
   }
+
   inventory.updateInventoryUI();
 });
+
 if (!window.isMobile) {
   window.addEventListener("resize", () => resizeGame(app, gameContainer));
   window.addEventListener("resize", () => resizeGame(app, bookshelfContainer));

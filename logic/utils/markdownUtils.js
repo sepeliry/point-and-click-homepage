@@ -62,7 +62,7 @@ export const displayWikiPage = async (url) => {
     existingBackBtn.remove();
   }
   const pageBackBtn = document.createElement("button");
-  pageBackBtn.textContent = "Palaa";
+  pageBackBtn.textContent = "Takaisin listaan";
   pageBackBtn.id = "page-back-btn";
   pageBackBtn.classList.add("button");
   pageBackBtn.addEventListener("click", () => {

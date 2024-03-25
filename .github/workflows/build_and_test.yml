@@ -1,0 +1,34 @@
+name: Build and Test CI
+
+on:
+  push:
+    branches: ["main"]
+  pull:
+    branches: ["main"]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    env:
+      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run coverage
+
+      - name: Build for deployment
+        run: npm run build_prod
+
+      - name: Send coverage data to Coveralls
+        run: npx coveralls < ./coverage/lcov.info

@@ -21,8 +21,10 @@ class Item {
       outerStrength: 0.5,
       quality: 0.1,
     });
-    this.item.x = x * app.renderer.width;
-    this.item.y = y * app.renderer.height;
+    // this.item.x = x * app.renderer.width;
+    // this.item.y = y * app.renderer.height;
+    this.item.x = x * 1400;
+    this.item.y = y * 800;
     this.item.zIndex = 1;
 
     // Anchor to bottom left corner

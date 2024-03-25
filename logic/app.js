@@ -14,15 +14,33 @@ import { resizeGame } from "./utils/resize.js";
 import Book from "./book.js";
 import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";
+import mouseholeImg from "../resources/images/mousehole_placeholder.png";
+import potionImg from "../resources/images/potion.png";
 import Numpad from "./numpad.js";
 import { CRTFilter } from "@pixi/filter-crt";
+import arrow_left from "../resources/images/arrow_left.png";
+import arrow_right from "../resources/images/arrow_right.png";
+import { moveCamera } from "./utils/cameraUtils.js";
+
+// Mobiilinäkymän kokeilua varten = true
+window.isMobile = false;
+let app;
 
 // Create application on page load
-const app = new PIXI.Application({
-  width: 1400,
-  height: 800,
-  backgroundColor: 0xaaaaaa,
-});
+if (!window.isMobile) {
+  app = new PIXI.Application({
+    width: 1400,
+    height: 800,
+    backgroundColor: 0xaaaaaa,
+  });
+} else {
+  app = new PIXI.Application({
+    width: 600,
+    height: 800,
+    backgroundColor: 0xaaaaaa,
+  });
+}
+
 globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
 
@@ -33,10 +51,42 @@ document.getElementById("game-container").appendChild(app.view);
 // Container for main game elements
 const gameContainer = new PIXI.Container();
 gameContainer.sortableChildren = true;
-app.stage.addChild(gameContainer);
+// If the user is on mobile, gameContainer is instead added to cameraContainer later
+window.isMobile ? null : app.stage.addChild(gameContainer);
 app.gameContainer = gameContainer;
 gameContainer.filters = [new CRTFilter()];
 gameContainer.visible = true;
+
+// Camera container
+if (window.isMobile) {
+  const cameraContainer = new PIXI.Container();
+  // app.cameraContainer = cameraContainer;
+  cameraContainer.addChild(gameContainer);
+  app.stage.addChild(cameraContainer);
+  const leftArrowTexture = PIXI.Texture.from(arrow_left);
+  const leftButton = new PIXI.Sprite(leftArrowTexture);
+  leftButton.eventMode = "static";
+  leftButton.buttonMode = true;
+  leftButton.on("pointerdown", () => {
+    // cameraContainer.x += 100; // adjust this value as needed
+    moveCamera(app, cameraContainer, "left");
+  });
+  app.stage.addChild(leftButton);
+
+  const rightArrowTexture = PIXI.Texture.from(arrow_right);
+  const rightButton = new PIXI.Sprite(rightArrowTexture);
+  rightButton.eventMode = "static";
+  rightButton.buttonMode = true;
+  rightButton.on("pointerdown", () => {
+    // cameraContainer.x -= 100; // adjust this value as needed
+    moveCamera(app, cameraContainer, "right");
+  });
+  app.stage.addChild(rightButton);
+  leftButton.x = 50;
+  leftButton.y = 50;
+  rightButton.x = 550;
+  rightButton.y = 50;
+}
 
 // Container for bookshelf view
 const bookshelfContainer = new PIXI.Container();
@@ -51,6 +101,12 @@ app.stage.addChild(numpadContainer);
 app.numpadContainer = numpadContainer;
 numpadContainer.filters = [new CRTFilter()];
 numpadContainer.visible = false;
+
+// Container for mousehole view
+const mouseholeContainer = new PIXI.Container();
+app.stage.addChild(mouseholeContainer);
+app.mouseholeContainer = mouseholeContainer;
+mouseholeContainer.visible = false;
 
 // Construct contents in canvas
 const ui = new UI(app);
@@ -80,6 +136,16 @@ box_propCollision.height = 100;
 box_propCollision.width = 100;
 box_propCollision.eventMode = "none";
 solidObjects.push(box_propCollision);
+
+// Test object for mousehole
+const mousehole = new Item(app, mouseholeImg, 0.78, 0.8);
+mousehole.height = 50;
+mousehole.width = 50;
+
+// Drinkable potion, makes player small
+const potion = new Item(app, potionImg, 0.1, 0.95);
+potion.height = 100;
+potion.width = 100;
 
 // Button for testing bookshelf view
 // TODO: bookshelf can be opened from canvas
@@ -138,9 +204,29 @@ gameContainer.on("pointertap", (event) => {
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
-  if (clickedItem && clickedItem.eventMode === "static") {
-    // If an item is clicked, add it to the inventory
-    inventory.addToInventory(clickedItem, player);
+  if (clickedItem) {
+    // Calculate the distance between the clicked item and the player
+    const distance = Math.abs(clickedItem.x - player.player.x);
+    switch (clickedItem) {
+      case potion:
+        if (distance < 100) {
+          // Minimize the player and hide the potion
+          player.minimizePlayer();
+          potion.visible = false;
+        }
+        break;
+      case mousehole:
+        if (distance < 100 && player.isMiniSize) {
+          // Change to mousehole scene
+          ui.toggleMousehole(app)();
+        }
+        break;
+      case box_prop:
+        break;
+      default:
+        inventory.addToInventory(clickedItem, player);
+        break;
+    }
   } else {
     // Set the new target position on click
     // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
@@ -149,7 +235,7 @@ gameContainer.on("pointertap", (event) => {
     const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
     targetPosition = new PIXI.Point(event.global.x, yCoordinate);
     // Move the player towards the target position
-    player.move(targetPosition, solidObjects);
+    // player.move(targetPosition, solidObjects);
   }
 });
 
@@ -161,8 +247,11 @@ app.ticker.add((delta) => {
   }
   inventory.updateInventoryUI();
 });
+if (!window.isMobile) {
+  window.addEventListener("resize", () => resizeGame(app, gameContainer));
+  window.addEventListener("resize", () => resizeGame(app, bookshelfContainer));
+  window.addEventListener("resize", () => resizeGame(app, numpadContainer));
+  window.addEventListener("resize", () => resizeGame(app, mouseholeContainer));
+}
 
-window.addEventListener("resize", () => resizeGame(app, gameContainer));
-window.addEventListener("resize", () => resizeGame(app, bookshelfContainer));
-window.addEventListener("resize", () => resizeGame(app, numpadContainer));
 setupPdf(app, gameContainer);

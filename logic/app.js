@@ -23,7 +23,7 @@ import arrow_right from "../resources/images/arrow_right.png";
 import { moveCamera } from "./utils/cameraUtils.js";
 
 // Mobiilinäkymän kokeilua varten = true
-window.isMobile = true;
+window.isMobile = false;
 let app;
 
 // Create application on page load

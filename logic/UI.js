@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import backgroundImg from "../resources/images/background.png";
-import bookshelfBackgroundImg from "../resources/images/bookshelf.jpg";
+import bookshelfBackgroundImg from "../resources/images/bookshelf2.png";
 import mouseholeImg from "../resources/images/mousehole_background.png";
 import numpadBackgroundImg from "../resources/images/num_pad.png";
 import back_arrowImg from "../resources/images/back_arrow.png";

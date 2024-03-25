@@ -122,10 +122,38 @@ document.addEventListener("DOMContentLoaded", () => {
 // Create books for bookshelf
 // TODO: Move to more appropriate module
 let books = [];
-const blender = new Book(app, bookImg, 440, 400, "Blender");
-const unity = new Book(app, bookImg2, 630, 650, "Unity");
-books.push(blender);
-books.push(unity);
+//const blender = new Book(app, bookImg, 500, 170, "Unity");
+//const unity = new Book(app, bookImg2, 500, 300, "Blender");
+//books.push(blender);
+//books.push(unity);
+
+/**
+ * Yhden hyllyrivin koko on ~556x140 px
+ * Hyllyrivin pohjan korkeus on 20px
+ * Vasemman reunan x-koordinaatti on 500
+ */
+
+// Populate the entire bookshelf 
+let row1X = 500;
+let row1Y = 170;
+let bookNumber = 1;
+for (let i = 0; i < 4; i++) {
+  for (let j = 0; j < 11; j++) {
+    // Quick randomization for the book image
+    if (bookNumber % Math.floor(Math.random() * 10) === 0) {
+      const book = new Book(app, bookImg2, row1X, row1Y, `${bookNumber}`);
+      books.push(book);
+    } else {
+      const book = new Book(app, bookImg, row1X, row1Y, `${bookNumber}`);
+      books.push(book);
+    }
+    row1X += 40;
+    bookNumber++;
+  }
+  row1Y += 120;
+  row1X = 500;
+}
+
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked

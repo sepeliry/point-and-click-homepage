@@ -137,17 +137,15 @@ class Player {
 
   minimizePlayer() {
     this.isMiniSize = true;
-    this.playerIdleFrames = [
-      PIXI.Texture.from(playerIdleMini),
-    ];
+    this.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];
     this.playerWalkFrames = [
       PIXI.Texture.from(playerWalkMini1),
       PIXI.Texture.from(playerWalkMini2),
       PIXI.Texture.from(playerWalkMini3),
       PIXI.Texture.from(playerWalkMini4),
-    ]
+    ];
   }
-  
+
   adjustTargetPosition(targetPosition) {
     /**
      * Method to move the player to position

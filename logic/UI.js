@@ -4,6 +4,7 @@ import bookshelfBackgroundImg from "../resources/images/bookshelf.jpg";
 import mouseholeImg from "../resources/images/mousehole_background.png";
 import numpadBackgroundImg from "../resources/images/num_pad.png";
 import back_arrowImg from "../resources/images/back_arrow.png";
+import { resizeGame } from "./utils/resize";
 
 class UI {
   constructor(app) {
@@ -30,8 +31,8 @@ class UI {
     // Back button for bookshelf
     const backArrowTexture = PIXI.Texture.from(back_arrowImg);
     const button = new PIXI.Sprite(backArrowTexture);
-    button.x = 0.03 * app.screen.width;
-    button.y = 0.03 * app.screen.height;
+    button.x = 0.03 * app.gameContainer.width;
+    button.y = 0.03 * app.gameContainer.height;
     button.interactive = true;
     button.cursor = "pointer";
     button.buttonMode = true;
@@ -47,8 +48,8 @@ class UI {
 
     // Back button for numpad
     const buttonNumpad = new PIXI.Sprite(backArrowTexture);
-    buttonNumpad.x = 0.03 * app.screen.width;
-    buttonNumpad.y = 0.03 * app.screen.height;
+    buttonNumpad.x = 0.03 * app.gameContainer.width;
+    buttonNumpad.y = 0.03 * app.gameContainer.height;
     buttonNumpad.interactive = true;
     buttonNumpad.cursor = "pointer";
     buttonNumpad.buttonMode = true;
@@ -57,15 +58,16 @@ class UI {
 
     // Create clickable area on bookshelf
     const bookshelfMapping = new PIXI.Graphics();
-    const width = (12.5 / 100) * app.screen.width;
-    const height = (30 / 100) * app.screen.height;
+    const width = (12.5 / 100) * app.gameContainer.width;
+    const height = (30 / 100) * app.gameContainer.height;
     bookshelfMapping.beginFill(0x00ff00);
     bookshelfMapping.drawRect(0, 0, width, height);
     bookshelfMapping.endFill();
     bookshelfMapping.alpha = 0;
     bookshelfMapping.visible = true;
-    bookshelfMapping.x = app.screen.width / 3.72;
-    bookshelfMapping.y = app.screen.height / 2.5;
+    bookshelfMapping.x = app.gameContainer.width / 3.72;
+    bookshelfMapping.y = app.gameContainer.height / 2.5;
+    console.log(bookshelfMapping.x, bookshelfMapping.y);
     bookshelfMapping.interactive = true;
     bookshelfMapping.buttonMode = true;
     bookshelfMapping.cursor = "pointer";
@@ -74,15 +76,15 @@ class UI {
 
     // Create clickable area on door numpad
     const numpadMapping = new PIXI.Graphics();
-    const w = (2 / 100) * app.screen.width;
-    const h = (6 / 100) * app.screen.height;
+    const w = (2 / 100) * app.gameContainer.width;
+    const h = (6 / 100) * app.gameContainer.height;
     numpadMapping.beginFill(0x00ff00);
     numpadMapping.drawRect(0, 0, w, h);
     numpadMapping.endFill();
     numpadMapping.alpha = 0;
     numpadMapping.visible = true;
-    numpadMapping.x = app.screen.width / 1.94;
-    numpadMapping.y = app.screen.height / 1.87;
+    numpadMapping.x = app.gameContainer.width / 1.94;
+    numpadMapping.y = app.gameContainer.height / 1.87;
     numpadMapping.interactive = true;
     numpadMapping.buttonMode = true;
     numpadMapping.cursor = "pointer";
@@ -96,8 +98,8 @@ class UI {
     mouseholeBackground.height = app.screen.height;
     app.mouseholeContainer.addChild(mouseholeBackground);
     const mouseholeButton = PIXI.Sprite.from(backArrowTexture);
-    mouseholeButton.x = 0.03 * app.screen.width;
-    mouseholeButton.y = 0.03 * app.screen.height;
+    mouseholeButton.x = 0.03 * app.gameContainer.width;
+    mouseholeButton.y = 0.03 * app.gameContainer.height;
     mouseholeButton.interactive = true;
     mouseholeButton.cursor = "pointer";
     mouseholeButton.buttonMode = true;

@@ -22,6 +22,7 @@ class Player {
    * @constructor - Creates the player object, loads the idle/walk animation frames and adds the player to stage
    * @param {PIXI.Application} app - Application where the player is added to
    */
+  static player = null;
   constructor(app) {
     // Load player idle and walk animation frames
     this.playerIdleFrames = [
@@ -49,16 +50,16 @@ class Player {
     app.gameContainer.addChild(this.walkableArea);
 
     // Create player sprite with idle animation
-    this.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
-    this.player.position.set(450, 620);
-    this.player.anchor.set(0.5, 1);
-    this.player.zIndex = 2;
+    Player.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
+    Player.player.position.set(450, 620);
+    Player.player.anchor.set(0.5, 1);
+    Player.player.zIndex = 2;
 
-    this.player.animationSpeed = 0.05;
-    this.player.loop = true; // Set the loop property to true
-    this.player.play();
-    app.gameContainer.addChild(this.player);
-    this.targetPosition = new PIXI.Point(this.player.x, this.player.y);
+    Player.player.animationSpeed = 0.05;
+    Player.player.loop = true; // Set the loop property to true
+    Player.player.play();
+    app.gameContainer.addChild(Player.player);
+    this.targetPosition = new PIXI.Point(Player.player.x, Player.player.y);
   }
 
   move(targetPosition, solidObjects) {
@@ -71,8 +72,8 @@ class Player {
     targetPosition = this.adjustTargetPosition(targetPosition);
 
     // Calculate the distance to the target position
-    const dx = targetPosition.x - this.player.x;
-    const dy = targetPosition.y - this.player.y;
+    const dx = targetPosition.x - Player.player.x;
+    const dy = targetPosition.y - Player.player.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     // Variables for finding closest object
@@ -82,7 +83,7 @@ class Player {
     // Find the closest object to player
     for (const obj of solidObjects) {
       const objDistance = Math.sqrt(
-        (this.player.x - obj.x) ** 2 + (this.player.y - obj.y) ** 2
+        (Player.player.x - obj.x) ** 2 + (Player.player.y - obj.y) ** 2
       );
       if (objDistance < closestDistance) {
         closestObj = obj;
@@ -91,46 +92,46 @@ class Player {
     }
 
     // Show player in front of / behind the closest object
-    if (this.player.y > closestObj.y) {
-      this.player.zIndex = 2;
+    if (Player.player.y > closestObj.y) {
+      Player.player.zIndex = 2;
     } else {
-      this.player.zIndex = 0;
+      Player.player.zIndex = 0;
     }
 
     // Check if the player is moving
     if (
       distance > 3 &&
-      !playerCollides(this.player, solidObjects).collided &&
+      !playerCollides(Player.player, solidObjects).collided &&
       this.walkableArea.containsPoint(targetPosition)
     ) {
       // Switch to the walk animation frames
-      if (this.player.textures !== this.playerWalkFrames) {
-        this.player.textures = this.playerWalkFrames;
-        this.player.animationSpeed = 0.11; // Set animation speed for walk animation
-        this.player.play();
+      if (Player.player.textures !== this.playerWalkFrames) {
+        Player.player.textures = this.playerWalkFrames;
+        Player.player.animationSpeed = 0.11; // Set animation speed for walk animation
+        Player.player.play();
       }
 
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
-      const speed = 1.6; // Adjust speed if needed
-      this.player.x += directionX * speed;
-      this.player.y += directionY * speed;
+      const speed = 1.9; // Adjust speed if needed
+      Player.player.x += directionX * speed;
+      Player.player.y += directionY * speed;
 
       // Mirror player Sprite according to the direction of movement
       if (directionX < 0) {
-        this.player.rotation = Math.PI;
-        this.player.scale.y = -1;
+        Player.player.rotation = Math.PI;
+        Player.player.scale.y = -1;
       } else {
-        this.player.rotation = 0;
-        this.player.scale.y = 1;
+        Player.player.rotation = 0;
+        Player.player.scale.y = 1;
       }
     } else {
       // Switch to the idle animation frames
-      if (this.player.textures !== this.playerIdleFrames) {
-        this.player.textures = this.playerIdleFrames;
-        this.player.animationSpeed = 0.05; // Set animation speed for idle animation
-        this.player.play();
+      if (Player.player.textures !== this.playerIdleFrames) {
+        Player.player.textures = this.playerIdleFrames;
+        Player.player.animationSpeed = 0.05; // Set animation speed for idle animation
+        Player.player.play();
       }
     }
   }
@@ -162,14 +163,14 @@ class Player {
 
     // Calculate the direction vector from the current player position towards the target position
     const directionVector = new PIXI.Point(
-      targetPosition.x - this.player.x,
-      targetPosition.y - this.player.y
+      targetPosition.x - Player.player.x,
+      targetPosition.y - Player.player.y
     );
 
     // Calculate the magnitude of the direction vector
     const magnitude = Math.sqrt(
       directionVector.x * directionVector.x +
-        directionVector.y * directionVector.y
+      directionVector.y * directionVector.y
     );
 
     // Check if the magnitude is greater than 0 (to avoid division by zero)
@@ -180,8 +181,8 @@ class Player {
 
       // Scale the direction vector to a desired magnitude (e.g., the radius of the walkable area)
       const scaleFactor = 100; // Adjust this value as needed
-      adjustedPosition.x = this.player.x + directionVector.x * scaleFactor;
-      adjustedPosition.y = this.player.y + directionVector.y * scaleFactor;
+      adjustedPosition.x = Player.player.x + directionVector.x * scaleFactor;
+      adjustedPosition.y = Player.player.y + directionVector.y * scaleFactor;
     }
 
     return adjustedPosition;

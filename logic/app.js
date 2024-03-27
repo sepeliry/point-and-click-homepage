@@ -221,20 +221,20 @@ let targetPosition;
 gameContainer.eventMode = "static"; // Enable interaction
 gameContainer.on("pointertap", (event) => {
   console.log(gameContainer.toLocal(event.global));
-  const collisionResult = playerCollides(player.player, solidObjects);
+  const collisionResult = playerCollides(Player.player, solidObjects);
   if (collisionResult.collided) {
     const direction = collisionResult.direction;
     // Set the player position next to the object based on collision direction
     const moveFunction = directionFunctions[direction];
     if (moveFunction) {
-      moveFunction(player.player, 20); // Adjust the value as needed
+      moveFunction(Player.player, 20); // Adjust the value as needed
     }
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
   if (clickedItem) {
     // Calculate the distance between the clicked item and the player
-    const distance = Math.abs(clickedItem.x - player.player.x);
+    const distance = Math.abs(clickedItem.x - Player.player.x);
     switch (clickedItem) {
       case potion:
         if (distance < 100) {

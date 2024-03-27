@@ -4,6 +4,8 @@ import bookshelfBackgroundImg from "../resources/images/bookshelf2.png";
 import mouseholeImg from "../resources/images/mousehole_background.png";
 import numpadBackgroundImg from "../resources/images/num_pad.png";
 import back_arrowImg from "../resources/images/back_arrow.png";
+import { checkDistance } from './utils/distanceCheckUtils.js';
+import Player from "./player";
 
 class UI {
   constructor(app) {
@@ -69,7 +71,6 @@ class UI {
     bookshelfMapping.interactive = true;
     bookshelfMapping.buttonMode = true;
     bookshelfMapping.cursor = "pointer";
-    bookshelfMapping.addEventListener("click", this.toggleBookshelf(app));
     app.gameContainer.addChild(bookshelfMapping);
 
     // Create clickable area on door numpad
@@ -86,7 +87,6 @@ class UI {
     numpadMapping.interactive = true;
     numpadMapping.buttonMode = true;
     numpadMapping.cursor = "pointer";
-    numpadMapping.addEventListener("click", this.toggleNumpad(app));
     app.gameContainer.addChild(numpadMapping);
 
     // Create sprite for mousehole view
@@ -101,8 +101,42 @@ class UI {
     mouseholeButton.interactive = true;
     mouseholeButton.cursor = "pointer";
     mouseholeButton.buttonMode = true;
-    mouseholeButton.on("pointerdown", this.toggleMousehole(app));
+    mouseholeButton.zIndex = 0;
+    mouseholeButton.addEventListener("click", this.toggleMousehole(app));
     app.mouseholeContainer.addChild(mouseholeButton);
+
+    // Functionality to check for player distance from clickable mapped areas
+
+    bookshelfMapping.on("click", (event) => {
+      // Define the maximum distance within which the player can interact with the clickable area
+      const maxDistance = 350;
+
+      // Call the checkDistance function with appropriate parameters
+      checkDistance(Player.player, bookshelfMapping, maxDistance, () => {
+        this.toggleBookshelf(app)();
+      });
+    });
+
+    numpadMapping.on("click", (event) => {
+      // Define the maximum distance within which the player can interact with the clickable area
+      const maxDistance = 250;
+
+      // Call the checkDistance function with appropriate parameters
+      checkDistance(Player.player, numpadMapping, maxDistance, () => {
+        this.toggleNumpad(app)();
+      });
+    });
+
+    mouseholeButton.on("click", (event) => {
+      // Define the maximum distance within which the player can interact with the clickable area
+      const maxDistance = 200;
+
+      // Call the checkDistance function with appropriate parameters
+      checkDistance(Player.player, mouseholeButton, maxDistance, () => {
+        this.toggleMousehole(app)();
+      });
+    });
+
   }
 
   toggleBookshelf(app) {

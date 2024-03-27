@@ -38,7 +38,7 @@ class Player {
       PIXI.Texture.from(playerWalk7),
     ];
     this.isMiniSize = false;
-
+    this.destinationReached = true;
     // Create walkable area
     this.walkableArea = new PIXI.Graphics();
     this.walkableArea.beginFill(0x00ff00);
@@ -68,7 +68,25 @@ class Player {
      * @param {Object[]} solidObjects - Array of solid objects
      */
     // If position outside walkableArea is clicked, adjust position
+    console.log(
+      "targetpos: " +
+        targetPosition +
+        "WA contains: " +
+        this.walkableArea.containsPoint(targetPosition)
+    );
     targetPosition = this.adjustTargetPosition(targetPosition);
+    console.log(
+      "adjusted targetpos: " +
+        targetPosition +
+        "WA contains: " +
+        this.walkableArea.containsPoint(targetPosition)
+    );
+    // console.log(
+    //   "move targetposition" +
+    //     targetPosition +
+    //     "contains:" +
+    //     this.walkableArea.containsPoint(targetPosition)
+    // );
 
     // Calculate the distance to the target position
     const dx = targetPosition.x - this.player.x;
@@ -97,6 +115,12 @@ class Player {
       this.player.zIndex = 0;
     }
 
+    // If the point cannot be reached, set to true to stop infinite loop
+    if (!this.walkableArea.containsPoint(targetPosition)) {
+      this.destinationReached = true;
+      this.setIdle();
+      return;
+    }
     // Check if the player is moving
     if (
       distance > 3 &&
@@ -109,7 +133,7 @@ class Player {
         this.player.animationSpeed = 0.11; // Set animation speed for walk animation
         this.player.play();
       }
-
+      this.destinationReached = false;
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
@@ -126,15 +150,18 @@ class Player {
         this.player.scale.y = 1;
       }
     } else {
-      // Switch to the idle animation frames
-      if (this.player.textures !== this.playerIdleFrames) {
-        this.player.textures = this.playerIdleFrames;
-        this.player.animationSpeed = 0.05; // Set animation speed for idle animation
-        this.player.play();
-      }
+      this.setIdle();
     }
   }
 
+  setIdle() {
+    if (this.player.textures !== this.playerIdleFrames) {
+      this.player.textures = this.playerIdleFrames;
+      this.player.animationSpeed = 0.05; // Set animation speed for idle animation
+      this.player.play();
+      this.destinationReached = true;
+    }
+  }
   minimizePlayer() {
     this.isMiniSize = true;
     this.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];

@@ -1,4 +1,3 @@
-// TODO: Pienille ruuduille (puhelin), siirry näkymään jossai vain osa taustasta näkyy ja kamera seuraa pelaajaa
 export const resizeGame = (app, gameContainer) => {
   if (gameContainer.visible) {
     // #game-container width and height

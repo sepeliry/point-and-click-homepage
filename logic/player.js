@@ -68,25 +68,7 @@ class Player {
      * @param {Object[]} solidObjects - Array of solid objects
      */
     // If position outside walkableArea is clicked, adjust position
-    // console.log(
-    //   "targetpos: " +
-    //     targetPosition +
-    //     "WA contains: " +
-    //     this.walkableArea.containsPoint(targetPosition)
-    // );
-    // targetPosition = this.adjustTargetPosition(targetPosition);
-    // console.log(
-    //   "adjusted targetpos: " +
-    //     targetPosition +
-    //     "WA contains: " +
-    //     this.walkableArea.containsPoint(targetPosition)
-    // );
-    // console.log(
-    //   "move targetposition" +
-    //     targetPosition +
-    //     "contains:" +
-    //     this.walkableArea.containsPoint(targetPosition)
-    // );
+    targetPosition = this.adjustTargetPosition(targetPosition);
 
     // Calculate the distance to the target position
     const dx = targetPosition.x - this.player.x;

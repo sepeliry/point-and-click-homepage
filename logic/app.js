@@ -68,7 +68,6 @@ if (window.isMobile) {
   leftButton.eventMode = "static";
   leftButton.buttonMode = true;
   leftButton.on("pointerdown", () => {
-    // cameraContainer.x += 100; // adjust this value as needed
     moveCamera(app, cameraContainer, "left");
   });
   app.stage.addChild(leftButton);
@@ -78,7 +77,6 @@ if (window.isMobile) {
   rightButton.eventMode = "static";
   rightButton.buttonMode = true;
   rightButton.on("pointerdown", () => {
-    // cameraContainer.x -= 100; // adjust this value as needed
     moveCamera(app, cameraContainer, "right");
   });
   app.stage.addChild(rightButton);
@@ -234,7 +232,6 @@ gameContainer.on("pointertap", (event) => {
 
   const clickedItem = getItemAtPosition(event.global, event.target);
   if (clickedItem) {
-    console.log("clicked item");
     // Calculate the distance between the clicked item and the player
     const distance = Math.abs(clickedItem.x - player.player.x);
     switch (clickedItem) {
@@ -267,7 +264,7 @@ gameContainer.on("pointertap", (event) => {
     // player.destinationReached = false;
     // targetPosition = new PIXI.Point(localPosition.x, localPosition.y);
     // Move the player towards the target position
-    player.move(targetPosition, solidObjects);
+    // player.move(targetPosition, solidObjects);
   }
 });
 
@@ -279,7 +276,6 @@ app.ticker.add((delta) => {
         Math.pow(player.player.y - targetPosition.y, 2)
     );
     if (distance < 3) {
-      console.log("dist 3");
       targetPosition = null;
       player.setIdle();
     }

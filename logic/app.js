@@ -6,6 +6,7 @@ import UI from "./UI";
 import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
+import { followPlayer } from "./utils/cameraUtils.js";
 
 // Mobiilinäkymän kokeilua varten = true
 window.isMobile = true;
@@ -25,7 +26,12 @@ if (!window.isMobile) {
     backgroundColor: 0xaaaaaa,
   });
 }
+// Get a reference to the game-container div
+let gameContainer = document.getElementById("game-container");
 
+// Set the width and height of the game-container div to match the PIXI application
+gameContainer.style.width = `${app.view.width}px`;
+gameContainer.style.height = `${app.view.height}px`;
 globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
 
@@ -52,7 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
   button.addEventListener("click", ui.toggleNumpad(app));
   document.getElementById("test-controls").appendChild(button);
 });
-
+document.addEventListener("DOMContentLoaded", () => {
+  // To set the initial camera position
+  if (window.isMobile) {
+    followPlayer(app, app.cameraContainer, Player.player);
+  }
+});
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
   if (
@@ -102,6 +113,7 @@ app.gameContainer.on("pointertap", (event) => {
           break;
         default:
           inventory.addToInventory(clickedItem, Player.player);
+          console.log("Player pos: " + Player.player.position);
           break;
       }
     }
@@ -130,6 +142,9 @@ app.ticker.add((delta) => {
   // Check if a targetPos is set and if the player has reached the destination to stop infinite loop  && !player.destinationReached
   if (targetPosition) {
     player.move(targetPosition, ui.solidObjects);
+    if (window.isMobile) {
+      followPlayer(app, app.cameraContainer, Player.player);
+    }
     app.gameContainer.updateTransform();
   }
 

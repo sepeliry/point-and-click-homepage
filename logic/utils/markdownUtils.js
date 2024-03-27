@@ -45,7 +45,9 @@ export const showWikiList = (app, gameContainer) => {
     app.stage.visible = true;
     gameContainer.eventMode = "static";
     backBtn.style.display = "none";
-    resizeGame(app, gameContainer);
+    if (!window.isMobile) {
+      resizeGame(app, gameContainer);
+    }
   });
 };
 

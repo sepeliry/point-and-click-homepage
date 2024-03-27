@@ -4,7 +4,7 @@ import { checkDistance } from "./utils/distanceCheckUtils.js";
 import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
 import Player from "./player";
 import { CRTFilter } from "@pixi/filter-crt";
-import { moveCamera } from "./utils/cameraUtils.js";
+import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
 import Bookshelf from "./bookshelf.js";
 import Numpad from "./numpad";
 import Mousehole from "./mousehole";
@@ -47,27 +47,6 @@ class UI {
       app.cameraContainer = cameraContainer;
       cameraContainer.addChild(gameContainer);
       app.stage.addChild(cameraContainer);
-      const leftArrowTexture = PIXI.Texture.from(arrow_left);
-      const leftButton = new PIXI.Sprite(leftArrowTexture);
-      leftButton.eventMode = "static";
-      leftButton.buttonMode = true;
-      leftButton.on("pointerdown", () => {
-        moveCamera(app, cameraContainer, "left");
-      });
-      app.stage.addChild(leftButton);
-
-      const rightArrowTexture = PIXI.Texture.from(arrow_right);
-      const rightButton = new PIXI.Sprite(rightArrowTexture);
-      rightButton.eventMode = "static";
-      rightButton.buttonMode = true;
-      rightButton.on("pointerdown", () => {
-        moveCamera(app, cameraContainer, "right");
-      });
-      app.stage.addChild(rightButton);
-      rightButton.x = app.renderer.width - 50;
-      rightButton.y = 50;
-      leftButton.x = 50;
-      leftButton.y = 50;
     }
 
     // Generate content

@@ -35,7 +35,7 @@ class Bookshelf {
         button.interactive = true;
         button.cursor = "pointer";
         button.buttonMode = true;
-        button.addEventListener("click", toggleView.bind(this, app));
+        button.addEventListener("pointertap", toggleView.bind(this, app));
         app.bookshelfContainer.addChild(button);
 
         // Create clickable area on bookshelf
@@ -61,7 +61,7 @@ class Bookshelf {
         this.book2 = bookImg2;
         this.generateBooks(app);
 
-        bookshelfMapping.on("click", (event) => {
+        bookshelfMapping.on("pointertap", (event) => {
             // Define the maximum distance within which the player can interact with the clickable area
             const maxDistance = 350;
 
@@ -78,8 +78,8 @@ class Bookshelf {
          * @param {PIXI.Application} app - The PIXI application
          */
 
-        let rowX = 500;
-        let rowY = 170;
+        let rowX = 578;
+        let rowY = 175;
         let bookNumber = 1;
 
         /**
@@ -90,7 +90,7 @@ class Bookshelf {
 
         // Populate the entire bookshelf
         for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 11; j++) {
+            for (let j = 0; j < 8; j++) {
                 // Quick randomization for the book image
                 const currentBookImg = bookNumber % Math.floor(Math.random() * 10) === 0 ? this.book2 : this.book1;
                 const book = new Book(app, currentBookImg, rowX, rowY, `${bookNumber}`);
@@ -98,8 +98,8 @@ class Bookshelf {
                 rowX += 40;
                 bookNumber++;
             }
-            rowY += 120;
-            rowX = 500;
+            rowY += 111;
+            rowX = 578;
         }
     }
 }

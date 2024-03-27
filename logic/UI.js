@@ -1,181 +1,78 @@
 import * as PIXI from "pixi.js";
 import { resizeGame } from "./utils/resize";
-import { checkDistance } from './utils/distanceCheckUtils.js';
+import { checkDistance } from "./utils/distanceCheckUtils.js";
 import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
-import Player from "./player";
+
 import { CRTFilter } from "@pixi/filter-crt";
 import { moveCamera } from "./utils/cameraUtils.js";
-import Bookshelf from "./bookshelf.js";
-import Numpad from "./numpad";
-import Mousehole from "./mousehole";
-import Item from "./item.js";
 
-import arrow_left from "../resources/images/arrow_left.png";
-import arrow_right from "../resources/images/arrow_right.png";
-import keyImage from "../resources/images/key.png";
-import potionImg from "../resources/images/potion.png";
-import boxPropImage from "../resources/images/box_prop.png";
-import backgroundImg from "../resources/images/background.png";
-import back_arrowImg from "../resources/images/back_arrow.png";
+import Item from "./item.js";
+import gameData from "../data/gameData.js";
 
 class UI {
   constructor(app) {
-    /**
-     * @constructor - Creates a UI instance with different view containers and adds background to them
-     * @param {PIXI.Application} app - Application where the UI is added to
-     */
-
-    // Container for main game elements
-    const gameContainer = new PIXI.Container();
-    gameContainer.sortableChildren = true;
-    // If the user is on mobile, gameContainer is instead added to cameraContainer later
-    window.isMobile ? null : app.stage.addChild(gameContainer);
-    app.gameContainer = gameContainer;
-    gameContainer.filters = [new CRTFilter()];
-    gameContainer.visible = true;
-
-    // Create background sprite
-    const backgroundTexture = PIXI.Texture.from(backgroundImg);
-    const background = new PIXI.Sprite(backgroundTexture);
-    background.width = 1400;
-    background.height = 800;
-    app.gameContainer.addChild(background);
-
-    // Camera container
-    if (window.isMobile) {
-      const cameraContainer = new PIXI.Container();
-      // app.cameraContainer = cameraContainer;
-      cameraContainer.addChild(gameContainer);
-      app.stage.addChild(cameraContainer);
-      const leftArrowTexture = PIXI.Texture.from(arrow_left);
-      const leftButton = new PIXI.Sprite(leftArrowTexture);
-      leftButton.eventMode = "static";
-      leftButton.buttonMode = true;
-      leftButton.on("pointerdown", () => {
-        moveCamera(app, cameraContainer, "left");
-      });
-      app.stage.addChild(leftButton);
-
-      const rightArrowTexture = PIXI.Texture.from(arrow_right);
-      const rightButton = new PIXI.Sprite(rightArrowTexture);
-      rightButton.eventMode = "static";
-      rightButton.buttonMode = true;
-      rightButton.on("pointerdown", () => {
-        moveCamera(app, cameraContainer, "right");
-      });
-      app.stage.addChild(rightButton);
-      rightButton.x = app.renderer.width - 50;
-      rightButton.y = 50;
-      leftButton.x = 50;
-      leftButton.y = 50;
-    }
-
-    // Generate content
+    app.scenes = {};
+    // create array for solid objects
     this.solidObjects = [];
     this.solidObjects.sortableChildren = true;
-
-    // Create collectable items
-    this.key = new Item(app, keyImage, 0.66, 0.735);
-
-    // Create interactable object
-    this.box_prop = new Item(app, boxPropImage, 0.71, 0.93);
-    this.box_prop.height = 100;
-    this.box_prop.width = 100;
-    generateWikiList();
-    this.box_prop.on("pointerdown", () => showWikiList(app, app.gameContainer));
-    this.solidObjects.push(this.box_prop);
-
-    // Test object for collision dev
-    this.box_propCollision = new Item(app, boxPropImage, 0.3, 0.95);
-    this.box_propCollision.height = 100;
-    this.box_propCollision.width = 100;
-    this.box_propCollision.eventMode = "none";
-    this.solidObjects.push(this.box_propCollision);
-
-    // Drinkable potion, makes player small
-    this.potion = new Item(app, potionImg, 0.1, 0.95);
-    this.potion.height = 100;
-    this.potion.width = 100;
-
-    // Initialize containers
-    const bookshelfContainer = new PIXI.Container();
-    app.stage.addChild(bookshelfContainer);
-    app.bookshelfContainer = bookshelfContainer;
-
-    const mouseholeContainer = new PIXI.Container();
-    app.stage.addChild(mouseholeContainer);
-    app.mouseholeContainer = mouseholeContainer;
-
-    const numpadContainer = new PIXI.Container();
-    app.stage.addChild(numpadContainer);
-    app.numpadContainer = numpadContainer;
-
-    // Store references to all containers
-    this.containers = {
-      game: app.gameContainer,
-      bookshelf: app.bookshelfContainer,
-      numpad: app.numpadContainer,
-      mousehole: app.mouseholeContainer
-    };
-
-    this.toggleView = (viewName) => {
-      return () => {
-        let gameContainerVisible = false;
-        Object.entries(this.containers).forEach(([name, container]) => {
-          if (name !== viewName) {
-            container.visible = false;
-          } else {
-            container.visible = !container.visible; // Toggle the visibility of the specified view
-            if (container.visible) {
-              gameContainerVisible = true; // Set gameContainerVisible to true if the specified view is visible
-            }
-          }
-        });
-        // Ensure that gameContainer is visible if no other view is visible
-        if (!gameContainerVisible) {
-          this.containers.game.visible = true;
-        }
-      };
-    };
-
-
-    // Generate game views
-    this.bookshelf = new Bookshelf(app, this.toggleView('bookshelf'));
-    this.numpad = new Numpad(app, this.toggleNumpad(app));
-    this.mousehole = new Mousehole(app, this.toggleMousehole(app));
-
-
+    // create scenes from gameData.js
+    this.createScenesFromGameData(app, gameData);
   }
 
-  toggleBookshelf(app) {
-    /**
-     * Function to toggle visibility of bookshelf view
-     * @param {PIXI.Application} app - Application where the UI is
-     */
-    return () => {
-      app.gameContainer.visible = !app.gameContainer.visible;
-      app.bookshelfContainer.visible = !app.bookshelfContainer.visible;
-    };
+  createScenesFromGameData(app, gameData) {
+    Object.entries(gameData).forEach(([sceneName, sceneData]) => {
+      let container = app.scenes[sceneName];
+      if (!container) {
+        container = new PIXI.Container();
+        container.name = sceneName;
+        container.sortableChildren = true;
+        app.stage.addChild(container);
+        app.scenes[sceneName] = container;
+        container.filters = [new CRTFilter()];
+      }
+
+      if (sceneData.background) {
+        const background = PIXI.Sprite.from(sceneData.background);
+        // Set the background to fill the entire renderer view
+        background.width = app.renderer.width;
+        background.height = app.renderer.height;
+        container.addChild(background);
+      }
+
+      // populate scene with items
+      this.createObjectsFromGameData(app, sceneData.items, container);
+
+      if (sceneName === "mainScene") {
+        // set / show mainScene by default
+        app.mainScene = container;
+        container.visible = true;
+      } else {
+        // hide other scenes by default
+        container.visible = false;
+      }
+    });
   }
-  toggleNumpad(app) {
-    /**
-     * Function to toggle visibility of numpad view
-     * @param {PIXI.Application} app - Application where the UI is
-     */
-    return () => {
-      app.gameContainer.visible = !app.gameContainer.visible;
-      app.numpadContainer.visible = !app.numpadContainer.visible;
-    };
-  }
-  toggleMousehole(app) {
-    /**
-     * Function to toggle visibility of mousehole view
-     * @param {PIXI.Application} app - Application where the UI is
-     */
-    return () => {
-      app.gameContainer.visible = !app.gameContainer.visible;
-      app.mouseholeContainer.visible = !app.mouseholeContainer.visible;
-    };
+
+  createObjectsFromGameData(app, items, container) {
+    console.log(items);
+    items.forEach((itemData) => {
+      // pass the container where the Item should be added
+      const item = new Item(
+        app,
+        container,
+        itemData.image,
+        itemData.location.x,
+        itemData.location.y,
+        itemData.zIndex,
+        itemData.height,
+        itemData.width,
+        itemData.name,
+        itemData.onInteraction
+      );
+      // push solid items to solidObjects array
+      this.solidObjects.push(item);
+    });
+    console.log(container);
   }
 }
 

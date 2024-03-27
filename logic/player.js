@@ -47,7 +47,7 @@ class Player {
     this.walkableArea.endFill();
     // Comment row below to see visualization in beautiful ogre green
     this.walkableArea.visible = false;
-    app.gameContainer.addChild(this.walkableArea);
+    app.mainScene.addChild(this.walkableArea);
 
     // Create player sprite with idle animation
     Player.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
@@ -58,7 +58,7 @@ class Player {
     Player.player.animationSpeed = 0.05;
     Player.player.loop = true; // Set the loop property to true
     Player.player.play();
-    app.gameContainer.addChild(Player.player);
+    app.mainScene.addChild(Player.player);
     this.targetPosition = new PIXI.Point(Player.player.x, Player.player.y);
   }
 
@@ -179,7 +179,7 @@ class Player {
     // Calculate the magnitude of the direction vector
     const magnitude = Math.sqrt(
       directionVector.x * directionVector.x +
-      directionVector.y * directionVector.y
+        directionVector.y * directionVector.y
     );
 
     // Check if the magnitude is greater than 0 (to avoid division by zero)

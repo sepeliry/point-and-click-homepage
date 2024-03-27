@@ -8,38 +8,61 @@ class Item {
   /**
    * @costructor Creates an item from image and sets it coordinates
    * @param {PIXI.Application} app - Pixi application where the item is placed
+   * @param {PIXI.Container} container - container/scene to which the object will be added
    * @param {image} image - image to be used for item sprite
    * @param {number} x - x coordinate where the object is placed in the application
    * @param {number} y - y coordinate where the object is placed in the application
-   * @param {boolean} interactable - whether object is interactable or not. Default: false
+   * @param {number} zIndex - z index of the object
+   * @param {number} height - height of the object
+   * @param {number} width - width of the object
+   * @param {string} name - name of the object
+   * @param {Function} onInteraction - callback function which will be called when the object is clicked
    * @returns {PIXI.Sprite} - The item object
    */
-  constructor(app, image, x, y, interactable = false) {
+  constructor(
+    app,
+    container,
+    image,
+    x,
+    y,
+    zIndex = 1,
+    height,
+    width,
+    name,
+    onInteraction
+  ) {
     this.item = PIXI.Sprite.from(image);
     this.glowEffect = new GlowFilter({
-      innerStrength: 0.5,
-      outerStrength: 0.5,
+      innerStrength: 1,
+      outerStrength: 1,
       quality: 0.1,
     });
     // this.item.x = x * app.renderer.width;
     // this.item.y = y * app.renderer.height;
     this.item.x = x * 1400;
     this.item.y = y * 800;
-    this.item.zIndex = 1;
+    this.item.zIndex = zIndex;
+    this.item.name = name;
+    this.item.height = height;
+    this.item.width = width;
 
     // Anchor to bottom left corner
     this.item.anchor.set(0.5, 1);
 
-    if (interactable) {
+    // check if the object has an interaction/callback
+    if (onInteraction) {
       this.item.eventMode = "dynamic";
+      this.item.cursor = "pointer";
+
+      this.item.on("pointerdown", onInteraction(app));
     } else {
       this.item.eventMode = "static";
     }
 
-    this.item.cursor = "pointer";
     this.item.filters = [this.glowEffect];
     this.item.visible = true;
-    app.gameContainer.addChild(this.item);
+    // add object to its container/scene
+    container.addChild(this.item);
 
     return this.item;
   }

@@ -35,24 +35,6 @@ const player = new Player(app);
 const inventory = new Inventory(app);
 // const popup = new Popup(app, popup1TextElements);
 
-// Button for testing bookshelf view
-document.addEventListener("DOMContentLoaded", () => {
-  const button = document.createElement("button");
-  button.textContent = "Avaa kirjahylly";
-  button.classList.add("button");
-  button.addEventListener("click", ui.toggleBookshelf(app));
-  document.getElementById("test-controls").appendChild(button);
-});
-
-// Button testing numpad view
-document.addEventListener("DOMContentLoaded", () => {
-  const button = document.createElement("button");
-  button.textContent = "Avaa numpad";
-  button.classList.add("button");
-  button.addEventListener("click", ui.toggleNumpad(app));
-  document.getElementById("test-controls").appendChild(button);
-});
-
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
   if (
@@ -68,9 +50,9 @@ function getItemAtPosition(position, item) {
 let targetPosition;
 
 // Handle click event on the stage
-app.gameContainer.eventMode = "static"; // Enable interaction
-app.gameContainer.on("pointertap", (event) => {
-  console.log(app.gameContainer.toLocal(event.global));
+app.mainScene.eventMode = "static"; // Enable interaction
+app.mainScene.on("pointertap", (event) => {
+  // console.log(app.mainScene.toLocal(event.global));
   const collisionResult = playerCollides(Player.player, ui.solidObjects);
   if (collisionResult.collided) {
     const direction = collisionResult.direction;
@@ -109,7 +91,7 @@ app.gameContainer.on("pointertap", (event) => {
     // Set the new target position on click
     // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
     // has to be adjusted in a different way once final designs are done.
-    const localPosition = app.gameContainer.toLocal(event.global);
+    const localPosition = app.mainScene.toLocal(event.global);
     const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
     targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
   }
@@ -120,7 +102,7 @@ app.ticker.add((delta) => {
   if (targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - targetPosition.x, 2) +
-      Math.pow(Player.player.y - targetPosition.y, 2)
+        Math.pow(Player.player.y - targetPosition.y, 2)
     );
     if (distance < 3) {
       targetPosition = null;
@@ -130,17 +112,21 @@ app.ticker.add((delta) => {
   // Check if a targetPos is set and if the player has reached the destination to stop infinite loop  && !player.destinationReached
   if (targetPosition) {
     player.move(targetPosition, ui.solidObjects);
-    app.gameContainer.updateTransform();
+    app.mainScene.updateTransform();
   }
 
   inventory.updateInventoryUI();
 });
 
 if (!window.isMobile) {
-  window.addEventListener("resize", () => resizeGame(app, app.gameContainer));
-  window.addEventListener("resize", () => resizeGame(app, app.bookshelfContainer));
+  window.addEventListener("resize", () => resizeGame(app, app.mainScene));
+  window.addEventListener("resize", () =>
+    resizeGame(app, app.bookshelfContainer)
+  );
   window.addEventListener("resize", () => resizeGame(app, app.numpadContainer));
-  window.addEventListener("resize", () => resizeGame(app, app.mouseholeContainer));
+  window.addEventListener("resize", () =>
+    resizeGame(app, app.mouseholeContainer)
+  );
 }
 
-setupPdf(app, app.gameContainer);
+setupPdf(app, app.mainScene);

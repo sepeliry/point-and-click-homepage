@@ -12,7 +12,7 @@ class Inventory {
     this.inventory = [];
     this.inventoryUI = new PIXI.Container();
     this.inventoryUI.position.set(0, app.screen.height - 60); // Adjust as needed
-    app.gameContainer.addChild(this.inventoryUI);
+    app.mainScene.addChild(this.inventoryUI);
   }
   /**
    *

@@ -23,7 +23,7 @@ import arrow_right from "../resources/images/arrow_right.png";
 import { moveCamera } from "./utils/cameraUtils.js";
 
 // Mobiilinäkymän kokeilua varten = true
-window.isMobile = true;
+window.isMobile = false;
 let app;
 
 // Create application on page load
@@ -181,7 +181,7 @@ let books = [];
  * Vasemman reunan x-koordinaatti on 500
  */
 
-// Populate the entire bookshelf 
+// Populate the entire bookshelf
 let row1X = 500;
 let row1Y = 170;
 let bookNumber = 1;
@@ -202,7 +202,6 @@ for (let i = 0; i < 4; i++) {
   row1X = 500;
 }
 
-
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
   if (
@@ -221,7 +220,7 @@ let targetPosition;
 gameContainer.eventMode = "static"; // Enable interaction
 gameContainer.on("pointertap", (event) => {
   console.log(gameContainer.toLocal(event.global));
-  console.log("localposition:" + gameContainer.toLocal(event.global));
+  // console.log("localposition:" + gameContainer.toLocal(event.global));
   const collisionResult = playerCollides(player.player, solidObjects);
   if (collisionResult.collided) {
     const direction = collisionResult.direction;
@@ -235,6 +234,7 @@ gameContainer.on("pointertap", (event) => {
 
   const clickedItem = getItemAtPosition(event.global, event.target);
   if (clickedItem) {
+    console.log("clicked item");
     // Calculate the distance between the clicked item and the player
     const distance = Math.abs(clickedItem.x - player.player.x);
     switch (clickedItem) {
@@ -264,10 +264,10 @@ gameContainer.on("pointertap", (event) => {
     const localPosition = gameContainer.toLocal(event.global);
     const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
     targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
-    player.destinationReached = false;
+    // player.destinationReached = false;
     // targetPosition = new PIXI.Point(localPosition.x, localPosition.y);
     // Move the player towards the target position
-    // player.move(targetPosition, solidObjects);
+    player.move(targetPosition, solidObjects);
   }
 });
 
@@ -279,12 +279,13 @@ app.ticker.add((delta) => {
         Math.pow(player.player.y - targetPosition.y, 2)
     );
     if (distance < 3) {
+      console.log("dist 3");
       targetPosition = null;
       player.setIdle();
     }
   }
-  // Check if a targetPos is set and if the player has reached the destination to stop infinite loop
-  if (targetPosition && !player.destinationReached) {
+  // Check if a targetPos is set and if the player has reached the destination to stop infinite loop  && !player.destinationReached
+  if (targetPosition) {
     player.move(targetPosition, solidObjects);
     gameContainer.updateTransform();
   }

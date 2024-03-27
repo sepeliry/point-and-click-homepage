@@ -8,7 +8,7 @@ import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
 
 // Mobiilinäkymän kokeilua varten = true
-window.isMobile = false;
+window.isMobile = true;
 let app;
 
 // Create application on page load
@@ -120,7 +120,7 @@ app.ticker.add((delta) => {
   if (targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - targetPosition.x, 2) +
-      Math.pow(Player.player.y - targetPosition.y, 2)
+        Math.pow(Player.player.y - targetPosition.y, 2)
     );
     if (distance < 3) {
       targetPosition = null;
@@ -135,12 +135,15 @@ app.ticker.add((delta) => {
 
   inventory.updateInventoryUI();
 });
-
+setupPdf(app, app.gameContainer);
 if (!window.isMobile) {
   window.addEventListener("resize", () => resizeGame(app, app.gameContainer));
-  window.addEventListener("resize", () => resizeGame(app, app.bookshelfContainer));
+  window.addEventListener("resize", () =>
+    resizeGame(app, app.bookshelfContainer)
+  );
   window.addEventListener("resize", () => resizeGame(app, app.numpadContainer));
-  window.addEventListener("resize", () => resizeGame(app, app.mouseholeContainer));
+  window.addEventListener("resize", () =>
+    resizeGame(app, app.mouseholeContainer)
+  );
+  window.addEventListener("resize", () => resizeGame(app, app.pdfContainer));
 }
-
-setupPdf(app, app.gameContainer);

@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { resizeGame } from "./utils/resize";
-import { checkDistance } from './utils/distanceCheckUtils.js';
+import { checkDistance } from "./utils/distanceCheckUtils.js";
 import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
 import Player from "./player";
 import { CRTFilter } from "@pixi/filter-crt";
@@ -44,7 +44,7 @@ class UI {
     // Camera container
     if (window.isMobile) {
       const cameraContainer = new PIXI.Container();
-      // app.cameraContainer = cameraContainer;
+      app.cameraContainer = cameraContainer;
       cameraContainer.addChild(gameContainer);
       app.stage.addChild(cameraContainer);
       const leftArrowTexture = PIXI.Texture.from(arrow_left);
@@ -110,12 +110,17 @@ class UI {
     app.stage.addChild(numpadContainer);
     app.numpadContainer = numpadContainer;
 
+    // Used in pdfUtils to display list of pdfs
+    const pdfContainer = new PIXI.Container();
+    app.stage.addChild(pdfContainer);
+    app.pdfContainer = pdfContainer;
+
     // Store references to all containers
     this.containers = {
       game: app.gameContainer,
       bookshelf: app.bookshelfContainer,
       numpad: app.numpadContainer,
-      mousehole: app.mouseholeContainer
+      mousehole: app.mouseholeContainer,
     };
 
     this.toggleView = (viewName) => {
@@ -138,13 +143,10 @@ class UI {
       };
     };
 
-
     // Generate game views
-    this.bookshelf = new Bookshelf(app, this.toggleView('bookshelf'));
+    this.bookshelf = new Bookshelf(app, this.toggleView("bookshelf"));
     this.numpad = new Numpad(app, this.toggleNumpad(app));
     this.mousehole = new Mousehole(app, this.toggleMousehole(app));
-
-
   }
 
   toggleBookshelf(app) {

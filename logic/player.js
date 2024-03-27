@@ -39,7 +39,7 @@ class Player {
       PIXI.Texture.from(playerWalk7),
     ];
     this.isMiniSize = false;
-
+    // this.destinationReached = true;
     // Create walkable area
     this.walkableArea = new PIXI.Graphics();
     this.walkableArea.beginFill(0x00ff00);
@@ -98,6 +98,12 @@ class Player {
       Player.player.zIndex = 0;
     }
 
+    // If the point cannot be reached, set to true to stop infinite loop
+    if (!this.walkableArea.containsPoint(targetPosition)) {
+      // this.destinationReached = true;
+      this.setIdle();
+      return;
+    }
     // Check if the player is moving
     if (
       distance > 3 &&
@@ -110,7 +116,7 @@ class Player {
         Player.player.animationSpeed = 0.11; // Set animation speed for walk animation
         Player.player.play();
       }
-
+      // this.destinationReached = false;
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
@@ -127,15 +133,18 @@ class Player {
         Player.player.scale.y = 1;
       }
     } else {
-      // Switch to the idle animation frames
-      if (Player.player.textures !== this.playerIdleFrames) {
-        Player.player.textures = this.playerIdleFrames;
-        Player.player.animationSpeed = 0.05; // Set animation speed for idle animation
-        Player.player.play();
-      }
+      this.setIdle();
     }
   }
 
+  setIdle() {
+    if (Player.player.textures !== this.playerIdleFrames) {
+      Player.player.textures = this.playerIdleFrames;
+      Player.player.animationSpeed = 0.05; // Set animation speed for idle animation
+      Player.player.play();
+      // this.destinationReached = true;
+    }
+  }
   minimizePlayer() {
     this.isMiniSize = true;
     this.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];

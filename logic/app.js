@@ -68,7 +68,6 @@ if (window.isMobile) {
   leftButton.eventMode = "static";
   leftButton.buttonMode = true;
   leftButton.on("pointerdown", () => {
-    // cameraContainer.x += 100; // adjust this value as needed
     moveCamera(app, cameraContainer, "left");
   });
   app.stage.addChild(leftButton);
@@ -78,14 +77,13 @@ if (window.isMobile) {
   rightButton.eventMode = "static";
   rightButton.buttonMode = true;
   rightButton.on("pointerdown", () => {
-    // cameraContainer.x -= 100; // adjust this value as needed
     moveCamera(app, cameraContainer, "right");
   });
   app.stage.addChild(rightButton);
+  rightButton.x = app.renderer.width - 50;
+  rightButton.y = 50;
   leftButton.x = 50;
   leftButton.y = 50;
-  rightButton.x = 550;
-  rightButton.y = 50;
 }
 
 // Container for bookshelf view
@@ -181,7 +179,7 @@ let books = [];
  * Vasemman reunan x-koordinaatti on 500
  */
 
-// Populate the entire bookshelf 
+// Populate the entire bookshelf
 let row1X = 500;
 let row1Y = 170;
 let bookNumber = 1;
@@ -201,7 +199,6 @@ for (let i = 0; i < 4; i++) {
   row1Y += 120;
   row1X = 500;
 }
-
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
@@ -229,6 +226,7 @@ gameContainer.on("pointertap", (event) => {
     if (moveFunction) {
       moveFunction(Player.player, 20); // Adjust the value as needed
     }
+    // player.destinationReached = true;
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
@@ -261,7 +259,9 @@ gameContainer.on("pointertap", (event) => {
     // has to be adjusted in a different way once final designs are done.
     const localPosition = gameContainer.toLocal(event.global);
     const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
-    targetPosition = new PIXI.Point(event.global.x, yCoordinate);
+    targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+    // player.destinationReached = false;
+    // targetPosition = new PIXI.Point(localPosition.x, localPosition.y);
     // Move the player towards the target position
     // player.move(targetPosition, solidObjects);
   }
@@ -270,11 +270,24 @@ gameContainer.on("pointertap", (event) => {
 // Main game loop
 app.ticker.add((delta) => {
   if (targetPosition) {
+    const distance = Math.sqrt(
+      Math.pow(player.player.x - targetPosition.x, 2) +
+      Math.pow(player.player.y - targetPosition.y, 2)
+    );
+    if (distance < 3) {
+      targetPosition = null;
+      player.setIdle();
+    }
+  }
+  // Check if a targetPos is set and if the player has reached the destination to stop infinite loop  && !player.destinationReached
+  if (targetPosition) {
     player.move(targetPosition, solidObjects);
     gameContainer.updateTransform();
   }
+
   inventory.updateInventoryUI();
 });
+
 if (!window.isMobile) {
   window.addEventListener("resize", () => resizeGame(app, gameContainer));
   window.addEventListener("resize", () => resizeGame(app, bookshelfContainer));

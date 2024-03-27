@@ -97,10 +97,53 @@ class UI {
     this.potion.height = 100;
     this.potion.width = 100;
 
+    // Initialize containers
+    const bookshelfContainer = new PIXI.Container();
+    app.stage.addChild(bookshelfContainer);
+    app.bookshelfContainer = bookshelfContainer;
+
+    const mouseholeContainer = new PIXI.Container();
+    app.stage.addChild(mouseholeContainer);
+    app.mouseholeContainer = mouseholeContainer;
+
+    const numpadContainer = new PIXI.Container();
+    app.stage.addChild(numpadContainer);
+    app.numpadContainer = numpadContainer;
+
+    // Store references to all containers
+    this.containers = {
+      game: app.gameContainer,
+      bookshelf: app.bookshelfContainer,
+      numpad: app.numpadContainer,
+      mousehole: app.mouseholeContainer
+    };
+
+    this.toggleView = (viewName) => {
+      return () => {
+        let gameContainerVisible = false;
+        Object.entries(this.containers).forEach(([name, container]) => {
+          if (name !== viewName) {
+            container.visible = false;
+          } else {
+            container.visible = !container.visible; // Toggle the visibility of the specified view
+            if (container.visible) {
+              gameContainerVisible = true; // Set gameContainerVisible to true if the specified view is visible
+            }
+          }
+        });
+        // Ensure that gameContainer is visible if no other view is visible
+        if (!gameContainerVisible) {
+          this.containers.game.visible = true;
+        }
+      };
+    };
+
+
     // Generate game views
-    this.bookshelf = new Bookshelf(app, this.toggleBookshelf(app));
+    this.bookshelf = new Bookshelf(app, this.toggleView('bookshelf'));
     this.numpad = new Numpad(app, this.toggleNumpad(app));
     this.mousehole = new Mousehole(app, this.toggleMousehole(app));
+
 
   }
 

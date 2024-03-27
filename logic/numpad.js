@@ -11,13 +11,10 @@ class Numpad {
      * @costructor Creates a numpad instance with a screen and number buttons
      * @param {PIXI.Application} app - Pixi application where the numpad is placed
      */
-    constructor(app, toggleNumpad) {
+    constructor(app, toggleView) {
         // Container for numpad view
-        const numpadContainer = new PIXI.Container();
-        app.stage.addChild(numpadContainer);
-        app.numpadContainer = numpadContainer;
-        numpadContainer.filters = [new CRTFilter()];
-        numpadContainer.visible = false;
+        app.numpadContainer.filters = [new CRTFilter()];
+        app.numpadContainer.visible = false;
 
         // Create sprite for num pad view
         const numpadTexture = PIXI.Texture.from(numpadBackgroundImg);
@@ -34,7 +31,7 @@ class Numpad {
         buttonNumpad.interactive = true;
         buttonNumpad.cursor = "pointer";
         buttonNumpad.buttonMode = true;
-        buttonNumpad.addEventListener("click", toggleNumpad.bind(this, app));
+        buttonNumpad.addEventListener("click", toggleView.bind(this, app));
         app.numpadContainer.addChild(buttonNumpad);
 
         // Create clickable area on door numpad
@@ -61,7 +58,7 @@ class Numpad {
 
             // Call the checkDistance function with appropriate parameters
             checkDistance(Player.player, numpadMapping, maxDistance, () => {
-                toggleNumpad.bind(this, app)();
+                toggleView.bind(this, app)();
             });
         });
 

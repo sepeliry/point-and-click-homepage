@@ -9,16 +9,13 @@ import bookImg2 from "../resources/images/book2_placeholder.png";
 import { CRTFilter } from "@pixi/filter-crt";
 
 class Bookshelf {
-    constructor(app, toggleBookshelf) {
+    constructor(app, toggleView) {
         /**
          * @constructor - Creates a Bookshelf instance with books generated on it
          * @param {PIXI.Application} app - The PIXI application
          */
 
         // Container for bookshelf view
-        const bookshelfContainer = new PIXI.Container();
-        app.stage.addChild(bookshelfContainer);
-        app.bookshelfContainer = bookshelfContainer;
         app.bookshelfContainer.filters = [new CRTFilter()];
         app.bookshelfContainer.visible = false;
         app.bookshelfContainer.sortable = true;
@@ -38,7 +35,7 @@ class Bookshelf {
         button.interactive = true;
         button.cursor = "pointer";
         button.buttonMode = true;
-        button.addEventListener("click", toggleBookshelf.bind(this, app));
+        button.addEventListener("click", toggleView.bind(this, app));
         app.bookshelfContainer.addChild(button);
 
         // Create clickable area on bookshelf
@@ -70,7 +67,7 @@ class Bookshelf {
 
             // Call the checkDistance function with appropriate parameters
             checkDistance(Player.player, bookshelfMapping, maxDistance, () => {
-                toggleBookshelf.bind(this, app)();
+                toggleView.bind(this, app)();
             });
         });
     }

@@ -7,19 +7,17 @@ import Player from './player';
 import Item from './item';
 
 class Mousehole {
-    constructor(app, toggleMousehole) {
+    constructor(app, toggleView) {
         // Container for mousehole view
-        const mouseholeContainer = new PIXI.Container();
-        app.stage.addChild(mouseholeContainer);
-        app.mouseholeContainer = mouseholeContainer;
-        mouseholeContainer.visible = false;
+
+        app.mouseholeContainer.visible = false;
 
         // Create sprite for mousehole background
         const mouseholeTexture = PIXI.Texture.from(mouseholeBackGroundImg);
         const mouseholeBackground = new PIXI.Sprite(mouseholeTexture);
         mouseholeBackground.width = app.screen.width;
         mouseholeBackground.height = app.screen.height;
-        mouseholeContainer.addChild(mouseholeBackground);
+        app.mouseholeContainer.addChild(mouseholeBackground);
 
         // Create sprite for mousehole button
         const backArrowTexture = PIXI.Texture.from(back_arrowImg);
@@ -30,8 +28,8 @@ class Mousehole {
         mouseholeButton.cursor = "pointer";
         mouseholeButton.buttonMode = true;
         mouseholeButton.zIndex = 0;
-        mouseholeButton.addEventListener("click", toggleMousehole.bind(this, app));
-        mouseholeContainer.addChild(mouseholeButton);
+        mouseholeButton.addEventListener("click", toggleView.bind(this, app));
+        app.mouseholeContainer.addChild(mouseholeButton);
 
         // Test object for mousehole
         this.mousehole = new Item(app, mouseholeImg, 0.78, 0.8);
@@ -44,7 +42,7 @@ class Mousehole {
 
             // Call the checkDistance function with appropriate parameters
             checkDistance(Player.player, mouseholeButton, maxDistance, () => {
-                this.toggleMousehole(app)();
+                toggleView.bind(this, app)();
             });
         });
     }

@@ -21,7 +21,7 @@ class Inventory {
    */
   addToInventory(item, player) {
     // Adds item to inventory, checks for distance and duplicates
-    this.distance = Math.abs(item.x - player.player.x);
+    this.distance = Math.abs(item.x - player.x);
     if (this.distance < 100) {
       if (!this.inventory.includes(item)) {
         console.log("Item collected!");

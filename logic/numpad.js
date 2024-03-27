@@ -1,12 +1,70 @@
 import * as PIXI from "pixi.js";
+import { checkDistance } from './utils/distanceCheckUtils';
+import Player from './player';
 import { GlowFilter } from "@pixi/filter-glow";
+import { CRTFilter } from "@pixi/filter-crt";
+import numpadBackgroundImg from "../resources/images/num_pad.png";
+import back_arrowImg from "../resources/images/back_arrow.png";
 
 class Numpad {
     /**
      * @costructor Creates a numpad instance with a screen and number buttons
      * @param {PIXI.Application} app - Pixi application where the numpad is placed
      */
-    constructor(app) {
+    constructor(app, toggleNumpad) {
+        // Container for numpad view
+        const numpadContainer = new PIXI.Container();
+        app.stage.addChild(numpadContainer);
+        app.numpadContainer = numpadContainer;
+        numpadContainer.filters = [new CRTFilter()];
+        numpadContainer.visible = false;
+
+        // Create sprite for num pad view
+        const numpadTexture = PIXI.Texture.from(numpadBackgroundImg);
+        const numpadBackground = new PIXI.Sprite(numpadTexture);
+        numpadBackground.width = app.screen.width;
+        numpadBackground.height = app.screen.height;
+        app.numpadContainer.addChild(numpadBackground);
+
+        // Back button for numpad
+        const backArrowTexture = PIXI.Texture.from(back_arrowImg);
+        const buttonNumpad = new PIXI.Sprite(backArrowTexture);
+        buttonNumpad.x = 0.03 * app.gameContainer.width;
+        buttonNumpad.y = 0.03 * app.gameContainer.height;
+        buttonNumpad.interactive = true;
+        buttonNumpad.cursor = "pointer";
+        buttonNumpad.buttonMode = true;
+        buttonNumpad.addEventListener("click", toggleNumpad.bind(this, app));
+        app.numpadContainer.addChild(buttonNumpad);
+
+        // Create clickable area on door numpad
+        const numpadMapping = new PIXI.Graphics();
+        const w = (2 / 100) * app.gameContainer.width;
+        const h = (6 / 100) * app.gameContainer.height;
+        numpadMapping.beginFill(0x00ff00);
+        numpadMapping.drawRect(0, 0, w, h);
+        numpadMapping.endFill();
+        numpadMapping.alpha = 0;
+        numpadMapping.visible = true;
+        numpadMapping.x = app.gameContainer.width / 1.94;
+        numpadMapping.y = app.gameContainer.height / 1.87;
+        numpadMapping.interactive = true;
+        numpadMapping.buttonMode = true;
+        numpadMapping.cursor = "pointer";
+        app.gameContainer.addChild(numpadMapping);
+
+        // Functionality to check for player distance from clickable mapped areas
+
+        numpadMapping.on("click", (event) => {
+            // Define the maximum distance within which the player can interact with the clickable area
+            const maxDistance = 250;
+
+            // Call the checkDistance function with appropriate parameters
+            checkDistance(Player.player, numpadMapping, maxDistance, () => {
+                toggleNumpad.bind(this, app)();
+            });
+        });
+
         // Text style for code display
         const screenstyle = new PIXI.TextStyle({
             breakWords: true,

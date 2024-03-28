@@ -8,8 +8,13 @@ import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
 import { followPlayer } from "./utils/cameraUtils.js";
 
-// Mobiilinäkymän kokeilua varten = true
-window.isMobile = false;
+const windowWidth = window.innerWidth;
+const windowHeight = window.innerHeight;
+if (windowWidth <= 800 || windowHeight <= 800) {
+  window.isMobile = true;
+} else {
+  window.isMobile = false;
+}
 let app;
 
 // Create application on page load
@@ -21,8 +26,8 @@ if (!window.isMobile) {
   });
 } else {
   app = new PIXI.Application({
-    width: 600,
-    height: 800,
+    width: windowWidth,
+    height: windowHeight >= 800 ? 800 : windowHeight,
     backgroundColor: 0xaaaaaa,
   });
 }

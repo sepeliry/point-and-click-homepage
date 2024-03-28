@@ -32,13 +32,14 @@ export const setupPdf = (app, gameContainer) => {
   background.drawRect(0, 0, app.view.width, app.view.height);
   background.endFill();
   background.alpha = 0.8;
+  const fontSize = app.view.width >= 600 ? 20 : 16;
 
   app.pdfContainer.addChild(background);
   app.pdfContainer.setChildIndex(background, 0);
   pdfFiles.forEach((pdfFile, index) => {
     let text = new PIXI.Text(pdfFile.title, {
       fill: "#ffffff",
-      fontSize: 20,
+      fontSize: fontSize,
     });
     text.anchor.set(0.5, 0);
     text.cursor = "pointer";

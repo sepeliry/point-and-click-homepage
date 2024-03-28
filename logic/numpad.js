@@ -31,7 +31,7 @@ class Numpad {
         buttonNumpad.interactive = true;
         buttonNumpad.cursor = "pointer";
         buttonNumpad.buttonMode = true;
-        buttonNumpad.addEventListener("click", toggleView.bind(this, app));
+        buttonNumpad.addEventListener("pointertap", toggleView.bind(this, app));
         app.numpadContainer.addChild(buttonNumpad);
 
         // Create clickable area on door numpad

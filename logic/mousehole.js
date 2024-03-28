@@ -28,7 +28,7 @@ class Mousehole {
         mouseholeButton.cursor = "pointer";
         mouseholeButton.buttonMode = true;
         mouseholeButton.zIndex = 0;
-        mouseholeButton.addEventListener("click", toggleView.bind(this, app));
+        mouseholeButton.addEventListener("pointertap", toggleView.bind(this, app));
         app.mouseholeContainer.addChild(mouseholeButton);
 
         // Test object for mousehole

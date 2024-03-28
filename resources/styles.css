@@ -7,14 +7,17 @@ body {
   margin: 0;
   background-color: #22272e;
 }
-
 #game-container {
   max-width: 1400px;
   max-height: 800px;
   width: 100%;
   height: 100%;
 }
-
+#game-container canvas {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
 #test-controls {
   position: absolute;
   display: flex;

@@ -43,6 +43,9 @@ class UI {
 
     // Camera container
     if (window.isMobile) {
+      let gameContainerDOM = document.getElementById("game-container");
+      gameContainerDOM.style.width = `${app.view.width}px`;
+      gameContainerDOM.style.height = `${app.view.height}px`;
       const cameraContainer = new PIXI.Container();
       app.cameraContainer = cameraContainer;
       cameraContainer.addChild(gameContainer);

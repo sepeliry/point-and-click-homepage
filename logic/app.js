@@ -9,7 +9,7 @@ import { resizeGame } from "./utils/resize.js";
 import { followPlayer } from "./utils/cameraUtils.js";
 
 // Mobiilinäkymän kokeilua varten = true
-window.isMobile = true;
+window.isMobile = false;
 let app;
 
 // Create application on page load
@@ -26,12 +26,7 @@ if (!window.isMobile) {
     backgroundColor: 0xaaaaaa,
   });
 }
-// Get a reference to the game-container div
-let gameContainer = document.getElementById("game-container");
 
-// Set the width and height of the game-container div to match the PIXI application
-gameContainer.style.width = `${app.view.width}px`;
-gameContainer.style.height = `${app.view.height}px`;
 globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
 
@@ -153,6 +148,9 @@ app.ticker.add((delta) => {
 setupPdf(app, app.gameContainer);
 if (!window.isMobile) {
   window.addEventListener("resize", () => resizeGame(app, app.gameContainer));
+  document.addEventListener("fullscreenchange", () =>
+    resizeGame(app, app.gameContainer)
+  );
   window.addEventListener("resize", () =>
     resizeGame(app, app.bookshelfContainer)
   );

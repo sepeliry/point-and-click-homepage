@@ -3,11 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="icon"
-      href="./resources/images/favicon.ico"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="./resources/images/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/resources/styles.css" />
     <title>Sepeli</title>
   </head>
@@ -15,12 +11,19 @@
     <div id="game-container">
       <script type="module" src="./logic/app.js"></script>
     </div>
-    <div id="test-controls">
-      <button id="show-pdf" class="button">Toggle PDF Näkymä</button>
-      <button class="button" id="back-btn">Takaisin peliin</button>
+    <div id="wiki-wrapper">
+      <button id="hide-wiki-content">Close</button>
+      <p>
+        Open in Sepeli wiki: <a class="wikiLink"
+    href="https://github.com/sepeliry/YhdistyksenToiminta/wiki"
+    target="_blank"
+    rel="noopener noreferrer">Link to Wiki Page</a>
+      </p>
+      <div id="wiki-text"></div>
     </div>
     <div id="markdown-container">
-      <ul id="wiki-list"></ul>
+      <ul id="wiki-list">
+      </ul>
       <div id="wiki-page-container"></div>
     </div>
     <div id="pdf-viewer-container">

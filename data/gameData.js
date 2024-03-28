@@ -1,5 +1,6 @@
 import switchScene from "../logic/interactions/switchScene";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab";
+import displayWikiPage from "../logic/interactions/displayWikiPage";
 
 import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
@@ -86,7 +87,26 @@ const gameData = {
         name: "Book 1",
         location: {
           x: 0.51,
-          y: 0.6,
+          y: 0.33,
+        },
+        width: 37,
+        height: 85,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () =>
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Honesty.md"
+          ),
+
+        zIndex: 1,
+      },
+
+      {
+        image: book2,
+        type: "Item",
+        name: "Book 2",
+        location: {
+          x: 0.44,
+          y: 0.33,
         },
         width: 37,
         height: 85,
@@ -103,14 +123,14 @@ const gameData = {
         name: "Book 2",
         location: {
           x: 0.44,
-          y: 0.33,
+          y: 0.6,
         },
         width: 37,
         height: 85,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
-          openUrlInNewTab(
-            "https://github.com/sepeliry/YhdistyksenToiminta/wiki"
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomukset.md"
           ),
         zIndex: 1,
       },

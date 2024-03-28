@@ -1,4 +1,7 @@
 function switchScene(app, newSceneName) {
+  // hide wiki text
+  document.getElementById("wiki-wrapper").style.display = "none";
+
   // Hide all scenes
   Object.values(app.scenes).forEach((scene) => (scene.visible = false));
   // Show the new scene

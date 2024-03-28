@@ -40,6 +40,7 @@ class UI {
       }
 
       // populate scene with items
+      // now objects are only displayed when their scene is visible = better performance?
       this.createObjectsFromGameData(app, sceneData.items, container);
 
       if (sceneName === "mainScene") {

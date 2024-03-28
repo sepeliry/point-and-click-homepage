@@ -29,6 +29,10 @@ if (!window.isMobile) {
 globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
 
+document.getElementById("hide-wiki-content").addEventListener("click", () => {
+  document.getElementById("wiki-wrapper").style.display = "none";
+});
+
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);

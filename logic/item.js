@@ -32,11 +32,6 @@ class Item {
     onInteraction
   ) {
     this.item = PIXI.Sprite.from(image);
-    this.glowEffect = new GlowFilter({
-      innerStrength: 1,
-      outerStrength: 1,
-      quality: 0.1,
-    });
     // this.item.x = x * app.renderer.width;
     // this.item.y = y * app.renderer.height;
     this.item.x = x * 1400;
@@ -55,11 +50,18 @@ class Item {
       this.item.cursor = "pointer";
 
       this.item.on("pointerdown", onInteraction(app));
+
+      // add glow effect to items with interaction
+      this.glowEffect = new GlowFilter({
+        innerStrength: 1,
+        outerStrength: 1,
+        quality: 0.1,
+      });
+      this.item.filters = [this.glowEffect];
     } else {
       this.item.eventMode = "static";
     }
 
-    this.item.filters = [this.glowEffect];
     this.item.visible = true;
     // add object to its container/scene
     container.addChild(this.item);

@@ -4,8 +4,10 @@ import { checkDistance } from "./utils/distanceCheckUtils.js";
 import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
 
 import { CRTFilter } from "@pixi/filter-crt";
-import { moveCamera } from "./utils/cameraUtils.js";
-
+import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
+import Bookshelf from "./bookshelf.js";
+import Numpad from "./numpad";
+import Mousehole from "./mousehole";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
 
@@ -34,8 +36,10 @@ class UI {
       if (sceneData.background) {
         const background = PIXI.Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
-        background.width = app.renderer.width;
-        background.height = app.renderer.height;
+        // background.width = app.renderer.width;
+        // background.height = app.renderer.height;
+        background.width = 1400;
+        background.height = 800;
         container.addChild(background);
       }
 
@@ -50,6 +54,16 @@ class UI {
       } else {
         // hide other scenes by default
         container.visible = false;
+      }
+
+      if (window.isMobile) {
+        let gameContainerDOM = document.getElementById("game-container");
+        gameContainerDOM.style.width = `${app.view.width}px`;
+        gameContainerDOM.style.height = `${app.view.height}px`;
+        const cameraContainer = new PIXI.Container();
+        app.cameraContainer = cameraContainer;
+        cameraContainer.addChild(app.mainScene);
+        app.stage.addChild(cameraContainer);
       }
     });
   }

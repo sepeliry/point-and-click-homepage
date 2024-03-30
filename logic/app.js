@@ -6,9 +6,15 @@ import UI from "./UI";
 import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
+import { followPlayer } from "./utils/cameraUtils.js";
 
-// Mobiilinäkymän kokeilua varten = true
-window.isMobile = false;
+const windowWidth = window.innerWidth;
+const windowHeight = window.innerHeight;
+if (windowWidth <= 800) {
+  window.isMobile = true;
+} else {
+  window.isMobile = false;
+}
 let app;
 
 // Create application on page load
@@ -20,8 +26,8 @@ if (!window.isMobile) {
   });
 } else {
   app = new PIXI.Application({
-    width: 600,
-    height: 800,
+    width: windowWidth >= 1400 ? 1400 : windowWidth,
+    height: windowHeight >= 800 ? 800 : windowHeight,
     backgroundColor: 0xaaaaaa,
   });
 }
@@ -39,6 +45,12 @@ const player = new Player(app);
 const inventory = new Inventory(app);
 // const popup = new Popup(app, popup1TextElements);
 
+document.addEventListener("DOMContentLoaded", () => {
+  // To set the initial camera position
+  if (window.isMobile) {
+    followPlayer(app, app.cameraContainer, Player.player);
+  }
+});
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
   if (
@@ -88,6 +100,7 @@ app.mainScene.on("pointertap", (event) => {
           break;
         default:
           inventory.addToInventory(clickedItem, Player.player);
+          console.log("Player pos: " + Player.player.position);
           break;
       }
     }
@@ -116,6 +129,9 @@ app.ticker.add((delta) => {
   // Check if a targetPos is set and if the player has reached the destination to stop infinite loop  && !player.destinationReached
   if (targetPosition) {
     player.move(targetPosition, ui.solidObjects);
+    if (window.isMobile) {
+      followPlayer(app, app.cameraContainer, Player.player);
+    }
     app.mainScene.updateTransform();
   }
 
@@ -124,6 +140,9 @@ app.ticker.add((delta) => {
 
 if (!window.isMobile) {
   window.addEventListener("resize", () => resizeGame(app, app.mainScene));
+  document.addEventListener("fullscreenchange", () =>
+    resizeGame(app, app.mainScene)
+  );
   window.addEventListener("resize", () =>
     resizeGame(app, app.bookshelfContainer)
   );
@@ -131,6 +150,7 @@ if (!window.isMobile) {
   window.addEventListener("resize", () =>
     resizeGame(app, app.mouseholeContainer)
   );
+  window.addEventListener("resize", () => resizeGame(app, app.pdfContainer));
 }
 
-setupPdf(app, app.mainScene);
+// setupPdf(app, app.mainScene);

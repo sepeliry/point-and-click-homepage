@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import Book from "./book.js";
 import { checkDistance } from "./utils/distanceCheckUtils.js";
 import Player from "./player";
-import bookshelfBackgroundImg from "../resources/images/bookshelf2.png";
+import bookshelfBackgroundImg from "../resources/images/bookshelf_background.png";
 import back_arrowImg from "../resources/images/back_arrow.png";
 import bookImg from "../resources/images/book_placeholder.png";
 import bookImg2 from "../resources/images/book2_placeholder.png";

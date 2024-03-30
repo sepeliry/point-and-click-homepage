@@ -8,6 +8,7 @@ const pdfViewer = document.getElementById("pdf-viewer-container");
 const pdfObject = document.getElementById("pdf-object");
 const mainSceneHTML = document.getElementById("game-container");
 let pdfContainer = new PIXI.Container();
+
 // Displays a pdf file
 export function showPdf(app, mainScene, pdfPath) {
   pdfViewer.style.display = "flex";
@@ -26,20 +27,34 @@ export function closePdf(app, mainScene) {
 
 // Creates text elements to open a single pdf file
 export const setupPdf = (app, mainScene) => {
+  // let pdfContainer = new PIXI.Container();
+  let background = new PIXI.Graphics();
+  background.beginFill(0x1b1b1b);
+  background.drawRect(0, 0, app.view.width, app.view.height);
+  background.endFill();
+  background.alpha = 0.8;
+  const fontSize = app.view.width >= 600 ? 20 : 16;
+  app.pdfContainer = pdfContainer;
+
+  app.pdfContainer.addChild(background);
+  app.pdfContainer.setChildIndex(background, 0);
   pdfFiles.forEach((pdfFile, index) => {
-    let text = new PIXI.Text(pdfFile.title, { fill: "#ffffff" });
-    text.eventMode = "static";
+    let text = new PIXI.Text(pdfFile.title, {
+      fill: "#ffffff",
+      fontSize: fontSize,
+    });
+    text.anchor.set(0.5, 0);
     text.cursor = "pointer";
     text.y = index * 30;
-
+    text.x = app.view.width / 2;
+    text.eventMode = "static";
     text.on("pointerdown", () => {
       showPdf(app, mainScene, pdfFile.path);
     });
-    pdfContainer.addChild(text);
+    app.pdfContainer.addChild(text);
   });
 
-  app.stage.addChild(pdfContainer);
-  pdfContainer.visible = false;
+  app.pdfContainer.visible = false;
 
   closePdfBtn.addEventListener("click", () => {
     closePdf(app, mainScene);

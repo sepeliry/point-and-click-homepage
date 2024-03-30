@@ -46,9 +46,11 @@ const inventory = new Inventory(app);
 // const popup = new Popup(app, popup1TextElements);
 
 document.addEventListener("DOMContentLoaded", () => {
-  // To set the initial camera position
+  // Set initial camera position on mobile, or resize to window size
   if (window.isMobile) {
     followPlayer(app, app.cameraContainer, Player.player);
+  } else {
+    resizeGame(app, app.mainScene);
   }
 });
 function getItemAtPosition(position, item) {
@@ -111,6 +113,7 @@ app.mainScene.on("pointertap", (event) => {
     const localPosition = app.mainScene.toLocal(event.global);
     const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
     targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+    console.log(targetPosition);
   }
 });
 
@@ -126,7 +129,6 @@ app.ticker.add((delta) => {
       player.setIdle();
     }
   }
-  // Check if a targetPos is set and if the player has reached the destination to stop infinite loop  && !player.destinationReached
   if (targetPosition) {
     player.move(targetPosition, ui.solidObjects);
     if (window.isMobile) {
@@ -144,13 +146,16 @@ if (!window.isMobile) {
     resizeGame(app, app.mainScene)
   );
   window.addEventListener("resize", () =>
-    resizeGame(app, app.bookshelfContainer)
+    resizeGame(app, app.scenes.bookshelfScene)
   );
-  window.addEventListener("resize", () => resizeGame(app, app.numpadContainer));
   window.addEventListener("resize", () =>
-    resizeGame(app, app.mouseholeContainer)
+    resizeGame(app, app.scenes.numpadScene)
   );
-  window.addEventListener("resize", () => resizeGame(app, app.pdfContainer));
 }
+// window.addEventListener("resize", () =>
+//   resizeGame(app, app.mouseholeContainer)
+// );
+// window.addEventListener("resize", () => resizeGame(app, app.pdfContainer));
+// }
 
 // setupPdf(app, app.mainScene);

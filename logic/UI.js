@@ -36,10 +36,14 @@ class UI {
       if (sceneData.background) {
         const background = PIXI.Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
-        // background.width = app.renderer.width;
-        // background.height = app.renderer.height;
-        background.width = 1400;
-        background.height = 800;
+        if (sceneName === "mainScene" && window.isMobile) {
+          // To support cameraContainer usage on mobile
+          background.width = 1400;
+          background.height = 800;
+        } else {
+          background.width = app.renderer.width;
+          background.height = app.renderer.height;
+        }
         container.addChild(background);
       }
 
@@ -55,7 +59,7 @@ class UI {
         // hide other scenes by default
         container.visible = false;
       }
-
+      // On mobile, use cameraContainer
       if (window.isMobile) {
         let gameContainerDOM = document.getElementById("game-container");
         gameContainerDOM.style.width = `${app.view.width}px`;

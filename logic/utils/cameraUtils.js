@@ -15,19 +15,19 @@ export const moveCamera = (app, cameraContainer, direction) => {
 export const followPlayer = (app, cameraContainer, player) => {
   const gameWorldWidth = 1400;
   const gameWorldHeight = 800;
-  const appWidth = app.screen.width;
-  const appHeight = app.screen.height;
+  const appWidth = app.view.width;
+  const appHeight = app.view.height;
   const playerX = player.position.x;
   let newX = -playerX + appWidth / 2;
   // Ensure camera doesn't go over the sides
-  if (newX > 0) {
-    newX = 0;
-  } else if (newX < -(gameWorldWidth - appWidth)) {
-    newX = -(gameWorldWidth - appWidth);
+  if (appWidth < 1400) {
+    if (newX > 0) {
+      newX = 0;
+    } else if (newX < -(gameWorldWidth - appWidth)) {
+      newX = -(gameWorldWidth - appWidth);
+    }
+    cameraContainer.x = newX;
   }
-  cameraContainer.x = newX;
-
-  // Camera only follows the player on x-axis, if screenheight is larger than gameWorld height
   if (appHeight < 800) {
     const playerY = player.position.y;
     let newY = -playerY + appHeight - 80;

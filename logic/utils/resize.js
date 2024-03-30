@@ -1,5 +1,5 @@
-export const resizeGame = (app, mainScene) => {
-  if (app.mainScene.visible) {
+export const resizeGame = (app, scene) => {
+  if (scene.visible) {
     // #game-container width and height
     const parent = app.view.parentNode;
     let newWidth = parent.clientWidth;
@@ -15,7 +15,7 @@ export const resizeGame = (app, mainScene) => {
       newHeight = newWidth / gameAspectRatio;
     }
     app.renderer.resize(newWidth, newHeight);
-    app.mainScene.width = newWidth;
-    app.mainScene.height = newHeight;
+    scene.width = newWidth;
+    scene.height = newHeight;
   }
 };

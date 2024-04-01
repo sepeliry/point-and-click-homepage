@@ -1,139 +1,97 @@
 import * as PIXI from "pixi.js";
-import backgroundImg from "../resources/images/background.png";
-import bookshelfBackgroundImg from "../resources/images/bookshelf.jpg";
-import mouseholeImg from "../resources/images/mousehole_background.png";
-import numpadBackgroundImg from "../resources/images/num_pad.png";
-import back_arrowImg from "../resources/images/back_arrow.png";
+import { resizeGame } from "./utils/resize";
+import { checkDistance } from "./utils/distanceCheckUtils.js";
+import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
+
+import { CRTFilter } from "@pixi/filter-crt";
+import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
+import Bookshelf from "./bookshelf.js";
+import Numpad from "./numpad";
+import Mousehole from "./mousehole";
+import Item from "./item.js";
+import gameData from "../data/gameData.js";
 
 class UI {
   constructor(app) {
-    /**
-     * @constructor - Creates a UI instance with different view containers and adds background to them
-     * @param {PIXI.Application} app - Application where the UI is added to
-     */
-    // Create background sprite
-    const backgroundTexture = PIXI.Texture.from(backgroundImg);
-    const background = new PIXI.Sprite(backgroundTexture);
-    // background.width = app.screen.width;
-    // background.height = app.screen.height;
-    background.width = 1400;
-    background.height = 800;
-    app.gameContainer.addChild(background);
-
-    // Create sprite for bookshelf view
-    const bookshelfTexture = PIXI.Texture.from(bookshelfBackgroundImg);
-    const bookshelfBackground = new PIXI.Sprite(bookshelfTexture);
-    bookshelfBackground.width = app.screen.width;
-    bookshelfBackground.height = app.screen.height;
-    app.bookshelfContainer.addChild(bookshelfBackground);
-
-    // Back button for bookshelf
-    const backArrowTexture = PIXI.Texture.from(back_arrowImg);
-    const button = new PIXI.Sprite(backArrowTexture);
-    button.x = 0.03 * app.screen.width;
-    button.y = 0.03 * app.screen.height;
-    button.interactive = true;
-    button.cursor = "pointer";
-    button.buttonMode = true;
-    button.addEventListener("click", this.toggleBookshelf(app));
-    app.bookshelfContainer.addChild(button);
-
-    // Create sprite for num pad view
-    const numpadTexture = PIXI.Texture.from(numpadBackgroundImg);
-    const numpadBackground = new PIXI.Sprite(numpadTexture);
-    numpadBackground.width = app.screen.width;
-    numpadBackground.height = app.screen.height;
-    app.numpadContainer.addChild(numpadBackground);
-
-    // Back button for numpad
-    const buttonNumpad = new PIXI.Sprite(backArrowTexture);
-    buttonNumpad.x = 0.03 * app.screen.width;
-    buttonNumpad.y = 0.03 * app.screen.height;
-    buttonNumpad.interactive = true;
-    buttonNumpad.cursor = "pointer";
-    buttonNumpad.buttonMode = true;
-    buttonNumpad.addEventListener("click", this.toggleNumpad(app));
-    app.numpadContainer.addChild(buttonNumpad);
-
-    // Create clickable area on bookshelf
-    const bookshelfMapping = new PIXI.Graphics();
-    const width = (12.5 / 100) * app.screen.width;
-    const height = (30 / 100) * app.screen.height;
-    bookshelfMapping.beginFill(0x00ff00);
-    bookshelfMapping.drawRect(0, 0, width, height);
-    bookshelfMapping.endFill();
-    bookshelfMapping.alpha = 0;
-    bookshelfMapping.visible = true;
-    bookshelfMapping.x = app.screen.width / 3.72;
-    bookshelfMapping.y = app.screen.height / 2.5;
-    bookshelfMapping.interactive = true;
-    bookshelfMapping.buttonMode = true;
-    bookshelfMapping.cursor = "pointer";
-    bookshelfMapping.addEventListener("click", this.toggleBookshelf(app));
-    app.gameContainer.addChild(bookshelfMapping);
-
-    // Create clickable area on door numpad
-    const numpadMapping = new PIXI.Graphics();
-    const w = (2 / 100) * app.screen.width;
-    const h = (6 / 100) * app.screen.height;
-    numpadMapping.beginFill(0x00ff00);
-    numpadMapping.drawRect(0, 0, w, h);
-    numpadMapping.endFill();
-    numpadMapping.alpha = 0;
-    numpadMapping.visible = true;
-    numpadMapping.x = app.screen.width / 1.94;
-    numpadMapping.y = app.screen.height / 1.87;
-    numpadMapping.interactive = true;
-    numpadMapping.buttonMode = true;
-    numpadMapping.cursor = "pointer";
-    numpadMapping.addEventListener("click", this.toggleNumpad(app));
-    app.gameContainer.addChild(numpadMapping);
-
-    // Create sprite for mousehole view
-    const mouseholeTexture = PIXI.Texture.from(mouseholeImg);
-    const mouseholeBackground = new PIXI.Sprite(mouseholeTexture);
-    mouseholeBackground.width = app.screen.width;
-    mouseholeBackground.height = app.screen.height;
-    app.mouseholeContainer.addChild(mouseholeBackground);
-    const mouseholeButton = PIXI.Sprite.from(backArrowTexture);
-    mouseholeButton.x = 0.03 * app.screen.width;
-    mouseholeButton.y = 0.03 * app.screen.height;
-    mouseholeButton.interactive = true;
-    mouseholeButton.cursor = "pointer";
-    mouseholeButton.buttonMode = true;
-    mouseholeButton.on("pointerdown", this.toggleMousehole(app));
-    app.mouseholeContainer.addChild(mouseholeButton);
+    app.scenes = {};
+    // create array for solid objects
+    this.solidObjects = [];
+    this.solidObjects.sortableChildren = true;
+    // create scenes from gameData.js
+    this.createScenesFromGameData(app, gameData);
   }
 
-  toggleBookshelf(app) {
-    /**
-     * Function to toggle visibility of bookshelf view
-     * @param {PIXI.Application} app - Application where the UI is
-     */
-    return () => {
-      app.gameContainer.visible = !app.gameContainer.visible;
-      app.bookshelfContainer.visible = !app.bookshelfContainer.visible;
-    };
+  createScenesFromGameData(app, gameData) {
+    Object.entries(gameData).forEach(([sceneName, sceneData]) => {
+      let container = app.scenes[sceneName];
+      if (!container) {
+        container = new PIXI.Container();
+        container.name = sceneName;
+        container.sortableChildren = true;
+        app.stage.addChild(container);
+        app.scenes[sceneName] = container;
+        container.filters = [new CRTFilter()];
+      }
+
+      if (sceneData.background) {
+        const background = PIXI.Sprite.from(sceneData.background);
+        // Set the background to fill the entire renderer view
+        if (sceneName === "mainScene" && window.isMobile) {
+          // To support cameraContainer usage on mobile
+          background.width = 1400;
+          background.height = 800;
+        } else {
+          background.width = app.renderer.width;
+          background.height = app.renderer.height;
+        }
+        container.addChild(background);
+      }
+
+      // populate scene with items
+      // now objects are only displayed when their scene is visible = better performance?
+      this.createObjectsFromGameData(app, sceneData.items, container);
+
+      if (sceneName === "mainScene") {
+        // set / show mainScene by default
+        app.mainScene = container;
+        container.visible = true;
+      } else {
+        // hide other scenes by default
+        container.visible = false;
+      }
+      // On mobile, use cameraContainer
+      if (window.isMobile) {
+        let gameContainerDOM = document.getElementById("game-container");
+        gameContainerDOM.style.width = `${app.view.width}px`;
+        gameContainerDOM.style.height = `${app.view.height}px`;
+        const cameraContainer = new PIXI.Container();
+        app.cameraContainer = cameraContainer;
+        cameraContainer.addChild(app.mainScene);
+        app.stage.addChild(cameraContainer);
+      }
+    });
   }
-  toggleNumpad(app) {
-    /**
-     * Function to toggle visibility of numpad view
-     * @param {PIXI.Application} app - Application where the UI is
-     */
-    return () => {
-      app.gameContainer.visible = !app.gameContainer.visible;
-      app.numpadContainer.visible = !app.numpadContainer.visible;
-    };
-  }
-  toggleMousehole(app) {
-    /**
-     * Function to toggle visibility of mousehole view
-     * @param {PIXI.Application} app - Application where the UI is
-     */
-    return () => {
-      app.gameContainer.visible = !app.gameContainer.visible;
-      app.mouseholeContainer.visible = !app.mouseholeContainer.visible;
-    };
+
+  createObjectsFromGameData(app, items, container) {
+    console.log(items);
+    items.forEach((itemData) => {
+      // pass the container where the Item should be added
+      const item = new Item(
+        app,
+        container,
+        itemData.image,
+        itemData.location.x,
+        itemData.location.y,
+        itemData.zIndex,
+        itemData.height,
+        itemData.width,
+        itemData.name,
+        itemData.onInteraction
+      );
+      // push solid items to solidObjects array
+      this.solidObjects.push(item);
+    });
+    console.log(container);
   }
 }
 

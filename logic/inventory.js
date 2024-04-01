@@ -12,7 +12,7 @@ class Inventory {
     this.inventory = [];
     this.inventoryUI = new PIXI.Container();
     this.inventoryUI.position.set(0, app.screen.height - 60); // Adjust as needed
-    app.gameContainer.addChild(this.inventoryUI);
+    app.mainScene.addChild(this.inventoryUI);
   }
   /**
    *
@@ -21,7 +21,7 @@ class Inventory {
    */
   addToInventory(item, player) {
     // Adds item to inventory, checks for distance and duplicates
-    this.distance = Math.abs(item.x - player.player.x);
+    this.distance = Math.abs(item.x - player.x);
     if (this.distance < 100) {
       if (!this.inventory.includes(item)) {
         console.log("Item collected!");

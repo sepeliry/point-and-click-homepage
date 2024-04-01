@@ -5,7 +5,7 @@ const markdownContainer = document.getElementById("markdown-container");
 const showPdf = document.getElementById("show-pdf");
 const ulElem = document.getElementById("wiki-list");
 const wikiPageContainer = document.getElementById("wiki-page-container");
-const gameContainerDOM = document.getElementById("game-container");
+const mainSceneDOM = document.getElementById("game-container");
 const backBtn = document.getElementById("back-btn");
 const testControls = document.getElementById("test-controls");
 
@@ -30,22 +30,24 @@ export const generateWikiList = () => {
 };
 
 // Displays the list of wiki pages. When item is clicked, renders the wiki page as html
-export const showWikiList = (app, gameContainer) => {
+export const showWikiList = (app, mainScene) => {
   showPdf.style.display = "none";
   markdownContainer.style.display = "flex";
   app.stage.visible = false;
-  gameContainer.eventMode = "none";
-  gameContainerDOM.style.display = "none";
+  mainScene.eventMode = "none";
+  mainSceneDOM.style.display = "none";
   backBtn.style.display = "block";
 
   backBtn.addEventListener("click", () => {
     showPdf.style.display = "";
     markdownContainer.style.display = "none";
-    gameContainerDOM.style.display = "";
+    mainSceneDOM.style.display = "";
     app.stage.visible = true;
-    gameContainer.eventMode = "static";
+    mainScene.eventMode = "static";
     backBtn.style.display = "none";
-    resizeGame(app, gameContainer);
+    if (!window.isMobile) {
+      resizeGame(app, mainScene);
+    }
   });
 };
 

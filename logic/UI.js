@@ -73,7 +73,7 @@ class UI {
   }
 
   createObjectsFromGameData(app, items, container) {
-    console.log(items);
+    // console.log(items);
     items.forEach((itemData) => {
       if (itemData.type === "Book") {
         // Create a Book instance instead of an Item instance
@@ -108,9 +108,8 @@ class UI {
         this.solidObjects.push(item);
       }
     });
-    console.log(container);
+    // console.log(container);
   }
-
 
   getScene(app, sceneName) {
     return app.scenes[sceneName];

@@ -124,7 +124,7 @@ app.ticker.add((delta) => {
   if (targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - targetPosition.x, 2) +
-      Math.pow(Player.player.y - targetPosition.y, 2)
+        Math.pow(Player.player.y - targetPosition.y, 2)
     );
     if (distance < 3) {
       targetPosition = null;

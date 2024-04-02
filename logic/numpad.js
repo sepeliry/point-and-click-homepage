@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { checkDistance } from "./utils/distanceCheckUtils";
+import { checkDistance } from "./interactions/distanceCheckUtils";
 import Player from "./player";
 import { GlowFilter } from "@pixi/filter-glow";
 import switchScene from "./interactions/switchScene";
@@ -14,33 +14,11 @@ class Numpad {
 
         this.numpadScene = ui.getScene(app, "numpadScene");
 
-        // Create clickable area on door numpad
-        const numpadMapping = new PIXI.Graphics();
-        const w = (2 / 100) * app.mainScene.width;
-        const h = (6 / 100) * app.mainScene.height;
-        numpadMapping.beginFill(0x00ff00);
-        numpadMapping.drawRect(0, 0, w, h);
-        numpadMapping.endFill();
-        numpadMapping.alpha = 0;
-        numpadMapping.visible = true;
-        numpadMapping.x = app.mainScene.width / 1.94;
-        numpadMapping.y = app.mainScene.height / 1.87;
-        numpadMapping.interactive = true;
-        numpadMapping.buttonMode = true;
-        numpadMapping.cursor = "pointer";
-        app.mainScene.addChild(numpadMapping);
-
-        // Functionality to check for player distance from clickable mapped areas
-
-        numpadMapping.on("click", (event) => {
-            // Define the maximum distance within which the player can interact with the clickable area
-            const maxDistance = 250;
-
-            // Call the checkDistance function with appropriate parameters
+        /* TODO: interactions: add distance check to gameData
             checkDistance(Player.player, numpadMapping, maxDistance, () => {
                 switchScene(app, "numpadScene");
             });
-        });
+        */
 
         // Text style for code display
         const screenstyle = new PIXI.TextStyle({

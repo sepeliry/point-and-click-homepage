@@ -1,10 +1,13 @@
 import switchScene from "../logic/interactions/switchScene";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab";
 import displayWikiPage from "../logic/interactions/displayWikiPage";
+import checkDistance from "../logic/interactions/distanceCheckUtils.js";
 
 import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
 import bookshelfSceneBackground from "../resources/images/bookshelf_background.png";
+import mouseholeSceneBackground from "../resources/images/mousehole_background.png";
+import mouseholeImage from "../resources/images/mousehole_placeholder.png";
 import backArrowImage from "../resources/images/back_arrow.png";
 import book1 from "../resources/images/book_placeholder.png";
 import book2 from "../resources/images/book2_placeholder.png";
@@ -43,6 +46,7 @@ const gameData = {
         width: 60,
         height: 80,
         collisionHeight: 5, // not yet used
+        maxDistance: 250,
         onInteraction: (app) => () => switchScene(app, "numpadScene"),
         zIndex: 0,
       },
@@ -58,6 +62,20 @@ const gameData = {
         height: 310,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => switchScene(app, "bookshelfScene"),
+        zIndex: 0,
+      },
+      {
+        image: mouseholeImage,
+        type: "Item",
+        name: "Mousehole",
+        location: {
+          x: 0.78,
+          y: 0.8,
+        },
+        width: 50,
+        height: 50,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => switchScene(app, "mouseholeScene"),
         zIndex: 0,
       },
     ],
@@ -152,6 +170,27 @@ const gameData = {
   },
   numpadScene: {
     background: numPadSceneBackground,
+    backgroundWidth: 1400,
+    backgroundHeight: 800,
+    items: [
+      {
+        image: backArrowImage,
+        type: "Item",
+        name: "Back button",
+        location: {
+          x: 0.1,
+          y: 0.2,
+        },
+        width: 164,
+        height: 101,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => switchScene(app, "mainScene"),
+        zIndex: 10,
+      },
+    ],
+  },
+  mouseholeScene: {
+    background: mouseholeSceneBackground,
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [

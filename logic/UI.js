@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { resizeGame } from "./utils/resize";
-import { checkDistance } from "./utils/distanceCheckUtils.js";
+import { checkDistance } from "./interactions/distanceCheckUtils.js";
 import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
 
 import { CRTFilter } from "@pixi/filter-crt";

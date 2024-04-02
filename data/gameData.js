@@ -7,6 +7,7 @@ import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
 import bookshelfSceneBackground from "../resources/images/bookshelf_background.png";
 import mouseholeSceneBackground from "../resources/images/mousehole_background.png";
+// import computerSceneBackground from "../resources/images/computer_background.png";
 import mouseholeImage from "../resources/images/mousehole_placeholder.png";
 import backArrowImage from "../resources/images/back_arrow.png";
 import book1 from "../resources/images/book_placeholder.png";
@@ -191,6 +192,27 @@ const gameData = {
   },
   mouseholeScene: {
     background: mouseholeSceneBackground,
+    backgroundWidth: 1400,
+    backgroundHeight: 800,
+    items: [
+      {
+        image: backArrowImage,
+        type: "Item",
+        name: "Back button",
+        location: {
+          x: 0.1,
+          y: 0.2,
+        },
+        width: 164,
+        height: 101,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => switchScene(app, "mainScene"),
+        zIndex: 10,
+      },
+    ],
+  },
+  computerScene: {
+    background: null, // TODO: add computerSceneBackground
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [

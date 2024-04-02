@@ -5,7 +5,7 @@ import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
 
 import { CRTFilter } from "@pixi/filter-crt";
 import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
-import Bookshelf from "./bookshelf.js";
+import Book from "./book.js";
 import Numpad from "./numpad";
 import Mousehole from "./mousehole";
 import Item from "./item.js";
@@ -17,6 +17,8 @@ class UI {
     // create array for solid objects
     this.solidObjects = [];
     this.solidObjects.sortableChildren = true;
+    this.books = [];
+    this.books.sortableChildren = true;
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
   }
@@ -75,24 +77,42 @@ class UI {
   createObjectsFromGameData(app, items, container) {
     console.log(items);
     items.forEach((itemData) => {
-      // pass the container where the Item should be added
-      const item = new Item(
-        app,
-        container,
-        itemData.image,
-        itemData.location.x,
-        itemData.location.y,
-        itemData.zIndex,
-        itemData.height,
-        itemData.width,
-        itemData.name,
-        itemData.onInteraction
-      );
-      // push solid items to solidObjects array
-      this.solidObjects.push(item);
+      if (itemData.type === "Book") {
+        // Create a Book instance instead of an Item instance
+        const book = new Book(
+          app,
+          container,
+          itemData.image,
+          itemData.location.x,
+          itemData.location.y,
+          itemData.zIndex,
+          itemData.height,
+          itemData.width,
+          itemData.name,
+          itemData.onInteraction
+        );
+        //this.solidObjects.push(book);
+      } else {
+        // Create an Item instance
+        const item = new Item(
+          app,
+          container,
+          itemData.image,
+          itemData.location.x,
+          itemData.location.y,
+          itemData.zIndex,
+          itemData.height,
+          itemData.width,
+          itemData.name,
+          itemData.onInteraction
+        );
+        // push solid items to solidObjects array
+        this.solidObjects.push(item);
+      }
     });
     console.log(container);
   }
+
 
   getScene(app, sceneName) {
     return app.scenes[sceneName];

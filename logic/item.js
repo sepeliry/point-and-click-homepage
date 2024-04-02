@@ -32,8 +32,6 @@ class Item {
     onInteraction
   ) {
     this.item = PIXI.Sprite.from(image);
-    // this.item.x = x * app.renderer.width;
-    // this.item.y = y * app.renderer.height;
     this.item.x = x * 1400;
     this.item.y = y * 800;
     this.item.zIndex = zIndex;

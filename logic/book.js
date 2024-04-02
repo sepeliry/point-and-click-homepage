@@ -14,41 +14,60 @@ class Book {
      * @param {number} y - y coordinate where the object is placed in the application
      * @returns {PIXI.Sprite} - The item object
      */
-    constructor(app, image, x, y, topic) {
+    constructor(
+        app,
+        container,
+        image,
+        x,
+        y,
+        zIndex = 1,
+        height,
+        width,
+        name,
+        onInteraction
+    ) {
         this.book = PIXI.Sprite.from(image);
-        this.glowEffect = new GlowFilter({
-            innerStrength: 0.7,
-            outerStrength: 0.7,
-            quality: 0.1,
-        });
-        this.book.x = x;
-        this.book.y = y;
-        this.book.eventMode = "static";
-        this.book.cursor = "pointer";
-        this.book.filters = [this.glowEffect];
+        this.book.x = x * 1400;
+        this.book.y = y * 800;
         this.book.visible = true;
+        this.book.width = width;
+        this.book.height = height;
+        this.book.zIndex = zIndex;
 
-        // Set book topic to show on the book spine
-        this.text = topic;
+        if (onInteraction) {
+            this.book.eventMode = "dynamic";
+            this.book.cursor = "pointer";
+
+            this.book.on("pointerdown", onInteraction(app));
+
+            // add glow effect to items with interaction
+            this.glowEffect = new GlowFilter({
+                innerStrength: 0.7,
+                outerStrength: 0.7,
+                quality: 0.1,
+            });
+            this.book.filters = [this.glowEffect];
+        }
 
         // Create a PIXI.Container to hold the text objects
         this.textContainer = new PIXI.Container();
+        this.textContainer.zIndex = 2;
 
         // Define the style for the text
         const textStyle = {
             fontFamily: 'Consolas',
-            fontSize: 18,
+            fontSize: 20,
             fill: 0xFFFFFF,
             stroke: 0x000000, // Black outline color
-            strokeThickness: 2,
+            strokeThickness: 4,
         };
 
         // Calculate the spacing between each character
-        const characterSpacing = 13;
+        const characterSpacing = 11;
 
         // Loop through each character in the text
-        for (let i = 0; i < topic.length; i++) {
-            const character = topic[i];
+        for (let i = 0; i < name.length; i++) {
+            const character = name[i];
 
             // Create a PIXI.Text object for the character
             const textObject = new PIXI.Text(character, textStyle);
@@ -56,8 +75,8 @@ class Book {
             textObject.rotation = Math.PI / 2;
 
             // Calculate the position of the text object along the book spine
-            const x = this.book.x + this.book.width + 15;
-            const y = this.book.y + (i + 1) * characterSpacing;
+            const x = this.book.x + this.book.width - 18;
+            const y = this.book.y + (i + 2) * characterSpacing;
 
             // Set the position of the text object
             textObject.position.set(x, y);
@@ -68,8 +87,8 @@ class Book {
         }
 
         // Add the text container to the stage
-        app.bookshelfContainer.addChild(this.book);
-        app.bookshelfContainer.addChild(this.textContainer);
+        container.addChild(this.book);
+        container.addChild(this.textContainer);
 
         return this.book;
     }

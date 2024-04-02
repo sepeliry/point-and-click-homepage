@@ -101,11 +101,11 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Item",
-        name: "Book 1",
+        type: "Book",
+        name: "Honesty",
         location: {
-          x: 0.51,
-          y: 0.33,
+          x: 0.52,
+          y: 0.36,
         },
         width: 37,
         height: 85,
@@ -120,11 +120,11 @@ const gameData = {
 
       {
         image: book2,
-        type: "Item",
-        name: "Book 2",
+        type: "Book",
+        name: "Wiki",
         location: {
           x: 0.44,
-          y: 0.33,
+          y: 0.23,
         },
         width: 37,
         height: 85,
@@ -137,11 +137,11 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Item",
-        name: "Book 2",
+        type: "Book",
+        name: "Vuodet",
         location: {
           x: 0.44,
-          y: 0.6,
+          y: 0.5,
         },
         width: 37,
         height: 85,
@@ -154,11 +154,11 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Item",
+        type: "Book",
         name: "Book 1",
         location: {
           x: 0.58,
-          y: 0.6,
+          y: 0.64,
         },
         width: 37,
         height: 85,

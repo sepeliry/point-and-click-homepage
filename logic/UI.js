@@ -93,6 +93,10 @@ class UI {
     });
     console.log(container);
   }
+
+  getScene(app, sceneName) {
+    return app.scenes[sceneName];
+  }
 }
 
 export default UI;

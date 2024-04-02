@@ -6,8 +6,6 @@ import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
 import { CRTFilter } from "@pixi/filter-crt";
 import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
 import Book from "./book.js";
-import Numpad from "./numpad";
-import Mousehole from "./mousehole";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
 

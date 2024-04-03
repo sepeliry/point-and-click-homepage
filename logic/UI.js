@@ -30,7 +30,7 @@ class UI {
         container.sortableChildren = true;
         app.stage.addChild(container);
         app.scenes[sceneName] = container;
-        container.filters = [new CRTFilter()];
+        container.filters = [new CRTFilter({ lineContrast: 0.09})];
       }
 
       if (sceneData.background) {

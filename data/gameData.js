@@ -1,6 +1,7 @@
 import switchScene from "../logic/interactions/switchScene";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab";
 import displayWikiPage from "../logic/interactions/displayWikiPage";
+import openPopup from "../logic/interactions/openItemPopup";
 
 import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
@@ -11,6 +12,7 @@ import book2 from "../resources/images/book2_placeholder.png";
 import lockImage from "../resources/images/lock.png";
 import numPadSceneBackground from "../resources/images/num_pad.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
+import { itemCannotBeUsed } from "./popupTexts.js";
 
 const gameData = {
   mainScene: {
@@ -29,7 +31,7 @@ const gameData = {
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
-        onInteraction: null,
+        onInteraction: (app) => () => openPopup(app, itemCannotBeUsed, 0.71, 0.93),
         zIndex: 1,
       },
       {

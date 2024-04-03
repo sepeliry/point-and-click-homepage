@@ -21,3 +21,29 @@ export const popup1TextElements = [
     url: "https://sepeliry.github.io/unity1.html",
   },
 ];
+
+export const introTextElements = [
+  {
+    text: "Tervetuloa Sepeli ry:n kotisivuille :>",
+    style: {
+      fontFamily: "Dotrice Regular",
+      fontSize: 20,
+      fill: "0xffffff",
+      lineJoin: "round",
+    },
+    isUrl: false,
+  },
+];
+
+export const itemCannotBeUsed = [
+  {
+    text: "Tätä ei pysty käyttään viä...",
+    style: {
+      fontFamily: "Dotrice Regular",
+      fontSize: 20,
+      fill: "0xffffff",
+      lineJoin: "round",
+    },
+    isUrl: false,
+  },
+];

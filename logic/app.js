@@ -7,6 +7,7 @@ import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
 import { followPlayer } from "./utils/cameraUtils.js";
+import { introTextElements } from "../data/popupTexts.js";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -43,13 +44,15 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
-// const popup = new Popup(app, popup1TextElements);
+const introPopup = new Popup(app, introTextElements);
 
 document.addEventListener("DOMContentLoaded", () => {
   // Set initial camera position on mobile, or resize to window size
   if (window.isMobile) {
+    introPopup.open(app, 0.2, 0.2);
     followPlayer(app, app.cameraContainer, Player.player);
   } else {
+    introPopup.open(app, 0.35, 0.3875);
     resizeGame(app, app.mainScene);
   }
 });

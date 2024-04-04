@@ -8,6 +8,7 @@ import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
+import Numpad from "./numpad.js";
 
 class UI {
   static solidObjects = null;
@@ -56,9 +57,10 @@ class UI {
         // set / show mainScene by default
         app.mainScene = container;
         container.visible = true;
-      }
-      else if (sceneName === "mouseholeScene" && sceneData.animatedSpriteTextures) {
-
+      } else if (
+        sceneName === "mouseholeScene" &&
+        sceneData.animatedSpriteTextures
+      ) {
         // Call the createAnimatedSprite method
         this.createAnimatedSprite(
           app,
@@ -66,8 +68,7 @@ class UI {
           container
         );
         container.visible = false;
-      }
-      else {
+      } else {
         // hide other scenes by default
         container.visible = false;
       }
@@ -87,21 +88,13 @@ class UI {
   createObjectsFromGameData(app, items, container) {
     console.log(items);
     items.forEach((itemData) => {
-      if (itemData.type === "Book") {
-        // Create a Book instance instead of an Item instance
-        const book = new Book(
-          app,
-          container,
-          itemData.image,
-          itemData.location.x,
-          itemData.location.y,
-          itemData.zIndex,
-          itemData.height,
-          itemData.width,
-          itemData.name,
-          itemData.onInteraction
-        );
-        //this.solidObjects.push(book);
+      if (itemData.type === "Text") {
+        const text = new PIXI.Text(itemData.text, itemData.style);
+        text.x = itemData.location.x;
+        text.y = itemData.location.y;
+        text.visible = true;
+        text.anchor.set(0.475, 0);
+        container.addChild(text);
       } else {
         // Create an Item instance
         const item = new Item(
@@ -124,7 +117,7 @@ class UI {
   }
 
   createAnimatedSprite(app, frameUrls, container) {
-    const textureArray = frameUrls.map(url => PIXI.Texture.from(url));
+    const textureArray = frameUrls.map((url) => PIXI.Texture.from(url));
     const animatedSprite = new PIXI.AnimatedSprite(textureArray);
     animatedSprite.width = app.renderer.width;
     animatedSprite.height = app.renderer.height;

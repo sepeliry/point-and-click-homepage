@@ -44,7 +44,7 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
-const numpad = new Numpad(app, ui);
+// const numpad = new Numpad(app);
 // const popup = new Popup(app, popup1TextElements);
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -125,7 +125,7 @@ app.ticker.add((delta) => {
   if (targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - targetPosition.x, 2) +
-      Math.pow(Player.player.y - targetPosition.y, 2)
+        Math.pow(Player.player.y - targetPosition.y, 2)
     );
     if (distance < 3) {
       targetPosition = null;

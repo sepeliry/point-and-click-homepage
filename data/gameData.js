@@ -60,13 +60,13 @@ const gameData = {
         type: "Item",
         name: "Key",
         location: {
-          x: 0.40,
+          x: 0.60,
           y: 0.80,
         },
         width: 70,
         height: 70,
         collisionHeight: 5, // not yet used
-        onInteraction: (app) => () => checkDistance(app, 0.4, 0.8, "mainScene", () => collectItem(app, "mainScene", "Key")),
+        onInteraction: (app) => () => checkDistance(app, 0.6, 0.8, "mainScene", () => collectItem(app, "mainScene", "Key")),
         zIndex: 1,
       },
       {

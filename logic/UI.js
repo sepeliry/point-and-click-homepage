@@ -30,7 +30,7 @@ class UI {
         container.sortableChildren = true;
         app.stage.addChild(container);
         app.scenes[sceneName] = container;
-        container.filters = [new CRTFilter({ lineContrast: 0.09})];
+        container.filters = [new CRTFilter({ lineContrast: 0.09 })];
       }
 
       if (sceneData.background) {
@@ -55,7 +55,18 @@ class UI {
         // set / show mainScene by default
         app.mainScene = container;
         container.visible = true;
-      } else {
+      }
+      else if (sceneName === "mouseholeScene" && sceneData.animatedSpriteTextures) {
+
+        // Call the createAnimatedSprite method
+        this.createAnimatedSprite(
+          app,
+          sceneData.animatedSpriteTextures,
+          container
+        );
+        container.visible = false;
+      }
+      else {
         // hide other scenes by default
         container.visible = false;
       }
@@ -111,6 +122,16 @@ class UI {
     console.log(container);
   }
 
+  createAnimatedSprite(app, frameUrls, container) {
+    const textureArray = frameUrls.map(url => PIXI.Texture.from(url));
+    const animatedSprite = new PIXI.AnimatedSprite(textureArray);
+    animatedSprite.width = app.renderer.width;
+    animatedSprite.height = app.renderer.height;
+    animatedSprite.animationSpeed = 0.01;
+    animatedSprite.loop = true;
+    animatedSprite.play();
+    container.addChild(animatedSprite);
+  }
 
   getScene(app, sceneName) {
     return app.scenes[sceneName];

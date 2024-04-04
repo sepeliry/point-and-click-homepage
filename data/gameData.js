@@ -6,7 +6,8 @@ import checkDistance from "../logic/interactions/distanceCheckUtils.js";
 import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
 import bookshelfSceneBackground from "../resources/images/bookshelf_background.png";
-import mouseholeSceneBackground from "../resources/images/mousehole_scene/mousehole1.png";
+import mouseholeSceneBackground1 from "../resources/images/mousehole_scene/mousehole1.png";
+import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mousehole2.png";
 // import computerSceneBackground from "../resources/images/computer_background.png";
 import mouseholeImage from "../resources/images/mousehole_placeholder.png";
 import backArrowImage from "../resources/images/back_arrow.png";
@@ -191,9 +192,10 @@ const gameData = {
     ],
   },
   mouseholeScene: {
-    background: mouseholeSceneBackground,
+    background: mouseholeSceneBackground1,
     backgroundWidth: 1400,
     backgroundHeight: 800,
+    animatedSpriteTextures: [mouseholeSceneBackground1, mouseholeSceneBackground2],
     items: [
       {
         image: backArrowImage,

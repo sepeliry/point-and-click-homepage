@@ -2,6 +2,7 @@ import switchScene from "../logic/interactions/switchScene";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab";
 import displayWikiPage from "../logic/interactions/displayWikiPage";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
+import collectItem from "../logic/interactions/collectItem.js";
 import Player from "../logic/player.js";
 
 import boxPropImage from "../resources/images/box_prop.png";
@@ -15,6 +16,7 @@ import backArrowImage from "../resources/images/back_arrow.png";
 import book1 from "../resources/images/book_placeholder.png";
 import book2 from "../resources/images/book2_placeholder.png";
 import lockImage from "../resources/images/lock.png";
+import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/num_pad.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
 import potionImage from "../resources/images/potion.png";
@@ -51,6 +53,20 @@ const gameData = {
         height: 70,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () => checkDistance(app, 0.2, 0.7, "mainScene", () => Player.minimizePlayer()),
+        zIndex: 1,
+      },
+      {
+        image: keyImage,
+        type: "Item",
+        name: "Key",
+        location: {
+          x: 0.40,
+          y: 0.80,
+        },
+        width: 70,
+        height: 70,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () => checkDistance(app, 0.4, 0.8, "mainScene", () => collectItem(app, "mainScene", "Key")),
         zIndex: 1,
       },
       {

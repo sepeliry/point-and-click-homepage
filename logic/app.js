@@ -73,7 +73,7 @@ let targetPosition;
 app.mainScene.eventMode = "static"; // Enable interaction
 app.mainScene.on("pointertap", (event) => {
   // console.log(app.mainScene.toLocal(event.global));
-  const collisionResult = playerCollides(Player.player, ui.solidObjects);
+  const collisionResult = playerCollides(Player.player, UI.solidObjects);
   if (collisionResult.collided) {
     const direction = collisionResult.direction;
     // Set the player position next to the object based on collision direction
@@ -133,14 +133,12 @@ app.ticker.add((delta) => {
     }
   }
   if (targetPosition) {
-    player.move(targetPosition, ui.solidObjects);
+    player.move(targetPosition, UI.solidObjects);
     if (window.isMobile) {
       followPlayer(app, app.cameraContainer, Player.player);
     }
     app.mainScene.updateTransform();
   }
-
-  inventory.updateInventoryUI();
 });
 
 if (!window.isMobile) {

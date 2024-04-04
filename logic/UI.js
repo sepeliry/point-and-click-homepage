@@ -10,11 +10,12 @@ import Item from "./item.js";
 import gameData from "../data/gameData.js";
 
 class UI {
+  static solidObjects = null;
   constructor(app) {
     app.scenes = {};
     // create array for solid objects
-    this.solidObjects = [];
-    this.solidObjects.sortableChildren = true;
+    UI.solidObjects = [];
+    UI.solidObjects.sortableChildren = true;
     this.books = [];
     this.books.sortableChildren = true;
     // create scenes from gameData.js
@@ -116,7 +117,7 @@ class UI {
           itemData.onInteraction
         );
         // push solid items to solidObjects array
-        this.solidObjects.push(item);
+        UI.solidObjects.push(item);
       }
     });
     console.log(container);

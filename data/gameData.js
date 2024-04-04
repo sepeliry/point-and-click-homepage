@@ -2,6 +2,7 @@ import switchScene from "../logic/interactions/switchScene";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab";
 import displayWikiPage from "../logic/interactions/displayWikiPage";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
+import Player from "../logic/player.js";
 
 import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
@@ -49,13 +50,13 @@ const gameData = {
         height: 80,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
-        onInteraction: (app) => () => switchScene(app, "numpadScene"),
+        onInteraction: (app) => () => checkDistance(app, 0.53, 0.61, "numpadScene", () => switchScene(app, "numpadScene")),
         zIndex: 0,
       },
       {
         image: bookshelfImage,
         type: "Item",
-        name: "Box",
+        name: "Bookshelf",
         location: {
           x: 0.33,
           y: 0.73,
@@ -63,7 +64,7 @@ const gameData = {
         width: 300,
         height: 310,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "bookshelfScene"),
+        onInteraction: (app) => () => checkDistance(app, 0.33, 0.73, "bookshelfScene", () => switchScene(app, "bookshelfScene")),
         zIndex: 0,
       },
       {
@@ -77,7 +78,7 @@ const gameData = {
         width: 50,
         height: 50,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "mouseholeScene"),
+        onInteraction: (app) => () => checkDistance(app, 0.78, 0.8, "mouseholeScene", () => switchScene(app, "mouseholeScene")),
         zIndex: 0,
       },
     ],

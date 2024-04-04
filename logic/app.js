@@ -84,7 +84,8 @@ app.mainScene.on("pointertap", (event) => {
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
-  if (clickedItem) {
+  console.log(clickedItem);
+  /*if (clickedItem) {
     // Calculate the distance between the clicked item and the player
     const distance = Math.abs(clickedItem.x - Player.player.x);
     if (distance < 100) {
@@ -108,15 +109,15 @@ app.mainScene.on("pointertap", (event) => {
           break;
       }
     }
-  } else {
-    // Set the new target position on click
-    // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
-    // has to be adjusted in a different way once final designs are done.
-    const localPosition = app.mainScene.toLocal(event.global);
-    const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
-    targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
-    console.log(targetPosition);
-  }
+  } else {*/
+  // Set the new target position on click
+  // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
+  // has to be adjusted in a different way once final designs are done.
+  const localPosition = app.mainScene.toLocal(event.global);
+  const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
+  targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+  console.log(targetPosition);
+  //}
 });
 
 // Main game loop

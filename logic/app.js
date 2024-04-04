@@ -73,7 +73,7 @@ let targetPosition;
 app.mainScene.eventMode = "static"; // Enable interaction
 app.mainScene.on("pointertap", (event) => {
   // console.log(app.mainScene.toLocal(event.global));
-  const collisionResult = playerCollides(Player.player, ui.solidObjects);
+  const collisionResult = playerCollides(Player.player, UI.solidObjects);
   if (collisionResult.collided) {
     const direction = collisionResult.direction;
     // Set the player position next to the object based on collision direction
@@ -84,7 +84,8 @@ app.mainScene.on("pointertap", (event) => {
   }
 
   const clickedItem = getItemAtPosition(event.global, event.target);
-  if (clickedItem) {
+  console.log(clickedItem);
+  /*if (clickedItem) {
     // Calculate the distance between the clicked item and the player
     const distance = Math.abs(clickedItem.x - Player.player.x);
     if (distance < 100) {
@@ -108,15 +109,15 @@ app.mainScene.on("pointertap", (event) => {
           break;
       }
     }
-  } else {
-    // Set the new target position on click
-    // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
-    // has to be adjusted in a different way once final designs are done.
-    const localPosition = app.mainScene.toLocal(event.global);
-    const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
-    targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
-    console.log(targetPosition);
-  }
+  } else {*/
+  // Set the new target position on click
+  // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
+  // has to be adjusted in a different way once final designs are done.
+  const localPosition = app.mainScene.toLocal(event.global);
+  const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
+  targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+  console.log(targetPosition);
+  //}
 });
 
 // Main game loop
@@ -132,14 +133,12 @@ app.ticker.add((delta) => {
     }
   }
   if (targetPosition) {
-    player.move(targetPosition, ui.solidObjects);
+    player.move(targetPosition, UI.solidObjects);
     if (window.isMobile) {
       followPlayer(app, app.cameraContainer, Player.player);
     }
     app.mainScene.updateTransform();
   }
-
-  inventory.updateInventoryUI();
 });
 
 if (!window.isMobile) {

@@ -2,19 +2,24 @@ import switchScene from "../logic/interactions/switchScene";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab";
 import displayWikiPage from "../logic/interactions/displayWikiPage";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
+import collectItem from "../logic/interactions/collectItem.js";
+import Player from "../logic/player.js";
 
 import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
 import bookshelfSceneBackground from "../resources/images/bookshelf_background.png";
-import mouseholeSceneBackground from "../resources/images/mousehole_background.png";
+import mouseholeSceneBackground1 from "../resources/images/mousehole_scene/mousehole1.png";
+import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mousehole2.png";
 // import computerSceneBackground from "../resources/images/computer_background.png";
 import mouseholeImage from "../resources/images/mousehole_placeholder.png";
 import backArrowImage from "../resources/images/back_arrow.png";
 import book1 from "../resources/images/book_placeholder.png";
 import book2 from "../resources/images/book2_placeholder.png";
 import lockImage from "../resources/images/lock.png";
+import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/num_pad.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
+import potionImage from "../resources/images/potion.png";
 
 const gameData = {
   mainScene: {
@@ -37,6 +42,34 @@ const gameData = {
         zIndex: 1,
       },
       {
+        image: potionImage,
+        type: "Item",
+        name: "Potion",
+        location: {
+          x: 0.20,
+          y: 0.70,
+        },
+        width: 70,
+        height: 70,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () => checkDistance(app, 0.2, 0.7, "mainScene", () => Player.minimizePlayer()),
+        zIndex: 1,
+      },
+      {
+        image: keyImage,
+        type: "Item",
+        name: "Key",
+        location: {
+          x: 0.60,
+          y: 0.80,
+        },
+        width: 70,
+        height: 70,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () => checkDistance(app, 0.6, 0.8, "mainScene", () => collectItem(app, "mainScene", "Key")),
+        zIndex: 1,
+      },
+      {
         image: lockImage,
         type: "Item",
         name: "Lock",
@@ -48,13 +81,13 @@ const gameData = {
         height: 80,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
-        onInteraction: (app) => () => switchScene(app, "numpadScene"),
+        onInteraction: (app) => () => checkDistance(app, 0.53, 0.61, "numpadScene", () => switchScene(app, "numpadScene")),
         zIndex: 0,
       },
       {
         image: bookshelfImage,
         type: "Item",
-        name: "Box",
+        name: "Bookshelf",
         location: {
           x: 0.33,
           y: 0.73,
@@ -62,7 +95,7 @@ const gameData = {
         width: 300,
         height: 310,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "bookshelfScene"),
+        onInteraction: (app) => () => checkDistance(app, 0.33, 0.73, "bookshelfScene", () => switchScene(app, "bookshelfScene")),
         zIndex: 0,
       },
       {
@@ -76,7 +109,7 @@ const gameData = {
         width: 50,
         height: 50,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "mouseholeScene"),
+        onInteraction: (app) => () => checkDistance(app, 0.78, 0.8, "mouseholeScene", () => switchScene(app, "mouseholeScene")),
         zIndex: 0,
       },
     ],
@@ -191,9 +224,10 @@ const gameData = {
     ],
   },
   mouseholeScene: {
-    background: mouseholeSceneBackground,
+    background: mouseholeSceneBackground1,
     backgroundWidth: 1400,
     backgroundHeight: 800,
+    animatedSpriteTextures: [mouseholeSceneBackground1, mouseholeSceneBackground2],
     items: [
       {
         image: backArrowImage,

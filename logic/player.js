@@ -9,6 +9,11 @@ import playerWalk4 from "../resources/images/player_walk4.png";
 import playerWalk5 from "../resources/images/player_walk5.png";
 import playerWalk6 from "../resources/images/player_walk6.png";
 import playerWalk7 from "../resources/images/player_walk7.png";
+import playerWalk8 from "../resources/images/player_walk8.png";
+import playerWalk9 from "../resources/images/player_walk9.png";
+import playerWalk10 from "../resources/images/player_walk10.png";
+import playerWalk11 from "../resources/images/player_walk11.png";
+import playerWalk12 from "../resources/images/player_walk12.png";
 import playerWalkMini1 from "../resources/images/player_walkA1.png";
 import playerWalkMini2 from "../resources/images/player_walkA2.png";
 import playerWalkMini3 from "../resources/images/player_walkA3.png";
@@ -43,6 +48,11 @@ class Player {
       PIXI.Texture.from(playerWalk5),
       PIXI.Texture.from(playerWalk6),
       PIXI.Texture.from(playerWalk7),
+      PIXI.Texture.from(playerWalk8),
+      PIXI.Texture.from(playerWalk9),
+      PIXI.Texture.from(playerWalk10),
+      PIXI.Texture.from(playerWalk11),
+      PIXI.Texture.from(playerWalk12),
     ];
     Player.isMiniSize = false;
     // this.destinationReached = true;
@@ -117,6 +127,7 @@ class Player {
       this.walkableArea.containsPoint(targetPosition)
     ) {
       // Switch to the walk animation frames
+<<<<<<< HEAD
       if (Player.player.textures !== Player.playerWalkFrames) {
         Player.player.textures = Player.playerWalkFrames;
         if (Player.isMiniSize) {
@@ -125,13 +136,18 @@ class Player {
         else {
           Player.player.animationSpeed = 0.11; // Set animation speed for walk animation
         }
+=======
+      if (Player.player.textures !== this.playerWalkFrames) {
+        Player.player.textures = this.playerWalkFrames;
+        Player.player.animationSpeed = 0.15; // Set animation speed for walk animation
+>>>>>>> b320d74 (player walking animation frames)
         Player.player.play();
       }
       // this.destinationReached = false;
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
-      const speed = 1.6; // Adjust speed if needed
+      const speed = 3.3; // Adjust speed if needed
       Player.player.x += directionX * speed;
       Player.player.y += directionY * speed;
 

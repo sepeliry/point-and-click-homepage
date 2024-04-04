@@ -127,20 +127,13 @@ class Player {
       this.walkableArea.containsPoint(targetPosition)
     ) {
       // Switch to the walk animation frames
-<<<<<<< HEAD
       if (Player.player.textures !== Player.playerWalkFrames) {
         Player.player.textures = Player.playerWalkFrames;
         if (Player.isMiniSize) {
           Player.player.animationSpeed = 0.3;
-        }
-        else {
+        } else {
           Player.player.animationSpeed = 0.11; // Set animation speed for walk animation
         }
-=======
-      if (Player.player.textures !== this.playerWalkFrames) {
-        Player.player.textures = this.playerWalkFrames;
-        Player.player.animationSpeed = 0.15; // Set animation speed for walk animation
->>>>>>> b320d74 (player walking animation frames)
         Player.player.play();
       }
       // this.destinationReached = false;
@@ -196,7 +189,7 @@ class Player {
     // Calculate the magnitude of the direction vector
     const magnitude = Math.sqrt(
       directionVector.x * directionVector.x +
-      directionVector.y * directionVector.y
+        directionVector.y * directionVector.y
     );
 
     // Check if the magnitude is greater than 0 (to avoid division by zero)

@@ -17,6 +17,7 @@ import book2 from "../resources/images/book2_placeholder.png";
 import lockImage from "../resources/images/lock.png";
 import numPadSceneBackground from "../resources/images/num_pad.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
+import potionImage from "../resources/images/potion.png";
 
 const gameData = {
   mainScene: {
@@ -36,6 +37,20 @@ const gameData = {
         height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: null,
+        zIndex: 1,
+      },
+      {
+        image: potionImage,
+        type: "Item",
+        name: "Potion",
+        location: {
+          x: 0.20,
+          y: 0.70,
+        },
+        width: 70,
+        height: 70,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () => checkDistance(app, 0.2, 0.7, "mainScene", () => Player.minimizePlayer()),
         zIndex: 1,
       },
       {

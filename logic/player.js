@@ -13,6 +13,11 @@ import playerWalkMini1 from "../resources/images/player_walkA1.png";
 import playerWalkMini2 from "../resources/images/player_walkA2.png";
 import playerWalkMini3 from "../resources/images/player_walkA3.png";
 import playerWalkMini4 from "../resources/images/player_walkA4.png";
+import playerWalkMini5 from "../resources/images/player_walkA5.png";
+import playerWalkMini6 from "../resources/images/player_walkA6.png";
+import playerWalkMini7 from "../resources/images/player_walkA7.png";
+import playerWalkMini8 from "../resources/images/player_walkA8.png";
+import playerWalkMini9 from "../resources/images/player_walkA9.png";
 
 /**
  * Class for players
@@ -23,13 +28,14 @@ class Player {
    * @param {PIXI.Application} app - Application where the player is added to
    */
   static player = null;
+  static isMiniSize = null;
   constructor(app) {
     // Load player idle and walk animation frames
-    this.playerIdleFrames = [
+    Player.playerIdleFrames = [
       PIXI.Texture.from(playeridle),
       // PIXI.Texture.from(playerIdle2),
     ];
-    this.playerWalkFrames = [
+    Player.playerWalkFrames = [
       PIXI.Texture.from(playerWalk1),
       PIXI.Texture.from(playerWalk2),
       PIXI.Texture.from(playerWalk3),
@@ -38,7 +44,7 @@ class Player {
       PIXI.Texture.from(playerWalk6),
       PIXI.Texture.from(playerWalk7),
     ];
-    this.isMiniSize = false;
+    Player.isMiniSize = false;
     // this.destinationReached = true;
     // Create walkable area
     this.walkableArea = new PIXI.Graphics();
@@ -50,7 +56,7 @@ class Player {
     app.mainScene.addChild(this.walkableArea);
 
     // Create player sprite with idle animation
-    Player.player = new PIXI.AnimatedSprite(this.playerIdleFrames);
+    Player.player = new PIXI.AnimatedSprite(Player.playerIdleFrames);
     Player.player.position.set(450, 620);
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 2;
@@ -111,9 +117,14 @@ class Player {
       this.walkableArea.containsPoint(targetPosition)
     ) {
       // Switch to the walk animation frames
-      if (Player.player.textures !== this.playerWalkFrames) {
-        Player.player.textures = this.playerWalkFrames;
-        Player.player.animationSpeed = 0.11; // Set animation speed for walk animation
+      if (Player.player.textures !== Player.playerWalkFrames) {
+        Player.player.textures = Player.playerWalkFrames;
+        if (Player.isMiniSize) {
+          Player.player.animationSpeed = 0.3;
+        }
+        else {
+          Player.player.animationSpeed = 0.11; // Set animation speed for walk animation
+        }
         Player.player.play();
       }
       // this.destinationReached = false;
@@ -138,22 +149,12 @@ class Player {
   }
 
   setIdle() {
-    if (Player.player.textures !== this.playerIdleFrames) {
-      Player.player.textures = this.playerIdleFrames;
+    if (Player.player.textures !== Player.playerIdleFrames) {
+      Player.player.textures = Player.playerIdleFrames;
       Player.player.animationSpeed = 0.05; // Set animation speed for idle animation
       Player.player.play();
       // this.destinationReached = true;
     }
-  }
-  minimizePlayer() {
-    this.isMiniSize = true;
-    this.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];
-    this.playerWalkFrames = [
-      PIXI.Texture.from(playerWalkMini1),
-      PIXI.Texture.from(playerWalkMini2),
-      PIXI.Texture.from(playerWalkMini3),
-      PIXI.Texture.from(playerWalkMini4),
-    ];
   }
 
   adjustTargetPosition(targetPosition) {
@@ -199,6 +200,21 @@ class Player {
   static getLocation() {
     const loc = new PIXI.Point(Player.player.x, Player.player.y);
     return loc;
+  }
+  static minimizePlayer() {
+    Player.isMiniSize = true;
+    Player.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];
+    Player.playerWalkFrames = [
+      PIXI.Texture.from(playerWalkMini1),
+      PIXI.Texture.from(playerWalkMini2),
+      PIXI.Texture.from(playerWalkMini3),
+      PIXI.Texture.from(playerWalkMini4),
+      PIXI.Texture.from(playerWalkMini5),
+      PIXI.Texture.from(playerWalkMini6),
+      PIXI.Texture.from(playerWalkMini7),
+      PIXI.Texture.from(playerWalkMini8),
+      PIXI.Texture.from(playerWalkMini9),
+    ];
   }
 }
 

@@ -9,7 +9,10 @@ import Player from '../player';
 function checkDistance(app, x, y, sceneName, action) {
     const maxDistance = 250;
     const player = Player.player;
-    if (!player || !app.scenes[sceneName]) return;
+
+    // If something is wrong, return
+    if (!player || !app.scenes[sceneName] || (!Player.isMiniSize && sceneName === "mouseholeScene")) return;
+
     // Calculate the distance between the player and the clickable area
     const distance = Math.sqrt(
         (player.x - x * app.renderer.width) ** 2 + (player.y - y * app.renderer.height) ** 2

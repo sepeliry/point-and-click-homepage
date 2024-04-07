@@ -68,8 +68,8 @@ describe("switchScene", () => {
   });
 
   it("should log a warning if the new scene is not found", () => {
-    const newSceneName = "scene3"; // Non-existent scene
-    console.warn = jest.fn(); // Mock console.warn
+    const newSceneName = "scene3";
+    console.warn = jest.fn();
     switchScene(mockApp, newSceneName);
 
     // Check if warning is logged

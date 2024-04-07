@@ -56,9 +56,10 @@ class UI {
         // set / show mainScene by default
         app.mainScene = container;
         container.visible = true;
-      }
-      else if (sceneName === "mouseholeScene" && sceneData.animatedSpriteTextures) {
-
+      } else if (
+        sceneName === "mouseholeScene" &&
+        sceneData.animatedSpriteTextures
+      ) {
         // Call the createAnimatedSprite method
         this.createAnimatedSprite(
           app,
@@ -66,8 +67,7 @@ class UI {
           container
         );
         container.visible = false;
-      }
-      else {
+      } else {
         // hide other scenes by default
         container.visible = false;
       }
@@ -124,11 +124,11 @@ class UI {
   }
 
   createAnimatedSprite(app, frameUrls, container) {
-    const textureArray = frameUrls.map(url => PIXI.Texture.from(url));
+    const textureArray = frameUrls.map((url) => PIXI.Texture.from(url));
     const animatedSprite = new PIXI.AnimatedSprite(textureArray);
     animatedSprite.width = app.renderer.width;
     animatedSprite.height = app.renderer.height;
-    animatedSprite.animationSpeed = 0.01;
+    animatedSprite.animationSpeed = 0.02;
     animatedSprite.loop = true;
     animatedSprite.play();
     container.addChild(animatedSprite);

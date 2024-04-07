@@ -1,6 +1,7 @@
 import switchScene from "../logic/interactions/switchScene";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab";
 import displayWikiPage from "../logic/interactions/displayWikiPage";
+import openPopup from "../logic/interactions/openItemPopup";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
 import collectItem from "../logic/interactions/collectItem.js";
 import Player from "../logic/player.js";
@@ -19,6 +20,7 @@ import lockImage from "../resources/images/lock.png";
 import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/num_pad.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
+import { itemCannotBeUsed } from "./popupTexts.js";
 import potionImage from "../resources/images/potion.png";
 
 const gameData = {
@@ -38,7 +40,7 @@ const gameData = {
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
-        onInteraction: null,
+        onInteraction: (app) => () => openPopup(app, itemCannotBeUsed, 0.71, 0.93),
         zIndex: 1,
       },
       {

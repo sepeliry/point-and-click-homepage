@@ -46,13 +46,16 @@ const gameData = {
         type: "Item",
         name: "Potion",
         location: {
-          x: 0.20,
-          y: 0.70,
+          x: 0.2,
+          y: 0.7,
         },
         width: 70,
         height: 70,
         collisionHeight: 5, // not yet used
-        onInteraction: (app) => () => checkDistance(app, 0.2, 0.7, "mainScene", () => Player.minimizePlayer()),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.2, 0.7, "mainScene", () =>
+            Player.minimizePlayer()
+          ),
         zIndex: 1,
       },
       {
@@ -60,13 +63,16 @@ const gameData = {
         type: "Item",
         name: "Key",
         location: {
-          x: 0.60,
-          y: 0.80,
+          x: 0.6,
+          y: 0.8,
         },
         width: 70,
         height: 70,
         collisionHeight: 5, // not yet used
-        onInteraction: (app) => () => checkDistance(app, 0.6, 0.8, "mainScene", () => collectItem(app, "mainScene", "Key")),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.6, 0.8, "mainScene", () =>
+            collectItem(app, "mainScene", "Key")
+          ),
         zIndex: 1,
       },
       {
@@ -81,7 +87,10 @@ const gameData = {
         height: 80,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
-        onInteraction: (app) => () => checkDistance(app, 0.53, 0.61, "numpadScene", () => switchScene(app, "numpadScene")),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.53, 0.61, "numpadScene", () =>
+            switchScene(app, "numpadScene")
+          ),
         zIndex: 0,
       },
       {
@@ -95,7 +104,10 @@ const gameData = {
         width: 300,
         height: 310,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => checkDistance(app, 0.33, 0.73, "bookshelfScene", () => switchScene(app, "bookshelfScene")),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.33, 0.73, "bookshelfScene", () =>
+            switchScene(app, "bookshelfScene")
+          ),
         zIndex: 0,
       },
       {
@@ -109,7 +121,10 @@ const gameData = {
         width: 50,
         height: 50,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => checkDistance(app, 0.78, 0.8, "mouseholeScene", () => switchScene(app, "mouseholeScene")),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.78, 0.8, "mouseholeScene", () =>
+            switchScene(app, "mouseholeScene")
+          ),
         zIndex: 0,
       },
     ],
@@ -227,7 +242,10 @@ const gameData = {
     background: mouseholeSceneBackground1,
     backgroundWidth: 1400,
     backgroundHeight: 800,
-    animatedSpriteTextures: [mouseholeSceneBackground1, mouseholeSceneBackground2],
+    animatedSpriteTextures: [
+      mouseholeSceneBackground1,
+      mouseholeSceneBackground2,
+    ],
     items: [
       {
         image: backArrowImage,

@@ -11,27 +11,15 @@ import { followPlayer } from "./utils/cameraUtils.js";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
-if (windowWidth <= 800) {
-  window.isMobile = true;
-} else {
-  window.isMobile = false;
-}
-let app;
+// isMobile = true enables the cameraContainer
+window.isMobile = windowWidth <= 800;
 
-// Create application on page load
-if (!window.isMobile) {
-  app = new PIXI.Application({
-    width: 1400,
-    height: 800,
-    backgroundColor: 0xaaaaaa,
-  });
-} else {
-  app = new PIXI.Application({
-    width: windowWidth >= 1400 ? 1400 : windowWidth,
-    height: windowHeight >= 800 ? 800 : windowHeight,
-    backgroundColor: 0xaaaaaa,
-  });
-}
+// Create application on page load. desktop: 1400x800, mobile: use screensize
+const app = new PIXI.Application({
+  width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
+  height: window.isMobile ? Math.min(windowHeight, 800) : 800,
+  backgroundColor: 0xaaaaaa,
+});
 
 globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
@@ -49,11 +37,8 @@ const numpad = new Numpad(app, ui);
 
 document.addEventListener("DOMContentLoaded", () => {
   // Set initial camera position on mobile, or resize to window size
-  if (window.isMobile) {
-    followPlayer(app, app.cameraContainer, Player.player);
-  } else {
-    resizeGame(app, app.mainScene);
-  }
+  followPlayer(app, app.cameraContainer, Player.player);
+  resizeGame(app, app.mainScene);
 });
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
@@ -82,7 +67,6 @@ app.mainScene.on("pointertap", (event) => {
       moveFunction(Player.player, 20); // Adjust the value as needed
     }
   }
-
   const clickedItem = getItemAtPosition(event.global, event.target);
   console.log(clickedItem);
   /*if (clickedItem) {
@@ -134,29 +118,23 @@ app.ticker.add((delta) => {
   }
   if (targetPosition) {
     player.move(targetPosition, UI.solidObjects);
-    if (window.isMobile) {
-      followPlayer(app, app.cameraContainer, Player.player);
-    }
+    followPlayer(app, app.cameraContainer, Player.player);
     app.mainScene.updateTransform();
   }
 });
 
-if (!window.isMobile) {
-  window.addEventListener("resize", () => resizeGame(app, app.mainScene));
-  document.addEventListener("fullscreenchange", () =>
-    resizeGame(app, app.mainScene)
-  );
-  window.addEventListener("resize", () =>
-    resizeGame(app, app.scenes.bookshelfScene)
-  );
-  window.addEventListener("resize", () =>
-    resizeGame(app, app.scenes.numpadScene)
-  );
-}
-// window.addEventListener("resize", () =>
-//   resizeGame(app, app.mouseholeContainer)
-// );
+window.addEventListener("resize", () => {
+  for (let sceneName in app.scenes) {
+    resizeGame(app, app.scenes[sceneName]);
+  }
+});
+
+document.addEventListener("fullscreenchange", () => {
+  for (let sceneName in app.scenes) {
+    resizeGame(app, app.scenes[sceneName]);
+  }
+});
+
 // window.addEventListener("resize", () => resizeGame(app, app.pdfContainer));
 // }
-
 // setupPdf(app, app.mainScene);

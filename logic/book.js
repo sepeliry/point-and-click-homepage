@@ -30,15 +30,13 @@ class Book {
     this.book.x = x * app.renderer.width;
     this.book.y = y * app.renderer.height;
     this.book.visible = true;
-    this.book.width = width;
-    this.book.height = height;
-    if (window.isMobile) {
-      this.book.width = width * 0.7;
-      this.book.height = height * 0.7;
-    } else {
-      this.book.width = width;
-      this.book.height = height;
-    }
+    // this.book.width = width;
+    // this.book.height = height;
+    // Calculate width and height relative to screen size to support mobile screens
+    const widthRatio = width / 1400;
+    const heightRatio = height / 800;
+    this.book.width = widthRatio * app.renderer.width;
+    this.book.height = heightRatio * app.renderer.height;
     this.book.zIndex = zIndex;
 
     if (onInteraction) {

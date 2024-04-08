@@ -73,6 +73,7 @@ const gameData = {
           ),
         zIndex: 1,
       },
+      /*
       {
         image: keyImage,
         type: "Item",
@@ -90,6 +91,7 @@ const gameData = {
           ),
         zIndex: 1,
       },
+      */
       {
         image: lockImage,
         type: "Item",

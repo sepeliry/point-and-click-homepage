@@ -58,10 +58,22 @@ class Book {
     this.textContainer = new PIXI.Container();
     this.textContainer.zIndex = 2;
 
+    // // Calculate a fontsize using the original fontsize (25) to support smaller screens
+    const originalWidth = 1400;
+    const originalHeight = 800;
+    const currentWidth = app.renderer.width;
+    const currentHeight = app.renderer.height;
+    const ratio = Math.min(
+      currentWidth / originalWidth,
+      currentHeight / originalHeight
+    );
+
+    const fontSize = 25 * ratio;
+
     // Define the style for the text
     const textStyle = {
       fontFamily: "Consolas",
-      fontSize: 20,
+      fontSize: fontSize,
       fill: 0xffffff,
       stroke: 0x000000, // Black outline color
       strokeThickness: 4,

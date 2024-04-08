@@ -17,15 +17,22 @@
     "build": "npm run clean && parcel build ./index.html",
     "build_serve": "npm run build && http-server ./dist",
     "build_prod": "rimraf ./deployment ./.parcel-cache && parcel build ./index.html --dist-dir deployment --public-url /beta/",
-    "test": "mocha",
-    "coverage": "c8 mocha"
+    "test": "jest",
+    "coverage": "c8 jest"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.24.4",
     "c8": "^9.1.0",
-    "chai": "^5.1.0",
     "coveralls": "^3.1.1",
     "http-server": "^14.1.1",
-    "mocha": "^10.3.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^24.0.0",
     "parcel": "^2.11.0",
     "parcel-reporter-static-files-copy": "^1.5.3",
     "rimraf": "^5.0.5"

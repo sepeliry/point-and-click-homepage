@@ -1,6 +1,7 @@
-import switchScene from "../logic/interactions/switchScene";
-import openUrlInNewTab from "../logic/interactions/openUrlInNewTab";
-import displayWikiPage from "../logic/interactions/displayWikiPage";
+import switchScene from "../logic/interactions/switchScene.js";
+import openUrlInNewTab from "../logic/interactions/openUrlInNewTab.js";
+import displayWikiPage from "../logic/interactions/displayWikiPage.js";
+import openPopup from "../logic/interactions/openItemPopup.js";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
 import collectItem from "../logic/interactions/collectItem.js";
 import Player from "../logic/player.js";
@@ -10,7 +11,8 @@ import mainSceneBackground from "../resources/images/background.png";
 import bookshelfSceneBackground from "../resources/images/bookshelf_background.png";
 import mouseholeSceneBackground1 from "../resources/images/mousehole_scene/mousehole1.png";
 import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mousehole2.png";
-// import computerSceneBackground from "../resources/images/computer_background.png";
+
+import computerDesk from "../resources/images/computer_desk.png";
 import mouseholeImage from "../resources/images/mousehole_placeholder.png";
 import backArrowImage from "../resources/images/back_arrow.png";
 import book1 from "../resources/images/book_placeholder.png";
@@ -19,6 +21,15 @@ import lockImage from "../resources/images/lock.png";
 import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/numpad_scene/numpad_background.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
+import { cannotEnterMousehole, itemCannotBeUsed } from "./popupTexts.js";
+
+import computerSceneBackground from "../resources/images/computer_scene/computer_scene.jpg";
+import discordIcon from "../resources/images/computer_scene/discord_icon.png";
+import signupIcon from "../resources/images/computer_scene/signup_icon.png";
+
+import coffeeMakerImage from "../resources/images/coffee_maker.png";
+import plantImage from "../resources/images/plant.png";
+
 import potionImage from "../resources/images/potion.png";
 
 import button1 from "../resources/images/numpad_scene/button1.png";
@@ -53,24 +64,8 @@ const gameData = {
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
-        onInteraction: null,
-        zIndex: 1,
-      },
-      {
-        image: potionImage,
-        type: "Item",
-        name: "Potion",
-        location: {
-          x: 0.2,
-          y: 0.7,
-        },
-        width: 70,
-        height: 70,
-        collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
-          checkDistance(app, 0.2, 0.7, "mainScene", () =>
-            Player.minimizePlayer()
-          ),
+          openPopup(app, itemCannotBeUsed, 0.71, 0.93),
         zIndex: 1,
       },
       /*
@@ -104,7 +99,41 @@ const gameData = {
         height: 80,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
-        onInteraction: (app) => () => switchScene(app, "numpadScene"),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.53, 0.61, "numpadScene", () =>
+            switchScene(app, "numpadScene")
+          ),
+        zIndex: 0,
+      },
+      {
+        image: coffeeMakerImage,
+        type: "Item",
+        name: "Coffee maker",
+        location: {
+          x: 0.7,
+          y: 0.595,
+        },
+        width: 49.25,
+        height: 72.75,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.7, 0.595, "mainScene", () =>
+            Player.minimizePlayer()
+          ),
+        zIndex: 0,
+      },
+      {
+        image: plantImage,
+        type: "Item",
+        name: "Plant",
+        location: {
+          x: 0.725,
+          y: 0.595,
+        },
+        width: 25.5,
+        height: 65.75,
+        collisionHeight: 0, // not yet used
+        onInteraction: null,
         zIndex: 0,
       },
       {
@@ -125,20 +154,42 @@ const gameData = {
         zIndex: 0,
       },
       {
+        image: computerDesk,
+        type: "Item",
+        name: "Computer desk",
+        location: {
+          x: 0.16,
+          y: 0.92,
+        },
+        width: 292,
+        height: 286,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.16, 0.92, "computerScene", () =>
+            switchScene(app, "computerScene")
+          ),
+        zIndex: 0,
+      },
+      {
         image: mouseholeImage,
         type: "Item",
         name: "Mousehole",
         location: {
-          x: 0.78,
-          y: 0.8,
+          x: 0.88,
+          y: 0.82,
         },
         width: 50,
         height: 50,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
+        onInteraction: (app) => () => {
+          if (!Player.isMiniSize) {
+            openPopup(app, cannotEnterMousehole, 0.71, 0.96);
+            return;
+          }
           checkDistance(app, 0.78, 0.8, "mouseholeScene", () =>
             switchScene(app, "mouseholeScene")
-          ),
+          );
+        },
         zIndex: 0,
       },
     ],
@@ -180,7 +231,6 @@ const gameData = {
 
         zIndex: 1,
       },
-
       {
         image: book2,
         type: "Book",
@@ -501,13 +551,16 @@ const gameData = {
         width: 164,
         height: 101,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "mainScene"),
+        onInteraction: (app) => () => {
+          switchScene(app, "mainScene");
+          Player.maximizePlayer();
+        },
         zIndex: 10,
       },
     ],
   },
   computerScene: {
-    background: null, // TODO: add computerSceneBackground
+    background: computerSceneBackground, // TODO: add computerSceneBackground
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [
@@ -524,6 +577,36 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => switchScene(app, "mainScene"),
         zIndex: 10,
+      },
+      {
+        image: discordIcon,
+        type: "Item",
+        name: "Sepeli's Discord server",
+        location: {
+          x: 0.46,
+          y: 0.47,
+        },
+        width: 64,
+        height: 64,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://discord.gg/n8Kx8Qm"),
+        zIndex: 1,
+      },
+      {
+        image: signupIcon,
+        type: "Item",
+        name: "Join Sepeli as a member",
+        location: {
+          x: 0.46,
+          y: 0.55,
+        },
+        width: 64,
+        height: 64,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://goo.gl/forms/E6MraZeXRUn5DE1E3"),
+        zIndex: 1,
       },
     ],
   },

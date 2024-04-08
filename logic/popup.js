@@ -14,10 +14,8 @@ class Popup {
    * @param {boolean} [textElements[].isUrl=false] - Indicates wheter text element is a clickable URL. Default = false
    * @param {string} [textElements[].url] - the URL to open when the text is clicked (required if isUrl=true)
    */
-  constructor(app, textElements) {
+  constructor(app, textElements, padding = 40, hasCloseButton = false) {
     this.popup = new Container();
-    this.popupWidth = app.screen.width / 3;
-    this.popupHeight = app.screen.height / 3;
     // Flag var to prevent opening same popup multiple times
     this.isOpen = false;
 
@@ -29,14 +27,25 @@ class Popup {
       lineJoin: "round",
     });
 
+    let maxTextWidth = 0;
+
+    // Determine the longest string and adjust popup width
+    // based on its length
+    textElements.forEach((element) => {
+      const style = new PIXI.TextStyle(element.style);
+      const measuredText = new Text(element.text, style);
+      maxTextWidth = Math.max(maxTextWidth, measuredText.width);
+    });
+
+    this.popupWidth = maxTextWidth + padding;
+
     //  Loop over the text elements and create text objects for each
     let totalTextHeight = 0;
     this.textElements = textElements.map((element, index) => {
       const style = new TextStyle(element.style);
       const text = new Text(element.text, style);
       text.anchor.set(0.5);
-      text.x = this.popupWidth / 2;
-      text.y = this.popupHeight / 2 + totalTextHeight;
+      text.position.set(this.popupWidth / 2, totalTextHeight + padding - 9);
       totalTextHeight += text.height;
       if (element.isUrl) {
         text.eventMode = "static";
@@ -46,50 +55,64 @@ class Popup {
       return text;
     });
 
-    // Close button for the popup
-    this.closeText = new Text("Sulje", this.style);
-    this.closeText.eventMode = "static";
-    this.closeText.cursor = "pointer";
-    this.closeText.anchor.set(0.5);
-    this.closeText.x = this.popupWidth / 2;
-    this.closeText.y = this.popupHeight / 2 + totalTextHeight + 10;
-    totalTextHeight += this.closeText.height;
-    this.popupCloseBtn = this.closeText;
-    this.popupCloseBtn.on("pointerdown", (event) => {
-      this.close(app);
-    });
+    if (hasCloseButton) {
+      // Close button for the popup
+      this.closeText = new Text("Sulje", this.style);
+      this.closeText.eventMode = "static";
+      this.closeText.cursor = "pointer";
+      this.closeText.anchor.set(0.5);
+      this.closeText.position.set(this.popupWidth / 2, totalTextHeight + padding)
+      totalTextHeight += this.closeText.height;
+      this.popupCloseBtn = this.closeText;
+      this.popupCloseBtn.on("pointerdown", (event) => {
+        this.close(app);
+      });
+    }
+
+    this.popupHeight = totalTextHeight + padding;
 
     // Draws a background for the popup
     this.popupBg = new PIXI.Graphics();
+    this.popupBg.lineStyle(2, 0xffffff);
     this.popupBg.beginFill(0x1b1b1b);
     this.popupBg.drawRoundedRect(
       0,
       0,
       this.popupWidth,
-      this.popupHeight + totalTextHeight + 10,
+      this.popupHeight,
       15
     );
     this.popupBg.endFill();
-    this.popupBg.alpha = 0.8;
+    //this.popupBg.alpha = 0.8;
 
     this.popup.addChild(this.popupBg);
     this.textElements.forEach((textElement) => {
       this.popup.addChild(textElement);
     });
-    this.popup.addChild(this.popupCloseBtn);
+    hasCloseButton ? this.popup.addChild(this.popupCloseBtn) : null;
   }
 
   /**
    * Method to open the popup when an object/item is clicked.
    * @param {PIXI.Application} app - Pixi Application where the popup is added
    */
-  open(app) {
+  open(app, x, y, passiveMode = false) {
     if (!this.isOpen) {
       this.isOpen = true;
-      this.popup.x = (app.screen.width - this.popupWidth) / 2;
-      this.popup.y = (app.screen.height - this.popupHeight) / 2;
-      app.mainScene.eventMode = "passive";
+      this.popup.position.set(x * 1400, y * 800);
+      passiveMode ? app.mainScene.eventMode = "passive" : null;
       app.mainScene.addChild(this.popup);
+
+      // Add a slight delay before adding the event listener to close the popup
+      setTimeout(() => {
+        // Add event listener to close the popup when user clicks anywhere on the screen
+        const closePopupHandler = () => {
+          this.close(app);
+          // Remove the event listener after the popup is closed
+          app.stage.off("pointertap", closePopupHandler);
+        };
+        app.mainScene.on("pointertap", closePopupHandler);
+      }, 100);
     }
   }
 

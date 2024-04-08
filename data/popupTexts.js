@@ -47,3 +47,16 @@ export const itemCannotBeUsed = [
     isUrl: false,
   },
 ];
+
+export const cannotEnterMousehole = [
+  {
+    text: "On kyl pieni hiirenkolo...",
+    style: {
+      fontFamily: "Dotrice Regular",
+      fontSize: 20,
+      fill: "0xffffff",
+      lineJoin: "round",
+    },
+    isUrl: false,
+  },
+];

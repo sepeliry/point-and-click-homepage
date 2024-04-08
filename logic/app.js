@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.isMobile) {
     introPopup.open(app, 0.2, 0.2);
   } else {
-    introPopup.open(app, 0.35, 0.3875);
+    introPopup.open(app, 0.37, 0.4);
   }
   followPlayer(app, app.cameraContainer, Player.player);
   resizeGame(app, app.mainScene);

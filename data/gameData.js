@@ -21,12 +21,14 @@ import lockImage from "../resources/images/lock.png";
 import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/num_pad.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
-import { itemCannotBeUsed } from "./popupTexts.js";
-import potionImage from "../resources/images/potion.png";
+import { cannotEnterMousehole, itemCannotBeUsed } from "./popupTexts.js";
 
 import computerSceneBackground from "../resources/images/computer_scene/computer_scene.jpg";
 import discordIcon from "../resources/images/computer_scene/discord_icon.png";
 import signupIcon from "../resources/images/computer_scene/signup_icon.png";
+
+import coffeeMakerImage from "../resources/images/coffee_maker.png";
+import plantImage from "../resources/images/plant.png";
 
 const gameData = {
   mainScene: {
@@ -47,23 +49,6 @@ const gameData = {
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           openPopup(app, itemCannotBeUsed, 0.71, 0.93),
-        zIndex: 1,
-      },
-      {
-        image: potionImage,
-        type: "Item",
-        name: "Potion",
-        location: {
-          x: 0.2,
-          y: 0.7,
-        },
-        width: 70,
-        height: 70,
-        collisionHeight: 5, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.2, 0.7, "mainScene", () =>
-            Player.minimizePlayer()
-          ),
         zIndex: 1,
       },
       /*
@@ -101,6 +86,37 @@ const gameData = {
           checkDistance(app, 0.53, 0.61, "numpadScene", () =>
             switchScene(app, "numpadScene")
           ),
+        zIndex: 0,
+      },
+      {
+        image: coffeeMakerImage,
+        type: "Item",
+        name: "Coffee maker",
+        location: {
+          x: 0.7,
+          y: 0.595,
+        },
+        width: 49.25,
+        height: 72.75,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.7, 0.595, "mainScene", () =>
+            Player.minimizePlayer()
+          ),
+        zIndex: 0,
+      },
+      {
+        image: plantImage,
+        type: "Item",
+        name: "Plant",
+        location: {
+          x: 0.725,
+          y: 0.595,
+        },
+        width: 25.5,
+        height: 65.75,
+        collisionHeight: 0, // not yet used
+        onInteraction: null,
         zIndex: 0,
       },
       {
@@ -148,10 +164,15 @@ const gameData = {
         width: 50,
         height: 50,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
+        onInteraction: (app) => () => {
+          if (!Player.isMiniSize) {
+            openPopup(app, cannotEnterMousehole, 0.71, 0.96);
+            return;
+          }
           checkDistance(app, 0.78, 0.8, "mouseholeScene", () =>
             switchScene(app, "mouseholeScene")
-          ),
+          );
+        },
         zIndex: 0,
       },
     ],
@@ -284,7 +305,10 @@ const gameData = {
         width: 164,
         height: 101,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "mainScene"),
+        onInteraction: (app) => () => {
+          switchScene(app, "mainScene");
+          Player.maximizePlayer();
+        },
         zIndex: 10,
       },
     ],

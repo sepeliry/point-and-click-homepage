@@ -158,8 +158,8 @@ const gameData = {
         type: "Item",
         name: "Mousehole",
         location: {
-          x: 0.78,
-          y: 0.8,
+          x: 0.88,
+          y: 0.82,
         },
         width: 50,
         height: 50,

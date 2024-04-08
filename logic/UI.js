@@ -38,7 +38,7 @@ class UI {
         const background = PIXI.Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
         if (sceneName === "mainScene" && window.isMobile) {
-          // To support cameraContainer usage on mobile
+          // To support cameraContainer on mobile, set mainScene size to match gameworlds size
           background.width = 1400;
           background.height = 800;
         } else {
@@ -71,21 +71,13 @@ class UI {
         // hide other scenes by default
         container.visible = false;
       }
-      // On mobile, use cameraContainer
-      if (window.isMobile) {
-        let gameContainerDOM = document.getElementById("game-container");
-        gameContainerDOM.style.width = `${app.view.width}px`;
-        gameContainerDOM.style.height = `${app.view.height}px`;
-        const cameraContainer = new PIXI.Container();
-        app.cameraContainer = cameraContainer;
-        cameraContainer.addChild(app.mainScene);
-        app.stage.addChild(cameraContainer);
-      }
+      // Create a camera container for the mobile view
+      this.createCameraContainer(app);
     });
   }
 
   createObjectsFromGameData(app, items, container) {
-    console.log(items);
+    // console.log(items);
     items.forEach((itemData) => {
       if (itemData.type === "Book") {
         // Create a Book instance instead of an Item instance
@@ -120,7 +112,7 @@ class UI {
         UI.solidObjects.push(item);
       }
     });
-    console.log(container);
+    // console.log(container);
   }
 
   createAnimatedSprite(app, frameUrls, container) {
@@ -136,6 +128,18 @@ class UI {
 
   getScene(app, sceneName) {
     return app.scenes[sceneName];
+  }
+
+  createCameraContainer(app) {
+    if (window.isMobile) {
+      let gameContainerDOM = document.getElementById("game-container");
+      gameContainerDOM.style.width = `${app.view.width}px`;
+      gameContainerDOM.style.height = `${app.view.height}px`;
+      const cameraContainer = new PIXI.Container();
+      app.cameraContainer = cameraContainer;
+      cameraContainer.addChild(app.mainScene);
+      app.stage.addChild(cameraContainer);
+    }
   }
 }
 

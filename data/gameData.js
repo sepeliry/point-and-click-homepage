@@ -131,7 +131,10 @@ const gameData = {
         width: 292,
         height: 286,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "computerScene"),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.16, 0.92, "computerScene", () =>
+            switchScene(app, "computerScene")
+          ),
         zIndex: 0,
       },
       {
@@ -145,7 +148,10 @@ const gameData = {
         width: 50,
         height: 50,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "mouseholeScene"),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.78, 0.8, "mouseholeScene", () =>
+            switchScene(app, "mouseholeScene")
+          ),
         zIndex: 0,
       },
     ],

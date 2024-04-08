@@ -251,6 +251,7 @@ const gameData = {
       {
         type: "Text",
         text: "",
+        identifier: "screenText",
         style: {
           breakWords: true,
           dropShadow: true,
@@ -288,7 +289,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 1);
+          Numpad.inputCode(1);
         },
         zIndex: 10,
       },
@@ -305,7 +306,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 2);
+          Numpad.inputCode(2);
         },
         zIndex: 10,
       },
@@ -322,7 +323,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 3);
+          Numpad.inputCode(3);
         },
         zIndex: 10,
       },
@@ -339,7 +340,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 4);
+          Numpad.inputCode(4);
         },
         zIndex: 10,
       },
@@ -356,7 +357,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 5);
+          Numpad.inputCode(5);
         },
         zIndex: 10,
       },
@@ -373,7 +374,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 6);
+          Numpad.inputCode(6);
         },
         zIndex: 10,
       },
@@ -390,7 +391,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 7);
+          Numpad.inputCode(7);
         },
         zIndex: 10,
       },
@@ -407,7 +408,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 8);
+          Numpad.inputCode(8);
         },
         zIndex: 10,
       },
@@ -424,7 +425,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
-          Numpad.inputCode(app, 9);
+          Numpad.inputCode(9);
         },
         zIndex: 10,
       },
@@ -440,7 +441,7 @@ const gameData = {
         height: 78.9,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          Numpad.resetCode(app);
+          Numpad.resetCode();
         },
         zIndex: 10,
       },
@@ -456,7 +457,7 @@ const gameData = {
         height: 78.9,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          Numpad.inputCode(app, 0);
+          Numpad.inputCode(0);
         },
         zIndex: 10,
       },
@@ -472,7 +473,7 @@ const gameData = {
         height: 78.9,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          Numpad.enterCode(app);
+          Numpad.enterCode();
         },
         zIndex: 10,
       },

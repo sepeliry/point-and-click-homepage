@@ -86,7 +86,7 @@ class UI {
   }
 
   createObjectsFromGameData(app, items, container) {
-    console.log(items);
+    //console.log(items);
     items.forEach((itemData) => {
       if (itemData.type === "Text") {
         const text = new PIXI.Text(itemData.text, itemData.style);
@@ -94,7 +94,18 @@ class UI {
         text.y = itemData.location.y;
         text.visible = true;
         text.anchor.set(0.475, 0);
+        if (itemData.identifier) {
+          text.identifier = itemData.identifier;
+        }
         container.addChild(text);
+
+        // set code text for numpad scene
+        if (
+          container.name === "numpadScene" &&
+          itemData.identifier === "screenText"
+        ) {
+          Numpad.setCodeText(text);
+        }
       } else {
         // Create an Item instance
         const item = new Item(

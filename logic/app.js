@@ -3,7 +3,6 @@ import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
 import Inventory from "./inventory";
 import UI from "./UI";
-import Numpad from "./numpad";
 import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
@@ -44,7 +43,6 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
-// const numpad = new Numpad(app);
 // const popup = new Popup(app, popup1TextElements);
 
 document.addEventListener("DOMContentLoaded", () => {

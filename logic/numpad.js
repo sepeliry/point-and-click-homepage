@@ -1,66 +1,22 @@
 import * as PIXI from "pixi.js";
-import { checkDistance } from "./utils/distanceCheckUtils";
+import { checkDistance } from "./interactions/distanceCheckUtils";
 import Player from "./player";
 import { GlowFilter } from "@pixi/filter-glow";
-import { CRTFilter } from "@pixi/filter-crt";
-import numpadBackgroundImg from "../resources/images/num_pad.png";
-import back_arrowImg from "../resources/images/back_arrow.png";
+import switchScene from "./interactions/switchScene";
 
 class Numpad {
   /**
    * @costructor Creates a numpad instance with a screen and number buttons
    * @param {PIXI.Application} app - Pixi application where the numpad is placed
    */
-  constructor(app, toggleView) {
-    // Container for numpad view
-    app.numpadContainer.filters = [new CRTFilter()];
-    app.numpadContainer.visible = false;
+  constructor(app, ui) {
+    this.numpadScene = ui.getScene(app, "numpadScene");
 
-    // Create sprite for num pad view
-    const numpadTexture = PIXI.Texture.from(numpadBackgroundImg);
-    const numpadBackground = new PIXI.Sprite(numpadTexture);
-    numpadBackground.width = app.screen.width;
-    numpadBackground.height = app.screen.height;
-    app.numpadContainer.addChild(numpadBackground);
-
-    // Back button for numpad
-    const backArrowTexture = PIXI.Texture.from(back_arrowImg);
-    const buttonNumpad = new PIXI.Sprite(backArrowTexture);
-    buttonNumpad.x = 0.03 * app.mainScene.width;
-    buttonNumpad.y = 0.03 * app.mainScene.height;
-    buttonNumpad.interactive = true;
-    buttonNumpad.cursor = "pointer";
-    buttonNumpad.buttonMode = true;
-    buttonNumpad.addEventListener("pointertap", toggleView.bind(this, app));
-    app.numpadContainer.addChild(buttonNumpad);
-
-    // Create clickable area on door numpad
-    const numpadMapping = new PIXI.Graphics();
-    const w = (2 / 100) * app.mainScene.width;
-    const h = (6 / 100) * app.mainScene.height;
-    numpadMapping.beginFill(0x00ff00);
-    numpadMapping.drawRect(0, 0, w, h);
-    numpadMapping.endFill();
-    numpadMapping.alpha = 0;
-    numpadMapping.visible = true;
-    numpadMapping.x = app.mainScene.width / 1.94;
-    numpadMapping.y = app.mainScene.height / 1.87;
-    numpadMapping.interactive = true;
-    numpadMapping.buttonMode = true;
-    numpadMapping.cursor = "pointer";
-    app.mainScene.addChild(numpadMapping);
-
-    // Functionality to check for player distance from clickable mapped areas
-
-    numpadMapping.on("click", (event) => {
-      // Define the maximum distance within which the player can interact with the clickable area
-      const maxDistance = 250;
-
-      // Call the checkDistance function with appropriate parameters
-      checkDistance(Player.player, numpadMapping, maxDistance, () => {
-        toggleView.bind(this, app)();
-      });
-    });
+    /* TODO: interactions: add distance check to gameData
+            checkDistance(Player.player, numpadMapping, maxDistance, () => {
+                switchScene(app, "numpadScene");
+            });
+        */
 
     // Text style for code display
     const screenstyle = new PIXI.TextStyle({
@@ -85,11 +41,11 @@ class Numpad {
     // Create screen for code display
     this.screenContainer = new PIXI.Container();
     this.screen = new PIXI.Text("", screenstyle);
-    this.screen.x = app.numpadContainer.width / 4;
-    this.screen.y = app.numpadContainer.height / 6.8;
+    this.screen.x = this.numpadScene.width / 4;
+    this.screen.y = this.numpadScene.height / 6.8;
     this.screen.visible = true;
-    app.numpadContainer.addChild(this.screen);
-    app.numpadContainer.addChild(this.screenContainer);
+    this.numpadScene.addChild(this.screen);
+    this.numpadScene.addChild(this.screenContainer);
 
     this.glowEffect = new GlowFilter({
       innerStrength: 0.7,
@@ -180,6 +136,19 @@ class Numpad {
     button.cursor = "pointer";
     button.numberValue = value;
 
+    // Calculate a fontsize using the original fontsize (55) to support smaller screens
+    const originalWidth = 1400;
+    const originalHeight = 800;
+    const currentWidth = app.renderer.width;
+    const currentHeight = app.renderer.height;
+    const ratio = Math.min(
+      currentWidth / originalWidth,
+      currentHeight / originalHeight
+    );
+
+    // Calculate the font size based on the ratio
+    const fontSize = 55 * ratio;
+
     // Text style for code display
     const style = new PIXI.TextStyle({
       breakWords: true,
@@ -189,7 +158,7 @@ class Numpad {
       dropShadowDistance: 3,
       fill: "#fff0ff",
       fontFamily: "Lucida Console",
-      fontSize: 55,
+      fontSize: fontSize,
       fontWeight: "bold",
       stroke: "#edceeb",
       strokeThickness: 1,
@@ -221,8 +190,7 @@ class Numpad {
       });
     }
 
-    // Draw a rectangle using the provided position and size parameters
-    app.numpadContainer.addChild(button);
+    this.numpadScene.addChild(button);
     return button;
   }
 }

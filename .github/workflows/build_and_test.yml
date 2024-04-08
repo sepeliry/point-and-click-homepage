@@ -24,9 +24,11 @@ jobs:
         run: npm ci
 
       - name: Run tests with coverage
+        id: tests
         run: npm run coverage
 
       - name: Build for deployment
+        if: steps.tests.outcome == 'success'
         run: |
           npm run build_prod
           git config --local user.email "actions@github.com"

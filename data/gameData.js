@@ -13,11 +13,12 @@ import mouseholeSceneBackground1 from "../resources/images/mousehole_scene/mouse
 import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mousehole2.png";
 
 import computerDesk from "../resources/images/computer_desk.png";
-import mouseholeImage from "../resources/images/mousehole_placeholder.png";
+import mouseholeImage from "../resources/images/mousehole_in_wall_tilted.png";
+import mouseholeImageEyes from "../resources/images/mousehole_in_wall_tilted_eyes.png";
 import backArrowImage from "../resources/images/back_arrow.png";
 import book1 from "../resources/images/book_placeholder.png";
 import book2 from "../resources/images/book2_placeholder.png";
-import lockImage from "../resources/images/lock.png";
+import lockImage from "../resources/images/num_pad.png";
 import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/num_pad.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
@@ -75,15 +76,15 @@ const gameData = {
         type: "Item",
         name: "Lock",
         location: {
-          x: 0.53,
+          x: 0.534,
           y: 0.61,
         },
-        width: 60,
-        height: 80,
+        width: 48,
+        height: 64,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
         onInteraction: (app) => () =>
-          checkDistance(app, 0.53, 0.61, "numpadScene", () =>
+          checkDistance(app, 0.534, 0.61, "numpadScene", () =>
             switchScene(app, "numpadScene")
           ),
         zIndex: 0,
@@ -159,7 +160,7 @@ const gameData = {
         name: "Mousehole",
         location: {
           x: 0.88,
-          y: 0.82,
+          y: 0.83,
         },
         width: 50,
         height: 50,

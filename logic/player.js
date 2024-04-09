@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { playerCollides } from "./collisionUtils";
-import playeridle from "../resources/images/player_idle.png";
+import playeridle from "../resources/images/player_idle0minimalbackground.png";
 import playerIdleMini from "../resources/images/player_idleA1.png";
 import playerWalk1 from "../resources/images/player_walk1.png";
 import playerWalk2 from "../resources/images/player_walk2.png";

@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { playerCollides } from "./collisionUtils";
-import playeridle from "../resources/images/player_idle.png";
+import playeridle from "../resources/images/player_idle0minimalbackground.png";
 import playerIdleMini from "../resources/images/player_idleA1.png";
 import playerWalk1 from "../resources/images/player_walk1.png";
 import playerWalk2 from "../resources/images/player_walk2.png";
@@ -69,7 +69,7 @@ class Player {
     Player.player = new PIXI.AnimatedSprite(Player.playerIdleFrames);
     Player.player.position.set(450, 620);
     Player.player.anchor.set(0.5, 1);
-    Player.player.zIndex = 2;
+    Player.player.zIndex = 10;
 
     Player.player.animationSpeed = 0.05;
     Player.player.loop = true; // Set the loop property to true
@@ -109,7 +109,7 @@ class Player {
 
     // Show player in front of / behind the closest object
     if (Player.player.y > closestObj.y) {
-      Player.player.zIndex = 2;
+      Player.player.zIndex = 10;
     } else {
       Player.player.zIndex = 0;
     }
@@ -132,7 +132,7 @@ class Player {
         if (Player.isMiniSize) {
           Player.player.animationSpeed = 0.3;
         } else {
-          Player.player.animationSpeed = 0.11; // Set animation speed for walk animation
+          Player.player.animationSpeed = 0.15; // Set animation speed for walk animation
         }
         Player.player.play();
       }
@@ -140,7 +140,7 @@ class Player {
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
-      const speed = 1.5; // Adjust speed if needed
+      const speed = 3; // Adjust speed if needed
       Player.player.x += directionX * speed;
       Player.player.y += directionY * speed;
 
@@ -223,6 +223,24 @@ class Player {
       PIXI.Texture.from(playerWalkMini7),
       PIXI.Texture.from(playerWalkMini8),
       PIXI.Texture.from(playerWalkMini9),
+    ];
+  }
+  static maximizePlayer() {
+    Player.isMiniSize = false;
+    Player.playerIdleFrames = [PIXI.Texture.from(playeridle)];
+    Player.playerWalkFrames = [
+      PIXI.Texture.from(playerWalk1),
+      PIXI.Texture.from(playerWalk2),
+      PIXI.Texture.from(playerWalk3),
+      PIXI.Texture.from(playerWalk4),
+      PIXI.Texture.from(playerWalk5),
+      PIXI.Texture.from(playerWalk6),
+      PIXI.Texture.from(playerWalk7),
+      PIXI.Texture.from(playerWalk8),
+      PIXI.Texture.from(playerWalk9),
+      PIXI.Texture.from(playerWalk10),
+      PIXI.Texture.from(playerWalk11),
+      PIXI.Texture.from(playerWalk12),
     ];
   }
 }

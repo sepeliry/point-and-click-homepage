@@ -140,7 +140,7 @@ class Player {
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
-      const speed = 3; // Adjust speed if needed
+      const speed = 2; // Adjust speed if needed
       Player.player.x += directionX * speed;
       Player.player.y += directionY * speed;
 

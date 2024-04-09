@@ -65,8 +65,7 @@ const gameData = {
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
-        onInteraction: (app) => () =>
-          openPopup(app, itemCannotBeUsed, 0.71, 0.93),
+        onInteraction: null,
         zIndex: 1,
       },
       /*
@@ -100,10 +99,7 @@ const gameData = {
         height: 64,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.534, 0.61, "numpadScene", () =>
-            switchScene(app, "numpadScene")
-          ),
+        onInteraction: (app) => () => switchScene(app, "numpadScene"),
         zIndex: 0,
       },
       {
@@ -117,10 +113,8 @@ const gameData = {
         width: 49.25,
         height: 72.75,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.7, 0.595, "mainScene", () =>
-            Player.minimizePlayer()
-          ),
+        interactionRange: 50,
+        onInteraction: (app) => () => Player.minimizePlayer(),
         zIndex: 0,
       },
       {
@@ -148,10 +142,7 @@ const gameData = {
         width: 300,
         height: 310,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.33, 0.73, "bookshelfScene", () =>
-            switchScene(app, "bookshelfScene")
-          ),
+        onInteraction: (app) => () => switchScene(app, "bookshelfScene"),
         zIndex: 0,
       },
       {
@@ -165,10 +156,8 @@ const gameData = {
         width: 292,
         height: 286,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.16, 0.92, "computerScene", () =>
-            switchScene(app, "computerScene")
-          ),
+        interactionRange: 50,
+        onInteraction: (app) => () => switchScene(app, "computerScene"),
         zIndex: 0,
       },
       {
@@ -187,9 +176,8 @@ const gameData = {
             openPopup(app, cannotEnterMousehole, 0.71, 0.96);
             return;
           }
-          checkDistance(app, 0.78, 0.8, "mouseholeScene", () =>
-            switchScene(app, "mouseholeScene")
-          );
+
+          switchScene(app, "mouseholeScene");
         },
         zIndex: 0,
       },

@@ -56,14 +56,6 @@ class Player {
     ];
     Player.isMiniSize = false;
     // this.destinationReached = true;
-    // Create walkable area
-    this.walkableArea = new PIXI.Graphics();
-    this.walkableArea.beginFill(0x00ff00);
-    this.walkableArea.drawPolygon([335, 560, 950, 560, 1400, 800, 100, 801]);
-    this.walkableArea.endFill();
-    // Comment row below to see visualization in beautiful ogre green
-    this.walkableArea.visible = false;
-    app.mainScene.addChild(this.walkableArea);
 
     // Create player sprite with idle animation
     Player.player = new PIXI.AnimatedSprite(Player.playerIdleFrames);
@@ -114,18 +106,8 @@ class Player {
       Player.player.zIndex = 0;
     }
 
-    // If the point cannot be reached, set to true to stop infinite loop
-    if (!this.walkableArea.containsPoint(targetPosition)) {
-      // this.destinationReached = true;
-      this.setIdle();
-      return;
-    }
     // Check if the player is moving
-    if (
-      distance > 3 &&
-      !playerCollides(Player.player, solidObjects).collided &&
-      this.walkableArea.containsPoint(targetPosition)
-    ) {
+    if (distance > 3 && !playerCollides(Player.player, solidObjects).collided) {
       // Switch to the walk animation frames
       if (Player.player.textures !== Player.playerWalkFrames) {
         Player.player.textures = Player.playerWalkFrames;
@@ -140,7 +122,7 @@ class Player {
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
-      const speed = 2; // Adjust speed if needed
+      const speed = 4; // Adjust speed if needed
       Player.player.x += directionX * speed;
       Player.player.y += directionY * speed;
 
@@ -176,9 +158,9 @@ class Player {
     let adjustedPosition = targetPosition.clone();
 
     // Check if the target position is already within the walkable area
-    if (this.walkableArea.containsPoint(adjustedPosition)) {
-      return adjustedPosition;
-    }
+    //if (this.walkableArea.containsPoint(adjustedPosition)) {
+    //   return adjustedPosition;
+    //  }
 
     // Calculate the direction vector from the current player position towards the target position
     const directionVector = new PIXI.Point(

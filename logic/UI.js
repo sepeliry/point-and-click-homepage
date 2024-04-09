@@ -9,6 +9,7 @@ import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
 import Numpad from "./numpad.js";
+import { getWalkableArea } from "./walkableArea.js";
 
 class UI {
   static solidObjects = null;
@@ -19,8 +20,10 @@ class UI {
     UI.solidObjects.sortableChildren = true;
     this.books = [];
     this.books.sortableChildren = true;
+
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
+    getWalkableArea(app);
   }
 
   createScenesFromGameData(app, gameData) {
@@ -113,7 +116,9 @@ class UI {
           itemData.onInteraction
         );
         // push solid items to solidObjects array
-        UI.solidObjects.push(item);
+        if (container.name === "mainScene") {
+          UI.solidObjects.push(item);
+        }
       }
     });
     // console.log(container);

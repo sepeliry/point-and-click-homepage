@@ -46,7 +46,7 @@ class Item {
     if (onInteraction) {
       this.item.eventMode = "dynamic";
       this.item.cursor = "pointer";
-
+      this.item.onInteraction = () => onInteraction(app);
       this.item.on("pointerdown", onInteraction(app));
 
       // add glow effect to items with interaction

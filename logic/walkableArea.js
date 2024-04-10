@@ -1,28 +1,53 @@
 import * as PIXI from "pixi.js";
 
-let walkableAreaInstance = null;
-
-export const walkableAreaPoints = [
-  new PIXI.Point(350, 570), // upper left corner (x, y)
-  new PIXI.Point(950, 570), // upper right corner (x, y)
-  new PIXI.Point(1300, 800), // bottom right corner (x, y)
-  new PIXI.Point(100, 800), // bottom left corner (x, y)
+export const WALKABLE_AREA_POINTS = [
+  [
+    new PIXI.Point(470, 580), // upper left corner (x, y)
+    new PIXI.Point(880, 580), // upper right corner (x, y)
+    new PIXI.Point(1300, 800), // bottom right corner (x, y)
+    new PIXI.Point(200, 800), // bottom left corner (x, y)
+  ],
+  /*
+  [
+    new PIXI.Point(370, 570), // upper left corner (x, y)
+    new PIXI.Point(450, 570), // upper right corner (x, y)
+    new PIXI.Point(370, 640), // bottom right corner (x, y)
+    new PIXI.Point(300, 640), // bottom left corner (x, y)
+  ],
+  [
+    new PIXI.Point(950, 570), // upper left corner (x, y)
+    new PIXI.Point(1050, 570), // upper right corner (x, y)
+    new PIXI.Point(1100, 600), // bottom right corner (x, y)
+    new PIXI.Point(997, 600), // bottom left corner (x, y)
+  ],
+  */
 ];
 
-export const getWalkableArea = (app) => {
-  if (!walkableAreaInstance && app) {
-    const walkableArea = new PIXI.Graphics();
+// Use an array to store instances
+let walkableAreasInstances = [];
 
-    walkableArea.beginFill(0x00ff00);
-    walkableArea.drawPolygon(walkableAreaPoints);
-    walkableArea.endFill();
-    // Set visibility based on your needs
-    walkableArea.visible = true; // Set to false if you don't want it visible by default
-    app.mainScene.addChild(walkableArea);
+export const createWalkableAreas = (app) => {
+  if (walkableAreasInstances.length === 0 && app) {
+    WALKABLE_AREA_POINTS.forEach((areaPoints, index) => {
+      // Convert each PIXI.Point to a format suitable for drawPolygon (array of numbers)
+      const flatPoints = areaPoints.reduce(
+        (acc, point) => acc.concat([point.x, point.y]),
+        []
+      );
 
-    walkableAreaInstance = walkableArea;
-    console.log("Walkable area created and added to the scene.");
+      const walkableArea = new PIXI.Graphics();
+      walkableArea.beginFill(index === 0 ? 0x00ff00 : 0xffffff); // Different fill for demonstration
+      walkableArea.drawPolygon(flatPoints);
+      walkableArea.endFill();
+      walkableArea.visible = true; // Set to false if you don't want it visible by default
+      app.mainScene.addChild(walkableArea);
+
+      // Store the created area
+      walkableAreasInstances.push(walkableArea);
+    });
+
+    console.log("Walkable areas created and added to the scene.");
   }
 
-  return walkableAreaInstance;
+  return walkableAreasInstances;
 };

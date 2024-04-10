@@ -23,7 +23,7 @@ import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/numpad_scene/numpad_background.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
 import { cannotEnterMousehole, itemCannotBeUsed } from "./popupTexts.js";
-
+import arcadeMachineImage from "../resources/images/arcade_machine.png";
 import computerSceneBackground from "../resources/images/computer_scene/computer_scene.jpg";
 import discordIcon from "../resources/images/computer_scene/discord_icon.png";
 import signupIcon from "../resources/images/computer_scene/signup_icon.png";
@@ -47,6 +47,7 @@ import resetButton from "../resources/images/numpad_scene/resetButton.png";
 import enterButton from "../resources/images/numpad_scene/enterButton.png";
 
 import Numpad from "../logic/numpad.js";
+import gameState from "./gameState.js";
 
 const gameData = {
   mainScene: {
@@ -113,8 +114,11 @@ const gameData = {
         width: 49.25,
         height: 72.75,
         collisionHeight: 0, // not yet used
-        interactionRange: 50,
-        onInteraction: (app) => () => Player.minimizePlayer(),
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.7, 0.595, "mainScene", () => {
+            Player.minimizePlayer();
+            gameState.playerIsMiniSize = true;
+          }),
         zIndex: 0,
       },
       {
@@ -160,10 +164,33 @@ const gameData = {
         onInteraction: (app) => () => switchScene(app, "computerScene"),
         zIndex: 0,
       },
+
+      {
+        image: arcadeMachineImage,
+        type: "Item",
+        name: "Arcade machine",
+        location: {
+          x: 0.78,
+          y: 0.82,
+        },
+        width: 277 * 0.8,
+        height: 339 * 0.8,
+        collisionHeight: 0, // not yet used
+        interactionRange: 50,
+        onInteraction: null,
+        zIndex: 0,
+      },
+
       {
         image: mouseholeImage,
         type: "Item",
         name: "Mousehole",
+        animation: {
+          frames: [mouseholeImage, mouseholeImageEyes],
+          animationSpeed: 0.02,
+          loop: true,
+          interval: 3000, //ms
+        },
         location: {
           x: 0.88,
           y: 0.83,
@@ -543,6 +570,7 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
           Player.maximizePlayer();
+          gameState.playerIsMiniSize = false;
         },
         zIndex: 10,
       },

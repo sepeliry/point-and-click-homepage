@@ -8,6 +8,7 @@ export function playerCollides(player, solidObjects) {
 
   // temporarily disable collision check until it is fixed
   return collisionResult;
+  console.log("collision");
 
   // Player bounds are a low, sprite wide box at player's feet
   // for more natural collision detection
@@ -27,6 +28,9 @@ export function playerCollides(player, solidObjects) {
       width: object.getBounds().width,
       height: 5,
     };
+
+    const test = player.getBounds().intersects(object.getBounds());
+    console.log(test);
 
     // Calculate the top and bottom y-coordinates of the footprint
     const footprintTop = itemBounds.y;

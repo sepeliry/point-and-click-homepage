@@ -9,7 +9,7 @@ import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
 import Numpad from "./numpad.js";
-import { getWalkableArea } from "./walkableArea.js";
+import { createWalkableAreas } from "./walkableArea.js";
 
 class UI {
   static solidObjects = null;
@@ -23,7 +23,7 @@ class UI {
 
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
-    getWalkableArea(app);
+    createWalkableAreas(app);
   }
 
   createScenesFromGameData(app, gameData) {
@@ -101,23 +101,51 @@ class UI {
         ) {
           Numpad.setCodeText(text);
         }
-      } else {
-        // Create an Item instance
-        const item = new Item(
-          app,
-          container,
-          itemData.image,
-          itemData.location.x,
-          itemData.location.y,
-          itemData.zIndex,
-          itemData.height,
-          itemData.width,
-          itemData.name,
-          itemData.onInteraction
-        );
-        // push solid items to solidObjects array
-        if (container.name === "mainScene") {
-          UI.solidObjects.push(item);
+      } else if (itemData.type === "Item") {
+        if (itemData.animation) {
+          // item has an animation
+          const textures = itemData.animation.frames.map((frame) =>
+            PIXI.Texture.from(frame)
+          ); // Creating textures from frame identifiers
+
+          console.log(itemData);
+
+          const animatedSprite = new PIXI.AnimatedSprite(textures);
+          animatedSprite.animationSpeed = itemData.animation.animationSpeed;
+          animatedSprite.loop = itemData.animation.loop;
+          animatedSprite.x = itemData.location.x * container.width; // Adjust according to your coordinate system
+          animatedSprite.y = itemData.location.y * container.height;
+          animatedSprite.width = itemData.width;
+          animatedSprite.height = itemData.height;
+          animatedSprite.play();
+
+          if (itemData.onInteraction) {
+            animatedSprite.interactive = true;
+            animatedSprite.buttonMode = true;
+            animatedSprite.on("pointerdown", itemData.onInteraction(app));
+          }
+          console.log(animatedSprite);
+          container.addChild(animatedSprite);
+        } else {
+          // item has no animation
+          const item = new Item(
+            app,
+            container,
+            itemData.image,
+            itemData.location.x,
+            itemData.location.y,
+            itemData.zIndex,
+            itemData.height,
+            itemData.width,
+            itemData.name,
+            itemData.onInteraction
+          );
+          // push solid items to solidObjects array
+          if (container.name === "mainScene") {
+            if (itemData.name === "Box" || itemData.name === "Computer Desk") {
+              UI.solidObjects.push(item);
+            }
+          }
         }
       }
     });

@@ -36,10 +36,7 @@ class Player {
   static isMiniSize = null;
   constructor(app) {
     // Load player idle and walk animation frames
-    Player.playerIdleFrames = [
-      PIXI.Texture.from(playeridle),
-      // PIXI.Texture.from(playerIdle2),
-    ];
+    Player.playerIdleFrames = [PIXI.Texture.from(playeridle)];
     Player.playerWalkFrames = [
       PIXI.Texture.from(playerWalk1),
       PIXI.Texture.from(playerWalk2),

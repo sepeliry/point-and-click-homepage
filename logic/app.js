@@ -8,7 +8,7 @@ import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
 import { followPlayer } from "./utils/cameraUtils.js";
 import { introTextElements } from "../data/popupTexts.js";
-import { walkableAreaPoints, getWalkableArea } from "./walkableArea.js";
+import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -36,7 +36,6 @@ const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
 const introPopup = new Popup(app, introTextElements);
-const walkableArea = getWalkableArea(app);
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
@@ -48,21 +47,6 @@ function getItemAtPosition(position, item) {
     return item;
   }
   return null;
-}
-
-function checkInteraction(playerPosition, item) {
-  // Calculate distance between player and item
-  const distance = Math.sqrt(
-    Math.pow(playerPosition.x - (item.position.x + item.width), 2) +
-      Math.pow(playerPosition.y - item.position.y, 2)
-  );
-
-  console.log("check inter", distance);
-  // Check if within interaction range
-  if (distance <= item.interactionRange) {
-    // Trigger interaction
-    item.onInteraction();
-  }
 }
 
 function projectPointOntoLineSegment(px, py, ax, ay, bx, by) {
@@ -96,48 +80,154 @@ app.mainScene.on("pointertap", (event) => {
   console.log(targetPosition);
   //console.log(walkableArea);
 
-  // check if target position is in walkable area
-  if (walkableArea.containsPoint(targetPosition)) {
-    console.log("inside");
-  } else {
-    console.log("outside");
-    // TODO: map targetPosition so that it will be inside walkableArea
-    // Implement the logic to find the closest projection onto the walkable area
-    let closestProjection = null;
-    let minDistance = Infinity;
-    for (let i = 0; i < walkableAreaPoints.length; i++) {
-      let start = walkableAreaPoints[i];
-      let end = walkableAreaPoints[(i + 1) % walkableAreaPoints.length]; // Wrap around to the first point for the last edge
+  const walkableAreas = createWalkableAreas(app);
+  let insideAnyWalkableArea = false;
+  let closestProjection = null;
+  let minDistance = Infinity;
 
-      let projection = projectPointOntoLineSegment(
-        targetPosition.x,
-        targetPosition.y,
-        start.x,
-        start.y,
-        end.x,
-        end.y
-      );
+  walkableAreas.forEach((walkableAreaGraphics, areaIndex) => {
+    // Since we now need to check against each area's points, we use the areaIndex
+    // to reference the corresponding points array from WALKABLE_AREA_POINTS
+    const areaPoints = WALKABLE_AREA_POINTS[areaIndex];
 
-      // Calculate distance from the original target position to the projection
-      let distance = Math.sqrt(
-        (targetPosition.x - projection.x) ** 2 +
-          (targetPosition.y - projection.y) ** 2
-      );
+    // Convert PIXI.Graphics to a PIXI.Polygon to use containsPoint method
+    const polygon = new PIXI.Polygon(
+      areaPoints.map((p) => new PIXI.Point(p.x, p.y))
+    );
 
-      // Update closest projection if this is the shortest distance found
-      if (distance < minDistance) {
-        closestProjection = projection;
-        minDistance = distance;
+    if (polygon.contains(targetPosition.x, targetPosition.y)) {
+      // console.log("inside");
+      insideAnyWalkableArea = true;
+      return; // If inside any area, we can stop checking further
+    } else {
+      // console.log("outside");
+      // For projection, iterate over the specific area's points
+      for (let i = 0; i < areaPoints.length; i++) {
+        let start = areaPoints[i];
+        let end = areaPoints[(i + 1) % areaPoints.length]; // Wrap to first point
+
+        let projection = projectPointOntoLineSegment(
+          targetPosition.x,
+          targetPosition.y,
+          start.x,
+          start.y,
+          end.x,
+          end.y
+        );
+
+        // Calculate distance from the original target position to the projection
+        let distance = Math.sqrt(
+          (targetPosition.x - projection.x) ** 2 +
+            (targetPosition.y - projection.y) ** 2
+        );
+
+        // Update closest projection if this is the shortest distance found
+        if (distance < minDistance) {
+          closestProjection = projection;
+          minDistance = distance;
+        }
       }
     }
+  });
 
-    // Use closestProjection as the new targetPosition
-    if (closestProjection) {
-      console.log("Mapped to closest projection:", closestProjection);
-      targetPosition = closestProjection; // Update targetPosition to the projection
-    }
+  // Handle the case where the target position is not inside any walkable area
+  if (!insideAnyWalkableArea && closestProjection) {
+    console.log("Mapped to closest projection:", closestProjection);
+    targetPosition = closestProjection; // Update targetPosition to the projection
+
+    // add a red dot for the adjusted targetPosition
+    let redDot = new PIXI.Graphics();
+    redDot.beginFill(0xff0000);
+    redDot.drawCircle(targetPosition.x, targetPosition.y, 5);
+    redDot.endFill();
+    app.mainScene.addChild(redDot);
   }
+
+  /*
+  // check for object collision
+  for (const object of UI.solidObjects) {
+    const bounds = object.getBounds();
+    const itemBounds = {
+      name: object.name,
+      x: bounds.x,
+      y: bounds.y,
+      width: bounds.width,
+      height: bounds.height,
+    };
+
+    if (
+      simplifiedLineIntersectsRect(
+        Player.player.position,
+        targetPosition,
+        itemBounds
+      )
+    ) {
+      console.log(`Path blocked by ${object.name}`);
+
+      // Adjust targetPosition here. This logic will depend on your specific game's needs.
+      // Example: Adjust targetPosition to stop in front of the object.
+      // You may want to refine how you adjust targetPosition based on the object's position and size.
+
+      // Calculate direction vector from player to target
+      let dir = {
+        x: targetPosition.x - Player.player.position.x,
+        y: targetPosition.y - Player.player.position.y,
+      };
+
+      // Normalize the direction vector
+      let magnitude = Math.sqrt(dir.x * dir.x + dir.y * dir.y);
+      dir.x /= magnitude;
+      dir.y /= magnitude;
+
+      // Determine which edge of the object is closest to the line of movement
+      // Assume we want to stop a small distance away from the object (e.g., 5 pixels)
+      let buffer = 5; // Distance from the object's edge
+
+      // Simple heuristic: check direction to decide which side of the object to target
+      if (Math.abs(dir.x) > Math.abs(dir.y)) {
+        // Movement is more horizontal
+        if (dir.x > 0) {
+          // Moving right; target the left edge of the object
+          targetPosition.x = itemBounds.x - buffer;
+        } else {
+          // Moving left; target the right edge of the object
+          targetPosition.x = itemBounds.x + itemBounds.width + buffer;
+        }
+      } else {
+        // Movement is more vertical
+        if (dir.y > 0) {
+          // Moving down; target the top edge of the object
+          targetPosition.y = itemBounds.y - buffer;
+        } else {
+          // Moving up; target the bottom edge of the object
+          targetPosition.y = itemBounds.y + itemBounds.height + buffer;
+        }
+      }
+
+      break; // Optional: break if you only care about the first intersection
+    }
+   
+  } 
+  */
 });
+
+function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
+  // Find min and max X, Y for the line segment
+  const minX = Math.min(playerPosition.x, targetPosition.x);
+  const maxX = Math.max(playerPosition.x, targetPosition.x);
+  const minY = Math.min(playerPosition.y, targetPosition.y);
+  const maxY = Math.max(playerPosition.y, targetPosition.y);
+
+  // Check if the bounding box of the line segment intersects with the rect
+  const intersects = !(
+    maxX < rect.x ||
+    minX > rect.x + rect.width ||
+    maxY < rect.y ||
+    minY > rect.y + rect.height
+  );
+
+  return intersects;
+}
 
 // Main game loop
 app.ticker.add((delta) => {
@@ -147,7 +237,7 @@ app.ticker.add((delta) => {
         Math.pow(Player.player.y - targetPosition.y, 2)
     );
 
-    if (distance < 30) {
+    if (distance < 3) {
       targetPosition = null;
       player.setIdle();
       console.log(distance);

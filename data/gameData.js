@@ -38,6 +38,9 @@ import discordIcon from "../resources/images/computer_scene/discord_icon.png";
 import signupIcon from "../resources/images/computer_scene/signup_icon.png";
 
 import coffeeMakerImage from "../resources/images/coffee_maker.png";
+import coffeeMakerFrame1 from "../resources/images/coffee_maker_frame1.png";
+import coffeeMakerFrame2 from "../resources/images/coffee_maker_frame2.png";
+import coffeeMakerFrame3 from "../resources/images/coffee_maker_frame3.png";
 import plantImage from "../resources/images/plant.png";
 
 import potionImage from "../resources/images/potion.png";
@@ -158,16 +161,23 @@ const gameData = {
         zIndex: 0,
       },
       {
-        image: coffeeMakerImage,
+        image: null,
         imageAfterGameCompletion: null, // null if the image after game completion doesnt change
+        animation: {
+          frames: [coffeeMakerFrame1, coffeeMakerFrame2, coffeeMakerFrame3],
+          framesAfterGameCompletion: null, // null if the animation after game completion doesnt change
+          animationSpeed: 0.04,
+          loop: true,
+          interval: 3000, //ms
+        },
         type: "Item",
         name: "Coffee maker",
         location: {
           x: 0.67,
           y: 0.595,
         },
-        width: 49.25,
-        height: 72.75,
+        width: 267 * 0.25,
+        height: 400 * 0.25,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
           checkDistance(app, 0.7, 0.595, "mainScene", () => {

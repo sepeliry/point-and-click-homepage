@@ -3,7 +3,8 @@ import * as PIXI from "pixi.js";
 import switchScene from "../logic/interactions/switchScene.js";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab.js";
 import displayWikiPage from "../logic/interactions/displayWikiPage.js";
-import openPopup from "../logic/interactions/openItemPopup.js";
+// import openPopup from "../logic/interactions/openItemPopup.js";
+import openPopup from "../logic/interactions/openPopup.js";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
 import collectItem from "../logic/interactions/collectItem.js";
 import Player from "../logic/player.js";
@@ -24,12 +25,7 @@ import lockImage from "../resources/images/num_pad.png";
 import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/numpad_scene/numpad_background.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
-import {
-  cannotEnterMousehole,
-  gameCompletedText,
-  gameNotCompletedText,
-  itemCannotBeUsed,
-} from "./popupTexts.js";
+
 import arcadeMachineOff from "../resources/images/arcade_machine_off.png";
 import arcadeMachineOn from "../resources/images/arcade_machine_on.png";
 import computerSceneBackground from "../resources/images/computer_scene/computer_scene.jpg";
@@ -75,13 +71,15 @@ const gameData = {
         height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () => {
+          openPopup(
+            app,
+            "This is a box and arcade game is now on! check app.gameState :)",
+            null
+          );
           app.gameState.hasCompletedGame = true;
           console.log(app.gameState);
           if (app.gameState.hasCompletedGame) {
             console.log("has compelted!!");
-          } else {
-            console.log("please complete the game");
-            openPopup(app, gameNotCompletedText, 0.71, 0.96);
           }
         },
         zIndex: 2,
@@ -125,7 +123,7 @@ const gameData = {
         type: "Item",
         name: "Coffee maker",
         location: {
-          x: 0.7,
+          x: 0.67,
           y: 0.595,
         },
         width: 49.25,
@@ -133,23 +131,10 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
           checkDistance(app, 0.7, 0.595, "mainScene", () => {
+            openPopup(app, "hyvää kahvia", null);
             Player.minimizePlayer();
-            gameState.playerIsMiniSize = true;
+            app.gameState.playerIsMiniSize = true;
           }),
-        zIndex: 0,
-      },
-      {
-        image: plantImage,
-        type: "Item",
-        name: "Plant",
-        location: {
-          x: 0.725,
-          y: 0.595,
-        },
-        width: 25.5,
-        height: 65.75,
-        collisionHeight: 0, // not yet used
-        onInteraction: null,
         zIndex: 0,
       },
       {
@@ -197,10 +182,10 @@ const gameData = {
         interactionRange: 50,
         onInteraction: (app) => () => {
           if (app.gameState.hasCompletedGame) {
-            openPopup(app, gameCompletedText, 0.71, 0.96);
+            openPopup(app, "congraz! arcade machine is now on", null);
           } else {
             console.log("please complete the game");
-            openPopup(app, itemCannotBeUsed, 0.71, 0.96);
+            openPopup(app, "This item cannot be used yet", null);
           }
         },
         zIndex: 0,
@@ -225,7 +210,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           if (!Player.isMiniSize) {
-            openPopup(app, cannotEnterMousehole, 0.71, 0.96);
+            openPopup(app, "on kyl pieni hiirenkolo...", null);
             return;
           }
 

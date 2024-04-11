@@ -59,7 +59,7 @@ class Player {
     Player.player.position.set(450, 620);
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 10;
-
+    Player.player.eventMode = "none";
     Player.player.animationSpeed = 0.05;
     Player.player.loop = true; // Set the loop property to true
     Player.player.play();

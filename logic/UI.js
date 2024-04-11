@@ -107,7 +107,7 @@ class UI {
         const item = new Item(app, container, itemData);
         // push solid items to solidObjects array
         if (container.name === "mainScene") {
-          console.log(item);
+          // console.log(item);
           //  if (itemData.name === "Box" || itemData.name === "Computer Desk") {
           UI.solidObjects.push(item);
           //  }

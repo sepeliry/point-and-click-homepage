@@ -7,15 +7,14 @@ import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
 import { followPlayer } from "./utils/cameraUtils.js";
-import { introTextElements } from "../data/popupTexts.js";
+
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
+import openPopup from "./interactions/openPopup.js";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
 // isMobile = true enables the cameraContainer
 window.isMobile = windowWidth <= 800;
-// pending interaction is initially null
-let pendingInteraction = null;
 
 // Create application on page load. desktop: 1400x800, mobile: use screensize
 const app = new PIXI.Application({
@@ -35,7 +34,6 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 const ui = new UI(app);
 const player = new Player(app);
 const inventory = new Inventory(app);
-const introPopup = new Popup(app, introTextElements);
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
@@ -256,13 +254,7 @@ app.ticker.add((delta) => {
     if (distance < 3) {
       targetPosition = null;
       player.setIdle();
-      console.log(distance);
-      // If there's a pending interaction, call it and then clear it
-      if (pendingInteraction) {
-        pendingInteraction(); // This calls the stored function
-        app.mainScene.updateTransform();
-        pendingInteraction = null; // Clear the stored interaction
-      }
+      //console.log(distance);
     } else {
       player.move(targetPosition, UI.solidObjects);
       followPlayer(app, app.cameraContainer, Player.player);
@@ -272,15 +264,12 @@ app.ticker.add((delta) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Set initial camera position on mobile, or resize to window size
-  if (window.isMobile) {
-    introPopup.open(app, 0.2, 0.2);
-  } else {
-    introPopup.open(app, 0.37, 0.4);
-  }
+  openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
+  // resize to window size
   followPlayer(app, app.cameraContainer, Player.player);
   resizeGame(app, app.mainScene);
 });
+
 window.addEventListener("resize", () => {
   for (let sceneName in app.scenes) {
     resizeGame(app, app.scenes[sceneName]);

@@ -1,20 +1,50 @@
 import * as PIXI from "pixi.js";
 
-export const createWalkableArea = (app) => {
-    // Create walkable area
-    const walkableArea = new PIXI.Graphics();
-    walkableArea.beginFill(0x00ff00);
-    const w = app.screen.width;
-    const h = app.screen.height;
-    //this.walkableArea.drawPolygon([335, 560, 950, 560, 1400, 800, 100, 801]);
-    walkableArea.drawPolygon([
-        0.25 * w, 0.7 * h,
-        0.7 * w, 0.7 * h,
-        1 * w, 1 * h,
-        0.1 * w, 1 * h
-    ]);
-    walkableArea.endFill();
-    //this.walkableArea.alpha = 0;
-    walkableArea.visible = true;
-    return walkableArea;
+export const WALKABLE_AREA_POINTS = [
+  [
+    new PIXI.Point(470, 580), // upper left corner (x, y)
+    new PIXI.Point(880, 580), // upper right corner (x, y)
+    new PIXI.Point(1300, 800), // bottom right corner (x, y)
+    new PIXI.Point(200, 800), // bottom left corner (x, y)
+  ],
+  /*
+  [
+    new PIXI.Point(370, 570), // upper left corner (x, y)
+    new PIXI.Point(450, 570), // upper right corner (x, y)
+    new PIXI.Point(370, 640), // bottom right corner (x, y)
+    new PIXI.Point(300, 640), // bottom left corner (x, y)
+  ],
+  [
+    new PIXI.Point(950, 570), // upper left corner (x, y)
+    new PIXI.Point(1050, 570), // upper right corner (x, y)
+    new PIXI.Point(1100, 600), // bottom right corner (x, y)
+    new PIXI.Point(997, 600), // bottom left corner (x, y)
+  ],
+  */
+];
+
+let walkableAreasInstances = [];
+
+export const createWalkableAreas = (app) => {
+  if (walkableAreasInstances.length === 0 && app) {
+    WALKABLE_AREA_POINTS.forEach((areaPoints, index) => {
+      // convert each PIXI.Point to a format suitable for drawPolygon (array of numbers)
+      const flatPoints = areaPoints.reduce(
+        (acc, point) => acc.concat([point.x, point.y]),
+        []
+      );
+
+      const walkableArea = new PIXI.Graphics();
+      walkableArea.beginFill(index === 0 ? 0x00ff00 : 0xffffff);
+      walkableArea.drawPolygon(flatPoints);
+      walkableArea.endFill();
+      walkableArea.visible = false;
+      app.mainScene.addChild(walkableArea);
+
+      // store the created area
+      walkableAreasInstances.push(walkableArea);
+    });
+  }
+
+  return walkableAreasInstances;
 };

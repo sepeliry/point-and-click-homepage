@@ -33,7 +33,7 @@ class Popup {
       fill: "#F54483",
       fontSize: 20,
       wordWrap: true,
-      wordWrapWidth: popupWidth - 10,
+      wordWrapWidth: popupWidth - 20, // -20 so text does not go too close to the right border
     });
 
     // If no position is provided, center the popup horizontally and place it at the bottom vertically

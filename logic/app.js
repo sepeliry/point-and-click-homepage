@@ -233,15 +233,28 @@ let imagesUpdatedAfterGameCompletion = false;
 
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
+  // check if game has been completed
   if (app.gameState.hasCompletedGame && !imagesUpdatedAfterGameCompletion) {
     console.log("completed game!!");
 
     app.mainScene.children.forEach((item) => {
-      if (item.imageAfterGameCompletion) {
-        item.texture = item.imageAfterGameCompletion;
+      if (item instanceof PIXI.AnimatedSprite) {
+        // check if item has any frames that should be displayed after game completion
+        if (item.framesAfterGameCompletion) {
+          item.stop();
+          //  console.log(item.textures);
+          //  console.log(item.framesAfterGameCompletion.textures);
+          item.textures = item.framesAfterGameCompletion.textures;
+          item.play();
+        }
+      } else if (item instanceof PIXI.Sprite) {
+        if (item.imageAfterGameCompletion) {
+          item.texture = item.imageAfterGameCompletion.texture;
+        }
       }
     });
 
+    // images have now been updated
     imagesUpdatedAfterGameCompletion = true;
   }
 

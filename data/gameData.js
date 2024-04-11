@@ -15,6 +15,11 @@ import bookshelfSceneBackground from "../resources/images/bookshelf_background.p
 import mouseholeSceneBackground1 from "../resources/images/mousehole_scene/mousehole1.png";
 import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mousehole2.png";
 
+import arcadeMachine2Off from "../resources/images/arcade_machine_2_off.png";
+import arcadeMachine2OnFrame1 from "../resources/images/arcade_machine_2_on_frame1.png";
+import arcadeMachine2OnFrame2 from "../resources/images/arcade_machine_2_on_frame2.png";
+import arcadeMachine2OnFrame3 from "../resources/images/arcade_machine_2_on_frame3.png";
+
 import computerDesk from "../resources/images/computer_desk.png";
 import mouseholeImage from "../resources/images/mousehole_in_wall_tilted.png";
 import mouseholeImageEyes from "../resources/images/mousehole_in_wall_tilted_eyes.png";
@@ -104,7 +109,41 @@ const gameData = {
       },
       */
       {
+        image: null, // null if the item has an animation
+        animation: {
+          frames: [arcadeMachine2Off],
+          framesAfterGameCompletion: [
+            arcadeMachine2OnFrame1,
+            arcadeMachine2OnFrame2,
+            arcadeMachine2OnFrame3,
+          ],
+          animationSpeed: 0.06,
+          loop: true,
+          interval: 3000, //ms
+        },
+        type: "Item",
+        name: "Arcade machine 2",
+        location: {
+          x: 0.45,
+          y: 0.7,
+        },
+        width: 157 * 0.8,
+        height: 271 * 0.8,
+        collisionHeight: 0, // not yet used
+        interactionRange: 50,
+        onInteraction: (app) => () => {
+          if (app.gameState.hasCompletedGame) {
+            openPopup(app, "congraz! arcade machine is now on", null);
+          } else {
+            console.log("please complete the game");
+            openPopup(app, "This item cannot be used yet", null);
+          }
+        },
+        zIndex: 0,
+      },
+      {
         image: lockImage,
+        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Lock",
         location: {
@@ -120,6 +159,7 @@ const gameData = {
       },
       {
         image: coffeeMakerImage,
+        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Coffee maker",
         location: {
@@ -139,6 +179,7 @@ const gameData = {
       },
       {
         image: bookshelfImage,
+        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Bookshelf",
         location: {
@@ -153,6 +194,7 @@ const gameData = {
       },
       {
         image: computerDesk,
+        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Computer desk",
         location: {
@@ -169,9 +211,15 @@ const gameData = {
 
       {
         image: arcadeMachineOff,
-        imageAfterGameCompletion: arcadeMachineOn,
         type: "Item",
         name: "Arcade machine",
+        animation: {
+          frames: [arcadeMachineOff],
+          framesAfterGameCompletion: [arcadeMachineOn, arcadeMachineOff],
+          animationSpeed: 0.02,
+          loop: true,
+          interval: 3000, //ms
+        },
         location: {
           x: 0.78,
           y: 0.82,
@@ -227,6 +275,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
+        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Back button",
         location: {
@@ -241,7 +290,7 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Book",
+        type: "Item",
         name: "Honesty",
         location: {
           x: 0.52,
@@ -259,7 +308,7 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Book",
+        type: "Item",
         name: "Wiki",
         location: {
           x: 0.44,
@@ -276,7 +325,7 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Book",
+        type: "Item",
         name: "Vuodet",
         location: {
           x: 0.44,
@@ -293,7 +342,8 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Book",
+        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
+        type: "Item",
         name: "Book 1",
         location: {
           x: 0.58,

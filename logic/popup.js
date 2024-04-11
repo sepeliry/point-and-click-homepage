@@ -17,15 +17,15 @@ class Popup {
       popupWidth = this.app.screen.width - 20;
     }
 
-    const popupHHeight = 80;
+    const popupHeight = 90;
 
     // background for the popup
     const background = new PIXI.Graphics();
     background.lineStyle(2, "#F54483", 1);
     background.beginFill("#020D26");
-    background.drawRect(0, 0, popupWidth, popupHHeight);
+    background.drawRect(0, 0, popupWidth, popupHeight);
     background.endFill();
-    background.alpha = 0.85;
+    background.alpha = 0.9;
     this.container.addChild(background);
 
     // text for the popup

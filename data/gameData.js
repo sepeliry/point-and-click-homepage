@@ -15,6 +15,9 @@ import bookshelfSceneBackground from "../resources/images/bookshelf_background.p
 import mouseholeSceneBackground1 from "../resources/images/mousehole_scene/mousehole1.png";
 import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mousehole2.png";
 
+import lamp1On from "../resources/images/lamp_1_on.png";
+import lamp1Off from "../resources/images/lamp_1_off.png";
+
 import arcadeMachine2Off from "../resources/images/arcade_machine_2_off.png";
 import arcadeMachine2OnFrame1 from "../resources/images/arcade_machine_2_on_frame1.png";
 import arcadeMachine2OnFrame2 from "../resources/images/arcade_machine_2_on_frame2.png";
@@ -274,6 +277,22 @@ const gameData = {
 
           switchScene(app, "mouseholeScene");
         },
+        zIndex: 0,
+      },
+      {
+        image: lamp1Off,
+        imageAfterGameCompletion: lamp1On,
+        type: "Item",
+        name: "Lamp",
+        animation: null,
+        location: {
+          x: 0.708,
+          y: 0.368,
+        },
+        width: 104 * 0.8,
+        height: 197 * 0.8,
+        collisionHeight: 0, // not yet used
+        onInteraction: null,
         zIndex: 0,
       },
     ],

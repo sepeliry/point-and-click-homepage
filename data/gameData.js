@@ -311,7 +311,8 @@ const gameData = {
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
-            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Honesty.md"
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Honesty.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Peli%E2%80%93idea-%3A-Honesty"
           ),
 
         zIndex: 1,
@@ -346,7 +347,44 @@ const gameData = {
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
-            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomukset.md"
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomukset.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Vuosikertomukset"
+          ),
+        zIndex: 1,
+      },
+      {
+        image: book2,
+        type: "Item",
+        name: "Pelit",
+        location: {
+          x: 0.14,
+          y: 0.5,
+        },
+        width: 37,
+        height: 85,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () =>
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli‐ideakilpailu-syksyllä-2014.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Peli%E2%80%90ideakilpailu-syksyll%C3%A4-2014"
+          ),
+        zIndex: 1,
+      },
+      {
+        image: book2,
+        type: "Item",
+        name: "Luento",
+        location: {
+          x: 0.14,
+          y: 0.9,
+        },
+        width: 37,
+        height: 85,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () =>
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Luentomuistiinpanot.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Luentomuistiinpanot"
           ),
         zIndex: 1,
       },

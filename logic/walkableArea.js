@@ -23,30 +23,27 @@ export const WALKABLE_AREA_POINTS = [
   */
 ];
 
-// Use an array to store instances
 let walkableAreasInstances = [];
 
 export const createWalkableAreas = (app) => {
   if (walkableAreasInstances.length === 0 && app) {
     WALKABLE_AREA_POINTS.forEach((areaPoints, index) => {
-      // Convert each PIXI.Point to a format suitable for drawPolygon (array of numbers)
+      // convert each PIXI.Point to a format suitable for drawPolygon (array of numbers)
       const flatPoints = areaPoints.reduce(
         (acc, point) => acc.concat([point.x, point.y]),
         []
       );
 
       const walkableArea = new PIXI.Graphics();
-      walkableArea.beginFill(index === 0 ? 0x00ff00 : 0xffffff); // Different fill for demonstration
+      walkableArea.beginFill(index === 0 ? 0x00ff00 : 0xffffff);
       walkableArea.drawPolygon(flatPoints);
       walkableArea.endFill();
-      walkableArea.visible = true; // Set to false if you don't want it visible by default
+      walkableArea.visible = false;
       app.mainScene.addChild(walkableArea);
 
-      // Store the created area
+      // store the created area
       walkableAreasInstances.push(walkableArea);
     });
-
-    console.log("Walkable areas created and added to the scene.");
   }
 
   return walkableAreasInstances;

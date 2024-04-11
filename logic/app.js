@@ -135,12 +135,14 @@ app.mainScene.on("pointertap", (event) => {
     console.log("Mapped to closest projection:", closestProjection);
     targetPosition = closestProjection; // Update targetPosition to the projection
 
+    /*
     // add a red dot for the adjusted targetPosition
     let redDot = new PIXI.Graphics();
     redDot.beginFill(0xff0000);
     redDot.drawCircle(targetPosition.x, targetPosition.y, 5);
     redDot.endFill();
     app.mainScene.addChild(redDot);
+    */
   }
 
   /*
@@ -229,8 +231,22 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
   return intersects;
 }
 
-// Main game loop
+let imagesUpdatedAfterGameCompletion = false;
+
+// Main game loop which runs every frame
 app.ticker.add((delta) => {
+  if (app.gameState.hasCompletedGame && !imagesUpdatedAfterGameCompletion) {
+    console.log("completed game!!");
+
+    app.mainScene.children.forEach((item) => {
+      if (item.imageAfterGameCompletion) {
+        item.texture = item.imageAfterGameCompletion;
+      }
+    });
+
+    imagesUpdatedAfterGameCompletion = true;
+  }
+
   if (targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - targetPosition.x, 2) +

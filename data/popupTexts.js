@@ -60,3 +60,29 @@ export const cannotEnterMousehole = [
     isUrl: false,
   },
 ];
+
+export const gameCompletedText = [
+  {
+    text: "game completed!",
+    style: {
+      fontFamily: "Dotrice Regular",
+      fontSize: 20,
+      fill: "0xffffff",
+      lineJoin: "round",
+    },
+    isUrl: false,
+  },
+];
+
+export const gameNotCompletedText = [
+  {
+    text: "game is not completed",
+    style: {
+      fontFamily: "Dotrice Regular",
+      fontSize: 20,
+      fill: "0xffffff",
+      lineJoin: "round",
+    },
+    isUrl: false,
+  },
+];

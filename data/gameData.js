@@ -1,3 +1,5 @@
+import * as PIXI from "pixi.js";
+
 import switchScene from "../logic/interactions/switchScene.js";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab.js";
 import displayWikiPage from "../logic/interactions/displayWikiPage.js";
@@ -22,8 +24,14 @@ import lockImage from "../resources/images/num_pad.png";
 import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/numpad_scene/numpad_background.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
-import { cannotEnterMousehole, itemCannotBeUsed } from "./popupTexts.js";
-import arcadeMachineImage from "../resources/images/arcade_machine.png";
+import {
+  cannotEnterMousehole,
+  gameCompletedText,
+  gameNotCompletedText,
+  itemCannotBeUsed,
+} from "./popupTexts.js";
+import arcadeMachineOff from "../resources/images/arcade_machine_off.png";
+import arcadeMachineOn from "../resources/images/arcade_machine_on.png";
 import computerSceneBackground from "../resources/images/computer_scene/computer_scene.jpg";
 import discordIcon from "../resources/images/computer_scene/discord_icon.png";
 import signupIcon from "../resources/images/computer_scene/signup_icon.png";
@@ -47,7 +55,7 @@ import resetButton from "../resources/images/numpad_scene/resetButton.png";
 import enterButton from "../resources/images/numpad_scene/enterButton.png";
 
 import Numpad from "../logic/numpad.js";
-import gameState from "./gameState.js";
+// import gameState from "./gameState.js";
 
 const gameData = {
   mainScene: {
@@ -60,14 +68,23 @@ const gameData = {
         type: "Item",
         name: "Box",
         location: {
-          x: 0.71,
+          x: 0.61,
           y: 0.93,
         },
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
-        onInteraction: null,
-        zIndex: 1,
+        onInteraction: (app) => () => {
+          app.gameState.hasCompletedGame = true;
+          console.log(app.gameState);
+          if (app.gameState.hasCompletedGame) {
+            console.log("has compelted!!");
+          } else {
+            console.log("please complete the game");
+            openPopup(app, gameNotCompletedText, 0.71, 0.96);
+          }
+        },
+        zIndex: 2,
       },
       /*
       {
@@ -166,7 +183,8 @@ const gameData = {
       },
 
       {
-        image: arcadeMachineImage,
+        image: arcadeMachineOff,
+        imageAfterGameCompletion: arcadeMachineOn,
         type: "Item",
         name: "Arcade machine",
         location: {
@@ -177,7 +195,14 @@ const gameData = {
         height: 339 * 0.8,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
-        onInteraction: null,
+        onInteraction: (app) => () => {
+          if (app.gameState.hasCompletedGame) {
+            openPopup(app, gameCompletedText, 0.71, 0.96);
+          } else {
+            console.log("please complete the game");
+            openPopup(app, itemCannotBeUsed, 0.71, 0.96);
+          }
+        },
         zIndex: 0,
       },
 
@@ -570,7 +595,7 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
           Player.maximizePlayer();
-          gameState.playerIsMiniSize = false;
+          app.gameState.playerIsMiniSize = false;
         },
         zIndex: 10,
       },

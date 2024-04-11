@@ -88,7 +88,8 @@ class Player {
     // Find the closest object to player
     for (const obj of solidObjects) {
       const objDistance = Math.sqrt(
-        (Player.player.x - obj.x) ** 2 + (Player.player.y - obj.y) ** 2
+        (Player.player.x - obj.sprite.x) ** 2 +
+          (Player.player.y - obj.sprite.y) ** 2
       );
       if (objDistance < closestDistance) {
         closestObj = obj;
@@ -97,10 +98,10 @@ class Player {
     }
 
     // Show player in front of / behind the closest object
-    if (Player.player.y > closestObj.y) {
+    if (Player.player.y > closestObj.sprite.y) {
       Player.player.zIndex = 10;
     } else {
-      Player.player.zIndex = 0;
+      Player.player.zIndex = 1;
     }
 
     // Check if the player is moving

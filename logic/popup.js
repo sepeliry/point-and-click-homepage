@@ -61,7 +61,10 @@ class Popup {
       this.closeText.eventMode = "static";
       this.closeText.cursor = "pointer";
       this.closeText.anchor.set(0.5);
-      this.closeText.position.set(this.popupWidth / 2, totalTextHeight + padding)
+      this.closeText.position.set(
+        this.popupWidth / 2,
+        totalTextHeight + padding
+      );
       totalTextHeight += this.closeText.height;
       this.popupCloseBtn = this.closeText;
       this.popupCloseBtn.on("pointerdown", (event) => {
@@ -75,13 +78,7 @@ class Popup {
     this.popupBg = new PIXI.Graphics();
     this.popupBg.lineStyle(2, 0xffffff);
     this.popupBg.beginFill(0x1b1b1b);
-    this.popupBg.drawRoundedRect(
-      0,
-      0,
-      this.popupWidth,
-      this.popupHeight,
-      15
-    );
+    this.popupBg.drawRoundedRect(0, 0, this.popupWidth, this.popupHeight, 15);
     this.popupBg.endFill();
     //this.popupBg.alpha = 0.8;
 
@@ -100,7 +97,7 @@ class Popup {
     if (!this.isOpen) {
       this.isOpen = true;
       this.popup.position.set(x * 1400, y * 800);
-      passiveMode ? app.mainScene.eventMode = "passive" : null;
+      passiveMode ? (app.mainScene.eventMode = "passive") : null;
       app.mainScene.addChild(this.popup);
 
       // Add a slight delay before adding the event listener to close the popup

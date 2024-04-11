@@ -103,6 +103,19 @@ class UI {
         ) {
           Numpad.setCodeText(text);
         }
+      } else if (itemData.type === "Book") {
+        new Book(
+          app,
+          container,
+          itemData.image,
+          itemData.location.x,
+          itemData.location.y,
+          itemData.zIndex,
+          itemData.height,
+          itemData.width,
+          itemData.name,
+          itemData.onInteraction
+        );
       } else if (itemData.type === "Item") {
         const item = new Item(app, container, itemData);
         // push solid items to solidObjects array

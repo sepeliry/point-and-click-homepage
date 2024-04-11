@@ -300,7 +300,7 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Item",
+        type: "Book",
         name: "Honesty",
         location: {
           x: 0.52,
@@ -318,8 +318,27 @@ const gameData = {
         zIndex: 1,
       },
       {
+        image: book1,
+        type: "Book",
+        name: "Säännöt",
+        location: {
+          x: 0.44,
+          y: 0.36,
+        },
+        width: 37,
+        height: 85,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () =>
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Yhdistyksen-s%C3%A4%C3%A4nn%C3%B6t.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Yhdistyksen-s%C3%A4%C3%A4nn%C3%B6t"
+          ),
+
+        zIndex: 1,
+      },
+      {
         image: book2,
-        type: "Item",
+        type: "Book",
         name: "Wiki",
         location: {
           x: 0.44,
@@ -336,7 +355,7 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Item",
+        type: "Book",
         name: "Vuodet",
         location: {
           x: 0.44,
@@ -354,10 +373,10 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Item",
+        type: "Book",
         name: "Pelit",
         location: {
-          x: 0.14,
+          x: 0.54,
           y: 0.5,
         },
         width: 37,
@@ -372,11 +391,11 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Item",
+        type: "Book",
         name: "Luento",
         location: {
-          x: 0.14,
-          y: 0.9,
+          x: 0.49,
+          y: 0.64,
         },
         width: 37,
         height: 85,
@@ -391,8 +410,8 @@ const gameData = {
       {
         image: book1,
         imageAfterGameCompletion: null, // null if the image after game completion doesnt change
-        type: "Item",
-        name: "Book 1",
+        type: "Book",
+        name: "",
         location: {
           x: 0.58,
           y: 0.64,

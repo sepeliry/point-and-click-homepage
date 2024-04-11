@@ -175,7 +175,7 @@ class Player {
           Player.player.pendingAction
         );
       }
-      this.targetPosition = null;
+      // this.targetPosition = null;
     }
   }
 

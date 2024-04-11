@@ -48,8 +48,6 @@ function getItemAtPosition(position, item) {
   return null;
 }
 
-let targetPosition;
-
 // Handle click event on the stage
 app.mainScene.eventMode = "static"; // Enable interaction
 app.mainScene.on("pointertap", (event) => {
@@ -64,31 +62,35 @@ app.mainScene.on("pointertap", (event) => {
     }
   }
   const clickedItem = getItemAtPosition(event.global, event.target);
-  console.log(clickedItem);
+  // console.log("Clicked item " + clickedItem);
   // Set the new target position on click
   // TODO: 502 is set as the y-coordinate just to test the 2.5D-effect. This
   // has to be adjusted in a different way once final designs are done.
   const localPosition = app.mainScene.toLocal(event.global);
   const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
-  targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
-  console.log(targetPosition);
-  //}
+  const targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+  player.targetPosition = targetPosition;
+  // If a item is not clicked, clear the pending action and checkDistanceParams. (To ensure unecceary actions are not performed)
+  if (!clickedItem) {
+    console.log("Item was not clicked, empty action");
+    Player.player.pendingAction = null;
+    Player.player.checkDistanceParams = null;
+  }
 });
 
 // Main game loop
 app.ticker.add((delta) => {
-  if (targetPosition) {
-    const distance = Math.sqrt(
-      Math.pow(Player.player.x - targetPosition.x, 2) +
-        Math.pow(Player.player.y - targetPosition.y, 2)
-    );
-    if (distance < 3) {
-      targetPosition = null;
-      player.setIdle();
-    }
-  }
-  if (targetPosition) {
-    player.move(targetPosition, UI.solidObjects);
+  // if (player.targetPosition) {
+  //   const distance = Math.sqrt(
+  //     Math.pow(Player.player.x - player.targetPosition.x, 2) +
+  //       Math.pow(Player.player.y - player.targetPosition.y, 2)
+  //   );
+  //   if (distance < 3) {
+  //     player.setIdle();
+  //   }
+  // }
+  if (player.targetPosition) {
+    player.move(player.targetPosition, UI.solidObjects);
     followPlayer(app, app.cameraContainer, Player.player);
     app.mainScene.updateTransform();
   }

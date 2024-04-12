@@ -63,6 +63,9 @@ import enterButton from "../resources/images/numpad_scene/enterButton.png";
 
 import Numpad from "../logic/numpad.js";
 // import gameState from "./gameState.js";
+import GAME_CONDITIONS from "./gameConditions.js";
+import updateSpriteTexture from "../logic/interactions/updateSpriteTexture.js";
+import updateAnimatedSpriteTextures from "../logic/interactions/updateAnimatedSpriteTextures.js";
 
 const gameData = {
   mainScene: {
@@ -72,6 +75,7 @@ const gameData = {
     items: [
       {
         image: boxPropImage,
+        conditions: null,
         type: "Item",
         name: "Box",
         location: {
@@ -90,39 +94,60 @@ const gameData = {
           app.gameState.hasCompletedGame = true;
           console.log(app.gameState);
           if (app.gameState.hasCompletedGame) {
-            console.log("has compelted!!");
+            //console.log("has compelted!!");
           }
         },
         zIndex: 2,
       },
-      /*
       {
         image: keyImage,
+        conditions: [
+          {
+            condition: GAME_CONDITIONS.hasUnlockedDoor,
+            onMet: (app, item) => () => {
+              console.log(item);
+              updateSpriteTexture(item, lockImage);
+            },
+          },
+        ],
+        animation: null,
         type: "Item",
         name: "Key",
         location: {
-          x: 0.6,
-          y: 0.8,
+          x: 0.47,
+          y: 0.9,
         },
-        width: 70,
-        height: 70,
-        collisionHeight: 5, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.6, 0.8, "mainScene", () =>
-            collectItem(app, "mainScene", "Key")
-          ),
+        width: 267 * 0.25,
+        height: 400 * 0.25,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          console.log("key");
+          app.gameState.hasUnlockedDoor = true;
+        },
         zIndex: 1,
       },
-      */
       {
         image: null, // null if the item has an animation
+        conditions: [
+          {
+            condition: GAME_CONDITIONS.hasCompletedGame,
+            onMet: (app, item) => () => {
+              console.log(item);
+              updateAnimatedSpriteTextures(
+                item,
+                [
+                  arcadeMachine2OnFrame1,
+                  arcadeMachine2OnFrame2,
+                  arcadeMachine2OnFrame3,
+                ],
+                0.06,
+                true
+              );
+            },
+          },
+        ],
         animation: {
           frames: [arcadeMachine2Off],
-          framesAfterGameCompletion: [
-            arcadeMachine2OnFrame1,
-            arcadeMachine2OnFrame2,
-            arcadeMachine2OnFrame3,
-          ],
           animationSpeed: 0.06,
           loop: true,
           interval: 3000, //ms
@@ -149,7 +174,6 @@ const gameData = {
       },
       {
         image: lockImage,
-        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Lock",
         location: {
@@ -165,10 +189,8 @@ const gameData = {
       },
       {
         image: null,
-        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         animation: {
           frames: [coffeeMakerFrame1, coffeeMakerFrame2, coffeeMakerFrame3],
-          framesAfterGameCompletion: null, // null if the animation after game completion doesnt change
           animationSpeed: 0.04,
           loop: true,
           interval: 3000, //ms
@@ -192,7 +214,6 @@ const gameData = {
       },
       {
         image: bookshelfImage,
-        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Bookshelf",
         location: {
@@ -207,7 +228,6 @@ const gameData = {
       },
       {
         image: computerDesk,
-        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Computer desk",
         location: {
@@ -226,9 +246,22 @@ const gameData = {
         image: arcadeMachineOff,
         type: "Item",
         name: "Arcade machine",
+        conditions: [
+          {
+            condition: GAME_CONDITIONS.hasCompletedGame,
+            onMet: (app, item) => () => {
+              console.log(item);
+              updateAnimatedSpriteTextures(
+                item,
+                [arcadeMachineOn, arcadeMachineOff],
+                0.02,
+                true
+              );
+            },
+          },
+        ],
         animation: {
           frames: [arcadeMachineOff],
-          framesAfterGameCompletion: [arcadeMachineOn, arcadeMachineOff],
           animationSpeed: 0.02,
           loop: true,
           interval: 3000, //ms
@@ -281,7 +314,15 @@ const gameData = {
       },
       {
         image: lamp1Off,
-        imageAfterGameCompletion: lamp1On,
+        conditions: [
+          {
+            condition: GAME_CONDITIONS.hasCompletedGame,
+            onMet: (app, item) => () => {
+              console.log(item);
+              updateSpriteTexture(item, lamp1On);
+            },
+          },
+        ],
         type: "Item",
         name: "Lamp",
         animation: null,
@@ -304,7 +345,6 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Item",
         name: "Back button",
         location: {
@@ -428,7 +468,6 @@ const gameData = {
       },
       {
         image: book1,
-        imageAfterGameCompletion: null, // null if the image after game completion doesnt change
         type: "Book",
         name: "",
         location: {

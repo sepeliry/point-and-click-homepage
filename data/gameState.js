@@ -3,6 +3,7 @@ let gameState = {
   currentScene: "mainScene",
   inventory: [],
   playerIsMiniSize: false,
+  hasUnlockedDoor: false,
 };
 
 export default gameState;

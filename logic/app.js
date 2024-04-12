@@ -10,6 +10,7 @@ import { followPlayer } from "./utils/cameraUtils.js";
 
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
+import GAME_CONDITIONS from "../data/gameConditions.js";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -206,8 +207,8 @@ app.mainScene.on("pointertap", (event) => {
 
       break; // Optional: break if you only care about the first intersection
     }
-   
-  } 
+
+  }
   */
 });
 
@@ -229,33 +230,52 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
   return intersects;
 }
 
-let imagesUpdatedAfterGameCompletion = false;
+/**
+ * Processes and executes actions for an item if specific conditions are met.
+ * @param {Object} item - The game item with potential conditions.
+ * @param {Object} app - The main application context or game state manager.
+ * @param {Function} targetCondition - The specific condition to check against the item's conditions.
+ */
+function handleConditionActions(item, app, targetCondition) {
+  if (!item.conditions) {
+    return;
+  }
+
+  // loop through item's every condition
+  item.conditions.forEach((condition) => {
+    // only proceed if the current condition matches the target condition
+    if (condition.condition === targetCondition) {
+      console.log("Condition matched for processing:", condition);
+
+      const performAction = condition.onMet(app, item);
+      if (performAction) {
+        performAction();
+      }
+    }
+  });
+}
+
+let gameCompletedActionsExecuted = false;
+let doorUnlockedActionsExecuted = false;
 
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
-  // check if game has been completed
-  if (app.gameState.hasCompletedGame && !imagesUpdatedAfterGameCompletion) {
-    console.log("completed game!!");
-
+  // Check if the door has been unlocked
+  if (app.gameState.hasUnlockedDoor && !doorUnlockedActionsExecuted) {
+    console.log("unlocked door!");
     app.mainScene.children.forEach((item) => {
-      if (item instanceof PIXI.AnimatedSprite) {
-        // check if item has any frames that should be displayed after game completion
-        if (item.framesAfterGameCompletion) {
-          item.stop();
-          //  console.log(item.textures);
-          //  console.log(item.framesAfterGameCompletion.textures);
-          item.textures = item.framesAfterGameCompletion.textures;
-          item.play();
-        }
-      } else if (item instanceof PIXI.Sprite) {
-        if (item.imageAfterGameCompletion) {
-          item.texture = item.imageAfterGameCompletion.texture;
-        }
-      }
+      handleConditionActions(item, app, GAME_CONDITIONS.hasUnlockedDoor);
     });
+    doorUnlockedActionsExecuted = true;
+  }
 
-    // images have now been updated
-    imagesUpdatedAfterGameCompletion = true;
+  // Check if the game has been completed
+  else if (app.gameState.hasCompletedGame && !gameCompletedActionsExecuted) {
+    console.log("completed game!!");
+    app.mainScene.children.forEach((item) => {
+      handleConditionActions(item, app, GAME_CONDITIONS.hasCompletedGame);
+    });
+    gameCompletedActionsExecuted = true;
   }
 
   if (targetPosition) {

@@ -64,7 +64,7 @@ class Popup {
 
   typeText(message, onComplete) {
     // text typing animation
-    const typingAnimationSpeed = 45;
+    const typingAnimationSpeed = 30;
     if (this.currentIndex <= this.text.length) {
       message.text = this.text.substring(0, this.currentIndex);
       this.currentIndex++;

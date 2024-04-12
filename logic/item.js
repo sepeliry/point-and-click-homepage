@@ -23,32 +23,9 @@ class Item {
       if (itemData.animation.frames.length > 1) {
         this.sprite.play();
       }
-
-      // check if the item has any animation frames that should be displayed after the game has been completed
-      if (itemData.animation.framesAfterGameCompletion) {
-        // animation
-        const textures = itemData.animation.framesAfterGameCompletion.map(
-          (frame) => PIXI.Texture.from(frame)
-        );
-        this.sprite.framesAfterGameCompletion = new PIXI.AnimatedSprite(
-          textures
-        );
-        this.sprite.framesAfterGameCompletion.animationSpeed =
-          itemData.animation.animationSpeed || 0.02;
-        this.sprite.framesAfterGameCompletion.loop =
-          itemData.animation.loop !== undefined
-            ? itemData.animation.loop
-            : true;
-      }
     } else {
       // if the item has no animation, create a static sprite
       this.sprite = PIXI.Sprite.from(itemData.image);
-
-      if (itemData.imageAfterGameCompletion) {
-        this.sprite.imageAfterGameCompletion = PIXI.Sprite.from(
-          itemData.imageAfterGameCompletion
-        );
-      }
     }
 
     // common properties for both static and animated sprites
@@ -63,6 +40,8 @@ class Item {
     this.sprite.height = itemData.height;
     this.sprite.width = itemData.width;
     this.sprite.anchor.set(0.5, 1); // Anchor to bottom left corner
+
+    this.sprite.conditions = itemData.conditions;
 
     // Check if the object has an interaction/callback
     if (itemData.onInteraction) {

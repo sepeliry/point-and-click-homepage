@@ -10,7 +10,7 @@ import { followPlayer } from "./utils/cameraUtils.js";
 
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
-import GAME_CONDITIONS from "../data/gameConditions.js";
+import GAME_CONDITIONS from "../constants/gameConditions.js";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;

@@ -63,9 +63,11 @@ import enterButton from "../resources/images/numpad_scene/enterButton.png";
 
 import Numpad from "../logic/numpad.js";
 // import gameState from "./gameState.js";
-import GAME_CONDITIONS from "./gameConditions.js";
+import GAME_CONDITIONS from "../constants/gameConditions.js";
 import updateSpriteTexture from "../logic/interactions/updateSpriteTexture.js";
 import updateAnimatedSpriteTextures from "../logic/interactions/updateAnimatedSpriteTextures.js";
+
+import ITEM_TYPES from "../constants/itemTypes.js";
 
 const gameData = {
   mainScene: {
@@ -76,7 +78,7 @@ const gameData = {
       {
         image: boxPropImage,
         conditions: null,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Box",
         location: {
           x: 0.61,
@@ -111,7 +113,7 @@ const gameData = {
           },
         ],
         animation: null,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Key",
         location: {
           x: 0.47,
@@ -152,7 +154,7 @@ const gameData = {
           loop: true,
           interval: 3000, //ms
         },
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Arcade machine 2",
         location: {
           x: 0.45,
@@ -174,7 +176,7 @@ const gameData = {
       },
       {
         image: lockImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Lock",
         location: {
           x: 0.534,
@@ -195,7 +197,7 @@ const gameData = {
           loop: true,
           interval: 3000, //ms
         },
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Coffee maker",
         location: {
           x: 0.67,
@@ -214,7 +216,7 @@ const gameData = {
       },
       {
         image: bookshelfImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Bookshelf",
         location: {
           x: 0.33,
@@ -228,7 +230,7 @@ const gameData = {
       },
       {
         image: computerDesk,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Computer desk",
         location: {
           x: 0.16,
@@ -244,7 +246,7 @@ const gameData = {
 
       {
         image: arcadeMachineOff,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Arcade machine",
         conditions: [
           {
@@ -287,7 +289,7 @@ const gameData = {
 
       {
         image: mouseholeImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Mousehole",
         animation: {
           frames: [mouseholeImage, mouseholeImageEyes],
@@ -323,7 +325,7 @@ const gameData = {
             },
           },
         ],
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Lamp",
         animation: null,
         location: {
@@ -345,7 +347,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -359,7 +361,7 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Honesty",
         location: {
           x: 0.52,
@@ -378,7 +380,7 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Säännöt",
         location: {
           x: 0.44,
@@ -397,7 +399,7 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Wiki",
         location: {
           x: 0.44,
@@ -414,7 +416,7 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Vuodet",
         location: {
           x: 0.44,
@@ -432,7 +434,7 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Pelit",
         location: {
           x: 0.54,
@@ -450,7 +452,7 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Luento",
         location: {
           x: 0.49,
@@ -468,7 +470,7 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "",
         location: {
           x: 0.58,
@@ -489,7 +491,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -502,7 +504,7 @@ const gameData = {
         zIndex: 10,
       },
       {
-        type: "Text",
+        type: ITEM_TYPES.text,
         text: "",
         identifier: "screenText",
         style: {
@@ -531,7 +533,7 @@ const gameData = {
       },
       {
         image: button1,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 1",
         location: {
           x: 0.42,
@@ -548,7 +550,7 @@ const gameData = {
       },
       {
         image: button2,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 2",
         location: {
           x: 0.505,
@@ -565,7 +567,7 @@ const gameData = {
       },
       {
         image: button3,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 3",
         location: {
           x: 0.59,
@@ -582,7 +584,7 @@ const gameData = {
       },
       {
         image: button4,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 4",
         location: {
           x: 0.42,
@@ -599,7 +601,7 @@ const gameData = {
       },
       {
         image: button5,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 5",
         location: {
           x: 0.505,
@@ -616,7 +618,7 @@ const gameData = {
       },
       {
         image: button6,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 6",
         location: {
           x: 0.59,
@@ -633,7 +635,7 @@ const gameData = {
       },
       {
         image: button7,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 7",
         location: {
           x: 0.42,
@@ -650,7 +652,7 @@ const gameData = {
       },
       {
         image: button8,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 8",
         location: {
           x: 0.505,
@@ -667,7 +669,7 @@ const gameData = {
       },
       {
         image: button9,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 9",
         location: {
           x: 0.59,
@@ -684,7 +686,7 @@ const gameData = {
       },
       {
         image: resetButton,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "reset",
         location: {
           x: 0.42,
@@ -700,7 +702,7 @@ const gameData = {
       },
       {
         image: button0,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 0",
         location: {
           x: 0.505,
@@ -716,7 +718,7 @@ const gameData = {
       },
       {
         image: enterButton,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "enter",
         location: {
           x: 0.59,
@@ -743,7 +745,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -768,7 +770,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -782,11 +784,12 @@ const gameData = {
       },
       {
         image: discordIcon,
-        type: "Item",
+        type: ITEM_TYPES.desktopIcon,
+        title: "Sepeli Discord",
         name: "Sepeli's Discord server",
         location: {
-          x: 0.46,
-          y: 0.47,
+          x: 0.475,
+          y: 0.49,
         },
         width: 64,
         height: 64,
@@ -797,11 +800,12 @@ const gameData = {
       },
       {
         image: signupIcon,
-        type: "Item",
+        type: ITEM_TYPES.desktopIcon,
+        title: "Join Sepeli",
         name: "Join Sepeli as a member",
         location: {
-          x: 0.46,
-          y: 0.55,
+          x: 0.545,
+          y: 0.49,
         },
         width: 64,
         height: 64,

@@ -1,7 +1,10 @@
+import * as PIXI from "pixi.js";
+
 import switchScene from "../logic/interactions/switchScene.js";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab.js";
 import displayWikiPage from "../logic/interactions/displayWikiPage.js";
-import openPopup from "../logic/interactions/openItemPopup.js";
+// import openPopup from "../logic/interactions/openItemPopup.js";
+import openPopup from "../logic/interactions/openPopup.js";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
 import collectItem from "../logic/interactions/collectItem.js";
 import Player from "../logic/player.js";
@@ -20,16 +23,35 @@ import book1 from "../resources/images/book_placeholder.png";
 import book2 from "../resources/images/book2_placeholder.png";
 import lockImage from "../resources/images/num_pad.png";
 import keyImage from "../resources/images/key.png";
-import numPadSceneBackground from "../resources/images/num_pad.png";
+import numPadSceneBackground from "../resources/images/numpad_scene/numpad_background.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
-import { cannotEnterMousehole, itemCannotBeUsed } from "./popupTexts.js";
 
+import arcadeMachineOff from "../resources/images/arcade_machine_off.png";
+import arcadeMachineOn from "../resources/images/arcade_machine_on.png";
 import computerSceneBackground from "../resources/images/computer_scene/computer_scene.jpg";
 import discordIcon from "../resources/images/computer_scene/discord_icon.png";
 import signupIcon from "../resources/images/computer_scene/signup_icon.png";
 
 import coffeeMakerImage from "../resources/images/coffee_maker.png";
 import plantImage from "../resources/images/plant.png";
+
+import potionImage from "../resources/images/potion.png";
+
+import button1 from "../resources/images/numpad_scene/button1.png";
+import button2 from "../resources/images/numpad_scene/button2.png";
+import button3 from "../resources/images/numpad_scene/button3.png";
+import button4 from "../resources/images/numpad_scene/button4.png";
+import button5 from "../resources/images/numpad_scene/button5.png";
+import button6 from "../resources/images/numpad_scene/button6.png";
+import button7 from "../resources/images/numpad_scene/button7.png";
+import button8 from "../resources/images/numpad_scene/button8.png";
+import button9 from "../resources/images/numpad_scene/button9.png";
+import button0 from "../resources/images/numpad_scene/button0.png";
+import resetButton from "../resources/images/numpad_scene/resetButton.png";
+import enterButton from "../resources/images/numpad_scene/enterButton.png";
+
+import Numpad from "../logic/numpad.js";
+// import gameState from "./gameState.js";
 
 const gameData = {
   mainScene: {
@@ -42,15 +64,25 @@ const gameData = {
         type: "Item",
         name: "Box",
         location: {
-          x: 0.71,
+          x: 0.61,
           y: 0.93,
         },
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
-        onInteraction: (app) => () =>
-          openPopup(app, itemCannotBeUsed, 0.71, 0.93),
-        zIndex: 1,
+        onInteraction: (app) => () => {
+          openPopup(
+            app,
+            "This is a box and arcade game is now on! check app.gameState :)",
+            null
+          );
+          app.gameState.hasCompletedGame = true;
+          console.log(app.gameState);
+          if (app.gameState.hasCompletedGame) {
+            console.log("has compelted!!");
+          }
+        },
+        zIndex: 2,
       },
       /*
       {
@@ -94,30 +126,18 @@ const gameData = {
         type: "Item",
         name: "Coffee maker",
         location: {
-          x: 0.7,
+          x: 0.67,
           y: 0.595,
         },
         width: 49.25,
         height: 72.75,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
-          checkDistance(app, 0.7, 0.595, "mainScene", () =>
-            Player.minimizePlayer()
-          ),
-        zIndex: 0,
-      },
-      {
-        image: plantImage,
-        type: "Item",
-        name: "Plant",
-        location: {
-          x: 0.725,
-          y: 0.595,
-        },
-        width: 25.5,
-        height: 65.75,
-        collisionHeight: 0, // not yet used
-        onInteraction: null,
+          checkDistance(app, 0.7, 0.595, "mainScene", () => {
+            openPopup(app, "hyvää kahvia", null);
+            Player.minimizePlayer();
+            app.gameState.playerIsMiniSize = true;
+          }),
         zIndex: 0,
       },
       {
@@ -148,16 +168,52 @@ const gameData = {
         width: 292,
         height: 286,
         collisionHeight: 0, // not yet used
+        interactionRange: 50,
         onInteraction: (app) => () =>
           checkDistance(app, 0.16, 0.92, "computerScene", () =>
             switchScene(app, "computerScene")
           ),
         zIndex: 0,
       },
+
+      {
+        image: arcadeMachineOff,
+        imageAfterGameCompletion: arcadeMachineOn,
+        type: "Item",
+        name: "Arcade machine",
+        location: {
+          x: 0.78,
+          y: 0.82,
+        },
+        width: 277 * 0.8,
+        height: 339 * 0.8,
+        collisionHeight: 0, // not yet used
+        interactionRange: 50,
+        onInteraction: (app) => () => {
+          if (app.gameState.hasCompletedGame) {
+            checkDistance(app, 0.78, 0.82, "mainScene", () =>
+              openPopup(app, "congraz! arcade machine is now on", null)
+            );
+          } else {
+            console.log("please complete the game");
+            checkDistance(app, 0.78, 0.82, "mainScene", () =>
+              openPopup(app, "This item cannot be used yet", null)
+            );
+          }
+        },
+        zIndex: 0,
+      },
+
       {
         image: mouseholeImage,
         type: "Item",
         name: "Mousehole",
+        animation: {
+          frames: [mouseholeImage, mouseholeImageEyes],
+          animationSpeed: 0.02,
+          loop: true,
+          interval: 3000, //ms
+        },
         location: {
           x: 0.88,
           y: 0.83,
@@ -167,7 +223,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           if (!Player.isMiniSize) {
-            openPopup(app, cannotEnterMousehole, 0.71, 0.96);
+            openPopup(app, "on kyl pieni hiirenkolo...", null);
             return;
           }
           checkDistance(app, 0.78, 0.8, "mouseholeScene", () =>
@@ -267,8 +323,8 @@ const gameData = {
   },
   numpadScene: {
     background: numPadSceneBackground,
-    backgroundWidth: 1400,
-    backgroundHeight: 800,
+    backgroundWidth: 1792,
+    backgroundHeight: 1024,
     items: [
       {
         image: backArrowImage,
@@ -282,6 +338,235 @@ const gameData = {
         height: 101,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => switchScene(app, "mainScene"),
+        zIndex: 10,
+      },
+      {
+        type: "Text",
+        text: "",
+        identifier: "screenText",
+        style: {
+          breakWords: true,
+          dropShadow: true,
+          dropShadowAlpha: 0.1,
+          dropShadowAngle: 0.6,
+          dropShadowDistance: 3,
+          fill: "#fff0ff",
+          fontFamily: "Lucida Console",
+          fontSize: 50,
+          align: "center",
+          fontWeight: "bold",
+          stroke: "#edceeb",
+          strokeThickness: 1,
+          wordWrap: false,
+          wordWrapWidth: 600,
+          lineHeight: 117,
+        },
+        location: {
+          x: 700,
+          y: 112,
+        },
+        zIndex: 10,
+        onInteraction: null,
+      },
+      {
+        image: button1,
+        type: "Item",
+        name: "button for 1",
+        location: {
+          x: 0.42,
+          y: 0.475,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(1);
+        },
+        zIndex: 10,
+      },
+      {
+        image: button2,
+        type: "Item",
+        name: "button for 2",
+        location: {
+          x: 0.505,
+          y: 0.475,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          //console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(2);
+        },
+        zIndex: 10,
+      },
+      {
+        image: button3,
+        type: "Item",
+        name: "button for 3",
+        location: {
+          x: 0.59,
+          y: 0.475,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          //console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(3);
+        },
+        zIndex: 10,
+      },
+      {
+        image: button4,
+        type: "Item",
+        name: "button for 4",
+        location: {
+          x: 0.42,
+          y: 0.605,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          //console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(4);
+        },
+        zIndex: 10,
+      },
+      {
+        image: button5,
+        type: "Item",
+        name: "button for 5",
+        location: {
+          x: 0.505,
+          y: 0.605,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          //console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(5);
+        },
+        zIndex: 10,
+      },
+      {
+        image: button6,
+        type: "Item",
+        name: "button for 6",
+        location: {
+          x: 0.59,
+          y: 0.605,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          //console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(6);
+        },
+        zIndex: 10,
+      },
+      {
+        image: button7,
+        type: "Item",
+        name: "button for 7",
+        location: {
+          x: 0.42,
+          y: 0.735,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          //console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(7);
+        },
+        zIndex: 10,
+      },
+      {
+        image: button8,
+        type: "Item",
+        name: "button for 8",
+        location: {
+          x: 0.505,
+          y: 0.735,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          //console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(8);
+        },
+        zIndex: 10,
+      },
+      {
+        image: button9,
+        type: "Item",
+        name: "button for 9",
+        location: {
+          x: 0.59,
+          y: 0.735,
+        },
+        width: 108.5,
+        height: 99.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          //console.log(app.scenes["numpadScene"].children);
+          Numpad.inputCode(9);
+        },
+        zIndex: 10,
+      },
+      {
+        image: resetButton,
+        type: "Item",
+        name: "reset",
+        location: {
+          x: 0.42,
+          y: 0.84,
+        },
+        width: 108.5,
+        height: 78.9,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          Numpad.resetCode();
+        },
+        zIndex: 10,
+      },
+      {
+        image: button0,
+        type: "Item",
+        name: "button for 0",
+        location: {
+          x: 0.505,
+          y: 0.84,
+        },
+        width: 108.5,
+        height: 78.9,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          Numpad.inputCode(0);
+        },
+        zIndex: 10,
+      },
+      {
+        image: enterButton,
+        type: "Item",
+        name: "enter",
+        location: {
+          x: 0.59,
+          y: 0.84,
+        },
+        width: 108.5,
+        height: 78.9,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          Numpad.enterCode();
+        },
         zIndex: 10,
       },
     ],
@@ -309,6 +594,7 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
           Player.maximizePlayer();
+          app.gameState.playerIsMiniSize = false;
         },
         zIndex: 10,
       },

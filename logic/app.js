@@ -7,7 +7,7 @@ import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
 import { followPlayer } from "./utils/cameraUtils.js";
-import gameState from "../data/gameState.js";
+import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
 
@@ -33,6 +33,25 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);
+
+// this function should be run when the state changes (called from gameState.js)
+function onGameStateChange(property, newValue, oldValue) {
+  console.log(`State "${property}" changed from ${oldValue} to ${newValue}`);
+
+  // loop through every item in every scene and check if they have onStateChange logic
+  Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
+    if (sceneData.children) {
+      sceneData.children.forEach((item) => {
+        if (!item.onStateChange) {
+          return;
+        }
+        item.onStateChange(app, item);
+      });
+    }
+  });
+}
+// add onStateChange as an observer for gameState so it is run every time the gameState changes
+addObserver(onGameStateChange);
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
@@ -228,68 +247,8 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
   return intersects;
 }
 
-/**
- * Processes state-dependent actions for a given item within the application context.
- * It invokes the onStateChange function defined on the item, if it exists
- *
- * @param {Object} item - The item with potential state actions
- * @param {Object} app - The application context
- */
-function callItemStateActions(item, app) {
-  if (!item.onStateChange) {
-    return;
-  }
-  item.onStateChange(app, item);
-}
-
-/**
- * Processes all scenes and their children to check and update state as necessary.
- * @param {Object} app - The application context containing all scenes.
- */
-function processAllScenesAndChildren(app) {
-  Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
-    //console.log("Processing scene:", sceneName);
-
-    if (sceneData.children) {
-      sceneData.children.forEach((item) => {
-        callItemStateActions(item, app);
-      });
-    }
-  });
-}
-
-let gameCompletedActionsExecuted = false;
-let doorUnlockedActionsExecuted = false;
-let coffeeCupActionsExecuted = false;
-
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
-  //console.log(gameState);
-  // Check if the game has been completed
-  if (gameState.hasCompletedGame && !gameCompletedActionsExecuted) {
-    console.log("completed game!!");
-    processAllScenesAndChildren(app);
-    gameCompletedActionsExecuted = true;
-  }
-
-  // Check if the door has been unlocked
-  if (gameState.hasUnlockedDoor && !doorUnlockedActionsExecuted) {
-    console.log("unlocked door!");
-    processAllScenesAndChildren(app);
-
-    doorUnlockedActionsExecuted = true;
-  }
-
-  if (
-    gameState.inventory.itemExists("Coffee cup") &&
-    !coffeeCupActionsExecuted
-  ) {
-    console.log("picked up coffee cup!");
-    processAllScenesAndChildren(app);
-
-    coffeeCupActionsExecuted = true;
-  }
-
   if (targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - targetPosition.x, 2) +

@@ -5,7 +5,6 @@ function removeSprite(app, sprite) {
     if (scene.children) {
       if (scene.children.includes(sprite)) {
         scene.removeChild(sprite);
-        console.log("Sprite has been removed from the stage.");
       }
     }
   });

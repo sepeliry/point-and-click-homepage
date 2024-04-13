@@ -1,8 +1,9 @@
 import InventoryUI from "./inventoryUI";
 
 class Inventory {
-  constructor() {
+  constructor(changeCallback) {
     this.items = [];
+    this.changeCallback = changeCallback; // Callback to notify gameState of changes
   }
 
   addItem(itemName, sprite) {
@@ -12,7 +13,8 @@ class Inventory {
     // Only add the item if it does not already exist
     if (!exists) {
       this.items.push({ item: itemName, sprite });
-      InventoryUI.updateInventoryUI(); // Update the UI to reflect the new inventory state
+      InventoryUI.updateInventoryUI();
+      this.changeCallback();
     } else {
       console.log("Item already exists in the inventory.");
     }
@@ -22,7 +24,8 @@ class Inventory {
     const index = this.items.findIndex((entry) => entry.item === itemName);
     if (index > -1) {
       this.items.splice(index, 1);
-      InventoryUI.updateInventoryUI(); // Update the UI after item removal
+      InventoryUI.updateInventoryUI();
+      this.changeCallback();
     } else {
       throw new Error("Item not found in inventory");
     }

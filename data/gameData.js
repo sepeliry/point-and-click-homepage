@@ -62,7 +62,7 @@ import resetButton from "../resources/images/numpad_scene/resetButton.png";
 import enterButton from "../resources/images/numpad_scene/enterButton.png";
 
 import Numpad from "../logic/numpad.js";
-// import gameState from "./gameState.js";
+import gameState from "./gameState.js";
 
 import updateSpriteTexture from "../logic/interactions/updateSpriteTexture.js";
 import updateAnimatedSpriteTextures from "../logic/interactions/updateAnimatedSpriteTextures.js";
@@ -90,12 +90,13 @@ const gameData = {
         onInteraction: (app) => () => {
           openPopup(
             app,
-            "This is a box and arcade game is now on! check app.gameState :)",
+            "This is a box and arcade game is now on! check gameState :)",
             null
           );
-          app.gameState.hasCompletedGame = true;
-          console.log(app.gameState);
-          if (app.gameState.hasCompletedGame) {
+          gameState.hasCompletedGame = !gameState.hasCompletedGame;
+          console.log(gameState);
+
+          if (gameState.hasCompletedGame) {
             //console.log("has compelted!!");
           }
         },
@@ -104,11 +105,10 @@ const gameData = {
       {
         image: keyImage,
         onStateChange: (app, item) => {
-          if (app.gameState.hasUnlockedDoor) {
-            console.log(item);
+          if (gameState.hasUnlockedDoor) {
             updateSpriteTexture(item, lockImage);
           }
-          if (app.gameState.hasCompletedGame) {
+          if (gameState.hasCompletedGame) {
             updateSpriteTexture(item, book1);
           }
         },
@@ -123,8 +123,9 @@ const gameData = {
         height: 400 * 0.25,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          console.log("key");
-          app.gameState.hasUnlockedDoor = true;
+          console.log("key clicked");
+          gameState.hasUnlockedDoor = true;
+          console.log(gameState);
         },
         zIndex: 1,
       },
@@ -132,8 +133,7 @@ const gameData = {
         image: null, // null if the item has an animation
 
         onStateChange: (app, item) => {
-          if (app.gameState.hasCompletedGame) {
-            console.log(item);
+          if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
               [
@@ -164,7 +164,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         interactionRange: 50,
         onInteraction: (app) => () => {
-          if (app.gameState.hasCompletedGame) {
+          if (gameState.hasCompletedGame) {
             openPopup(app, "congraz! arcade machine is now on", null);
           } else {
             console.log("please complete the game");
@@ -209,7 +209,7 @@ const gameData = {
           checkDistance(app, 0.7, 0.595, "mainScene", () => {
             openPopup(app, "hyvää kahvia", null);
             Player.minimizePlayer();
-            app.gameState.playerIsMiniSize = true;
+            gameState.playerIsMiniSize = true;
           }),
         zIndex: 0,
       },
@@ -249,8 +249,7 @@ const gameData = {
         name: "Arcade machine",
 
         onStateChange: (app, item) => {
-          if (app.gameState.hasCompletedGame) {
-            console.log(item);
+          if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
               [arcadeMachineOn, arcadeMachineOff],
@@ -275,7 +274,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         interactionRange: 50,
         onInteraction: (app) => () => {
-          if (app.gameState.hasCompletedGame) {
+          if (gameState.hasCompletedGame) {
             openPopup(app, "congraz! arcade machine is now on", null);
           } else {
             console.log("please complete the game");
@@ -316,8 +315,7 @@ const gameData = {
         image: lamp1Off,
 
         onStateChange: (app, item) => {
-          if (app.gameState.hasCompletedGame) {
-            console.log(item);
+          if (gameState.hasCompletedGame) {
             updateSpriteTexture(item, lamp1On);
           }
         },
@@ -540,7 +538,6 @@ const gameData = {
         height: 99.2,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(1);
         },
         zIndex: 10,
@@ -754,7 +751,7 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
           Player.maximizePlayer();
-          app.gameState.playerIsMiniSize = false;
+          gameState.playerIsMiniSize = false;
         },
         zIndex: 10,
       },

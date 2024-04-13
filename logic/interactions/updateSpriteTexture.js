@@ -7,8 +7,6 @@ import * as PIXI from "pixi.js";
  * @returns
  */
 function updateSpriteTexture(sprite, newTexturePath) {
-  console.log("Updating texture for sprite:", sprite);
-
   if (!(sprite instanceof PIXI.Sprite)) {
     console.error("Provided item is not an instance of PIXI.Sprite");
     return;

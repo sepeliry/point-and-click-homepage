@@ -1,4 +1,6 @@
 import { resizeGame } from "../utils/resize";
+import gameState from "../../data/gameState";
+
 function switchScene(app, newSceneName) {
   // hide wiki text
   document.getElementById("wiki-wrapper").style.display = "none";
@@ -9,7 +11,7 @@ function switchScene(app, newSceneName) {
   const newSceneContainer = app.scenes[newSceneName];
   if (newSceneContainer) {
     newSceneContainer.visible = true;
-    app.gameState.currentScene = newSceneName;
+    gameState.currentScene = newSceneName;
     // Call resize to ensure scene matches current window size
     resizeGame(app, app.scenes[newSceneName]);
   } else {

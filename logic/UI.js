@@ -10,7 +10,7 @@ import Item from "./item.js";
 import gameData from "../data/gameData.js";
 import Numpad from "./numpad.js";
 import { createWalkableAreas } from "./walkableArea.js";
-import gameState from "../data/gameState.js";
+
 import DesktopIcon from "./desktopIcon.js";
 import ITEM_TYPES from "../constants/itemTypes.js";
 
@@ -18,7 +18,7 @@ class UI {
   static solidObjects = null;
   constructor(app) {
     app.scenes = {};
-    app.gameState = gameState;
+
     // create array for solid objects
     UI.solidObjects = [];
     UI.solidObjects.sortableChildren = true;

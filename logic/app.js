@@ -7,7 +7,7 @@ import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
 import { followPlayer } from "./utils/cameraUtils.js";
-
+import gameState from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
 
@@ -236,11 +236,27 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
  * @param {Object} item - The item with potential state actions
  * @param {Object} app - The application context
  */
-function processItemStateActions(item, app) {
+function callItemStateActions(item, app) {
   if (!item.onStateChange) {
     return;
   }
   item.onStateChange(app, item);
+}
+
+/**
+ * Processes all scenes and their children to check and update state as necessary.
+ * @param {Object} app - The application context containing all scenes.
+ */
+function processAllScenesAndChildren(app) {
+  Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
+    //console.log("Processing scene:", sceneName);
+
+    if (sceneData.children) {
+      sceneData.children.forEach((item) => {
+        callItemStateActions(item, app);
+      });
+    }
+  });
 }
 
 let gameCompletedActionsExecuted = false;
@@ -248,22 +264,20 @@ let doorUnlockedActionsExecuted = false;
 
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
-  // Check if the door has been unlocked
-  if (app.gameState.hasUnlockedDoor && !doorUnlockedActionsExecuted) {
-    console.log("unlocked door!");
-    app.mainScene.children.forEach((item) => {
-      processItemStateActions(item, app);
-    });
-    doorUnlockedActionsExecuted = true;
+  //console.log(gameState);
+  // Check if the game has been completed
+  if (gameState.hasCompletedGame && !gameCompletedActionsExecuted) {
+    console.log("completed game!!");
+    processAllScenesAndChildren(app);
+    gameCompletedActionsExecuted = true;
   }
 
-  // Check if the game has been completed
-  else if (app.gameState.hasCompletedGame && !gameCompletedActionsExecuted) {
-    console.log("completed game!!");
-    app.mainScene.children.forEach((item) => {
-      processItemStateActions(item, app);
-    });
-    gameCompletedActionsExecuted = true;
+  // Check if the door has been unlocked
+  if (gameState.hasUnlockedDoor && !doorUnlockedActionsExecuted) {
+    console.log("unlocked door!");
+    processAllScenesAndChildren(app);
+
+    doorUnlockedActionsExecuted = true;
   }
 
   if (targetPosition) {

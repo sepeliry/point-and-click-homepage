@@ -8,9 +8,10 @@ import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
+import gameState from "../data/gameState.js";
 import Numpad from "./numpad.js";
 import { createWalkableAreas } from "./walkableArea.js";
-
+import InventoryUI from "./inventory/inventoryUI.js";
 import DesktopIcon from "./desktopIcon.js";
 import ITEM_TYPES from "../constants/itemTypes.js";
 
@@ -28,6 +29,7 @@ class UI {
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
     createWalkableAreas(app);
+    InventoryUI.initialize(app);
   }
 
   createScenesFromGameData(app, gameData) {

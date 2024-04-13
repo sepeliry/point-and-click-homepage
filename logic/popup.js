@@ -1,6 +1,8 @@
 import * as PIXI from "pixi.js";
 
 class Popup {
+  static activePopups = [];
+
   constructor(app, text, position) {
     this.app = app;
     this.text = text;
@@ -8,6 +10,7 @@ class Popup {
     this.container = new PIXI.Container();
     this.currentIndex = 0; // index for typing animation
     this.createPopup();
+    Popup.activePopups.push(this);
   }
 
   createPopup() {
@@ -22,7 +25,7 @@ class Popup {
 
     // background for the popup
     const background = new PIXI.Graphics();
-    background.lineStyle(2, "#F54483", 1);
+    background.lineStyle(2, "#F54483");
     background.beginFill("#020D26");
     background.drawRect(0, 0, popupWidth, popupHeight);
     background.endFill();
@@ -79,6 +82,7 @@ class Popup {
 
   closePopup() {
     this.app.stage.removeChild(this.container);
+    Popup.activePopups = Popup.activePopups.filter((popup) => popup !== this);
   }
 }
 

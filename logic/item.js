@@ -49,7 +49,7 @@ class Item {
       this.sprite.buttonMode = true;
       this.sprite.eventMode = "dynamic";
       this.sprite.cursor = "pointer";
-      this.sprite.on("pointerdown", itemData.onInteraction(app));
+      this.sprite.on("pointerdown", itemData.onInteraction(app, this.sprite));
 
       const glowEffect = new GlowFilter({
         innerStrength: 1,

@@ -1,3 +1,5 @@
+import Inventory from "../logic/inventory/inventory";
+
 const gameStateHandler = {
   get: function (target, property) {
     if (property in target) {
@@ -9,7 +11,6 @@ const gameStateHandler = {
   set: function (target, property, value) {
     if (property in target) {
       target[property] = value;
-      // property set successfully
       return true;
     } else {
       throw new Error(
@@ -20,12 +21,12 @@ const gameStateHandler = {
 };
 
 const gameState = new Proxy(
-  // a list of all possible game states
   {
     hasCompletedGame: false,
     hasUnlockedDoor: false,
     currentScene: "mainScene",
     playerIsMiniSize: false,
+    inventory: new Inventory(),
   },
   gameStateHandler
 );

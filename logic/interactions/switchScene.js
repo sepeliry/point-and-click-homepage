@@ -1,5 +1,6 @@
 import { resizeGame } from "../utils/resize";
 import gameState from "../../data/gameState";
+import Popup from "../popup";
 
 function switchScene(app, newSceneName) {
   // hide wiki text
@@ -12,6 +13,8 @@ function switchScene(app, newSceneName) {
   if (newSceneContainer) {
     newSceneContainer.visible = true;
     gameState.currentScene = newSceneName;
+    // close all open popups when switching to a new scene
+    Popup.activePopups.forEach((popup) => popup.closePopup());
     // Call resize to ensure scene matches current window size
     resizeGame(app, app.scenes[newSceneName]);
   } else {

@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
-import Inventory from "./inventory";
+
 import UI from "./UI";
 import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
@@ -33,7 +33,6 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);
-const inventory = new Inventory(app);
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
@@ -261,6 +260,7 @@ function processAllScenesAndChildren(app) {
 
 let gameCompletedActionsExecuted = false;
 let doorUnlockedActionsExecuted = false;
+let coffeeCupActionsExecuted = false;
 
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
@@ -278,6 +278,16 @@ app.ticker.add((delta) => {
     processAllScenesAndChildren(app);
 
     doorUnlockedActionsExecuted = true;
+  }
+
+  if (
+    gameState.inventory.itemExists("Coffee cup") &&
+    !coffeeCupActionsExecuted
+  ) {
+    console.log("picked up coffee cup!");
+    processAllScenesAndChildren(app);
+
+    coffeeCupActionsExecuted = true;
   }
 
   if (targetPosition) {

@@ -41,7 +41,7 @@ class Item {
     this.sprite.width = itemData.width;
     this.sprite.anchor.set(0.5, 1); // Anchor to bottom left corner
 
-    this.sprite.stateActions = itemData.stateActions;
+    this.sprite.onStateChange = itemData.onStateChange;
 
     // Check if the object has an interaction/callback
     if (itemData.onInteraction) {

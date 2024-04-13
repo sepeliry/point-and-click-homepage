@@ -229,18 +229,18 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
   return intersects;
 }
 
-function handleStateActionsForItems(item, app) {
-  if (!item.stateActions) {
+/**
+ * Processes state-dependent actions for a given item within the application context.
+ * It invokes the onStateChange function defined on the item, if it exists
+ *
+ * @param {Object} item - The item with potential state actions
+ * @param {Object} app - The application context
+ */
+function processItemStateActions(item, app) {
+  if (!item.onStateChange) {
     return;
   }
-
-  // loop through item's every condition
-  item.stateActions.forEach((stateAction) => {
-    const performAction = stateAction.action(app, item);
-    if (performAction) {
-      performAction();
-    }
-  });
+  item.onStateChange(app, item);
 }
 
 let gameCompletedActionsExecuted = false;
@@ -252,7 +252,7 @@ app.ticker.add((delta) => {
   if (app.gameState.hasUnlockedDoor && !doorUnlockedActionsExecuted) {
     console.log("unlocked door!");
     app.mainScene.children.forEach((item) => {
-      handleStateActionsForItems(item, app);
+      processItemStateActions(item, app);
     });
     doorUnlockedActionsExecuted = true;
   }
@@ -261,7 +261,7 @@ app.ticker.add((delta) => {
   else if (app.gameState.hasCompletedGame && !gameCompletedActionsExecuted) {
     console.log("completed game!!");
     app.mainScene.children.forEach((item) => {
-      handleStateActionsForItems(item, app);
+      processItemStateActions(item, app);
     });
     gameCompletedActionsExecuted = true;
   }

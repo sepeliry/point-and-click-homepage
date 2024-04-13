@@ -63,7 +63,7 @@ import enterButton from "../resources/images/numpad_scene/enterButton.png";
 
 import Numpad from "../logic/numpad.js";
 // import gameState from "./gameState.js";
-import GAME_CONDITIONS from "../constants/gameConditions.js";
+
 import updateSpriteTexture from "../logic/interactions/updateSpriteTexture.js";
 import updateAnimatedSpriteTextures from "../logic/interactions/updateAnimatedSpriteTextures.js";
 
@@ -77,7 +77,7 @@ const gameData = {
     items: [
       {
         image: boxPropImage,
-        conditions: null,
+        stateActions: null,
         type: ITEM_TYPES.item,
         name: "Box",
         location: {
@@ -103,12 +103,16 @@ const gameData = {
       },
       {
         image: keyImage,
-        conditions: [
+        stateActions: [
           {
-            condition: GAME_CONDITIONS.hasUnlockedDoor,
-            onMet: (app, item) => () => {
-              console.log(item);
-              updateSpriteTexture(item, lockImage);
+            action: (app, item) => {
+              if (app.gameState.hasUnlockedDoor) {
+                console.log(item);
+                updateSpriteTexture(item, lockImage);
+              }
+              if (app.gameState.hasCompletedGame) {
+                updateSpriteTexture(item, book1);
+              }
             },
           },
         ],
@@ -130,21 +134,22 @@ const gameData = {
       },
       {
         image: null, // null if the item has an animation
-        conditions: [
+        stateActions: [
           {
-            condition: GAME_CONDITIONS.hasCompletedGame,
-            onMet: (app, item) => () => {
-              console.log(item);
-              updateAnimatedSpriteTextures(
-                item,
-                [
-                  arcadeMachine2OnFrame1,
-                  arcadeMachine2OnFrame2,
-                  arcadeMachine2OnFrame3,
-                ],
-                0.06,
-                true
-              );
+            action: (app, item) => {
+              if (app.gameState.hasCompletedGame) {
+                console.log(item);
+                updateAnimatedSpriteTextures(
+                  item,
+                  [
+                    arcadeMachine2OnFrame1,
+                    arcadeMachine2OnFrame2,
+                    arcadeMachine2OnFrame3,
+                  ],
+                  0.06,
+                  true
+                );
+              }
             },
           },
         ],
@@ -248,17 +253,18 @@ const gameData = {
         image: arcadeMachineOff,
         type: ITEM_TYPES.item,
         name: "Arcade machine",
-        conditions: [
+        stateActions: [
           {
-            condition: GAME_CONDITIONS.hasCompletedGame,
-            onMet: (app, item) => () => {
-              console.log(item);
-              updateAnimatedSpriteTextures(
-                item,
-                [arcadeMachineOn, arcadeMachineOff],
-                0.02,
-                true
-              );
+            action: (app, item) => {
+              if (app.gameState.hasCompletedGame) {
+                console.log(item);
+                updateAnimatedSpriteTextures(
+                  item,
+                  [arcadeMachineOn, arcadeMachineOff],
+                  0.02,
+                  true
+                );
+              }
             },
           },
         ],
@@ -316,12 +322,13 @@ const gameData = {
       },
       {
         image: lamp1Off,
-        conditions: [
+        stateActions: [
           {
-            condition: GAME_CONDITIONS.hasCompletedGame,
-            onMet: (app, item) => () => {
-              console.log(item);
-              updateSpriteTexture(item, lamp1On);
+            action: (app, item) => {
+              if (app.gameState.hasCompletedGame) {
+                console.log(item);
+                updateSpriteTexture(item, lamp1On);
+              }
             },
           },
         ],

@@ -1,70 +1,69 @@
 import * as PIXI from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
 
-/**
- * Class to create items
- */
 class Item {
-  /**
-   * @costructor Creates an item from image and sets it coordinates
-   * @param {PIXI.Application} app - Pixi application where the item is placed
-   * @param {PIXI.Container} container - container/scene to which the object will be added
-   * @param {image} image - image to be used for item sprite
-   * @param {number} x - x coordinate where the object is placed in the application
-   * @param {number} y - y coordinate where the object is placed in the application
-   * @param {number} zIndex - z index of the object
-   * @param {number} height - height of the object
-   * @param {number} width - width of the object
-   * @param {string} name - name of the object
-   * @param {Function} onInteraction - callback function which will be called when the object is clicked
-   * @returns {PIXI.Sprite} - The item object
-   */
   constructor(
     app,
     container,
-    image,
-    x,
-    y,
-    zIndex = 1,
-    height,
-    width,
-    name,
-    onInteraction
+    itemData // Pass itemData as a single parameter to handle both static and animated items
   ) {
-    this.item = PIXI.Sprite.from(image);
-    this.item.x = x * 1400;
-    this.item.y = y * 800;
-    this.item.zIndex = zIndex;
-    this.item.name = name;
-    this.item.height = height;
-    this.item.width = width;
+    // check if the item should be animated or not
+    if (itemData.animation) {
+      // create an animated sprite
+      const textures = itemData.animation.frames.map((frame) =>
+        PIXI.Texture.from(frame)
+      );
+      this.sprite = new PIXI.AnimatedSprite(textures);
 
-    // Anchor to bottom left corner
-    this.item.anchor.set(0.5, 1);
+      this.sprite.animationSpeed = itemData.animation.animationSpeed || 0.02;
+      this.sprite.loop =
+        itemData.animation.loop !== undefined ? itemData.animation.loop : true;
 
-    // check if the object has an interaction/callback
-    if (onInteraction) {
-      this.item.eventMode = "dynamic";
-      this.item.cursor = "pointer";
+      // play the animation only if there are more than 1 frames
+      if (itemData.animation.frames.length > 1) {
+        this.sprite.play();
+      }
+    } else {
+      // if the item has no animation, create a static sprite
+      this.sprite = PIXI.Sprite.from(itemData.image);
+    }
 
-      this.item.on("pointerdown", onInteraction(app));
+    // common properties for both static and animated sprites
+    this.initializeSprite(app, container, itemData);
+  }
 
-      // add glow effect to items with interaction
-      this.glowEffect = new GlowFilter({
+  initializeSprite(app, container, itemData) {
+    this.sprite.x = itemData.location.x * 1400;
+    this.sprite.y = itemData.location.y * 800;
+    this.sprite.zIndex = itemData.zIndex || 1;
+    this.sprite.name = itemData.name;
+    this.sprite.height = itemData.height;
+    this.sprite.width = itemData.width;
+    this.sprite.anchor.set(0.5, 1); // Anchor to bottom left corner
+
+    this.sprite.onStateChange = itemData.onStateChange;
+
+    // Check if the object has an interaction/callback
+    if (itemData.onInteraction) {
+      this.sprite.interactive = true;
+      this.sprite.buttonMode = true;
+      this.sprite.eventMode = "dynamic";
+      this.sprite.cursor = "pointer";
+      this.sprite.on("pointerdown", itemData.onInteraction(app, this.sprite));
+
+      const glowEffect = new GlowFilter({
         innerStrength: 1,
         outerStrength: 1,
         quality: 0.1,
       });
-      this.item.filters = [this.glowEffect];
+      //this.sprite.filters = [glowEffect];
     } else {
-      this.item.eventMode = "static";
+      this.sprite.interactive = false;
     }
 
-    this.item.visible = true;
-    // add object to its container/scene
-    container.addChild(this.item);
-
-    return this.item;
+    this.sprite.visible = true;
+    // add the item to its container/scene
+    container.addChild(this.sprite);
   }
 }
 

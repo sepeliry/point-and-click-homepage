@@ -8,18 +8,28 @@ import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
+import gameState from "../data/gameState.js";
+import Numpad from "./numpad.js";
+import { createWalkableAreas } from "./walkableArea.js";
+import InventoryUI from "./inventory/inventoryUI.js";
+import DesktopIcon from "./desktopIcon.js";
+import ITEM_TYPES from "../constants/itemTypes.js";
 
 class UI {
   static solidObjects = null;
   constructor(app) {
     app.scenes = {};
+
     // create array for solid objects
     UI.solidObjects = [];
     UI.solidObjects.sortableChildren = true;
     this.books = [];
     this.books.sortableChildren = true;
+
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
+    createWalkableAreas(app);
+    InventoryUI.initialize(app);
   }
 
   createScenesFromGameData(app, gameData) {
@@ -77,8 +87,51 @@ class UI {
   }
 
   createObjectsFromGameData(app, items, container) {
-    // console.log(items);
+    //console.log(items);
     items.forEach((itemData) => {
+      if (itemData.type === ITEM_TYPES.text) {
+        const text = new PIXI.Text(itemData.text, itemData.style);
+        text.x = itemData.location.x;
+        text.y = itemData.location.y;
+        text.visible = true;
+        text.anchor.set(0.475, 0);
+        if (itemData.identifier) {
+          text.identifier = itemData.identifier;
+        }
+        container.addChild(text);
+
+        // set code text for numpad scene
+        if (
+          container.name === "numpadScene" &&
+          itemData.identifier === "screenText"
+        ) {
+          Numpad.setCodeText(text);
+        }
+      } else if (itemData.type === ITEM_TYPES.book) {
+        new Book(
+          app,
+          container,
+          itemData.image,
+          itemData.location.x,
+          itemData.location.y,
+          itemData.zIndex,
+          itemData.height,
+          itemData.width,
+          itemData.name,
+          itemData.onInteraction
+        );
+      } else if (itemData.type === ITEM_TYPES.desktopIcon) {
+        new DesktopIcon(app, container, itemData);
+      } else if (itemData.type === ITEM_TYPES.item) {
+        const item = new Item(app, container, itemData);
+        // push solid items to solidObjects array
+        if (container.name === "mainScene") {
+          // console.log(item);
+          //  if (itemData.name === "Box" || itemData.name === "Computer Desk") {
+          UI.solidObjects.push(item);
+          //  }
+        }
+      }
       if (itemData.type === "Book") {
         // Create a Book instance instead of an Item instance
         const book = new Book(
@@ -93,23 +146,6 @@ class UI {
           itemData.name,
           itemData.onInteraction
         );
-        //this.solidObjects.push(book);
-      } else {
-        // Create an Item instance
-        const item = new Item(
-          app,
-          container,
-          itemData.image,
-          itemData.location.x,
-          itemData.location.y,
-          itemData.zIndex,
-          itemData.height,
-          itemData.width,
-          itemData.name,
-          itemData.onInteraction
-        );
-        // push solid items to solidObjects array
-        UI.solidObjects.push(item);
       }
     });
     // console.log(container);

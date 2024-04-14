@@ -17,7 +17,7 @@
     "build": "npm run clean && parcel build ./index.html",
     "build_serve": "npm run build && http-server ./dist",
     "build_prod": "rimraf ./deployment ./.parcel-cache && parcel build ./index.html --dist-dir deployment --public-url /beta/",
-    "test": "jest",
+    "test": "jest --clearCache && jest",
     "coverage": "c8 jest"
   },
   "babel": {

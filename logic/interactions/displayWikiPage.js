@@ -2,7 +2,7 @@
 
 import { marked } from "marked";
 
-async function displayWikiPage(url) {
+async function displayWikiPage(rawUrl, wikiUrl) {
   try {
     const wikiWrapper = document.getElementById("wiki-wrapper");
 
@@ -14,54 +14,52 @@ async function displayWikiPage(url) {
     wikiWrapper.style.display = "block";
 
     // fetch data from wiki
-    const markdownText = await fetchWikiPage(url);
+    const markdownText = await fetchWikiPage(rawUrl);
 
     wikiText.innerHTML = markdownText;
     // add wiki link to html element
-    document.querySelector(".wikiLink").href = url;
+    document.querySelector(".wikiLink").href = wikiUrl;
   } catch (error) {
     console.error("Failed to display wiki page:", error);
   }
 }
 
+function preprocessMarkdown(mdContent) {
+  // Replace found patterns with Markdown links (or HTML anchors)
+  const processedContent = mdContent.replace(
+    /\[\[(.*?)\]\]/g,
+    (match, pageName) => {
+      // Normalize the page name to match GitHub wiki URL encoding conventions
+      const normalizedPageName = pageName
+        .trim()
+        .replace(/\s+/g, "-") // Replace spaces with hyphens
+        .replace(/–/g, "%E2%80%93") // encode en dash
+        .replace(/:/g, "%3A"); // encode colon
+
+      const url = `https://github.com/sepeliry/YhdistyksenToiminta/wiki/${normalizedPageName}`;
+
+      // return the wiki link as an anchor tag
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${pageName.trim()}</a>`;
+    }
+  );
+
+  return processedContent;
+}
+
 export const fetchWikiPage = async (url) => {
   const response = await fetch(`${url}`);
-  let data = await response.text();
-  // Replace [[]] links with []()
-  data = data.replace(/\[\[([^\]]+)\]\]/g, (match, p1) => `[${p1}](${p1})`);
+  const mdContent = await response.text();
 
-  // Custom renderer for links pointing to other wikipages
-  const renderer = new marked.Renderer();
-  const originalLinkRenderer = renderer.link;
-  renderer.link = function (href, title, text) {
-    // If link doesn't start with http and doesn't end in .something etc, treat it as a relative link to a wikipage
-    if (!href.startsWith("http") && !/\.\w+$/.test(href)) {
-      const pageUrl = "#";
-      console.log(pageUrl);
-      console.log(href);
-      if (!pageUrl)
-        return `<a href="#">${text}</a>`; // To stop redirecting if wikipage with given href is not found
-      else {
-        return `<a href="${href}" onclick="event.preventDefault(); displayWikiPage('${pageUrl}');">${text}</a>`;
-      }
-    } else {
-      return originalLinkRenderer.call(this, href, title, text);
-    }
-  };
-  marked.use({ gfm: true, renderer });
-  const htmlString = marked.parse(data);
-  return htmlString;
-};
+  if (mdContent) {
+    // Preprocess to handle custom link format
+    console.log(mdContent);
 
-const findPageUrlByHref = (href) => {
-  const page = pages.find((page) => page.url.endsWith(`${href}.md`));
-  if (!page) {
-    console.error(
-      `Matching wikipage url using href: ${href} not found, using # instead`
-    );
-    return null;
+    const processedMdContent = preprocessMarkdown(mdContent);
+
+    // Convert processed Markdown to HTML
+    const htmlContent = marked.parse(processedMdContent);
+    return htmlContent;
   }
-  return page.url;
 };
 
 export default displayWikiPage;

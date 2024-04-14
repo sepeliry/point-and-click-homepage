@@ -32,9 +32,11 @@ class Book {
     this.book.visible = true;
     // this.book.width = width;
     // this.book.height = height;
-    // Calculate width and height relative to screen size to support mobile screens
-    const widthRatio = width / 1400;
-    const heightRatio = height / 800;
+    // Calculate width and height for the books relative to screen size to support mobile screens
+    const originalGameWidth = 1400;
+    const originalGameHeight = 800;
+    const widthRatio = width / originalGameWidth;
+    const heightRatio = height / originalGameHeight;
     this.book.width = widthRatio * app.renderer.width;
     this.book.height = heightRatio * app.renderer.height;
     this.book.zIndex = zIndex;
@@ -51,24 +53,22 @@ class Book {
         outerStrength: 0.7,
         quality: 0.1,
       });
-      this.book.filters = [this.glowEffect];
+      // this.book.filters = [this.glowEffect];
     }
 
     // Create a PIXI.Container to hold the text objects
     this.textContainer = new PIXI.Container();
     this.textContainer.zIndex = 2;
 
-    // // Calculate a fontsize using the original fontsize (25) to support smaller screens
-    const originalWidth = 1400;
-    const originalHeight = 800;
+    // // Calculate a fontsize relative to original fontsize (20) on desktop (1400x800)
     const currentWidth = app.renderer.width;
     const currentHeight = app.renderer.height;
     const ratio = Math.min(
-      currentWidth / originalWidth,
-      currentHeight / originalHeight
+      currentWidth / originalGameWidth,
+      currentHeight / originalGameHeight
     );
-
-    const fontSize = 25 * ratio;
+    //
+    const fontSize = Math.max(20 * ratio, 18);
 
     // Define the style for the text
     const textStyle = {
@@ -80,7 +80,8 @@ class Book {
     };
 
     // Calculate the spacing between each character
-    const characterSpacing = 11;
+    const spacingHeightRatio = currentHeight / originalGameHeight;
+    const characterSpacing = 11 * spacingHeightRatio;
 
     // Loop through each character in the text
     for (let i = 0; i < name.length; i++) {
@@ -92,8 +93,8 @@ class Book {
       textObject.rotation = Math.PI / 2;
 
       // Calculate the position of the text object along the book spine
-      const x = this.book.x + this.book.width - 18;
-      const y = this.book.y + (i + 2) * characterSpacing;
+      const x = this.book.x + this.book.width - 18 * ratio;
+      const y = this.book.y + (i + 1.5) * characterSpacing;
 
       // Set the position of the text object
       textObject.position.set(x, y);

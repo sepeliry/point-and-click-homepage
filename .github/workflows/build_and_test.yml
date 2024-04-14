@@ -27,15 +27,5 @@ jobs:
         id: tests
         run: npm run coverage
 
-      - name: Build for deployment
-        if: steps.tests.outcome == 'success'
-        run: |
-          npm run build_prod
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add deployment
-          git commit -m "Build for deployment"
-          git push origin main
-
       - name: Send coverage data to Coveralls
         run: npx coveralls < ./coverage/lcov.info

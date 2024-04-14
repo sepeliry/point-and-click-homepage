@@ -182,8 +182,12 @@ const gameData = {
       },
       */
       {
-        image: null, // null if the item has an animation
-
+        animation: {
+          frames: [arcadeMachine2Off],
+          animationSpeed: 0.06,
+          loop: true,
+          interval: 3000, //ms
+        },
         onStateChange: (app, item) => {
           if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
@@ -197,13 +201,6 @@ const gameData = {
               true
             );
           }
-        },
-
-        animation: {
-          frames: [arcadeMachine2Off],
-          animationSpeed: 0.06,
-          loop: true,
-          interval: 3000, //ms
         },
         type: ITEM_TYPES.item,
         name: "Arcade machine 2",
@@ -227,6 +224,8 @@ const gameData = {
       },
       {
         image: lockImage,
+        onStateChange: null,
+        animation: null,
         type: ITEM_TYPES.item,
         name: "Lock",
         location: {
@@ -242,6 +241,7 @@ const gameData = {
       },
       {
         image: coffeeImage,
+        onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
         name: "Coffee",
@@ -261,15 +261,15 @@ const gameData = {
         zIndex: 2,
       },
       {
-        image: null,
+        type: ITEM_TYPES.item,
+        name: "Coffee maker",
         animation: {
           frames: [coffeeMakerFrame1, coffeeMakerFrame2, coffeeMakerFrame3],
           animationSpeed: 0.04,
           loop: true,
           interval: 3000, //ms
         },
-        type: ITEM_TYPES.item,
-        name: "Coffee maker",
+        onStateChange: null,
         location: {
           x: 0.67,
           y: 0.595,

@@ -1,13 +1,13 @@
 import * as PIXI from "pixi.js";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
-import Inventory from "./inventory";
+
 import UI from "./UI";
 import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
 import { followPlayer } from "./utils/cameraUtils.js";
-
+import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
 
@@ -33,7 +33,25 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);
-const inventory = new Inventory(app);
+
+// this function should be run when the state changes (called from gameState.js)
+function onGameStateChange(property, newValue, oldValue) {
+  console.log(`State "${property}" changed from ${oldValue} to ${newValue}`);
+
+  // loop through every item in every scene and check if they have onStateChange logic
+  Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
+    if (sceneData.children) {
+      sceneData.children.forEach((item) => {
+        if (!item.onStateChange) {
+          return;
+        }
+        item.onStateChange(app, item);
+      });
+    }
+  });
+}
+// add onStateChange as an observer for gameState so it is run every time the gameState changes
+addObserver(onGameStateChange);
 
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
@@ -208,8 +226,8 @@ app.mainScene.on("pointertap", (event) => {
 
       break; // Optional: break if you only care about the first intersection
     }
-   
-  } 
+
+  }
   */
 });
 
@@ -231,21 +249,8 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
   return intersects;
 }
 
-let imagesUpdatedAfterGameCompletion = false;
-
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
-  if (app.gameState.hasCompletedGame && !imagesUpdatedAfterGameCompletion) {
-    console.log("completed game!!");
-
-    app.mainScene.children.forEach((item) => {
-      if (item.imageAfterGameCompletion) {
-        item.texture = item.imageAfterGameCompletion;
-      }
-    });
-
-    imagesUpdatedAfterGameCompletion = true;
-  }
   if (player.targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - player.targetPosition.x, 2) +

@@ -8,15 +8,18 @@ import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
+import gameState from "../data/gameState.js";
 import Numpad from "./numpad.js";
 import { createWalkableAreas } from "./walkableArea.js";
-import gameState from "../data/gameState.js";
+import InventoryUI from "./inventory/inventoryUI.js";
+import DesktopIcon from "./desktopIcon.js";
+import ITEM_TYPES from "../constants/itemTypes.js";
 
 class UI {
   static solidObjects = null;
   constructor(app) {
     app.scenes = {};
-    app.gameState = gameState;
+
     // create array for solid objects
     UI.solidObjects = [];
     UI.solidObjects.sortableChildren = true;
@@ -26,6 +29,7 @@ class UI {
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
     createWalkableAreas(app);
+    InventoryUI.initialize(app);
   }
 
   createScenesFromGameData(app, gameData) {
@@ -85,7 +89,7 @@ class UI {
   createObjectsFromGameData(app, items, container) {
     //console.log(items);
     items.forEach((itemData) => {
-      if (itemData.type === "Text") {
+      if (itemData.type === ITEM_TYPES.text) {
         const text = new PIXI.Text(itemData.text, itemData.style);
         text.x = itemData.location.x;
         text.y = itemData.location.y;
@@ -103,7 +107,22 @@ class UI {
         ) {
           Numpad.setCodeText(text);
         }
-      } else if (itemData.type === "Item") {
+      } else if (itemData.type === ITEM_TYPES.book) {
+        new Book(
+          app,
+          container,
+          itemData.image,
+          itemData.location.x,
+          itemData.location.y,
+          itemData.zIndex,
+          itemData.height,
+          itemData.width,
+          itemData.name,
+          itemData.onInteraction
+        );
+      } else if (itemData.type === ITEM_TYPES.desktopIcon) {
+        new DesktopIcon(app, container, itemData);
+      } else if (itemData.type === ITEM_TYPES.item) {
         const item = new Item(app, container, itemData);
         // push solid items to solidObjects array
         if (container.name === "mainScene") {

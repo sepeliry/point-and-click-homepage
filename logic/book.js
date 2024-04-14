@@ -53,7 +53,7 @@ class Book {
         outerStrength: 0.7,
         quality: 0.1,
       });
-      this.book.filters = [this.glowEffect];
+      // this.book.filters = [this.glowEffect];
     }
 
     // Create a PIXI.Container to hold the text objects
@@ -94,7 +94,7 @@ class Book {
 
       // Calculate the position of the text object along the book spine
       const x = this.book.x + this.book.width - 18 * ratio;
-      const y = this.book.y + (i + 2) * characterSpacing;
+      const y = this.book.y + (i + 1.5) * characterSpacing;
 
       // Set the position of the text object
       textObject.position.set(x, y);

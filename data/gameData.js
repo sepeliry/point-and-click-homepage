@@ -3,10 +3,8 @@ import * as PIXI from "pixi.js";
 import switchScene from "../logic/interactions/switchScene.js";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab.js";
 import displayWikiPage from "../logic/interactions/displayWikiPage.js";
-// import openPopup from "../logic/interactions/openItemPopup.js";
 import openPopup from "../logic/interactions/openPopup.js";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
-import collectItem from "../logic/interactions/collectItem.js";
 import Player from "../logic/player.js";
 
 import boxPropImage from "../resources/images/box_prop.png";
@@ -15,7 +13,17 @@ import bookshelfSceneBackground from "../resources/images/bookshelf_background.p
 import mouseholeSceneBackground1 from "../resources/images/mousehole_scene/mousehole1.png";
 import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mousehole2.png";
 
-import computerDesk from "../resources/images/computer_desk.png";
+import lamp1On from "../resources/images/lamp_1_on.png";
+import lamp1Off from "../resources/images/lamp_1_off.png";
+
+import arcadeMachine2Off from "../resources/images/arcade_machine_2_off.png";
+import arcadeMachine2OnFrame1 from "../resources/images/arcade_machine_2_on_frame1.png";
+import arcadeMachine2OnFrame2 from "../resources/images/arcade_machine_2_on_frame2.png";
+import arcadeMachine2OnFrame3 from "../resources/images/arcade_machine_2_on_frame3.png";
+
+import computerDeskImage from "../resources/images/computer_desk.png";
+import computerDeskWithCoffeeCupImage from "../resources/images/computer_desk_with_coffee_cup.png";
+
 import mouseholeImage from "../resources/images/mousehole_in_wall_tilted.png";
 import mouseholeImageEyes from "../resources/images/mousehole_in_wall_tilted_eyes.png";
 import backArrowImage from "../resources/images/back_arrow.png";
@@ -33,8 +41,11 @@ import discordIcon from "../resources/images/computer_scene/discord_icon.png";
 import signupIcon from "../resources/images/computer_scene/signup_icon.png";
 
 import coffeeMakerImage from "../resources/images/coffee_maker.png";
+import coffeeMakerFrame1 from "../resources/images/coffee_maker_frame1.png";
+import coffeeMakerFrame2 from "../resources/images/coffee_maker_frame2.png";
+import coffeeMakerFrame3 from "../resources/images/coffee_maker_frame3.png";
 import plantImage from "../resources/images/plant.png";
-
+import coffeeImage from "../resources/images/coffee.png";
 import potionImage from "../resources/images/potion.png";
 
 import button1 from "../resources/images/numpad_scene/button1.png";
@@ -49,9 +60,16 @@ import button9 from "../resources/images/numpad_scene/button9.png";
 import button0 from "../resources/images/numpad_scene/button0.png";
 import resetButton from "../resources/images/numpad_scene/resetButton.png";
 import enterButton from "../resources/images/numpad_scene/enterButton.png";
-
+import coffeeCupImage from "../resources/images/computer_scene/coffee_cup.png";
 import Numpad from "../logic/numpad.js";
-// import gameState from "./gameState.js";
+import gameState from "./gameState.js";
+
+import updateSpriteTexture from "../logic/interactions/updateSpriteTexture.js";
+import updateAnimatedSpriteTextures from "../logic/interactions/updateAnimatedSpriteTextures.js";
+
+import ITEM_TYPES from "../constants/itemTypes.js";
+
+import removeSprite from "../logic/interactions/removeSprite.js";
 
 const gameData = {
   mainScene: {
@@ -61,7 +79,8 @@ const gameData = {
     items: [
       {
         image: boxPropImage,
-        type: "Item",
+        onStateChange: null,
+        type: ITEM_TYPES.item,
         name: "Box",
         location: {
           x: 0.61,
@@ -70,42 +89,147 @@ const gameData = {
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
-        onInteraction: (app) => () => {
-          openPopup(
-            app,
-            "This is a box and arcade game is now on! check app.gameState :)",
-            null
-          );
-          app.gameState.hasCompletedGame = true;
-          console.log(app.gameState);
-          if (app.gameState.hasCompletedGame) {
-            console.log("has compelted!!");
-          }
-        },
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.61, 0.93, "mainScene", () => {
+            console.log(gameState.inventory);
+            openPopup(
+              app,
+              "This is a box and arcade game is now on! check gameState :)",
+              null
+            );
+            gameState.hasCompletedGame = !gameState.hasCompletedGame;
+            console.log(gameState);
+          }),
+
         zIndex: 2,
+      },
+      {
+        image: keyImage,
+        onStateChange: (app, item) => {
+          /*
+          // test if graphics can be updated when different states change
+          if (gameState.hasUnlockedDoor) {
+            updateSpriteTexture(item, lockImage);
+          }
+          if (gameState.hasCompletedGame) {
+            updateSpriteTexture(item, book1);
+          }
+          */
+        },
+        animation: null,
+        type: ITEM_TYPES.item,
+        name: "Key",
+        location: {
+          x: 0.47,
+          y: 0.9,
+        },
+        width: 267 * 0.25,
+        height: 400 * 0.25,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () =>
+          checkDistance(app, 0.47, 0.9, "mainScene", () => {
+            console.log("key clicked");
+            openPopup(app, "What is this key?", null);
+            gameState.hasUnlockedDoor = true;
+            console.log(item);
+            gameState.inventory.addItem("Key", item);
+            removeSprite(app, item);
+          }),
+
+        zIndex: 1,
       },
       /*
       {
-        image: keyImage,
-        type: "Item",
-        name: "Key",
-        location: {
-          x: 0.6,
-          y: 0.8,
+        image: null, // null if the item has an animation
+        onStateChange: (app, item) => {
+          if (gameState.hasCompletedGame) {
+            updateAnimatedSpriteTextures(
+              item,
+              [
+                arcadeMachine2OnFrame1,
+                arcadeMachine2OnFrame2,
+                arcadeMachine2OnFrame3,
+              ],
+              0.06,
+              false
+            );
+          }
         },
-        width: 70,
-        height: 70,
-        collisionHeight: 5, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.6, 0.8, "mainScene", () =>
-            collectItem(app, "mainScene", "Key")
-          ),
-        zIndex: 1,
+        animation: {
+          frames: [arcadeMachine2Off],
+          animationSpeed: 0.06,
+          loop: false,
+          interval: 3000, //ms
+        },
+        type: ITEM_TYPES.item,
+        name: "Arcade machine 2",
+        location: {
+          x: 0.45,
+          y: 0.32,
+        },
+        width: 157 * 0.8,
+        height: 271 * 0.8,
+        collisionHeight: 0, // not yet used
+        interactionRange: 50,
+        onInteraction: (app) => () => {
+          if (gameState.hasCompletedGame) {
+            openPopup(app, "congraz! arcade machine is now on", null);
+          } else {
+            console.log("please complete the game");
+            openPopup(app, "This item cannot be used yet", null);
+          }
+        },
+        zIndex: 0,
       },
       */
       {
+        animation: {
+          frames: [arcadeMachine2Off],
+          animationSpeed: 0.06,
+          loop: true,
+          interval: 3000, //ms
+        },
+        onStateChange: (app, item) => {
+          if (gameState.hasCompletedGame) {
+            updateAnimatedSpriteTextures(
+              item,
+              [
+                arcadeMachine2OnFrame1,
+                arcadeMachine2OnFrame2,
+                arcadeMachine2OnFrame3,
+              ],
+              0.06,
+              true
+            );
+          }
+        },
+        type: ITEM_TYPES.item,
+        name: "Arcade machine 2",
+        location: {
+          x: 0.45,
+          y: 0.7,
+        },
+        width: 157 * 0.8,
+        height: 271 * 0.8,
+        collisionHeight: 0, // not yet used
+        interactionRange: 50,
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.45, 0.7, "mainScene", () => {
+            if (gameState.hasCompletedGame) {
+              openPopup(app, "congraz! arcade machine is now on", null);
+            } else {
+              console.log("please complete the game");
+              openPopup(app, "This item cannot be used yet", null);
+            }
+          }),
+
+        zIndex: 0,
+      },
+      {
         image: lockImage,
-        type: "Item",
+        onStateChange: null,
+        animation: null,
+        type: ITEM_TYPES.item,
         name: "Lock",
         location: {
           x: 0.534,
@@ -122,27 +246,68 @@ const gameData = {
         zIndex: 0,
       },
       {
-        image: coffeeMakerImage,
-        type: "Item",
+        image: coffeeImage,
+        onStateChange: null,
+        animation: null,
+        type: ITEM_TYPES.item,
+        name: "Coffee",
+        location: {
+          x: 0.81,
+          y: 0.895,
+        },
+        width: 267 * 0.25,
+        height: 400 * 0.25,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () =>
+          checkDistance(app, 0.81, 0.895, "mainScene", () => {
+            openPopup(app, "Picked up some coffee", null);
+
+            gameState.inventory.addItem("Coffee", item);
+            removeSprite(app, item);
+          }),
+
+        zIndex: 2,
+      },
+      {
+        type: ITEM_TYPES.item,
         name: "Coffee maker",
+        animation: {
+          frames: [coffeeMakerFrame1, coffeeMakerFrame2, coffeeMakerFrame3],
+          animationSpeed: 0.04,
+          loop: true,
+          interval: 3000, //ms
+        },
+        onStateChange: null,
         location: {
           x: 0.67,
           y: 0.595,
         },
-        width: 49.25,
-        height: 72.75,
+        width: 267 * 0.25,
+        height: 400 * 0.25,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
           checkDistance(app, 0.7, 0.595, "mainScene", () => {
+            if (!gameState.inventory.itemExists("Coffee")) {
+              openPopup(app, "need more coffee", null);
+              return;
+            } else if (!gameState.inventory.itemExists("Coffee cup")) {
+              openPopup(app, "where is my coffee cup?", null);
+              return;
+            }
+
+            // remove coffee from inventory
+            gameState.inventory.removeItem("Coffee");
+
             openPopup(app, "hyvää kahvia", null);
             Player.minimizePlayer();
-            app.gameState.playerIsMiniSize = true;
+            gameState.playerIsMiniSize = true;
+            app.scenes["mainScene"].updateTransform();
           }),
         zIndex: 0,
       },
       {
         image: bookshelfImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Bookshelf",
         location: {
           x: 0.33,
@@ -158,8 +323,14 @@ const gameData = {
         zIndex: 0,
       },
       {
-        image: computerDesk,
-        type: "Item",
+        image: computerDeskWithCoffeeCupImage,
+        type: ITEM_TYPES.item,
+        onStateChange: (app, item) => {
+          if (gameState.inventory.itemExists("Coffee cup")) {
+            updateSpriteTexture(item, computerDeskImage);
+          }
+        },
+        animation: null,
         name: "Computer desk",
         location: {
           x: 0.16,
@@ -178,9 +349,26 @@ const gameData = {
 
       {
         image: arcadeMachineOff,
-        imageAfterGameCompletion: arcadeMachineOn,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Arcade machine",
+
+        onStateChange: (app, item) => {
+          if (gameState.hasCompletedGame) {
+            updateAnimatedSpriteTextures(
+              item,
+              [arcadeMachineOn, arcadeMachineOff],
+              0.02,
+              true
+            );
+          }
+        },
+
+        animation: {
+          frames: [arcadeMachineOff],
+          animationSpeed: 0.02,
+          loop: true,
+          interval: 3000, //ms
+        },
         location: {
           x: 0.78,
           y: 0.82,
@@ -190,7 +378,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         interactionRange: 50,
         onInteraction: (app) => () => {
-          if (app.gameState.hasCompletedGame) {
+          if (gameState.hasCompletedGame) {
             checkDistance(app, 0.78, 0.82, "mainScene", () =>
               openPopup(app, "congraz! arcade machine is now on", null)
             );
@@ -206,7 +394,7 @@ const gameData = {
 
       {
         image: mouseholeImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Mousehole",
         animation: {
           frames: [mouseholeImage, mouseholeImageEyes],
@@ -221,15 +409,37 @@ const gameData = {
         width: 50,
         height: 50,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => {
-          if (!Player.isMiniSize) {
-            openPopup(app, "on kyl pieni hiirenkolo...", null);
-            return;
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.88, 0.83, "mainScene", () => {
+            if (!Player.isMiniSize) {
+              openPopup(app, "on kyl pieni hiirenkolo...", null);
+              return;
+            }
+            switchScene(app, "mouseholeScene");
+          }),
+
+        zIndex: 0,
+      },
+      {
+        image: lamp1Off,
+
+        onStateChange: (app, item) => {
+          if (gameState.hasCompletedGame) {
+            updateSpriteTexture(item, lamp1On);
           }
-          checkDistance(app, 0.78, 0.8, "mouseholeScene", () =>
-            switchScene(app, "mouseholeScene")
-          );
         },
+
+        type: ITEM_TYPES.item,
+        name: "Lamp",
+        animation: null,
+        location: {
+          x: 0.708,
+          y: 0.368,
+        },
+        width: 104 * 0.8,
+        height: 197 * 0.8,
+        collisionHeight: 0, // not yet used
+        onInteraction: null,
         zIndex: 0,
       },
     ],
@@ -241,7 +451,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -255,7 +465,7 @@ const gameData = {
       },
       {
         image: book1,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Honesty",
         location: {
           x: 0.52,
@@ -266,14 +476,34 @@ const gameData = {
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
-            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Honesty.md"
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli%E2%80%93idea-:-Honesty.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Peli%E2%80%93idea-%3A-Honesty"
+          ),
+
+        zIndex: 1,
+      },
+      {
+        image: book1,
+        type: ITEM_TYPES.book,
+        name: "Säännöt",
+        location: {
+          x: 0.44,
+          y: 0.36,
+        },
+        width: 37,
+        height: 85,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () =>
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Yhdistyksen-s%C3%A4%C3%A4nn%C3%B6t.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Yhdistyksen-s%C3%A4%C3%A4nn%C3%B6t"
           ),
 
         zIndex: 1,
       },
       {
         image: book2,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Wiki",
         location: {
           x: 0.44,
@@ -290,7 +520,7 @@ const gameData = {
       },
       {
         image: book2,
-        type: "Book",
+        type: ITEM_TYPES.book,
         name: "Vuodet",
         location: {
           x: 0.44,
@@ -301,14 +531,51 @@ const gameData = {
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
-            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomukset.md"
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Vuosikertomukset.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Vuosikertomukset"
+          ),
+        zIndex: 1,
+      },
+      {
+        image: book2,
+        type: ITEM_TYPES.book,
+        name: "Pelit",
+        location: {
+          x: 0.54,
+          y: 0.5,
+        },
+        width: 37,
+        height: 85,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () =>
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Peli‐ideakilpailu-syksyllä-2014.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Peli%E2%80%90ideakilpailu-syksyll%C3%A4-2014"
+          ),
+        zIndex: 1,
+      },
+      {
+        image: book2,
+        type: ITEM_TYPES.book,
+        name: "Luento",
+        location: {
+          x: 0.49,
+          y: 0.64,
+        },
+        width: 37,
+        height: 85,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () =>
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Luentomuistiinpanot.md",
+            "https://github.com/sepeliry/YhdistyksenToiminta/wiki/Luentomuistiinpanot"
           ),
         zIndex: 1,
       },
       {
         image: book1,
-        type: "Book",
-        name: "Book 1",
+        type: ITEM_TYPES.book,
+        name: "",
         location: {
           x: 0.58,
           y: 0.64,
@@ -328,7 +595,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -341,7 +608,7 @@ const gameData = {
         zIndex: 10,
       },
       {
-        type: "Text",
+        type: ITEM_TYPES.text,
         text: "",
         identifier: "screenText",
         style: {
@@ -370,7 +637,7 @@ const gameData = {
       },
       {
         image: button1,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 1",
         location: {
           x: 0.42,
@@ -380,14 +647,13 @@ const gameData = {
         height: 99.2,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(1);
         },
         zIndex: 10,
       },
       {
         image: button2,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 2",
         location: {
           x: 0.505,
@@ -404,7 +670,7 @@ const gameData = {
       },
       {
         image: button3,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 3",
         location: {
           x: 0.59,
@@ -421,7 +687,7 @@ const gameData = {
       },
       {
         image: button4,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 4",
         location: {
           x: 0.42,
@@ -438,7 +704,7 @@ const gameData = {
       },
       {
         image: button5,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 5",
         location: {
           x: 0.505,
@@ -455,7 +721,7 @@ const gameData = {
       },
       {
         image: button6,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 6",
         location: {
           x: 0.59,
@@ -472,7 +738,7 @@ const gameData = {
       },
       {
         image: button7,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 7",
         location: {
           x: 0.42,
@@ -489,7 +755,7 @@ const gameData = {
       },
       {
         image: button8,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 8",
         location: {
           x: 0.505,
@@ -506,7 +772,7 @@ const gameData = {
       },
       {
         image: button9,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 9",
         location: {
           x: 0.59,
@@ -523,7 +789,7 @@ const gameData = {
       },
       {
         image: resetButton,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "reset",
         location: {
           x: 0.42,
@@ -539,7 +805,7 @@ const gameData = {
       },
       {
         image: button0,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "button for 0",
         location: {
           x: 0.505,
@@ -555,7 +821,7 @@ const gameData = {
       },
       {
         image: enterButton,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "enter",
         location: {
           x: 0.59,
@@ -582,7 +848,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -594,7 +860,7 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
           Player.maximizePlayer();
-          app.gameState.playerIsMiniSize = false;
+          gameState.playerIsMiniSize = false;
         },
         zIndex: 10,
       },
@@ -607,7 +873,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
-        type: "Item",
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -621,11 +887,12 @@ const gameData = {
       },
       {
         image: discordIcon,
-        type: "Item",
+        type: ITEM_TYPES.desktopIcon,
+        title: "Sepeli Discord",
         name: "Sepeli's Discord server",
         location: {
-          x: 0.46,
-          y: 0.47,
+          x: 0.475,
+          y: 0.49,
         },
         width: 64,
         height: 64,
@@ -636,11 +903,12 @@ const gameData = {
       },
       {
         image: signupIcon,
-        type: "Item",
+        type: ITEM_TYPES.desktopIcon,
+        title: "Join Sepeli",
         name: "Join Sepeli as a member",
         location: {
-          x: 0.46,
-          y: 0.55,
+          x: 0.545,
+          y: 0.49,
         },
         width: 64,
         height: 64,
@@ -648,6 +916,25 @@ const gameData = {
         onInteraction: (app) => () =>
           openUrlInNewTab("https://goo.gl/forms/E6MraZeXRUn5DE1E3"),
         zIndex: 1,
+      },
+      {
+        image: coffeeCupImage,
+        onStateChange: null,
+        type: ITEM_TYPES.item,
+        name: "Coffee cup",
+        location: {
+          x: 0.33,
+          y: 0.73,
+        },
+        width: 100,
+        height: 100,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app, item) => () => {
+          gameState.inventory.addItem("Coffee cup", item);
+          removeSprite(app, item);
+          openPopup(app, "Found the missing coffee cup", null);
+        },
+        zIndex: 2,
       },
     ],
   },

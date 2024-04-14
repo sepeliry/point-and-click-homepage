@@ -23,6 +23,7 @@ import playerWalkMini6 from "../resources/images/player_walkA6.png";
 import playerWalkMini7 from "../resources/images/player_walkA7.png";
 import playerWalkMini8 from "../resources/images/player_walkA8.png";
 import playerWalkMini9 from "../resources/images/player_walkA9.png";
+import { checkDistance } from "./interactions/distanceCheckUtils";
 
 /**
  * Class for players
@@ -59,10 +60,15 @@ class Player {
     Player.player.position.set(450, 620);
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 10;
+    // To store a pending onInteraction action and neccesary parameters
+    Player.player.pendingAction = null;
+    Player.player.checkDistanceParams = null;
+
     Player.player.eventMode = "none";
     Player.player.animationSpeed = 0.05;
     Player.player.loop = true; // Set the loop property to true
     Player.player.play();
+    Player.player.eventMode = "none";
     app.mainScene.addChild(Player.player);
     this.targetPosition = new PIXI.Point(Player.player.x, Player.player.y);
   }
@@ -116,7 +122,6 @@ class Player {
         }
         Player.player.play();
       }
-      // this.destinationReached = false;
       // Move the player towards the target position
       const directionX = dx / distance;
       const directionY = dy / distance;
@@ -142,7 +147,18 @@ class Player {
       Player.player.textures = Player.playerIdleFrames;
       Player.player.animationSpeed = 0.05; // Set animation speed for idle animation
       Player.player.play();
-      // this.destinationReached = true;
+      // Check if an action is pending and perform it
+      if (Player.player.pendingAction) {
+        console.log("performing pending action");
+        checkDistance(
+          Player.player.checkDistanceParams.app,
+          Player.player.checkDistanceParams.x,
+          Player.player.checkDistanceParams.y,
+          Player.player.checkDistanceParams.sceneName,
+          Player.player.pendingAction
+        );
+      }
+      // this.targetPosition = null;
     }
   }
 

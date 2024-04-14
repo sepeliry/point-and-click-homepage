@@ -132,6 +132,21 @@ class UI {
           //  }
         }
       }
+      if (itemData.type === "Book") {
+        // Create a Book instance instead of an Item instance
+        const book = new Book(
+          app,
+          container,
+          itemData.image,
+          itemData.location.x,
+          itemData.location.y,
+          itemData.zIndex,
+          itemData.height,
+          itemData.width,
+          itemData.name,
+          itemData.onInteraction
+        );
+      }
     });
     // console.log(container);
   }

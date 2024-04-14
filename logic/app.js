@@ -88,14 +88,16 @@ let targetPosition;
 app.mainScene.eventMode = "static"; // Enable interaction
 app.mainScene.on("pointertap", (event) => {
   const clickedItem = getItemAtPosition(event.global, event.target);
-
   const localPosition = app.mainScene.toLocal(event.global);
   const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
-  // targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
-  targetPosition = new PIXI.Point(localPosition.x, localPosition.y);
-  console.log(targetPosition);
-  //console.log(walkableArea);
-
+  // const targetPosition =
+  player.targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+  // If a item is not clicked, clear the pending action and checkDistanceParams. (To ensure unecceary actions are not performed)
+  if (!clickedItem) {
+    console.log("Item was not clicked, empty action");
+    Player.player.pendingAction = null;
+    Player.player.checkDistanceParams = null;
+  }
   const walkableAreas = createWalkableAreas(app);
   let insideAnyWalkableArea = false;
   let closestProjection = null;
@@ -111,7 +113,7 @@ app.mainScene.on("pointertap", (event) => {
       areaPoints.map((p) => new PIXI.Point(p.x, p.y))
     );
 
-    if (polygon.contains(targetPosition.x, targetPosition.y)) {
+    if (polygon.contains(player.targetPosition.x, player.targetPosition.y)) {
       // console.log("inside");
       insideAnyWalkableArea = true;
       return; // If inside any area, we can stop checking further
@@ -123,8 +125,8 @@ app.mainScene.on("pointertap", (event) => {
         let end = areaPoints[(i + 1) % areaPoints.length]; // Wrap to first point
 
         let projection = projectPointOntoLineSegment(
-          targetPosition.x,
-          targetPosition.y,
+          player.targetPosition.x,
+          player.targetPosition.y,
           start.x,
           start.y,
           end.x,
@@ -133,8 +135,8 @@ app.mainScene.on("pointertap", (event) => {
 
         // Calculate distance from the original target position to the projection
         let distance = Math.sqrt(
-          (targetPosition.x - projection.x) ** 2 +
-            (targetPosition.y - projection.y) ** 2
+          (player.targetPosition.x - projection.x) ** 2 +
+            (player.targetPosition.y - projection.y) ** 2
         );
 
         // Update closest projection if this is the shortest distance found
@@ -149,7 +151,7 @@ app.mainScene.on("pointertap", (event) => {
   // Handle the case where the target position is not inside any walkable area
   if (!insideAnyWalkableArea && closestProjection) {
     console.log("Mapped to closest projection:", closestProjection);
-    targetPosition = closestProjection; // Update targetPosition to the projection
+    player.targetPosition = closestProjection; // Update targetPosition to the projection
 
     /*
     // add a red dot for the adjusted targetPosition
@@ -249,18 +251,18 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
 
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
-  if (targetPosition) {
+  if (player.targetPosition) {
     const distance = Math.sqrt(
-      Math.pow(Player.player.x - targetPosition.x, 2) +
-        Math.pow(Player.player.y - targetPosition.y, 2)
+      Math.pow(Player.player.x - player.targetPosition.x, 2) +
+        Math.pow(Player.player.y - player.targetPosition.y, 2)
     );
 
     if (distance < 3) {
-      targetPosition = null;
+      player.targetPosition = null;
       player.setIdle();
       //console.log(distance);
     } else {
-      player.move(targetPosition, UI.solidObjects);
+      player.move(player.targetPosition, UI.solidObjects);
       followPlayer(app, app.cameraContainer, Player.player);
       app.mainScene.updateTransform();
     }

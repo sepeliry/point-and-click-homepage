@@ -25,6 +25,12 @@ import playerWalkMini8 from "../resources/images/player_walkA8.png";
 import playerWalkMini9 from "../resources/images/player_walkA9.png";
 import { checkDistance } from "./interactions/distanceCheckUtils";
 
+import playerShrink1 from "../resources/images/player_idle0_small.png";
+import playerShrink2 from "../resources/images/player_idle0_smallest.png";
+import updateAnimatedSpriteTextures from "./interactions/updateAnimatedSpriteTextures";
+import gameState from "../data/gameState";
+import openPopup from "./interactions/openPopup";
+
 /**
  * Class for players
  */
@@ -34,7 +40,7 @@ class Player {
    * @param {PIXI.Application} app - Application where the player is added to
    */
   static player = null;
-  static isMiniSize = null;
+  static app = null;
   constructor(app) {
     // Load player idle and walk animation frames
     Player.playerIdleFrames = [PIXI.Texture.from(playeridle)];
@@ -52,9 +58,8 @@ class Player {
       PIXI.Texture.from(playerWalk11),
       PIXI.Texture.from(playerWalk12),
     ];
-    Player.isMiniSize = false;
     // this.destinationReached = true;
-
+    Player.app = app;
     // Create player sprite with idle animation
     Player.player = new PIXI.AnimatedSprite(Player.playerIdleFrames);
     Player.player.position.set(450, 620);
@@ -71,6 +76,7 @@ class Player {
     Player.player.eventMode = "none";
     app.mainScene.addChild(Player.player);
     this.targetPosition = new PIXI.Point(Player.player.x, Player.player.y);
+    Player.player.isTransforming = false;
   }
 
   move(targetPosition, solidObjects) {
@@ -79,6 +85,12 @@ class Player {
      * @param {number} targetPosition - Coordinate where the player is moved to
      * @param {Object[]} solidObjects - Array of solid objects
      */
+
+    // do not move the player while transforming (minimize or maximize animation)
+    if (Player.player.isTransforming) {
+      return;
+    }
+
     // If position outside walkableArea is clicked, adjust position
     targetPosition = this.adjustTargetPosition(targetPosition);
 
@@ -115,7 +127,7 @@ class Player {
       // Switch to the walk animation frames
       if (Player.player.textures !== Player.playerWalkFrames) {
         Player.player.textures = Player.playerWalkFrames;
-        if (Player.isMiniSize) {
+        if (gameState.playerIsMiniSize) {
           Player.player.animationSpeed = 0.3;
         } else {
           Player.player.animationSpeed = 0.15; // Set animation speed for walk animation
@@ -146,6 +158,7 @@ class Player {
     if (Player.player.textures !== Player.playerIdleFrames) {
       Player.player.textures = Player.playerIdleFrames;
       Player.player.animationSpeed = 0.05; // Set animation speed for idle animation
+
       Player.player.play();
       // Check if an action is pending and perform it
       if (Player.player.pendingAction) {
@@ -207,37 +220,81 @@ class Player {
     return loc;
   }
   static minimizePlayer() {
-    Player.isMiniSize = true;
-    Player.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];
-    Player.playerWalkFrames = [
-      PIXI.Texture.from(playerWalkMini1),
-      PIXI.Texture.from(playerWalkMini2),
-      PIXI.Texture.from(playerWalkMini3),
-      PIXI.Texture.from(playerWalkMini4),
-      PIXI.Texture.from(playerWalkMini5),
-      PIXI.Texture.from(playerWalkMini6),
-      PIXI.Texture.from(playerWalkMini7),
-      PIXI.Texture.from(playerWalkMini8),
-      PIXI.Texture.from(playerWalkMini9),
+    // check if player is mini size already
+    if (gameState.playerIsMiniSize) {
+      return;
+    }
+
+    Player.player.isTransforming = true;
+    gameState.playerIsMiniSize = true;
+    const animationTextures = [
+      PIXI.Texture.from(playerShrink1),
+      PIXI.Texture.from(playerShrink2),
+      PIXI.Texture.from(playerIdleMini),
     ];
+
+    Player.player.textures = animationTextures;
+    Player.player.loop = false;
+
+    Player.player.onComplete = () => {
+      Player.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];
+      Player.player.textures = Player.playerIdleFrames;
+      Player.playerWalkFrames = [
+        PIXI.Texture.from(playerWalkMini1),
+        PIXI.Texture.from(playerWalkMini2),
+        PIXI.Texture.from(playerWalkMini3),
+        PIXI.Texture.from(playerWalkMini4),
+        PIXI.Texture.from(playerWalkMini5),
+        PIXI.Texture.from(playerWalkMini6),
+        PIXI.Texture.from(playerWalkMini7),
+        PIXI.Texture.from(playerWalkMini8),
+        PIXI.Texture.from(playerWalkMini9),
+      ];
+      Player.player.loop = true;
+      Player.player.isTransforming = false;
+    };
+    Player.player.play();
   }
+
   static maximizePlayer() {
-    Player.isMiniSize = false;
-    Player.playerIdleFrames = [PIXI.Texture.from(playeridle)];
-    Player.playerWalkFrames = [
-      PIXI.Texture.from(playerWalk1),
-      PIXI.Texture.from(playerWalk2),
-      PIXI.Texture.from(playerWalk3),
-      PIXI.Texture.from(playerWalk4),
-      PIXI.Texture.from(playerWalk5),
-      PIXI.Texture.from(playerWalk6),
-      PIXI.Texture.from(playerWalk7),
-      PIXI.Texture.from(playerWalk8),
-      PIXI.Texture.from(playerWalk9),
-      PIXI.Texture.from(playerWalk10),
-      PIXI.Texture.from(playerWalk11),
-      PIXI.Texture.from(playerWalk12),
+    // check if player is not mini size already
+    if (!gameState.playerIsMiniSize) {
+      return;
+    }
+
+    Player.player.isTransforming = true;
+    gameState.playerIsMiniSize = false;
+    const animationTextures = [
+      PIXI.Texture.from(playerIdleMini),
+      PIXI.Texture.from(playerShrink2),
+      PIXI.Texture.from(playerShrink1),
     ];
+
+    Player.player.textures = animationTextures;
+    Player.player.loop = false;
+
+    Player.player.onComplete = () => {
+      Player.playerIdleFrames = [PIXI.Texture.from(playeridle)];
+      Player.player.textures = Player.playerIdleFrames;
+      Player.playerWalkFrames = [
+        PIXI.Texture.from(playerWalk1),
+        PIXI.Texture.from(playerWalk2),
+        PIXI.Texture.from(playerWalk3),
+        PIXI.Texture.from(playerWalk4),
+        PIXI.Texture.from(playerWalk5),
+        PIXI.Texture.from(playerWalk6),
+        PIXI.Texture.from(playerWalk7),
+        PIXI.Texture.from(playerWalk8),
+        PIXI.Texture.from(playerWalk9),
+        PIXI.Texture.from(playerWalk10),
+        PIXI.Texture.from(playerWalk11),
+        PIXI.Texture.from(playerWalk12),
+      ];
+      Player.player.loop = true;
+      openPopup(Player.app, "Back to normal size", null);
+      Player.player.isTransforming = false;
+    };
+    Player.player.play();
   }
 }
 

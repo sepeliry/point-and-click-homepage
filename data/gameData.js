@@ -297,10 +297,10 @@ const gameData = {
 
             // remove coffee from inventory
             gameState.inventory.removeItem("Coffee");
-
-            openPopup(app, "hyvää kahvia", null);
+            gameState.inventory.removeItem("Coffee cup");
             Player.minimizePlayer();
-            gameState.playerIsMiniSize = true;
+            openPopup(app, "whats happening to me??", null);
+
             app.scenes["mainScene"].updateTransform();
           }),
         zIndex: 0,
@@ -411,7 +411,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
           checkDistance(app, 0.88, 0.83, "mainScene", () => {
-            if (!Player.isMiniSize) {
+            if (!gameState.playerIsMiniSize) {
               openPopup(app, "on kyl pieni hiirenkolo...", null);
               return;
             }
@@ -860,7 +860,6 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
           Player.maximizePlayer();
-          gameState.playerIsMiniSize = false;
         },
         zIndex: 10,
       },

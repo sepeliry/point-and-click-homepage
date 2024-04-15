@@ -56,7 +56,7 @@ class Item {
         outerStrength: 1,
         quality: 0.1,
       });
-      //this.sprite.filters = [glowEffect];
+      // this.sprite.filters = [glowEffect];
     } else {
       this.sprite.interactive = false;
     }

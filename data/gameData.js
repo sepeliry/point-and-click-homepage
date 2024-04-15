@@ -6,6 +6,7 @@ import displayWikiPage from "../logic/interactions/displayWikiPage.js";
 import openPopup from "../logic/interactions/openPopup.js";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
 import Player from "../logic/player.js";
+import showPdf from "../logic/utils/pdfUtils.js";
 
 import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
@@ -70,6 +71,7 @@ import updateAnimatedSpriteTextures from "../logic/interactions/updateAnimatedSp
 import ITEM_TYPES from "../constants/itemTypes.js";
 
 import removeSprite from "../logic/interactions/removeSprite.js";
+import { showWikiList } from "../logic/utils/markdownUtils.js";
 
 const gameData = {
   mainScene: {
@@ -575,7 +577,7 @@ const gameData = {
       {
         image: book1,
         type: ITEM_TYPES.book,
-        name: "",
+        name: "PDF",
         location: {
           x: 0.58,
           y: 0.64,
@@ -583,7 +585,12 @@ const gameData = {
         width: 37,
         height: 85,
         collisionHeight: 5, // not yet used
-        onInteraction: null,
+        onInteraction: (app) => () =>
+          showPdf(
+            app,
+            app.scenes["mainScene"],
+            "./docs/input/pelienSuunnittelu.pdf"
+          ),
         zIndex: 1,
       },
     ],

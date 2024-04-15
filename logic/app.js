@@ -39,9 +39,11 @@ function onGameStateChange(property, newValue, oldValue) {
   console.log(`State "${property}" changed from ${oldValue} to ${newValue}`);
 
   // loop through every item in every scene and check if they have onStateChange logic
+  // loop through every item in every scene and check if they have onStateChange logic
   Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
     if (sceneData.children) {
-      sceneData.children.forEach((item) => {
+      const childrenCopy = [...sceneData.children]; // Shallow copy of the children array
+      childrenCopy.forEach((item) => {
         if (!item.onStateChange) {
           return;
         }

@@ -41,7 +41,7 @@ class UI {
         container.sortableChildren = true;
         app.stage.addChild(container);
         app.scenes[sceneName] = container;
-        container.filters = [new CRTFilter({ lineContrast: 0.09 })];
+        // container.filters = [new CRTFilter({ lineContrast: 0.09 })];
       }
 
       if (sceneData.background) {
@@ -94,6 +94,8 @@ class UI {
         text.x = itemData.location.x;
         text.y = itemData.location.y;
         text.visible = true;
+        text.zIndex = itemData.zIndex;
+        text.onStateChange = itemData.onStateChange;
         text.anchor.set(0.475, 0);
         if (itemData.identifier) {
           text.identifier = itemData.identifier;

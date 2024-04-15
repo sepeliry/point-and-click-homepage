@@ -22,20 +22,22 @@ class DesktopIcon {
 
     // add text label under the sprite
     this.textLabel = new PIXI.Text(itemData.title || "", {
-      fontFamily: "Arial",
-      fontSize: 16,
+      fontFamily: "Consolas",
+      fontSize: 18,
       fontWeight: "bold",
       fill: 0xffffff,
+      stroke: 0x000000, // Black outline color
+      strokeThickness: 4,
       align: "center",
       wordWrap: true,
-      wordWrapWidth: this.sprite.width,
-      dropShadow: true,
+      wordWrapWidth: this.sprite.width + 10,
+      dropShadow: false,
       dropShadowColor: 0x000000,
       dropShadowBlur: 6,
       dropShadowDistance: 4,
     });
     this.textLabel.anchor.set(0.5, 0); // anchor text at the center top
-    this.textLabel.y = this.sprite.y + 4; // position text right below the sprite
+    this.textLabel.y = this.sprite.y + 10; // position text right below the sprite
 
     this.iconContainer.addChild(this.sprite);
     this.iconContainer.addChild(this.textLabel);

@@ -15,11 +15,16 @@ import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mouse
 
 import lamp1On from "../resources/images/lamp_1_on.png";
 import lamp1Off from "../resources/images/lamp_1_off.png";
-
+import arcadeMachine2 from "../resources/images/arcade_machine_2_test.png";
 import arcadeMachine2Off from "../resources/images/arcade_machine_2_off.png";
 import arcadeMachine2OnFrame1 from "../resources/images/arcade_machine_2_on_frame1.png";
 import arcadeMachine2OnFrame2 from "../resources/images/arcade_machine_2_on_frame2.png";
 import arcadeMachine2OnFrame3 from "../resources/images/arcade_machine_2_on_frame3.png";
+
+import arcadeSceneBackground from "../resources/images/arcade_scene/background.png";
+import telegraphIcon from "../resources/images/arcade_scene/telegraph_icon_upscaled.png";
+import voraxIcon from "../resources/images/arcade_scene/vorax_icon_upscaled.png";
+import onTimeIcon from "../resources/images/arcade_scene/ontime_icon_upscaled.png";
 
 import computerDeskImage from "../resources/images/computer_desk.png";
 import computerDeskWithCoffeeCupImage from "../resources/images/computer_desk_with_coffee_cup.png";
@@ -182,6 +187,7 @@ const gameData = {
         zIndex: 0,
       },
       */
+      /*
       {
         animation: {
           frames: [arcadeMachine2Off],
@@ -217,6 +223,50 @@ const gameData = {
           checkDistance(app, 0.45, 0.7, "mainScene", () => {
             if (gameState.hasCompletedGame) {
               openPopup(app, "congraz! arcade machine is now on", null);
+            } else {
+              console.log("please complete the game");
+              openPopup(app, "This item cannot be used yet", null);
+            }
+          }),
+
+        zIndex: 0,
+      },
+      */
+      {
+        animation: {
+          frames: [arcadeMachine2],
+          animationSpeed: 0.06,
+          loop: false,
+          interval: 3000, //ms
+        },
+        onStateChange: (app, item) => {
+          if (gameState.hasCompletedGame) {
+            updateAnimatedSpriteTextures(
+              item,
+              [
+                arcadeMachine2OnFrame1,
+                arcadeMachine2OnFrame2,
+                arcadeMachine2OnFrame3,
+              ],
+              0.06,
+              true
+            );
+          }
+        },
+        type: ITEM_TYPES.item,
+        name: "Arcade machine 2",
+        location: {
+          x: 0.45,
+          y: 0.71,
+        },
+        width: 437 * 0.27,
+        height: 897 * 0.27,
+        collisionHeight: 0, // not yet used
+        interactionRange: 50,
+        onInteraction: (app) => () =>
+          checkDistance(app, 0.45, 0.7, "mainScene", () => {
+            if (gameState.hasCompletedGame) {
+              switchScene(app, "arcadeScene");
             } else {
               console.log("please complete the game");
               openPopup(app, "This item cannot be used yet", null);
@@ -934,6 +984,75 @@ const gameData = {
           openPopup(app, "Found the missing coffee cup", null);
         },
         zIndex: 2,
+      },
+    ],
+  },
+  arcadeScene: {
+    background: arcadeSceneBackground,
+    backgroundWidth: 1400,
+    backgroundHeight: 800,
+    items: [
+      {
+        image: backArrowImage,
+        type: ITEM_TYPES.item,
+        name: "Back button",
+        location: {
+          x: 0.1,
+          y: 0.2,
+        },
+        width: 164,
+        height: 101,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => switchScene(app, "mainScene"),
+        zIndex: 10,
+      },
+      {
+        image: telegraphIcon,
+        type: ITEM_TYPES.desktopIcon,
+        title: "Telegraph",
+        name: "Telegraph game",
+        location: {
+          x: 0.42,
+          y: 0.49,
+        },
+        width: 64,
+        height: 64,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://exigo.itch.io/telegraph-operator"),
+        zIndex: 1,
+      },
+      {
+        image: voraxIcon,
+        type: ITEM_TYPES.desktopIcon,
+        title: "Vorax",
+        name: "Vorax game",
+        location: {
+          x: 0.5,
+          y: 0.49,
+        },
+        width: 64,
+        height: 64,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://exigo.itch.io/vorax"),
+        zIndex: 1,
+      },
+      {
+        image: onTimeIcon,
+        type: ITEM_TYPES.desktopIcon,
+        title: "On Time",
+        name: "On Time game",
+        location: {
+          x: 0.58,
+          y: 0.49,
+        },
+        width: 64,
+        height: 64,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://serialkamikaze.itch.io/on-time"),
+        zIndex: 1,
       },
     ],
   },

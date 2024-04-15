@@ -1,3 +1,4 @@
+import gameState from "../data/gameState";
 import updateText from "./utils/updateText";
 
 const CORRECT_CODE = "1111";
@@ -22,13 +23,17 @@ class Numpad {
      */
     if (this.codeTextElement.text === CORRECT_CODE) {
       this.updateText("*Correct*");
+      // wait
+      setTimeout(() => {
+        gameState.hasUnlockedDoor = true;
+      }, 1000);
     } else {
       this.updateText("*Incorrect*");
 
-      // Wait for 2 seconds before resetting the screen
+      // Wait before resetting the screen
       setTimeout(() => {
         this.resetCode();
-      }, 2000);
+      }, 1500);
     }
   }
 

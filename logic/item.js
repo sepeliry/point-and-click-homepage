@@ -61,7 +61,8 @@ class Item {
       this.sprite.interactive = false;
     }
 
-    this.sprite.visible = true;
+    this.sprite.visible = itemData.visible;
+
     // add the item to its container/scene
     container.addChild(this.sprite);
   }

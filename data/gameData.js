@@ -618,12 +618,10 @@ const gameData = {
         height: 124,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
-          gameState.inventory.addItem("PostIt 1", item);
-          removeSprite(app, item);
           if (gameState.inventory.itemExists("PostIt 2")) {
-            openPopup(app, "Hmm, mitähän nää numerot tarkoittaa?", null);
+            openPopup(app, "Täähän sopii tuohon toiseen palaseen!", null);
           } else {
-            openPopup(app, "Hmm, missähän lapun toinen palanen on?", null);
+            openPopup(app, "Hmm, koodista näyttäis puuttuvan osa...", null);
           }
         },
         zIndex: 10,
@@ -1034,11 +1032,7 @@ const gameData = {
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("PostIt 2", item);
           removeSprite(app, item);
-          if (gameState.inventory.itemExists("PostIt 1")) {
-            openPopup(app, "Hmm, mitähän nää numerot tarkoittaa?", null);
-          } else {
-            openPopup(app, "Hmm, missähän lapun toinen palanen on?", null);
-          }
+          openPopup(app, "16...?", null);
         },
         zIndex: 10,
       },

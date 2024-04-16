@@ -214,18 +214,14 @@ body {
 
 #close-pdf {
   position: absolute;
-  top: 200px;
+  top: 50px;
   z-index: 1;
 }
 
 #pdf-viewer-container {
   display: none;
-  flex-direction: column;
   height: 100%;
   width: 100%;
-}
-#pdf-container {
-  flex-grow: 1;
 }
 #pdf-object {
   object-fit: contain;

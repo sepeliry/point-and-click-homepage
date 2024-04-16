@@ -6,6 +6,7 @@ import displayWikiPage from "../logic/interactions/displayWikiPage.js";
 import openPopup from "../logic/interactions/openPopup.js";
 import checkDistance from "../logic/interactions/distanceCheckUtils.js";
 import Player from "../logic/player.js";
+import showPdf from "../logic/utils/pdfUtils.js";
 
 import boxPropImage from "../resources/images/box_prop.png";
 import mainSceneBackground from "../resources/images/background.png";
@@ -81,6 +82,10 @@ import updateAnimatedSpriteTextures from "../logic/interactions/updateAnimatedSp
 import ITEM_TYPES from "../constants/itemTypes.js";
 
 import removeSprite from "../logic/interactions/removeSprite.js";
+import { showWikiList } from "../logic/utils/markdownUtils.js";
+
+import postIt1 from "../resources/images//numpad_scene/postitwithcode1.png";
+import postIt2 from "../resources/images/mousehole_scene/postitwithcode2.png";
 
 const gameData = {
   mainScene: {
@@ -194,7 +199,7 @@ const gameData = {
         visible: true,
         image: numpadSmallClosed,
         onStateChange: (app, item) => {
-          if (gameState.hasCompletedGame) {
+          if (gameState.hasUnlockedDoor) {
             item.width = 128;
             item.height = 80.2;
             item.x = app.renderer.width / 2 + 96;
@@ -562,7 +567,7 @@ const gameData = {
         image: book1,
         visible: true,
         type: ITEM_TYPES.book,
-        name: "",
+        name: "PDF",
         location: {
           x: 0.58,
           y: 0.64,
@@ -570,7 +575,12 @@ const gameData = {
         width: 37,
         height: 85,
         collisionHeight: 5, // not yet used
-        onInteraction: null,
+        onInteraction: (app) => () =>
+          showPdf(
+            app,
+            app.scenes["mainScene"],
+            "./docs/input/pelienSuunnittelu.pdf"
+          ),
         zIndex: 1,
       },
     ],
@@ -593,6 +603,32 @@ const gameData = {
         height: 101,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => switchScene(app, "mainScene"),
+        zIndex: 10,
+      },
+      {
+        image: postIt1,
+        visible: true,
+        onStateChange: (app, item) => {
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
+        type: ITEM_TYPES.item,
+        name: "PostIt 1",
+        location: {
+          x: 0.5,
+          y: 0.95,
+        },
+        width: 128,
+        height: 128,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () => {
+          if (gameState.inventory.itemExists("PostIt 2")) {
+            openPopup(app, "Täähän sopii tuohon toiseen palaseen!", null);
+          } else {
+            openPopup(app, "Hmm, koodista näyttäis puuttuvan osa...", null);
+          }
+        },
         zIndex: 10,
       },
       {
@@ -941,6 +977,9 @@ const gameData = {
           // remove this item if the user has unlocked the door
           if (gameState.hasUnlockedDoor) {
             removeSprite(app, item);
+            if (gameState.inventory.itemExists("PostIt 2")) {
+              gameState.inventory.removeItem("PostIt 2");
+            }
           }
         },
         type: ITEM_TYPES.item,
@@ -983,6 +1022,25 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
           Player.maximizePlayer();
+        },
+        zIndex: 10,
+      },
+      {
+        image: postIt2,
+        visible: true,
+        type: ITEM_TYPES.item,
+        name: "PostIt 2",
+        location: {
+          x: 0.5,
+          y: 0.84,
+        },
+        width: 96,
+        height: 96,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () => {
+          gameState.inventory.addItem("PostIt 2", item);
+          removeSprite(app, item);
+          openPopup(app, "16...?", null);
         },
         zIndex: 10,
       },

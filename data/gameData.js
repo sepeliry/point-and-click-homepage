@@ -199,7 +199,7 @@ const gameData = {
         visible: true,
         image: numpadSmallClosed,
         onStateChange: (app, item) => {
-          if (gameState.hasCompletedGame) {
+          if (gameState.hasUnlockedDoor) {
             item.width = 128;
             item.height = 80.2;
             item.x = app.renderer.width / 2 + 96;
@@ -608,14 +608,19 @@ const gameData = {
       {
         image: postIt1,
         visible: true,
+        onStateChange: (app, item) => {
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "PostIt 1",
         location: {
-          x: 0.35,
-          y: 0.15,
+          x: 0.5,
+          y: 0.95,
         },
-        width: 124,
-        height: 124,
+        width: 128,
+        height: 128,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           if (gameState.inventory.itemExists("PostIt 2")) {
@@ -972,6 +977,9 @@ const gameData = {
           // remove this item if the user has unlocked the door
           if (gameState.hasUnlockedDoor) {
             removeSprite(app, item);
+            if (gameState.inventory.itemExists("PostIt 2")) {
+              gameState.inventory.removeItem("PostIt 2");
+            }
           }
         },
         type: ITEM_TYPES.item,
@@ -1023,11 +1031,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "PostIt 2",
         location: {
-          x: 0.35,
-          y: 0.9,
+          x: 0.5,
+          y: 0.84,
         },
-        width: 124,
-        height: 124,
+        width: 96,
+        height: 96,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("PostIt 2", item);

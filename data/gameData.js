@@ -84,6 +84,9 @@ import ITEM_TYPES from "../constants/itemTypes.js";
 import removeSprite from "../logic/interactions/removeSprite.js";
 import { showWikiList } from "../logic/utils/markdownUtils.js";
 
+import postIt1 from "../resources/images//numpad_scene/postitwithcode1.png";
+import postIt2 from "../resources/images/mousehole_scene/postitwithcode2.png";
+
 const gameData = {
   mainScene: {
     background: mainSceneBackground,
@@ -603,6 +606,29 @@ const gameData = {
         zIndex: 10,
       },
       {
+        image: postIt1,
+        visible: true,
+        type: ITEM_TYPES.item,
+        name: "PostIt 1",
+        location: {
+          x: 0.35,
+          y: 0.15,
+        },
+        width: 124,
+        height: 124,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () => {
+          gameState.inventory.addItem("PostIt 1", item);
+          removeSprite(app, item);
+          if (gameState.inventory.itemExists("PostIt 2")) {
+            openPopup(app, "Hmm, mitähän nää numerot tarkoittaa?", null);
+          } else {
+            openPopup(app, "Hmm, missähän lapun toinen palanen on?", null);
+          }
+        },
+        zIndex: 10,
+      },
+      {
         image: numPadSceneBackgroundClosed,
         visible: true,
         onStateChange: (app, item) => {
@@ -990,6 +1016,29 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
           Player.maximizePlayer();
+        },
+        zIndex: 10,
+      },
+      {
+        image: postIt2,
+        visible: true,
+        type: ITEM_TYPES.item,
+        name: "PostIt 2",
+        location: {
+          x: 0.35,
+          y: 0.9,
+        },
+        width: 124,
+        height: 124,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () => {
+          gameState.inventory.addItem("PostIt 2", item);
+          removeSprite(app, item);
+          if (gameState.inventory.itemExists("PostIt 1")) {
+            openPopup(app, "Hmm, mitähän nää numerot tarkoittaa?", null);
+          } else {
+            openPopup(app, "Hmm, missähän lapun toinen palanen on?", null);
+          }
         },
         zIndex: 10,
       },

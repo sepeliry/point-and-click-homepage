@@ -1,7 +1,7 @@
 import gameState from "../data/gameState";
 import updateText from "./utils/updateText";
 
-const CORRECT_CODE = "1111";
+const CORRECT_CODE = "3216";
 const CODE_LENGTH = 4;
 
 class Numpad {

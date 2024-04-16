@@ -16,11 +16,16 @@ import mouseholeSceneBackground2 from "../resources/images/mousehole_scene/mouse
 
 import lamp1On from "../resources/images/lamp_1_on.png";
 import lamp1Off from "../resources/images/lamp_1_off.png";
-
+import arcadeMachine2 from "../resources/images/arcade_machine_2_test.png";
 import arcadeMachine2Off from "../resources/images/arcade_machine_2_off.png";
 import arcadeMachine2OnFrame1 from "../resources/images/arcade_machine_2_on_frame1.png";
 import arcadeMachine2OnFrame2 from "../resources/images/arcade_machine_2_on_frame2.png";
 import arcadeMachine2OnFrame3 from "../resources/images/arcade_machine_2_on_frame3.png";
+
+import arcadeSceneBackground from "../resources/images/arcade_scene/background.png";
+import telegraphIcon from "../resources/images/arcade_scene/telegraph_icon_upscaled.png";
+import voraxIcon from "../resources/images/arcade_scene/vorax_icon_upscaled.png";
+import onTimeIcon from "../resources/images/arcade_scene/ontime_icon_upscaled.png";
 
 import computerDeskImage from "../resources/images/computer_desk.png";
 import computerDeskWithCoffeeCupImage from "../resources/images/computer_desk_with_coffee_cup.png";
@@ -30,11 +35,17 @@ import mouseholeImageEyes from "../resources/images/mousehole_in_wall_tilted_eye
 import backArrowImage from "../resources/images/back_arrow.png";
 import book1 from "../resources/images/book_placeholder.png";
 import book2 from "../resources/images/book2_placeholder.png";
-import lockImage from "../resources/images/num_pad.png";
+import numpadSmallClosed from "../resources/images/num_pad.png";
+import numpadSmallOpen from "../resources/images/num_pad_open.png";
 import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/numpad_scene/numpad_background.png";
 import bookshelfImage from "../resources/images/bookshelf.png";
 
+import numPadSceneBackgroundClosed from "../resources/images/numpad_scene/numpad_backgroundclosed.png";
+import numPadSceneBackgroundOpen from "../resources/images/numpad_scene/numpad_backgroundopen.png";
+import redButton from "../resources/images/numpad_scene/red_button.png";
+
+import blackBg from "../resources/images/numpad_scene/black.png";
 import arcadeMachineOff from "../resources/images/arcade_machine_off.png";
 import arcadeMachineOn from "../resources/images/arcade_machine_on.png";
 import computerSceneBackground from "../resources/images/computer_scene/computer_scene.jpg";
@@ -79,8 +90,10 @@ const gameData = {
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [
+      /*
       {
         image: boxPropImage,
+        visible: true,
         onStateChange: null,
         type: ITEM_TYPES.item,
         name: "Box",
@@ -105,18 +118,12 @@ const gameData = {
 
         zIndex: 2,
       },
+
       {
         image: keyImage,
+        visible: true,
         onStateChange: (app, item) => {
-          /*
-          // test if graphics can be updated when different states change
-          if (gameState.hasUnlockedDoor) {
-            updateSpriteTexture(item, lockImage);
-          }
-          if (gameState.hasCompletedGame) {
-            updateSpriteTexture(item, book1);
-          }
-          */
+
         },
         animation: null,
         type: ITEM_TYPES.item,
@@ -140,55 +147,13 @@ const gameData = {
 
         zIndex: 1,
       },
-      /*
+ */
       {
-        image: null, // null if the item has an animation
-        onStateChange: (app, item) => {
-          if (gameState.hasCompletedGame) {
-            updateAnimatedSpriteTextures(
-              item,
-              [
-                arcadeMachine2OnFrame1,
-                arcadeMachine2OnFrame2,
-                arcadeMachine2OnFrame3,
-              ],
-              0.06,
-              false
-            );
-          }
-        },
+        visible: true,
         animation: {
-          frames: [arcadeMachine2Off],
+          frames: [arcadeMachine2],
           animationSpeed: 0.06,
           loop: false,
-          interval: 3000, //ms
-        },
-        type: ITEM_TYPES.item,
-        name: "Arcade machine 2",
-        location: {
-          x: 0.45,
-          y: 0.32,
-        },
-        width: 157 * 0.8,
-        height: 271 * 0.8,
-        collisionHeight: 0, // not yet used
-        interactionRange: 50,
-        onInteraction: (app) => () => {
-          if (gameState.hasCompletedGame) {
-            openPopup(app, "congraz! arcade machine is now on", null);
-          } else {
-            console.log("please complete the game");
-            openPopup(app, "This item cannot be used yet", null);
-          }
-        },
-        zIndex: 0,
-      },
-      */
-      {
-        animation: {
-          frames: [arcadeMachine2Off],
-          animationSpeed: 0.06,
-          loop: true,
           interval: 3000, //ms
         },
         onStateChange: (app, item) => {
@@ -209,16 +174,16 @@ const gameData = {
         name: "Arcade machine 2",
         location: {
           x: 0.45,
-          y: 0.7,
+          y: 0.71,
         },
-        width: 157 * 0.8,
-        height: 271 * 0.8,
+        width: 437 * 0.27,
+        height: 897 * 0.27,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
         onInteraction: (app) => () =>
           checkDistance(app, 0.45, 0.7, "mainScene", () => {
             if (gameState.hasCompletedGame) {
-              openPopup(app, "congraz! arcade machine is now on", null);
+              switchScene(app, "arcadeScene");
             } else {
               console.log("please complete the game");
               openPopup(app, "This item cannot be used yet", null);
@@ -228,17 +193,25 @@ const gameData = {
         zIndex: 0,
       },
       {
-        image: lockImage,
-        onStateChange: null,
+        visible: true,
+        image: numpadSmallClosed,
+        onStateChange: (app, item) => {
+          if (gameState.hasCompletedGame) {
+            item.width = 128;
+            item.height = 80.2;
+            item.x = app.renderer.width / 2 + 96;
+            updateSpriteTexture(item, numpadSmallOpen);
+          }
+        },
         animation: null,
         type: ITEM_TYPES.item,
         name: "Lock",
         location: {
-          x: 0.534,
-          y: 0.61,
+          x: 0.55,
+          y: 0.59,
         },
-        width: 48,
-        height: 64,
+        width: 74.6,
+        height: 80.2,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
         onInteraction: (app) => () =>
@@ -248,6 +221,7 @@ const gameData = {
         zIndex: 0,
       },
       {
+        visible: true,
         image: coffeeImage,
         onStateChange: null,
         animation: null,
@@ -271,6 +245,7 @@ const gameData = {
         zIndex: 2,
       },
       {
+        visible: true,
         type: ITEM_TYPES.item,
         name: "Coffee maker",
         animation: {
@@ -308,6 +283,7 @@ const gameData = {
         zIndex: 0,
       },
       {
+        visible: true,
         image: bookshelfImage,
         type: ITEM_TYPES.item,
         name: "Bookshelf",
@@ -325,6 +301,7 @@ const gameData = {
         zIndex: 0,
       },
       {
+        visible: true,
         image: computerDeskWithCoffeeCupImage,
         type: ITEM_TYPES.item,
         onStateChange: (app, item) => {
@@ -350,6 +327,7 @@ const gameData = {
       },
 
       {
+        visible: true,
         image: arcadeMachineOff,
         type: ITEM_TYPES.item,
         name: "Arcade machine",
@@ -395,6 +373,7 @@ const gameData = {
       },
 
       {
+        visible: true,
         image: mouseholeImage,
         type: ITEM_TYPES.item,
         name: "Mousehole",
@@ -424,7 +403,7 @@ const gameData = {
       },
       {
         image: lamp1Off,
-
+        visible: true,
         onStateChange: (app, item) => {
           if (gameState.hasCompletedGame) {
             updateSpriteTexture(item, lamp1On);
@@ -453,6 +432,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
+        visible: true,
         type: ITEM_TYPES.item,
         name: "Back button",
         location: {
@@ -467,6 +447,7 @@ const gameData = {
       },
       {
         image: book1,
+        visible: true,
         type: ITEM_TYPES.book,
         name: "Honesty",
         location: {
@@ -486,6 +467,7 @@ const gameData = {
       },
       {
         image: book1,
+        visible: true,
         type: ITEM_TYPES.book,
         name: "Säännöt",
         location: {
@@ -505,6 +487,7 @@ const gameData = {
       },
       {
         image: book2,
+        visible: true,
         type: ITEM_TYPES.book,
         name: "Wiki",
         location: {
@@ -522,6 +505,7 @@ const gameData = {
       },
       {
         image: book2,
+        visible: true,
         type: ITEM_TYPES.book,
         name: "Vuodet",
         location: {
@@ -540,6 +524,7 @@ const gameData = {
       },
       {
         image: book2,
+        visible: true,
         type: ITEM_TYPES.book,
         name: "Pelit",
         location: {
@@ -558,6 +543,7 @@ const gameData = {
       },
       {
         image: book2,
+        visible: true,
         type: ITEM_TYPES.book,
         name: "Luento",
         location: {
@@ -576,6 +562,7 @@ const gameData = {
       },
       {
         image: book1,
+        visible: true,
         type: ITEM_TYPES.book,
         name: "PDF",
         location: {
@@ -596,12 +583,13 @@ const gameData = {
     ],
   },
   numpadScene: {
-    background: numPadSceneBackground,
+    background: blackBg,
     backgroundWidth: 1792,
     backgroundHeight: 1024,
     items: [
       {
         image: backArrowImage,
+        visible: true,
         type: ITEM_TYPES.item,
         name: "Back button",
         location: {
@@ -615,7 +603,57 @@ const gameData = {
         zIndex: 10,
       },
       {
+        image: numPadSceneBackgroundClosed,
+        visible: true,
+        onStateChange: (app, item) => {
+          if (gameState.hasUnlockedDoor) {
+            updateSpriteTexture(item, numPadSceneBackgroundOpen);
+          }
+        },
+        type: ITEM_TYPES.item,
+        name: "closed box",
+        location: {
+          x: 0.5,
+          y: 1,
+        },
+        width: 1400,
+        height: 800,
+        collisionHeight: 0, // not yet used
+        onInteraction: null,
+        zIndex: 0,
+      },
+      {
+        image: redButton,
+        visible: false,
+        onStateChange: (app, item) => {
+          if (gameState.hasUnlockedDoor) {
+            item.visible = true;
+          }
+        },
+        type: ITEM_TYPES.item,
+        name: "red button",
+        location: {
+          x: 0.5,
+          y: 0.666,
+        },
+        width: 323 * 0.8,
+        height: 319 * 0.8,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => {
+          gameState.hasCompletedGame = true;
+          switchScene(app, "mainScene");
+          openPopup(app, "wow the arcade machines turned on!", null);
+        },
+        zIndex: 0,
+      },
+      {
         type: ITEM_TYPES.text,
+        visible: true,
+        onStateChange: (app, item) => {
+          if (gameState.hasUnlockedDoor) {
+            item.visible = false;
+          }
+        },
         text: "",
         identifier: "screenText",
         style: {
@@ -626,7 +664,7 @@ const gameData = {
           dropShadowDistance: 3,
           fill: "#fff0ff",
           fontFamily: "Lucida Console",
-          fontSize: 50,
+          fontSize: 32,
           align: "center",
           fontWeight: "bold",
           stroke: "#edceeb",
@@ -637,21 +675,28 @@ const gameData = {
         },
         location: {
           x: 700,
-          y: 112,
+          y: 196,
         },
-        zIndex: 10,
+        zIndex: 12,
         onInteraction: null,
       },
       {
         image: button1,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 1",
         location: {
-          x: 0.42,
-          y: 0.475,
+          x: 0.445,
+          y: 0.48,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           Numpad.inputCode(1);
@@ -660,14 +705,21 @@ const gameData = {
       },
       {
         image: button2,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 2",
         location: {
-          x: 0.505,
-          y: 0.475,
+          x: 0.5,
+          y: 0.48,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
@@ -677,14 +729,21 @@ const gameData = {
       },
       {
         image: button3,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 3",
         location: {
-          x: 0.59,
-          y: 0.475,
+          x: 0.555,
+          y: 0.48,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
@@ -694,14 +753,21 @@ const gameData = {
       },
       {
         image: button4,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 4",
         location: {
-          x: 0.42,
-          y: 0.605,
+          x: 0.445,
+          y: 0.57,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
@@ -711,14 +777,21 @@ const gameData = {
       },
       {
         image: button5,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 5",
         location: {
-          x: 0.505,
-          y: 0.605,
+          x: 0.5,
+          y: 0.57,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
@@ -728,14 +801,21 @@ const gameData = {
       },
       {
         image: button6,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 6",
         location: {
-          x: 0.59,
-          y: 0.605,
+          x: 0.555,
+          y: 0.57,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
@@ -745,14 +825,21 @@ const gameData = {
       },
       {
         image: button7,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 7",
         location: {
-          x: 0.42,
-          y: 0.735,
+          x: 0.445,
+          y: 0.66,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
@@ -762,14 +849,21 @@ const gameData = {
       },
       {
         image: button8,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 8",
         location: {
-          x: 0.505,
-          y: 0.735,
+          x: 0.5,
+          y: 0.66,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
@@ -779,14 +873,21 @@ const gameData = {
       },
       {
         image: button9,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 9",
         location: {
-          x: 0.59,
-          y: 0.735,
+          x: 0.555,
+          y: 0.66,
         },
-        width: 108.5,
-        height: 99.2,
+        width: 70,
+        height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           //console.log(app.scenes["numpadScene"].children);
@@ -796,14 +897,21 @@ const gameData = {
       },
       {
         image: resetButton,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "reset",
         location: {
-          x: 0.42,
-          y: 0.84,
+          x: 0.445,
+          y: 0.74,
         },
-        width: 108.5,
-        height: 78.9,
+        width: 70,
+        height: 60,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           Numpad.resetCode();
@@ -812,14 +920,21 @@ const gameData = {
       },
       {
         image: button0,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "button for 0",
         location: {
-          x: 0.505,
-          y: 0.84,
+          x: 0.5,
+          y: 0.74,
         },
-        width: 108.5,
-        height: 78.9,
+        width: 70,
+        height: 60,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           Numpad.inputCode(0);
@@ -828,14 +943,21 @@ const gameData = {
       },
       {
         image: enterButton,
+        visible: true,
+        onStateChange: (app, item) => {
+          // remove this item if the user has unlocked the door
+          if (gameState.hasUnlockedDoor) {
+            removeSprite(app, item);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "enter",
         location: {
-          x: 0.59,
-          y: 0.84,
+          x: 0.555,
+          y: 0.74,
         },
-        width: 108.5,
-        height: 78.9,
+        width: 70,
+        height: 60,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           Numpad.enterCode();
@@ -855,6 +977,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
+        visible: true,
         type: ITEM_TYPES.item,
         name: "Back button",
         location: {
@@ -879,6 +1002,7 @@ const gameData = {
     items: [
       {
         image: backArrowImage,
+        visible: true,
         type: ITEM_TYPES.item,
         name: "Back button",
         location: {
@@ -893,6 +1017,7 @@ const gameData = {
       },
       {
         image: discordIcon,
+        visible: true,
         type: ITEM_TYPES.desktopIcon,
         title: "Sepeli Discord",
         name: "Sepeli's Discord server",
@@ -909,6 +1034,7 @@ const gameData = {
       },
       {
         image: signupIcon,
+        visible: true,
         type: ITEM_TYPES.desktopIcon,
         title: "Join Sepeli",
         name: "Join Sepeli as a member",
@@ -925,6 +1051,7 @@ const gameData = {
       },
       {
         image: coffeeCupImage,
+        visible: true,
         onStateChange: null,
         type: ITEM_TYPES.item,
         name: "Coffee cup",
@@ -941,6 +1068,79 @@ const gameData = {
           openPopup(app, "Found the missing coffee cup", null);
         },
         zIndex: 2,
+      },
+    ],
+  },
+  arcadeScene: {
+    background: arcadeSceneBackground,
+    backgroundWidth: 1400,
+    backgroundHeight: 800,
+    items: [
+      {
+        image: backArrowImage,
+        visible: true,
+        type: ITEM_TYPES.item,
+        name: "Back button",
+        location: {
+          x: 0.1,
+          y: 0.2,
+        },
+        width: 164,
+        height: 101,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => switchScene(app, "mainScene"),
+        zIndex: 10,
+      },
+      {
+        image: telegraphIcon,
+        visible: true,
+        type: ITEM_TYPES.desktopIcon,
+        title: "Telegraph",
+        name: "Telegraph game",
+        location: {
+          x: 0.42,
+          y: 0.49,
+        },
+        width: 64,
+        height: 64,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://exigo.itch.io/telegraph-operator"),
+        zIndex: 1,
+      },
+      {
+        image: voraxIcon,
+        visible: true,
+        type: ITEM_TYPES.desktopIcon,
+        title: "Vorax",
+        name: "Vorax game",
+        location: {
+          x: 0.5,
+          y: 0.49,
+        },
+        width: 64,
+        height: 64,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://exigo.itch.io/vorax"),
+        zIndex: 1,
+      },
+      {
+        image: onTimeIcon,
+        visible: true,
+        type: ITEM_TYPES.desktopIcon,
+        title: "On Time",
+        name: "On Time game",
+        location: {
+          x: 0.58,
+          y: 0.49,
+        },
+        width: 64,
+        height: 64,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://serialkamikaze.itch.io/on-time"),
+        zIndex: 1,
       },
     ],
   },

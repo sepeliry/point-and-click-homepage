@@ -617,7 +617,7 @@ const gameData = {
         name: "PostIt 1",
         location: {
           x: 0.5,
-          y: 0.95,
+          y: 0.225,
         },
         width: 128,
         height: 128,

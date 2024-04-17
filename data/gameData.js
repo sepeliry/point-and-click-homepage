@@ -27,11 +27,11 @@ import telegraphIcon from "../resources/images/arcade_scene/telegraph_icon_upsca
 import voraxIcon from "../resources/images/arcade_scene/vorax_icon_upscaled.png";
 import onTimeIcon from "../resources/images/arcade_scene/ontime_icon_upscaled.png";
 
-import computerDeskImage from "../resources/images/computer_desk.png";
-import computerDeskWithCoffeeCupImage from "../resources/images/computer_desk_with_coffee_cup.png";
+import computerDeskImage from "../resources/images/computer_desk_coloured.png";
+import computerDeskWithCoffeeCupImage from "../resources/images/computer_desk_with_coffee_cup_coloured.png";
 
-import mouseholeImage from "../resources/images/mousehole_in_wall_tilted.png";
-import mouseholeImageEyes from "../resources/images/mousehole_in_wall_tilted_eyes.png";
+import mouseholeImage from "../resources/images/mousehole_in_wall_tilted_contrasted_s.png";
+import mouseholeImageEyes from "../resources/images/mousehole_in_wall_tilted_eyes_contrasted_s.png";
 import backArrowImage from "../resources/images/back_arrow.png";
 import book1 from "../resources/images/book_placeholder.png";
 import book2 from "../resources/images/book2_placeholder.png";
@@ -39,7 +39,7 @@ import numpadSmallClosed from "../resources/images/num_pad.png";
 import numpadSmallOpen from "../resources/images/num_pad_open.png";
 import keyImage from "../resources/images/key.png";
 import numPadSceneBackground from "../resources/images/numpad_scene/numpad_background.png";
-import bookshelfImage from "../resources/images/bookshelf.png";
+import bookshelfImage from "../resources/images/bookshelf_cropped.png";
 
 import numPadSceneBackgroundClosed from "../resources/images/numpad_scene/numpad_backgroundclosed.png";
 import numPadSceneBackgroundOpen from "../resources/images/numpad_scene/numpad_backgroundopen.png";
@@ -48,7 +48,7 @@ import redButton from "../resources/images/numpad_scene/red_button.png";
 import blackBg from "../resources/images/numpad_scene/black.png";
 import arcadeMachineOff from "../resources/images/arcade_machine_off.png";
 import arcadeMachineOn from "../resources/images/arcade_machine_on.png";
-import computerSceneBackground from "../resources/images/computer_scene/computer_scene.jpg";
+import computerSceneBackground from "../resources/images/computer_scene/computer_scene_coloured.jpg";
 import discordIcon from "../resources/images/computer_scene/discord_icon.png";
 import signupIcon from "../resources/images/computer_scene/signup_icon.png";
 
@@ -57,7 +57,7 @@ import coffeeMakerFrame1 from "../resources/images/coffee_maker_frame1.png";
 import coffeeMakerFrame2 from "../resources/images/coffee_maker_frame2.png";
 import coffeeMakerFrame3 from "../resources/images/coffee_maker_frame3.png";
 import plantImage from "../resources/images/plant.png";
-import coffeeImage from "../resources/images/coffee.png";
+import coffeeImage from "../resources/images/coffee_packet_bean.png";
 import potionImage from "../resources/images/potion.png";
 
 import button1 from "../resources/images/numpad_scene/button1.png";
@@ -291,11 +291,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Bookshelf",
         location: {
-          x: 0.33,
-          y: 0.73,
+          x: 0.325,
+          y: 0.708,
         },
-        width: 300,
-        height: 310,
+        width: 191,
+        height: 292,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
           checkDistance(app, 0.33, 0.73, "bookshelfScene", () =>
@@ -387,11 +387,11 @@ const gameData = {
           interval: 3000, //ms
         },
         location: {
-          x: 0.88,
-          y: 0.83,
+          x: 0.875,
+          y: 0.832,
         },
-        width: 50,
-        height: 50,
+        width: 44,
+        height: 65,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
           checkDistance(app, 0.88, 0.83, "mainScene", () => {

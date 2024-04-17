@@ -617,7 +617,7 @@ const gameData = {
         name: "PostIt 1",
         location: {
           x: 0.5,
-          y: 0.225,
+          y: 0.22,
         },
         width: 128,
         height: 128,
@@ -1011,6 +1011,7 @@ const gameData = {
         image: backArrowImage,
         visible: true,
         type: ITEM_TYPES.item,
+        onStateChange: null,
         name: "Back button",
         location: {
           x: 0.1,
@@ -1021,7 +1022,9 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
-          Player.maximizePlayer();
+          if (gameState.inventory.itemExists("PostIt 2")) {
+            Player.maximizePlayer();
+          }
         },
         zIndex: 10,
       },

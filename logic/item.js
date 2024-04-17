@@ -52,11 +52,13 @@ class Item {
       this.sprite.on("pointerdown", itemData.onInteraction(app, this.sprite));
 
       const glowEffect = new GlowFilter({
-        innerStrength: 1,
-        outerStrength: 1,
+        innerStrength: 0,
+        outerStrength: 1.8,
         quality: 0.1,
+        alpha: 0.6,
+        color: 'c061cb'
       });
-      // this.sprite.filters = [glowEffect];
+      this.sprite.filters = [glowEffect];
     } else {
       this.sprite.interactive = false;
     }

@@ -1,5 +1,6 @@
 import { Application, Container, Sprite, Text, Assets } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
+import { glowFilter } from "./app.js";
 /**
  * Class to create items
  * TODO: Parameter to choose if item is interactable
@@ -48,11 +49,12 @@ class Book {
 
       // add glow effect to items with interaction
       this.glowEffect = new GlowFilter({
-        innerStrength: 0.7,
+        innerStrength: 0,
         outerStrength: 0.7,
-        quality: 0.1,
+        alpha: 0.5,
+        quality: 1,
       });
-      // this.book.filters = [this.glowEffect];
+      this.book.filters = [glowFilter];
     }
 
     // Create a PIXI.Container to hold the text objects
@@ -75,12 +77,12 @@ class Book {
       fontSize: fontSize,
       fill: 0xffffff,
       stroke: 0x000000, // Black outline color
-      strokeThickness: 4,
+      strokeThickness: 3,
     };
 
     // Calculate the spacing between each character
     const spacingHeightRatio = currentHeight / originalGameHeight;
-    const characterSpacing = 11 * spacingHeightRatio;
+    const characterSpacing = 10 * spacingHeightRatio;
 
     // Loop through each character in the text
     for (let i = 0; i < name.length; i++) {

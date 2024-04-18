@@ -1,5 +1,6 @@
 import { Container, Sprite, Text, Texture, AnimatedSprite } from "pixi.js";
 import { CRTFilter } from "@pixi/filter-crt";
+import { glowFilter } from "./app.js";
 import { createWalkableAreas } from "./walkableArea.js";
 
 import Book from "./book.js";
@@ -117,7 +118,8 @@ class UI {
           itemData.height,
           itemData.width,
           itemData.name,
-          itemData.onInteraction
+          itemData.onInteraction,
+          glowFilter
         );
       } else if (itemData.type === ITEM_TYPES.desktopIcon) {
         new DesktopIcon(app, container, itemData);

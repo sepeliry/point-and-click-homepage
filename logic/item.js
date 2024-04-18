@@ -1,5 +1,6 @@
 import { Sprite, Texture, AnimatedSprite } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
+import { glowFilter } from "./app.js";
 
 class Item {
   constructor(
@@ -58,7 +59,7 @@ class Item {
         alpha: 0.6,
         color: 'c061cb'
       });
-      this.sprite.filters = [glowEffect];
+      this.sprite.filters = [glowFilter];
     } else {
       this.sprite.interactive = false;
     }

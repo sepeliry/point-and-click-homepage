@@ -10,6 +10,7 @@ import { followPlayer } from "./utils/cameraUtils.js";
 import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
+import { GlowFilter } from "@pixi/filter-glow";
 
 // Fonts
 import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
@@ -33,6 +34,14 @@ Assets.addBundle("fonts", [
   { alias: "VCR_OSD_MONO", src: VCR_OSD_MONO },
 ]);
 Assets.loadBundle("fonts");
+
+export const glowFilter = new GlowFilter({
+  innerStrength: 0,
+  outerStrength: 0,
+  quality: 0.1,
+  alpha: 0.6,
+  color: 'c061cb',
+});
 
 document.getElementById("game-container").appendChild(app.view);
 
@@ -261,8 +270,16 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
   return intersects;
 }
 
+let count = 0;
+
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
+  count += 0.015;
+
+  const glowAmount = Math.cos(count);
+
+  glowFilter.outerStrength = 2 * glowAmount;
+
   if (player.targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - player.targetPosition.x, 2) +

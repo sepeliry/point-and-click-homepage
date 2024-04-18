@@ -1,35 +1,40 @@
-import * as PIXI from "pixi.js";
+import { Application, Texture, AnimatedSprite, Point } from "pixi.js";
 import { playerCollides } from "./collisionUtils";
-import playeridle from "../resources/images/player_idle0minimalbackground.png";
-import playerIdleMini from "../resources/images/player_idleA1.png";
-import playerWalk1 from "../resources/images/player_walk1.png";
-import playerWalk2 from "../resources/images/player_walk2.png";
-import playerWalk3 from "../resources/images/player_walk3.png";
-import playerWalk4 from "../resources/images/player_walk4.png";
-import playerWalk5 from "../resources/images/player_walk5.png";
-import playerWalk6 from "../resources/images/player_walk6.png";
-import playerWalk7 from "../resources/images/player_walk7.png";
-import playerWalk8 from "../resources/images/player_walk8.png";
-import playerWalk9 from "../resources/images/player_walk9.png";
-import playerWalk10 from "../resources/images/player_walk10.png";
-import playerWalk11 from "../resources/images/player_walk11.png";
-import playerWalk12 from "../resources/images/player_walk12.png";
-import playerWalkMini1 from "../resources/images/player_walkA1.png";
-import playerWalkMini2 from "../resources/images/player_walkA2.png";
-import playerWalkMini3 from "../resources/images/player_walkA3.png";
-import playerWalkMini4 from "../resources/images/player_walkA4.png";
-import playerWalkMini5 from "../resources/images/player_walkA5.png";
-import playerWalkMini6 from "../resources/images/player_walkA6.png";
-import playerWalkMini7 from "../resources/images/player_walkA7.png";
-import playerWalkMini8 from "../resources/images/player_walkA8.png";
-import playerWalkMini9 from "../resources/images/player_walkA9.png";
-import { checkDistance } from "./interactions/distanceCheckUtils";
 
-import playerShrink1 from "../resources/images/player_idle0_small.png";
-import playerShrink2 from "../resources/images/player_idle0_smallest.png";
+// Interactions
+import { checkDistance } from "./interactions/distanceCheckUtils";
 import updateAnimatedSpriteTextures from "./interactions/updateAnimatedSpriteTextures";
-import gameState from "../data/gameState";
 import openPopup from "./interactions/openPopup";
+
+import { ASPECT_RATIO } from "../constants/constants";
+import gameState from "../data/gameState";
+
+// Image imports
+import player_idle from "../resources/images/player_images/player_idle0minimalbackground.png";
+import player_idle_mini from "../resources/images/player_images/player_idleA1.png";
+import player_walk_1 from "../resources/images/player_images/player_walk1.png";
+import player_walk_2 from "../resources/images/player_images/player_walk2.png";
+import player_walk_3 from "../resources/images/player_images/player_walk3.png";
+import player_walk_4 from "../resources/images/player_images/player_walk4.png";
+import player_walk_5 from "../resources/images/player_images/player_walk5.png";
+import player_walk_6 from "../resources/images/player_images/player_walk6.png";
+import player_walk_7 from "../resources/images/player_images/player_walk7.png";
+import player_walk_8 from "../resources/images/player_images/player_walk8.png";
+import player_walk_9 from "../resources/images/player_images/player_walk9.png";
+import player_walk_10 from "../resources/images/player_images/player_walk10.png";
+import player_walk_11 from "../resources/images/player_images/player_walk11.png";
+import player_walk_12 from "../resources/images/player_images/player_walk12.png";
+import player_walk_mini_1 from "../resources/images/player_images/player_walkA1.png";
+import player_walk_mini_2 from "../resources/images/player_images/player_walkA2.png";
+import player_walk_mini_3 from "../resources/images/player_images/player_walkA3.png";
+import player_walk_mini_4 from "../resources/images/player_images/player_walkA4.png";
+import player_walk_mini_5 from "../resources/images/player_images/player_walkA5.png";
+import player_walk_mini_6 from "../resources/images/player_images/player_walkA6.png";
+import player_walk_mini_7 from "../resources/images/player_images/player_walkA7.png";
+import player_walk_mini_8 from "../resources/images/player_images/player_walkA8.png";
+import player_walk_mini_9 from "../resources/images/player_images/player_walkA9.png";
+import player_shrink_1 from "../resources/images/player_images/player_idle0_small.png";
+import player_shrink_2 from "../resources/images/player_images/player_idle0_smallest.png";
 
 /**
  * Class for players
@@ -37,32 +42,38 @@ import openPopup from "./interactions/openPopup";
 class Player {
   /**
    * @constructor - Creates the player object, loads the idle/walk animation frames and adds the player to stage
-   * @param {PIXI.Application} app - Application where the player is added to
+   * @param {Application} app - Application where the player is added to
    */
   static player = null;
   static app = null;
   constructor(app) {
     // Load player idle and walk animation frames
-    Player.playerIdleFrames = [PIXI.Texture.from(playeridle)];
+    Player.playerIdleFrames = [Texture.from(player_idle)];
     Player.playerWalkFrames = [
-      PIXI.Texture.from(playerWalk1),
-      PIXI.Texture.from(playerWalk2),
-      PIXI.Texture.from(playerWalk3),
-      PIXI.Texture.from(playerWalk4),
-      PIXI.Texture.from(playerWalk5),
-      PIXI.Texture.from(playerWalk6),
-      PIXI.Texture.from(playerWalk7),
-      PIXI.Texture.from(playerWalk8),
-      PIXI.Texture.from(playerWalk9),
-      PIXI.Texture.from(playerWalk10),
-      PIXI.Texture.from(playerWalk11),
-      PIXI.Texture.from(playerWalk12),
+      Texture.from(player_walk_1),
+      Texture.from(player_walk_2),
+      Texture.from(player_walk_3),
+      Texture.from(player_walk_4),
+      Texture.from(player_walk_5),
+      Texture.from(player_walk_6),
+      Texture.from(player_walk_7),
+      Texture.from(player_walk_8),
+      Texture.from(player_walk_9),
+      Texture.from(player_walk_10),
+      Texture.from(player_walk_11),
+      Texture.from(player_walk_12),
     ];
     // this.destinationReached = true;
     Player.app = app;
     // Create player sprite with idle animation
-    Player.player = new PIXI.AnimatedSprite(Player.playerIdleFrames);
-    Player.player.position.set(450, 620);
+    Player.player = new AnimatedSprite(Player.playerIdleFrames);
+
+    console.log(window.innerHeight);
+    console.log(screen.height);
+    const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
+    const targetWidth = targetHeight * ASPECT_RATIO;
+
+    Player.player.position.set(targetWidth / 2, targetHeight * 0.85);
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 10;
     // To store a pending onInteraction action and neccesary parameters
@@ -75,7 +86,7 @@ class Player {
     Player.player.play();
     Player.player.eventMode = "none";
     app.mainScene.addChild(Player.player);
-    this.targetPosition = new PIXI.Point(Player.player.x, Player.player.y);
+    this.targetPosition = new Point(Player.player.x, Player.player.y);
     Player.player.isTransforming = false;
   }
 
@@ -190,7 +201,7 @@ class Player {
     //  }
 
     // Calculate the direction vector from the current player position towards the target position
-    const directionVector = new PIXI.Point(
+    const directionVector = new Point(
       targetPosition.x - Player.player.x,
       targetPosition.y - Player.player.y
     );
@@ -216,7 +227,7 @@ class Player {
     return adjustedPosition;
   }
   static getLocation() {
-    const loc = new PIXI.Point(Player.player.x, Player.player.y);
+    const loc = new Point(Player.player.x, Player.player.y);
     return loc;
   }
   static minimizePlayer() {
@@ -228,27 +239,27 @@ class Player {
     Player.player.isTransforming = true;
     gameState.playerIsMiniSize = true;
     const animationTextures = [
-      PIXI.Texture.from(playerShrink1),
-      PIXI.Texture.from(playerShrink2),
-      PIXI.Texture.from(playerIdleMini),
+      Texture.from(player_shrink_1),
+      Texture.from(player_shrink_2),
+      Texture.from(player_idle_mini),
     ];
 
     Player.player.textures = animationTextures;
     Player.player.loop = false;
 
     Player.player.onComplete = () => {
-      Player.playerIdleFrames = [PIXI.Texture.from(playerIdleMini)];
+      Player.playerIdleFrames = [Texture.from(player_idle_mini)];
       Player.player.textures = Player.playerIdleFrames;
       Player.playerWalkFrames = [
-        PIXI.Texture.from(playerWalkMini1),
-        PIXI.Texture.from(playerWalkMini2),
-        PIXI.Texture.from(playerWalkMini3),
-        PIXI.Texture.from(playerWalkMini4),
-        PIXI.Texture.from(playerWalkMini5),
-        PIXI.Texture.from(playerWalkMini6),
-        PIXI.Texture.from(playerWalkMini7),
-        PIXI.Texture.from(playerWalkMini8),
-        PIXI.Texture.from(playerWalkMini9),
+        Texture.from(player_walk_mini_1),
+        Texture.from(player_walk_mini_2),
+        Texture.from(player_walk_mini_3),
+        Texture.from(player_walk_mini_4),
+        Texture.from(player_walk_mini_5),
+        Texture.from(player_walk_mini_6),
+        Texture.from(player_walk_mini_7),
+        Texture.from(player_walk_mini_8),
+        Texture.from(player_walk_mini_9),
       ];
       Player.player.loop = true;
       Player.player.isTransforming = false;
@@ -265,30 +276,30 @@ class Player {
     Player.player.isTransforming = true;
     gameState.playerIsMiniSize = false;
     const animationTextures = [
-      PIXI.Texture.from(playerIdleMini),
-      PIXI.Texture.from(playerShrink2),
-      PIXI.Texture.from(playerShrink1),
+      Texture.from(player_idle_mini),
+      Texture.from(player_shrink_2),
+      Texture.from(player_shrink_1),
     ];
 
     Player.player.textures = animationTextures;
     Player.player.loop = false;
 
     Player.player.onComplete = () => {
-      Player.playerIdleFrames = [PIXI.Texture.from(playeridle)];
+      Player.playerIdleFrames = [Texture.from(player_idle)];
       Player.player.textures = Player.playerIdleFrames;
       Player.playerWalkFrames = [
-        PIXI.Texture.from(playerWalk1),
-        PIXI.Texture.from(playerWalk2),
-        PIXI.Texture.from(playerWalk3),
-        PIXI.Texture.from(playerWalk4),
-        PIXI.Texture.from(playerWalk5),
-        PIXI.Texture.from(playerWalk6),
-        PIXI.Texture.from(playerWalk7),
-        PIXI.Texture.from(playerWalk8),
-        PIXI.Texture.from(playerWalk9),
-        PIXI.Texture.from(playerWalk10),
-        PIXI.Texture.from(playerWalk11),
-        PIXI.Texture.from(playerWalk12),
+        Texture.from(player_walk_1),
+        Texture.from(player_walk_2),
+        Texture.from(player_walk_3),
+        Texture.from(player_walk_4),
+        Texture.from(player_walk_5),
+        Texture.from(player_walk_6),
+        Texture.from(player_walk_7),
+        Texture.from(player_walk_8),
+        Texture.from(player_walk_9),
+        Texture.from(player_walk_10),
+        Texture.from(player_walk_11),
+        Texture.from(player_walk_12),
       ];
       Player.player.loop = true;
       openPopup(Player.app, "Back to normal size", null);

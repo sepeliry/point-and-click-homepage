@@ -1,6 +1,6 @@
-import * as PIXI from "pixi.js";
+import { Application, Container, Sprite, Text, Assets } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
-
+import { ASPECT_RATIO } from "../constants/constants";
 /**
  * Class to create items
  * TODO: Parameter to choose if item is interactable
@@ -8,11 +8,11 @@ import { GlowFilter } from "@pixi/filter-glow";
 class Book {
   /**
    * @costructor Creates an item from image and sets it coordinates
-   * @param {PIXI.Application} app - Pixi application where the item is placed
+   * @param {Application} app - Pixi application where the item is placed
    * @param {image} image - image to be used for item sprite
    * @param {number} x - x coordinate where the object is placed in the application
    * @param {number} y - y coordinate where the object is placed in the application
-   * @returns {PIXI.Sprite} - The item object
+   * @returns {Sprite} - The item object
    */
   constructor(
     app,
@@ -26,19 +26,22 @@ class Book {
     name,
     onInteraction
   ) {
-    this.book = PIXI.Sprite.from(image);
-    this.book.x = x * app.renderer.width;
-    this.book.y = y * app.renderer.height;
+    this.book = Sprite.from(image);
+
+    const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
+    const targetWidth = targetHeight * ASPECT_RATIO;
+
+    this.book.x = x * targetWidth;
+    this.book.y = y * targetHeight;
     this.book.visible = true;
     // this.book.width = width;
     // this.book.height = height;
     // Calculate width and height for the books relative to screen size to support mobile screens
-    const originalGameWidth = 1400;
-    const originalGameHeight = 800;
-    const widthRatio = width / originalGameWidth;
-    const heightRatio = height / originalGameHeight;
-    this.book.width = widthRatio * app.renderer.width;
-    this.book.height = heightRatio * app.renderer.height;
+
+    const widthRatio = width / targetWidth;
+    const heightRatio = height / targetHeight;
+    this.book.width = width;
+    this.book.height = height;
     this.book.zIndex = zIndex;
 
     if (onInteraction) {
@@ -57,22 +60,22 @@ class Book {
     }
 
     // Create a PIXI.Container to hold the text objects
-    this.textContainer = new PIXI.Container();
+    this.textContainer = new Container();
     this.textContainer.zIndex = 2;
 
     // // Calculate a fontsize relative to original fontsize (20) on desktop (1400x800)
     const currentWidth = app.renderer.width;
     const currentHeight = app.renderer.height;
     const ratio = Math.min(
-      currentWidth / originalGameWidth,
-      currentHeight / originalGameHeight
+      currentWidth / targetWidth,
+      currentHeight / targetHeight
     );
     //
-    const fontSize = Math.max(20 * ratio, 18);
+    const fontSize = Math.max(18);
 
     // Define the style for the text
     const textStyle = {
-      fontFamily: "Consolas",
+      fontFamily: "VCR_OSD_MONO",
       fontSize: fontSize,
       fill: 0xffffff,
       stroke: 0x000000, // Black outline color
@@ -80,20 +83,20 @@ class Book {
     };
 
     // Calculate the spacing between each character
-    const spacingHeightRatio = currentHeight / originalGameHeight;
-    const characterSpacing = 11 * spacingHeightRatio;
+    const spacingHeightRatio = currentHeight / targetHeight;
+    const characterSpacing = 11;
 
     // Loop through each character in the text
     for (let i = 0; i < name.length; i++) {
       const character = name[i];
 
       // Create a PIXI.Text object for the character
-      const textObject = new PIXI.Text(character, textStyle);
+      const textObject = new Text(character, textStyle);
       // Rotate the text object vertically
       textObject.rotation = Math.PI / 2;
 
       // Calculate the position of the text object along the book spine
-      const x = this.book.x + this.book.width - 18 * ratio;
+      const x = this.book.x + this.book.width - 18;
       const y = this.book.y + (i + 1.5) * characterSpacing;
 
       // Set the position of the text object

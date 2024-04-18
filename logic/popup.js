@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Container, Graphics, Text } from "pixi.js";
 
 class Popup {
   static activePopups = [];
@@ -7,7 +7,7 @@ class Popup {
     this.app = app;
     this.text = text;
     this.position = position;
-    this.container = new PIXI.Container();
+    this.container = new Container();
     this.currentIndex = 0; // index for typing animation
     this.createPopup();
     Popup.activePopups.push(this);
@@ -17,14 +17,14 @@ class Popup {
     let popupWidth = 600;
     const padding = 20;
 
-    if (this.app.screen.width <= 800) {
-      popupWidth = this.app.screen.width - 40;
+    if (window.innerWidth <= 800) {
+      popupWidth = window.innerWidth - 20;
     }
 
     const popupHeight = 90;
 
     // background for the popup
-    const background = new PIXI.Graphics();
+    const background = new Graphics();
     background.lineStyle(2, "#F54483");
     background.beginFill("#020D26");
     background.drawRect(0, 0, popupWidth, popupHeight);
@@ -33,7 +33,8 @@ class Popup {
     this.container.addChild(background);
 
     // text for the popup
-    const message = new PIXI.Text("", {
+    const message = new Text("", {
+      fontFamily: "VCR_OSD_MONO",
       fill: "#F54483",
       fontSize: 20,
       wordWrap: true,
@@ -45,11 +46,11 @@ class Popup {
 
     // position of the popup
     if (!this.position) {
-      this.container.x = (this.app.screen.width - popupWidth) / 2;
-      this.container.y = this.app.screen.height - popupHeight - 20;
+      this.container.x = (window.innerWidth - popupWidth) / 2;
+      this.container.y = window.innerHeight - popupHeight - 20;
     } else {
-      this.container.x = this.position.x * this.app.screen.width;
-      this.container.y = this.position.y * this.app.screen.height;
+      this.container.x = this.position.x * window.innerWidth;
+      this.container.y = this.position.y * window.innerHeight;
     }
 
     this.app.stage.addChild(this.container);

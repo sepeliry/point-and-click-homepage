@@ -1,19 +1,18 @@
-import * as PIXI from "pixi.js";
-import { resizeGame } from "./utils/resize";
-import { checkDistance } from "./interactions/distanceCheckUtils.js";
-import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
-
+import { Container, Sprite, Text, Texture, AnimatedSprite } from "pixi.js";
 import { CRTFilter } from "@pixi/filter-crt";
-import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
+import { GlowFilter } from "@pixi/filter-glow";
+import { createWalkableAreas } from "./walkableArea.js";
+import { ASPECT_RATIO, MAX_WIDTH } from "../constants/constants.js";
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
-import gameState from "../data/gameState.js";
 import Numpad from "./numpad.js";
-import { createWalkableAreas } from "./walkableArea.js";
 import InventoryUI from "./inventory/inventoryUI.js";
 import DesktopIcon from "./desktopIcon.js";
+
+// Constants
 import ITEM_TYPES from "../constants/itemTypes.js";
+import BackButton from "./backButton.js";
 
 class UI {
   static solidObjects = null;
@@ -28,6 +27,8 @@ class UI {
 
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
+    // Create a camera container for the mobile view
+    this.createCameraContainer(app);
     createWalkableAreas(app);
     InventoryUI.initialize(app);
   }
@@ -36,7 +37,7 @@ class UI {
     Object.entries(gameData).forEach(([sceneName, sceneData]) => {
       let container = app.scenes[sceneName];
       if (!container) {
-        container = new PIXI.Container();
+        container = new Container();
         container.name = sceneName;
         container.sortableChildren = true;
         app.stage.addChild(container);
@@ -45,16 +46,19 @@ class UI {
       }
 
       if (sceneData.background) {
-        const background = PIXI.Sprite.from(sceneData.background);
+        const background = Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
-        if (sceneName === "mainScene" && window.isMobile) {
-          // To support cameraContainer on mobile, set mainScene size to match gameworlds size
-          background.width = 1400;
-          background.height = 800;
-        } else {
-          background.width = app.renderer.width;
-          background.height = app.renderer.height;
+
+        const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
+        const targetWidth = targetHeight * ASPECT_RATIO;
+
+        background.width = targetWidth;
+        background.height = targetHeight;
+
+        if (sceneData.onStateChange) {
+          background.onStateChange = sceneData.onStateChange;
         }
+
         container.addChild(background);
       }
 
@@ -66,23 +70,29 @@ class UI {
         // set / show mainScene by default
         app.mainScene = container;
         container.visible = true;
-      } else if (
-        sceneName === "mouseholeScene" &&
-        sceneData.animatedSpriteTextures
-      ) {
-        // Call the createAnimatedSprite method
-        this.createAnimatedSprite(
-          app,
-          sceneData.animatedSpriteTextures,
-          container
-        );
-        container.visible = false;
       } else {
         // hide other scenes by default
+
+        if (sceneData.animatedSpriteTextures) {
+          this.createAnimatedSprite(
+            app,
+            sceneData.animatedSpriteTextures,
+            container
+          );
+        }
         container.visible = false;
+        // Calculate vertical centering
+
+        if (Math.min(window.innerWidth, screen.width) < MAX_WIDTH) {
+          const containerBounds = container.getBounds();
+          const containerWidth = containerBounds.width;
+
+          // Center the container horizontally so only the center is visible
+          const screenWidth = window.innerWidth; // Get the current width of the screen
+          container.x =
+            screenWidth / 2 - containerWidth / 2 - containerBounds.x;
+        }
       }
-      // Create a camera container for the mobile view
-      this.createCameraContainer(app);
     });
   }
 
@@ -90,16 +100,42 @@ class UI {
     //console.log(items);
     items.forEach((itemData) => {
       if (itemData.type === ITEM_TYPES.text) {
-        const text = new PIXI.Text(itemData.text, itemData.style);
-        text.x = itemData.location.x;
-        text.y = itemData.location.y;
+        const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
+        const targetWidth = targetHeight * ASPECT_RATIO;
+
+        const text = new Text(itemData.text, itemData.style);
+        text.x = itemData.location.x * targetWidth;
+        text.y = itemData.location.y * targetHeight;
         text.visible = true;
         text.zIndex = itemData.zIndex;
         text.onStateChange = itemData.onStateChange;
-        text.anchor.set(0.475, 0);
+        text.anchor.set(0.5, 0);
+
         if (itemData.identifier) {
           text.identifier = itemData.identifier;
         }
+
+        console.log(itemData);
+
+        if (itemData.onInteraction) {
+          text.interactive = true;
+          text.buttonMode = true;
+          text.eventMode = "dynamic";
+          text.cursor = "pointer";
+          text.on("pointerdown", itemData.onInteraction(app, text));
+
+          const glowEffect = new GlowFilter({
+            innerStrength: 0,
+            outerStrength: 1.8,
+            quality: 0.1,
+            alpha: 0.6,
+            color: "c061cb",
+          });
+          text.filters = [glowEffect];
+        } else {
+          text.interactive = false;
+        }
+
         container.addChild(text);
 
         // set code text for numpad scene
@@ -133,8 +169,9 @@ class UI {
           UI.solidObjects.push(item);
           //  }
         }
-      }
-      if (itemData.type === "Book") {
+      } else if (itemData.type === ITEM_TYPES.backButton) {
+        const backButton = new BackButton(app, container, itemData);
+      } else if (itemData.type === ITEM_TYPES.book) {
         // Create a Book instance instead of an Item instance
         const book = new Book(
           app,
@@ -154,8 +191,8 @@ class UI {
   }
 
   createAnimatedSprite(app, frameUrls, container) {
-    const textureArray = frameUrls.map((url) => PIXI.Texture.from(url));
-    const animatedSprite = new PIXI.AnimatedSprite(textureArray);
+    const textureArray = frameUrls.map((url) => Texture.from(url));
+    const animatedSprite = new AnimatedSprite(textureArray);
     animatedSprite.width = app.renderer.width;
     animatedSprite.height = app.renderer.height;
     animatedSprite.animationSpeed = 0.02;
@@ -169,15 +206,14 @@ class UI {
   }
 
   createCameraContainer(app) {
-    if (window.isMobile) {
-      let gameContainerDOM = document.getElementById("game-container");
-      gameContainerDOM.style.width = `${app.view.width}px`;
-      gameContainerDOM.style.height = `${app.view.height}px`;
-      const cameraContainer = new PIXI.Container();
-      app.cameraContainer = cameraContainer;
-      cameraContainer.addChild(app.mainScene);
-      app.stage.addChild(cameraContainer);
-    }
+    let gameContainerDOM = document.getElementById("game-container");
+    // gameContainerDOM.style.width = `${app.view.width}px`;
+    // gameContainerDOM.style.height = `${app.view.height}px`;
+    const cameraContainer = new Container();
+    app.cameraContainer = cameraContainer;
+    cameraContainer.addChild(app.mainScene);
+
+    app.stage.addChild(cameraContainer);
   }
 }
 

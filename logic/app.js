@@ -1,29 +1,56 @@
-import * as PIXI from "pixi.js";
+import {
+  Application,
+  Container,
+  Graphics,
+  Sprite,
+  Point,
+  Polygon,
+  Assets,
+} from "pixi.js";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
-
+import { ASPECT_RATIO } from "../constants/constants.js";
 import UI from "./UI";
 import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
-import { followPlayer } from "./utils/cameraUtils.js";
+import { followPlayer, updateCamera } from "./utils/cameraUtils.js";
 import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
 
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
-// isMobile = true enables the cameraContainer
-window.isMobile = windowWidth <= 800;
+// Fonts
+import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
 
-// Create application on page load. desktop: 1400x800, mobile: use screensize
-const app = new PIXI.Application({
-  width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
-  height: window.isMobile ? Math.min(windowHeight, 800) : 800,
-  backgroundColor: 0xaaaaaa,
-});
+function setupPixiApp() {
+  const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
+  const targetWidth = targetHeight * ASPECT_RATIO; // Calculate width based on aspect ratio
+
+  const app = new Application({
+    width: targetWidth,
+    height: targetHeight,
+    backgroundColor: 0x000000,
+    resolution: window.devicePixelRatio || 1, // Consider device pixel ratio for high DPI screens
+    autoDensity: true, // Adjust for device density
+  });
+
+  document.body.appendChild(app.view);
+  app.view.style.display = "block"; // Ensure the canvas uses full available space and no margins interfere
+
+  app.renderer.resize(targetWidth, targetHeight);
+  // app.screen.width = targetWidth;
+
+  return app;
+}
+
+const app = setupPixiApp();
 
 globalThis.__PIXI_APP__ = app;
+
+// Add font files to the bundle
+Assets.addBundle("fonts", [{ alias: "VCR_OSD_MONO", src: VCR_OSD_MONO }]);
+Assets.loadBundle("fonts");
+
 document.getElementById("game-container").appendChild(app.view);
 
 document.getElementById("hide-wiki-content").addEventListener("click", () => {
@@ -34,6 +61,9 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 const ui = new UI(app);
 const player = new Player(app);
 
+// update camera initially
+updateCamera(app, app.cameraContainer, Player.player);
+
 // this function should be run when the state changes (called from gameState.js)
 function onGameStateChange(property, newValue, oldValue) {
   console.log(`State "${property}" changed from ${oldValue} to ${newValue}`);
@@ -43,6 +73,13 @@ function onGameStateChange(property, newValue, oldValue) {
   Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
     if (sceneData.children) {
       const childrenCopy = [...sceneData.children]; // Shallow copy of the children array
+
+      const sceneBackground = childrenCopy[0];
+
+      if (sceneBackground.onStateChange) {
+        sceneBackground.onStateChange(app, sceneBackground);
+      }
+
       childrenCopy.forEach((item) => {
         if (!item.onStateChange) {
           return;
@@ -58,7 +95,7 @@ addObserver(onGameStateChange);
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
   if (
-    item instanceof PIXI.Sprite &&
+    item instanceof Sprite &&
     item.getBounds().contains(position.x, position.y) &&
     item.visible
   ) {
@@ -81,11 +118,11 @@ function projectPointOntoLineSegment(px, py, ax, ay, bx, by) {
   let projX = ax + t * abx;
   let projY = ay + t * aby;
 
-  return new PIXI.Point(projX, projY);
+  return new Point(projX, projY);
 }
 
 let targetPosition;
-
+const walkableAreas = createWalkableAreas(app);
 // Handle click event on the stage
 app.mainScene.eventMode = "static"; // Enable interaction
 app.mainScene.on("pointertap", (event) => {
@@ -93,14 +130,14 @@ app.mainScene.on("pointertap", (event) => {
   const localPosition = app.mainScene.toLocal(event.global);
   const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
   // const targetPosition =
-  player.targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+  player.targetPosition = new Point(localPosition.x, yCoordinate);
   // If a item is not clicked, clear the pending action and checkDistanceParams. (To ensure unecceary actions are not performed)
   if (!clickedItem) {
     console.log("Item was not clicked, empty action");
     Player.player.pendingAction = null;
     Player.player.checkDistanceParams = null;
   }
-  const walkableAreas = createWalkableAreas(app);
+
   let insideAnyWalkableArea = false;
   let closestProjection = null;
   let minDistance = Infinity;
@@ -110,10 +147,8 @@ app.mainScene.on("pointertap", (event) => {
     // to reference the corresponding points array from WALKABLE_AREA_POINTS
     const areaPoints = WALKABLE_AREA_POINTS[areaIndex];
 
-    // Convert PIXI.Graphics to a PIXI.Polygon to use containsPoint method
-    const polygon = new PIXI.Polygon(
-      areaPoints.map((p) => new PIXI.Point(p.x, p.y))
-    );
+    // Convert Graphics to a Polygon to use containsPoint method
+    const polygon = new Polygon(areaPoints.map((p) => new Point(p.x, p.y)));
 
     if (polygon.contains(player.targetPosition.x, player.targetPosition.y)) {
       // console.log("inside");
@@ -157,7 +192,7 @@ app.mainScene.on("pointertap", (event) => {
 
     /*
     // add a red dot for the adjusted targetPosition
-    let redDot = new PIXI.Graphics();
+    let redDot = new Graphics();
     redDot.beginFill(0xff0000);
     redDot.drawCircle(targetPosition.x, targetPosition.y, 5);
     redDot.endFill();
@@ -265,7 +300,7 @@ app.ticker.add((delta) => {
       //console.log(distance);
     } else {
       player.move(player.targetPosition, UI.solidObjects);
-      followPlayer(app, app.cameraContainer, Player.player);
+      updateCamera(app, app.cameraContainer, Player.player);
       app.mainScene.updateTransform();
     }
   }
@@ -274,19 +309,23 @@ app.ticker.add((delta) => {
 document.addEventListener("DOMContentLoaded", () => {
   openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
   // resize to window size
-  followPlayer(app, app.cameraContainer, Player.player);
-  resizeGame(app, app.mainScene);
+  //  followPlayer(app, app.cameraContainer, Player.player);
+  // resizeGame(app, app.mainScene);
 });
 
 window.addEventListener("resize", () => {
+  updateCamera(app, app.cameraContainer, Player.player);
+
+  /*
   for (let sceneName in app.scenes) {
     resizeGame(app, app.scenes[sceneName]);
   }
+  */
 });
 
 document.addEventListener("fullscreenchange", () => {
   for (let sceneName in app.scenes) {
-    resizeGame(app, app.scenes[sceneName]);
+    // resizeGame(app, app.scenes[sceneName]);
   }
 });
 

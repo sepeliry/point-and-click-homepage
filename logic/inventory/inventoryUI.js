@@ -1,15 +1,25 @@
-import * as PIXI from "pixi.js";
+import { Container, Graphics, Sprite } from "pixi.js";
 import gameState from "../../data/gameState";
 
 class InventoryUI {
-  static container = new PIXI.Container();
+  static container = new Container();
   static app = null;
 
   static initialize(app) {
     this.app = app;
-    this.container.x = this.app.screen.width - 20;
+    this.container.x = window.innerWidth - 20;
     this.container.y = 20;
     this.app.stage.addChild(this.container);
+
+    window.addEventListener("resize", () => this.adjustPosition());
+  }
+
+  static adjustPosition() {
+    // Update the position only if the window width is less than 1400 or choose the smaller between 1400 and window.innerWidth
+    if (this.app) {
+      const maxScreenWidth = Math.min(1400, window.innerWidth);
+      this.container.x = maxScreenWidth - 20;
+    }
   }
 
   static updateInventoryUI() {
@@ -20,10 +30,10 @@ class InventoryUI {
     this.container.removeChildren();
 
     items.forEach((entry, index) => {
-      const itemContainer = new PIXI.Container();
+      const itemContainer = new Container();
 
       // create a new sprite for the item in the inventory
-      const itemSprite = new PIXI.Sprite(entry.sprite.texture);
+      const itemSprite = new Sprite(entry.sprite.texture);
 
       // Calculate the scale factor to fit the sprite within the background dimensions
       const scaleX = (BG_WIDTH - 20) / itemSprite.texture.width;
@@ -35,7 +45,7 @@ class InventoryUI {
       itemSprite.x = (BG_WIDTH - itemSprite.width) / 2; // Center horizontally
       itemSprite.y = (BG_HEIGHT - itemSprite.height) / 2; // Center vertically
 
-      const bg = new PIXI.Graphics();
+      const bg = new Graphics();
       bg.beginFill("#020D26", 0.9);
       bg.lineStyle(2, "#F54483");
       bg.drawRect(0, 0, BG_WIDTH, BG_HEIGHT);

@@ -16,7 +16,7 @@ function switchScene(app, newSceneName) {
     // close all open popups when switching to a new scene
     Popup.activePopups.forEach((popup) => popup.closePopup());
     // Call resize to ensure scene matches current window size
-    resizeGame(app, app.scenes[newSceneName]);
+    //  resizeGame(app, app.scenes[newSceneName]);
   } else {
     console.warn("Scene not found:", newSceneName);
   }

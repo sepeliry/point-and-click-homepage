@@ -22,9 +22,8 @@ class DesktopIcon {
 
     // add text label under the sprite
     this.textLabel = new Text(itemData.title || "", {
-      fontFamily: "Consolas",
+      fontFamily: "VCR_OSD_MONO",
       fontSize: 18,
-      fontWeight: "bold",
       fill: 0xffffff,
       stroke: 0x000000, // Black outline color
       strokeThickness: 4,

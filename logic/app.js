@@ -1,4 +1,4 @@
-import { Application, Container, Graphics, Sprite, Point, Polygon } from "pixi.js";
+import { Application, Container, Graphics, Sprite, Point, Polygon, Assets } from "pixi.js";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
 
@@ -10,6 +10,9 @@ import { followPlayer } from "./utils/cameraUtils.js";
 import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
+
+// Fonts
+import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -24,6 +27,13 @@ const app = new Application({
 });
 
 globalThis.__PIXI_APP__ = app;
+
+// Add font files to the bundle
+Assets.addBundle("fonts", [
+  { alias: "VCR_OSD_MONO", src: VCR_OSD_MONO },
+]);
+Assets.loadBundle("fonts");
+
 document.getElementById("game-container").appendChild(app.view);
 
 document.getElementById("hide-wiki-content").addEventListener("click", () => {

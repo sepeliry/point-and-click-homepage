@@ -34,6 +34,7 @@ class Popup {
 
     // text for the popup
     const message = new Text("", {
+      fontFamily: "VCR_OSD_MONO",
       fill: "#F54483",
       fontSize: 20,
       wordWrap: true,

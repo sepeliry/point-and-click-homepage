@@ -1,6 +1,5 @@
-import { Application, Container, Sprite, Text } from "pixi.js";
+import { Application, Container, Sprite, Text, Assets } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
-
 /**
  * Class to create items
  * TODO: Parameter to choose if item is interactable
@@ -72,7 +71,7 @@ class Book {
 
     // Define the style for the text
     const textStyle = {
-      fontFamily: "Consolas",
+      fontFamily: "VCR_OSD_MONO",
       fontSize: fontSize,
       fill: 0xffffff,
       stroke: 0x000000, // Black outline color

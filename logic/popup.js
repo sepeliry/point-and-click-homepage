@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Container, Graphics, Text } from "pixi.js";
 
 class Popup {
   static activePopups = [];
@@ -7,7 +7,7 @@ class Popup {
     this.app = app;
     this.text = text;
     this.position = position;
-    this.container = new PIXI.Container();
+    this.container = new Container();
     this.currentIndex = 0; // index for typing animation
     this.createPopup();
     Popup.activePopups.push(this);
@@ -24,7 +24,7 @@ class Popup {
     const popupHeight = 90;
 
     // background for the popup
-    const background = new PIXI.Graphics();
+    const background = new Graphics();
     background.lineStyle(2, "#F54483");
     background.beginFill("#020D26");
     background.drawRect(0, 0, popupWidth, popupHeight);
@@ -33,7 +33,8 @@ class Popup {
     this.container.addChild(background);
 
     // text for the popup
-    const message = new PIXI.Text("", {
+    const message = new Text("", {
+      fontFamily: "VCR_OSD_MONO",
       fill: "#F54483",
       fontSize: 20,
       wordWrap: true,

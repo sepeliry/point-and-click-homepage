@@ -1,18 +1,18 @@
-import * as PIXI from "pixi.js";
+import { Sprite, Texture } from "pixi.js";
 
 /**
  *
- * @param {PIXI.Sprite} sprite
+ * @param {Sprite} sprite
  * @param {string} newTexturePath
  * @returns
  */
 function updateSpriteTexture(sprite, newTexturePath) {
-  if (!(sprite instanceof PIXI.Sprite)) {
-    console.error("Provided item is not an instance of PIXI.Sprite");
+  if (!(sprite instanceof Sprite)) {
+    console.error("Provided item is not an instance of Sprite");
     return;
   }
 
-  const texture = PIXI.Texture.from(newTexturePath);
+  const texture = Texture.from(newTexturePath);
 
   // Check if the texture is already loaded
   if (texture.baseTexture.valid) {

@@ -1,10 +1,10 @@
-import * as PIXI from "pixi.js";
+import { Texture, AnimatedSprite } from "pixi.js";
 
 /**
  * Updates the textures of an animated sprite based on provided frame identifiers.
  * It sets the animation speed and loop properties, and ensures textures are loaded before applying.
  *
- * @param {PIXI.AnimatedSprite} animatedSprite - The animated sprite to update
+ * @param {AnimatedSprite} animatedSprite - The animated sprite to update
  * @param {Array<string>} frameIdentifiers - An array of image paths for the animation frames
  * @param {number} animationSpeed - The speed at which the animation should play
  * @param {boolean} loop - whether the animation should loop.
@@ -15,7 +15,7 @@ function updateAnimatedSpriteTextures(
   animationSpeed,
   loop
 ) {
-  const newTextures = frameIdentifiers.map((frame) => PIXI.Texture.from(frame));
+  const newTextures = frameIdentifiers.map((frame) => Texture.from(frame));
 
   const areTexturesLoaded = newTextures.every(
     (texture) => texture.baseTexture.valid

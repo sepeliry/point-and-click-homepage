@@ -1,6 +1,4 @@
-//import * as PIXI from "pixi.js";
 import { Application, Texture, AnimatedSprite, Point } from "pixi.js";
-
 import { playerCollides } from "./collisionUtils";
 
 // Interactions

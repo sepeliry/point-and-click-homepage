@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Container, Sprite, Text } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
 
 class DesktopIcon {
@@ -8,20 +8,20 @@ class DesktopIcon {
     this.itemData = itemData;
 
     // Create a container for the sprite and text
-    this.iconContainer = new PIXI.Container();
+    this.iconContainer = new Container();
     this.iconContainer.x = itemData.location.x * app.renderer.width;
     this.iconContainer.y = itemData.location.y * app.renderer.height;
     this.iconContainer.zIndex = itemData.zIndex || 1;
 
     // Create the sprite from an image
-    this.sprite = PIXI.Sprite.from(itemData.image);
+    this.sprite = Sprite.from(itemData.image);
     this.sprite.name = itemData.name;
     this.sprite.height = itemData.height;
     this.sprite.width = itemData.width;
     this.sprite.anchor.set(0.5, 1);
 
     // add text label under the sprite
-    this.textLabel = new PIXI.Text(itemData.title || "", {
+    this.textLabel = new Text(itemData.title || "", {
       fontFamily: "Consolas",
       fontSize: 18,
       fontWeight: "bold",

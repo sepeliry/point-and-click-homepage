@@ -1,12 +1,12 @@
 // Pikaiset kokeilut PDF esittämiseen käyttäen HTMl <Object>
 // PDFJs avulla luultavasti saa viimeisellymmän näkymän ja sulavemmin sisälletyä sisällöt peliin
 import { pdfFiles } from "../../data/pdfFiles";
-import * as PIXI from "pixi.js";
+import { Container } from "pixi.js";
 const pdfViewer = document.getElementById("pdf-viewer-container");
 const pdfObject = document.getElementById("pdf-object");
 const mainSceneHTML = document.getElementById("game-container");
 const closePdfBtn = document.getElementById("close-pdf");
-let pdfContainer = new PIXI.Container();
+let pdfContainer = new Container();
 
 // Displays a pdf file
 function showPdf(app, mainScene, pdfPath) {
@@ -31,8 +31,8 @@ export default showPdf;
 
 // // Creates text elements to open a single pdf file
 // export const setupPdf = (app, mainScene) => {
-//   // let pdfContainer = new PIXI.Container();
-//   let background = new PIXI.Graphics();
+//   // let pdfContainer = new Container();
+//   let background = new Graphics();
 //   background.beginFill(0x1b1b1b);
 //   background.drawRect(0, 0, app.view.width, app.view.height);
 //   background.endFill();
@@ -43,7 +43,7 @@ export default showPdf;
 //   app.pdfContainer.addChild(background);
 //   app.pdfContainer.setChildIndex(background, 0);
 //   pdfFiles.forEach((pdfFile, index) => {
-//     let text = new PIXI.Text(pdfFile.title, {
+//     let text = new Text(pdfFile.title, {
 //       fill: "#ffffff",
 //       fontSize: fontSize,
 //     });

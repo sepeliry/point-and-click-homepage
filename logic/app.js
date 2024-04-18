@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Application, Container, Graphics, Sprite, Point, Polygon } from "pixi.js";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
 
@@ -17,7 +17,7 @@ const windowHeight = window.innerHeight;
 window.isMobile = windowWidth <= 800;
 
 // Create application on page load. desktop: 1400x800, mobile: use screensize
-const app = new PIXI.Application({
+const app = new Application({
   width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
   height: window.isMobile ? Math.min(windowHeight, 800) : 800,
   backgroundColor: 0xaaaaaa,
@@ -58,7 +58,7 @@ addObserver(onGameStateChange);
 function getItemAtPosition(position, item) {
   // Check if the click is on the item. Ensure item is visible to not block movement after item is picked
   if (
-    item instanceof PIXI.Sprite &&
+    item instanceof Sprite &&
     item.getBounds().contains(position.x, position.y) &&
     item.visible
   ) {
@@ -81,7 +81,7 @@ function projectPointOntoLineSegment(px, py, ax, ay, bx, by) {
   let projX = ax + t * abx;
   let projY = ay + t * aby;
 
-  return new PIXI.Point(projX, projY);
+  return new Point(projX, projY);
 }
 
 let targetPosition;
@@ -93,7 +93,7 @@ app.mainScene.on("pointertap", (event) => {
   const localPosition = app.mainScene.toLocal(event.global);
   const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
   // const targetPosition =
-  player.targetPosition = new PIXI.Point(localPosition.x, yCoordinate);
+  player.targetPosition = new Point(localPosition.x, yCoordinate);
   // If a item is not clicked, clear the pending action and checkDistanceParams. (To ensure unecceary actions are not performed)
   if (!clickedItem) {
     console.log("Item was not clicked, empty action");
@@ -110,9 +110,9 @@ app.mainScene.on("pointertap", (event) => {
     // to reference the corresponding points array from WALKABLE_AREA_POINTS
     const areaPoints = WALKABLE_AREA_POINTS[areaIndex];
 
-    // Convert PIXI.Graphics to a PIXI.Polygon to use containsPoint method
-    const polygon = new PIXI.Polygon(
-      areaPoints.map((p) => new PIXI.Point(p.x, p.y))
+    // Convert Graphics to a Polygon to use containsPoint method
+    const polygon = new Polygon(
+      areaPoints.map((p) => new Point(p.x, p.y))
     );
 
     if (polygon.contains(player.targetPosition.x, player.targetPosition.y)) {
@@ -138,7 +138,7 @@ app.mainScene.on("pointertap", (event) => {
         // Calculate distance from the original target position to the projection
         let distance = Math.sqrt(
           (player.targetPosition.x - projection.x) ** 2 +
-            (player.targetPosition.y - projection.y) ** 2
+          (player.targetPosition.y - projection.y) ** 2
         );
 
         // Update closest projection if this is the shortest distance found
@@ -157,7 +157,7 @@ app.mainScene.on("pointertap", (event) => {
 
     /*
     // add a red dot for the adjusted targetPosition
-    let redDot = new PIXI.Graphics();
+    let redDot = new Graphics();
     redDot.beginFill(0xff0000);
     redDot.drawCircle(targetPosition.x, targetPosition.y, 5);
     redDot.endFill();
@@ -256,7 +256,7 @@ app.ticker.add((delta) => {
   if (player.targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - player.targetPosition.x, 2) +
-        Math.pow(Player.player.y - player.targetPosition.y, 2)
+      Math.pow(Player.player.y - player.targetPosition.y, 2)
     );
 
     if (distance < 3) {

@@ -1,18 +1,15 @@
-import * as PIXI from "pixi.js";
-import { resizeGame } from "./utils/resize";
-import { checkDistance } from "./interactions/distanceCheckUtils.js";
-import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
-
+import { Container, Sprite, Text, Texture, AnimatedSprite } from "pixi.js";
 import { CRTFilter } from "@pixi/filter-crt";
-import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
+import { createWalkableAreas } from "./walkableArea.js";
+
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
-import gameState from "../data/gameState.js";
 import Numpad from "./numpad.js";
-import { createWalkableAreas } from "./walkableArea.js";
 import InventoryUI from "./inventory/inventoryUI.js";
 import DesktopIcon from "./desktopIcon.js";
+
+// Constants
 import ITEM_TYPES from "../constants/itemTypes.js";
 
 class UI {
@@ -36,7 +33,7 @@ class UI {
     Object.entries(gameData).forEach(([sceneName, sceneData]) => {
       let container = app.scenes[sceneName];
       if (!container) {
-        container = new PIXI.Container();
+        container = new Container();
         container.name = sceneName;
         container.sortableChildren = true;
         app.stage.addChild(container);
@@ -45,7 +42,7 @@ class UI {
       }
 
       if (sceneData.background) {
-        const background = PIXI.Sprite.from(sceneData.background);
+        const background = Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
         if (sceneName === "mainScene" && window.isMobile) {
           // To support cameraContainer on mobile, set mainScene size to match gameworlds size
@@ -90,7 +87,7 @@ class UI {
     //console.log(items);
     items.forEach((itemData) => {
       if (itemData.type === ITEM_TYPES.text) {
-        const text = new PIXI.Text(itemData.text, itemData.style);
+        const text = new Text(itemData.text, itemData.style);
         text.x = itemData.location.x;
         text.y = itemData.location.y;
         text.visible = true;
@@ -154,8 +151,8 @@ class UI {
   }
 
   createAnimatedSprite(app, frameUrls, container) {
-    const textureArray = frameUrls.map((url) => PIXI.Texture.from(url));
-    const animatedSprite = new PIXI.AnimatedSprite(textureArray);
+    const textureArray = frameUrls.map((url) => Texture.from(url));
+    const animatedSprite = new AnimatedSprite(textureArray);
     animatedSprite.width = app.renderer.width;
     animatedSprite.height = app.renderer.height;
     animatedSprite.animationSpeed = 0.02;
@@ -173,7 +170,7 @@ class UI {
       let gameContainerDOM = document.getElementById("game-container");
       gameContainerDOM.style.width = `${app.view.width}px`;
       gameContainerDOM.style.height = `${app.view.height}px`;
-      const cameraContainer = new PIXI.Container();
+      const cameraContainer = new Container();
       app.cameraContainer = cameraContainer;
       cameraContainer.addChild(app.mainScene);
       app.stage.addChild(cameraContainer);

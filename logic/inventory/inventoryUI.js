@@ -1,8 +1,8 @@
-import * as PIXI from "pixi.js";
+import { Container, Graphics, Sprite } from "pixi.js";
 import gameState from "../../data/gameState";
 
 class InventoryUI {
-  static container = new PIXI.Container();
+  static container = new Container();
   static app = null;
 
   static initialize(app) {
@@ -20,10 +20,10 @@ class InventoryUI {
     this.container.removeChildren();
 
     items.forEach((entry, index) => {
-      const itemContainer = new PIXI.Container();
+      const itemContainer = new Container();
 
       // create a new sprite for the item in the inventory
-      const itemSprite = new PIXI.Sprite(entry.sprite.texture);
+      const itemSprite = new Sprite(entry.sprite.texture);
 
       // Calculate the scale factor to fit the sprite within the background dimensions
       const scaleX = (BG_WIDTH - 20) / itemSprite.texture.width;
@@ -35,7 +35,7 @@ class InventoryUI {
       itemSprite.x = (BG_WIDTH - itemSprite.width) / 2; // Center horizontally
       itemSprite.y = (BG_HEIGHT - itemSprite.height) / 2; // Center vertically
 
-      const bg = new PIXI.Graphics();
+      const bg = new Graphics();
       bg.beginFill("#020D26", 0.9);
       bg.lineStyle(2, "#F54483");
       bg.drawRect(0, 0, BG_WIDTH, BG_HEIGHT);

@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Sprite, Texture, AnimatedSprite } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
 
 class Item {
@@ -11,9 +11,9 @@ class Item {
     if (itemData.animation) {
       // create an animated sprite
       const textures = itemData.animation.frames.map((frame) =>
-        PIXI.Texture.from(frame)
+        Texture.from(frame)
       );
-      this.sprite = new PIXI.AnimatedSprite(textures);
+      this.sprite = new AnimatedSprite(textures);
 
       this.sprite.animationSpeed = itemData.animation.animationSpeed || 0.02;
       this.sprite.loop =
@@ -25,7 +25,7 @@ class Item {
       }
     } else {
       // if the item has no animation, create a static sprite
-      this.sprite = PIXI.Sprite.from(itemData.image);
+      this.sprite = Sprite.from(itemData.image);
     }
 
     // common properties for both static and animated sprites

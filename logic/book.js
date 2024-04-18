@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Application, Container, Sprite, Text } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
 
 /**
@@ -8,11 +8,11 @@ import { GlowFilter } from "@pixi/filter-glow";
 class Book {
   /**
    * @costructor Creates an item from image and sets it coordinates
-   * @param {PIXI.Application} app - Pixi application where the item is placed
+   * @param {Application} app - Pixi application where the item is placed
    * @param {image} image - image to be used for item sprite
    * @param {number} x - x coordinate where the object is placed in the application
    * @param {number} y - y coordinate where the object is placed in the application
-   * @returns {PIXI.Sprite} - The item object
+   * @returns {Sprite} - The item object
    */
   constructor(
     app,
@@ -26,7 +26,7 @@ class Book {
     name,
     onInteraction
   ) {
-    this.book = PIXI.Sprite.from(image);
+    this.book = Sprite.from(image);
     this.book.x = x * app.renderer.width;
     this.book.y = y * app.renderer.height;
     this.book.visible = true;
@@ -57,7 +57,7 @@ class Book {
     }
 
     // Create a PIXI.Container to hold the text objects
-    this.textContainer = new PIXI.Container();
+    this.textContainer = new Container();
     this.textContainer.zIndex = 2;
 
     // // Calculate a fontsize relative to original fontsize (20) on desktop (1400x800)
@@ -88,7 +88,7 @@ class Book {
       const character = name[i];
 
       // Create a PIXI.Text object for the character
-      const textObject = new PIXI.Text(character, textStyle);
+      const textObject = new Text(character, textStyle);
       // Rotate the text object vertically
       textObject.rotation = Math.PI / 2;
 

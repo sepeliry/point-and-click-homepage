@@ -2,7 +2,7 @@ import { Container, Sprite, Text, Texture, AnimatedSprite } from "pixi.js";
 import { CRTFilter } from "@pixi/filter-crt";
 import { GlowFilter } from "@pixi/filter-glow";
 import { createWalkableAreas } from "./walkableArea.js";
-import { ASPECT_RATIO } from "../constants/constants.js";
+import { ASPECT_RATIO, MAX_WIDTH } from "../constants/constants.js";
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
@@ -83,12 +83,15 @@ class UI {
         container.visible = false;
         // Calculate vertical centering
 
-        const containerBounds = container.getBounds();
-        const containerWidth = containerBounds.width;
+        if (Math.min(window.innerWidth, screen.width) < MAX_WIDTH) {
+          const containerBounds = container.getBounds();
+          const containerWidth = containerBounds.width;
 
-        // Center the container horizontally so only the center is visible
-        const screenWidth = window.innerWidth; // Get the current width of the screen
-        container.x = screenWidth / 2 - containerWidth / 2 - containerBounds.x;
+          // Center the container horizontally so only the center is visible
+          const screenWidth = window.innerWidth; // Get the current width of the screen
+          container.x =
+            screenWidth / 2 - containerWidth / 2 - containerBounds.x;
+        }
       }
     });
   }

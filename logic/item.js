@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
-
+import { ASPECT_RATIO } from "../constants/constants";
 class Item {
   constructor(
     app,
@@ -33,8 +33,11 @@ class Item {
   }
 
   initializeSprite(app, container, itemData) {
-    this.sprite.x = itemData.location.x * app.renderer.width;
-    this.sprite.y = itemData.location.y * app.renderer.height;
+    const targetHeight = window.innerHeight; // Target the full height of the window
+    const targetWidth = targetHeight * ASPECT_RATIO;
+
+    this.sprite.x = itemData.location.x * targetWidth;
+    this.sprite.y = itemData.location.y * targetHeight;
     this.sprite.zIndex = itemData.zIndex || 1;
     this.sprite.name = itemData.name;
     this.sprite.height = itemData.height;

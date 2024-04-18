@@ -24,7 +24,7 @@ import playerWalkMini7 from "../resources/images/player_walkA7.png";
 import playerWalkMini8 from "../resources/images/player_walkA8.png";
 import playerWalkMini9 from "../resources/images/player_walkA9.png";
 import { checkDistance } from "./interactions/distanceCheckUtils";
-
+import { ASPECT_RATIO } from "../constants/constants";
 import playerShrink1 from "../resources/images/player_idle0_small.png";
 import playerShrink2 from "../resources/images/player_idle0_smallest.png";
 import updateAnimatedSpriteTextures from "./interactions/updateAnimatedSpriteTextures";
@@ -63,10 +63,10 @@ class Player {
     // Create player sprite with idle animation
     Player.player = new PIXI.AnimatedSprite(Player.playerIdleFrames);
 
-    Player.player.position.set(
-      app.renderer.width / 2,
-      app.renderer.height - 160
-    );
+    const targetHeight = window.innerHeight; // Target the full height of the window
+    const targetWidth = targetHeight * ASPECT_RATIO;
+
+    Player.player.position.set(targetWidth / 2, targetHeight * 0.85);
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 10;
     // To store a pending onInteraction action and neccesary parameters

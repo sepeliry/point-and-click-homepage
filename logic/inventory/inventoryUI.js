@@ -7,7 +7,7 @@ class InventoryUI {
 
   static initialize(app) {
     this.app = app;
-    this.container.x = this.app.screen.width - 20;
+    this.container.x = window.innerWidth - 20;
     this.container.y = 20;
     this.app.stage.addChild(this.container);
 

@@ -50,10 +50,11 @@ class UI {
         const background = PIXI.Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
 
-        console.log(screen.height);
+        const targetHeight = window.innerHeight; // Target the full height of the window
+        const targetWidth = targetHeight * ASPECT_RATIO;
 
-        background.width = app.renderer.width;
-        background.height = app.renderer.height;
+        background.width = targetWidth;
+        background.height = targetHeight;
 
         container.addChild(background);
       }

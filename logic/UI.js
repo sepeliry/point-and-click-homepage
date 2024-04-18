@@ -1,5 +1,6 @@
 import { Container, Sprite, Text, Texture, AnimatedSprite } from "pixi.js";
 import { CRTFilter } from "@pixi/filter-crt";
+import { GlowFilter } from "@pixi/filter-glow";
 import { createWalkableAreas } from "./walkableArea.js";
 import { ASPECT_RATIO } from "../constants/constants.js";
 import Book from "./book.js";
@@ -69,19 +70,16 @@ class UI {
         // set / show mainScene by default
         app.mainScene = container;
         container.visible = true;
-      } else if (
-        sceneName === "mouseholeScene" &&
-        sceneData.animatedSpriteTextures
-      ) {
-        // Call the createAnimatedSprite method
-        this.createAnimatedSprite(
-          app,
-          sceneData.animatedSpriteTextures,
-          container
-        );
-        container.visible = false;
       } else {
         // hide other scenes by default
+
+        if (sceneData.animatedSpriteTextures) {
+          this.createAnimatedSprite(
+            app,
+            sceneData.animatedSpriteTextures,
+            container
+          );
+        }
         container.visible = false;
         // Calculate vertical centering
 
@@ -109,9 +107,32 @@ class UI {
         text.zIndex = itemData.zIndex;
         text.onStateChange = itemData.onStateChange;
         text.anchor.set(0.5, 0);
+
         if (itemData.identifier) {
           text.identifier = itemData.identifier;
         }
+
+        console.log(itemData);
+
+        if (itemData.onInteraction) {
+          text.interactive = true;
+          text.buttonMode = true;
+          text.eventMode = "dynamic";
+          text.cursor = "pointer";
+          text.on("pointerdown", itemData.onInteraction(app, text));
+
+          const glowEffect = new GlowFilter({
+            innerStrength: 0,
+            outerStrength: 1.8,
+            quality: 0.1,
+            alpha: 0.6,
+            color: "c061cb",
+          });
+          text.filters = [glowEffect];
+        } else {
+          text.interactive = false;
+        }
+
         container.addChild(text);
 
         // set code text for numpad scene

@@ -54,6 +54,10 @@ class UI {
         background.width = targetWidth;
         background.height = targetHeight;
 
+        if (sceneData.onStateChange) {
+          background.onStateChange = sceneData.onStateChange;
+        }
+
         container.addChild(background);
       }
 
@@ -99,8 +103,8 @@ class UI {
         const targetWidth = targetHeight * ASPECT_RATIO;
 
         const text = new Text(itemData.text, itemData.style);
-        text.x = itemData.location.x * 1;
-        text.y = itemData.location.y * 1;
+        text.x = itemData.location.x * targetWidth;
+        text.y = itemData.location.y * targetHeight;
         text.visible = true;
         text.zIndex = itemData.zIndex;
         text.onStateChange = itemData.onStateChange;

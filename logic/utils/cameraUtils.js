@@ -17,7 +17,6 @@ export const moveCamera = (app, cameraContainer, direction) => {
 };
 
 export const updateCamera = (app, cameraContainer, player) => {
-  console.log(window.innerHeight);
   /*
   if (window.innerWidth >= MAX_WIDTH) {
     cameraContainer.x = 0;

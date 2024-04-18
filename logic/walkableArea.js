@@ -38,7 +38,7 @@ export const createWalkableAreas = (app) => {
       walkableArea.beginFill(index === 0 ? 0x00ff00 : 0xffffff);
       walkableArea.drawPolygon(flatPoints);
       walkableArea.endFill();
-      walkableArea.visible = true;
+      walkableArea.visible = false;
       app.mainScene.addChild(walkableArea);
 
       // store the created area

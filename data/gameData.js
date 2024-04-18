@@ -4,7 +4,7 @@
 import Player from "../logic/player.js";
 import Numpad from "../logic/numpad.js";
 
-/* 
+/*
  * INTERACTIONS
  */
 import updateSpriteTexture from "../logic/interactions/updateSpriteTexture.js";
@@ -103,7 +103,6 @@ import button_0 from "../resources/images/numpad_scene/button0.png";
 import reset_button from "../resources/images/numpad_scene/resetButton.png";
 import enter_button from "../resources/images/numpad_scene/enterButton.png";
 
-
 const gameData = {
   mainScene: {
     background: main_scene_bg,
@@ -180,11 +179,7 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
-              [
-                sepeli_machine_1,
-                sepeli_machine_2,
-                sepeli_machine_3,
-              ],
+              [sepeli_machine_1, sepeli_machine_2, sepeli_machine_3],
               0.06,
               true
             );
@@ -217,9 +212,6 @@ const gameData = {
         image: numpad_small_closed,
         onStateChange: (app, item) => {
           if (gameState.hasUnlockedDoor) {
-            item.width = 128;
-            item.height = 80.2;
-            item.x = app.renderer.width / 2 + 96;
             updateSpriteTexture(item, numpad_small_open);
           }
         },
@@ -227,11 +219,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Lock",
         location: {
-          x: 0.55,
+          x: 0.565,
           y: 0.59,
         },
-        width: 74.6,
-        height: 80.2,
+        width: 1527 / 12,
+        height: 986 / 12,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
         onInteraction: (app) => () =>
@@ -373,8 +365,8 @@ const gameData = {
           x: 0.78,
           y: 0.82,
         },
-        width: 277 * 0.8,
-        height: 339 * 0.8,
+        width: 277,
+        height: 339,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
         onInteraction: (app) => () => {
@@ -604,9 +596,14 @@ const gameData = {
     ],
   },
   numpadScene: {
-    background: black_bg,
-    backgroundWidth: 1792,
+    background: numpad_scene_bg_closed,
+    backgroundWidth: 1796,
     backgroundHeight: 1024,
+    onStateChange: (app, item) => {
+      if (gameState.hasUnlockedDoor) {
+        updateSpriteTexture(item, numpad_scene_bg_open);
+      }
+    },
     items: [
       {
         image: backarrow_img,
@@ -649,6 +646,7 @@ const gameData = {
         },
         zIndex: 10,
       },
+      /*
       {
         image: numpad_scene_bg_closed,
         visible: true,
@@ -663,12 +661,13 @@ const gameData = {
           x: 0.5,
           y: 1,
         },
-        width: 1400,
-        height: 800,
+        width: 1792,
+        height: 1024,
         collisionHeight: 0, // not yet used
         onInteraction: null,
         zIndex: 0,
       },
+*/
       {
         image: red_button_img,
         visible: false,
@@ -683,8 +682,8 @@ const gameData = {
           x: 0.5,
           y: 0.666,
         },
-        width: 323 * 0.8,
-        height: 319 * 0.8,
+        width: 323,
+        height: 319,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           gameState.hasCompletedGame = true;
@@ -721,8 +720,8 @@ const gameData = {
           lineHeight: 117,
         },
         location: {
-          x: 700,
-          y: 196,
+          x: 0.5,
+          y: 0.25,
         },
         zIndex: 12,
         onInteraction: null,
@@ -1020,10 +1019,7 @@ const gameData = {
     background: mousehole_scene_bg_1,
     backgroundWidth: 1400,
     backgroundHeight: 800,
-    animatedSpriteTextures: [
-      mousehole_scene_bg_1,
-      mousehole_scene_bg_2,
-    ],
+    animatedSpriteTextures: [mousehole_scene_bg_1, mousehole_scene_bg_2],
     items: [
       {
         image: backarrow_img,

@@ -23,8 +23,8 @@ import openPopup from "./interactions/openPopup.js";
 import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
 
 function setupPixiApp() {
-  let targetHeight = window.innerHeight; // Target the full height of the window
-  let targetWidth = targetHeight * ASPECT_RATIO; // Calculate width based on aspect ratio
+  const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
+  const targetWidth = targetHeight * ASPECT_RATIO; // Calculate width based on aspect ratio
 
   const app = new Application({
     width: targetWidth,
@@ -73,6 +73,13 @@ function onGameStateChange(property, newValue, oldValue) {
   Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
     if (sceneData.children) {
       const childrenCopy = [...sceneData.children]; // Shallow copy of the children array
+
+      const sceneBackground = childrenCopy[0];
+
+      if (sceneBackground.onStateChange) {
+        sceneBackground.onStateChange(app, sceneBackground);
+      }
+
       childrenCopy.forEach((item) => {
         if (!item.onStateChange) {
           return;

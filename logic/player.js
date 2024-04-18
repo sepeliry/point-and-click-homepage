@@ -63,7 +63,9 @@ class Player {
     // Create player sprite with idle animation
     Player.player = new PIXI.AnimatedSprite(Player.playerIdleFrames);
 
-    const targetHeight = window.innerHeight; // Target the full height of the window
+    console.log(window.innerHeight);
+    console.log(screen.height);
+    const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
     const targetWidth = targetHeight * ASPECT_RATIO;
 
     Player.player.position.set(targetWidth / 2, targetHeight * 0.85);

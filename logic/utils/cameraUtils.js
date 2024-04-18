@@ -26,7 +26,7 @@ export const updateCamera = (app, cameraContainer, player) => {
   }
   */
 
-  const targetHeight = window.innerHeight; // Always use the full height of the window
+  const targetHeight = Math.min(window.innerHeight, screen.height); // Always use the full height of the window
   let targetWidth = targetHeight * ASPECT_RATIO; // Calculate width based on the aspect ratio
 
   // Check if the calculated width exceeds the window's width

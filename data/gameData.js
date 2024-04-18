@@ -436,7 +436,7 @@ const gameData = {
       {
         image: backArrowImage,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         name: "Back button",
         location: {
           x: 0.1,
@@ -593,7 +593,7 @@ const gameData = {
       {
         image: backArrowImage,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         name: "Back button",
         location: {
           x: 0.1,
@@ -1010,7 +1010,7 @@ const gameData = {
       {
         image: backArrowImage,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         onStateChange: null,
         name: "Back button",
         location: {
@@ -1057,7 +1057,7 @@ const gameData = {
       {
         image: backArrowImage,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         name: "Back button",
         location: {
           x: 0.1,
@@ -1133,7 +1133,7 @@ const gameData = {
       {
         image: backArrowImage,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         name: "Back button",
         location: {
           x: 0.1,

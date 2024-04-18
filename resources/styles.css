@@ -74,7 +74,7 @@ body {
 
 #wiki-wrapper {
   position: absolute;
-  bottom: 75px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -84,7 +84,7 @@ body {
   background-color: rgb(255, 245, 212);
   color: black;
   overflow-y: auto;
-  padding: 80px;
+  padding: 20px;
   box-sizing: border-box;
   display: none; /* Hidden by default */
 }

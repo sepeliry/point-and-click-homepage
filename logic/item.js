@@ -33,7 +33,7 @@ class Item {
   }
 
   initializeSprite(app, container, itemData) {
-    const targetHeight = window.innerHeight; // Target the full height of the window
+    const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
     const targetWidth = targetHeight * ASPECT_RATIO;
 
     this.sprite.x = itemData.location.x * targetWidth;

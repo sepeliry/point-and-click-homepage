@@ -99,7 +99,7 @@ function projectPointOntoLineSegment(px, py, ax, ay, bx, by) {
 }
 
 let targetPosition;
-
+const walkableAreas = createWalkableAreas(app);
 // Handle click event on the stage
 app.mainScene.eventMode = "static"; // Enable interaction
 app.mainScene.on("pointertap", (event) => {
@@ -114,7 +114,7 @@ app.mainScene.on("pointertap", (event) => {
     Player.player.pendingAction = null;
     Player.player.checkDistanceParams = null;
   }
-  const walkableAreas = createWalkableAreas(app);
+
   let insideAnyWalkableArea = false;
   let closestProjection = null;
   let minDistance = Infinity;

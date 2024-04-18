@@ -14,6 +14,7 @@ import { createWalkableAreas } from "./walkableArea.js";
 import InventoryUI from "./inventory/inventoryUI.js";
 import DesktopIcon from "./desktopIcon.js";
 import ITEM_TYPES from "../constants/itemTypes.js";
+import BackButton from "./backButton.js";
 
 class UI {
   static solidObjects = null;
@@ -50,7 +51,7 @@ class UI {
         const background = PIXI.Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
 
-        const targetHeight = window.innerHeight; // Target the full height of the window
+        const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
         const targetWidth = targetHeight * ASPECT_RATIO;
 
         background.width = targetWidth;
@@ -81,6 +82,14 @@ class UI {
       } else {
         // hide other scenes by default
         container.visible = false;
+        // Calculate vertical centering
+
+        const containerBounds = container.getBounds();
+        const containerWidth = containerBounds.width;
+
+        // Center the container horizontally so only the center is visible
+        const screenWidth = window.innerWidth; // Get the current width of the screen
+        container.x = screenWidth / 2 - containerWidth / 2 - containerBounds.x;
       }
     });
   }
@@ -132,8 +141,9 @@ class UI {
           UI.solidObjects.push(item);
           //  }
         }
-      }
-      if (itemData.type === "Book") {
+      } else if (itemData.type === ITEM_TYPES.backButton) {
+        const backButton = new BackButton(app, container, itemData);
+      } else if (itemData.type === ITEM_TYPES.book) {
         // Create a Book instance instead of an Item instance
         const book = new Book(
           app,
@@ -174,6 +184,7 @@ class UI {
     const cameraContainer = new PIXI.Container();
     app.cameraContainer = cameraContainer;
     cameraContainer.addChild(app.mainScene);
+
     app.stage.addChild(cameraContainer);
   }
 }

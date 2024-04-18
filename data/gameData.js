@@ -385,6 +385,7 @@ const gameData = {
           animationSpeed: 0.02,
           loop: true,
           interval: 3000, //ms
+          zIndex: 0,
         },
         location: {
           x: 0.875,

@@ -62,7 +62,11 @@ class Player {
     Player.app = app;
     // Create player sprite with idle animation
     Player.player = new PIXI.AnimatedSprite(Player.playerIdleFrames);
-    Player.player.position.set(450, 620);
+
+    Player.player.position.set(
+      app.renderer.width / 2,
+      app.renderer.height - 160
+    );
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 10;
     // To store a pending onInteraction action and neccesary parameters

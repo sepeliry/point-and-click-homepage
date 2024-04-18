@@ -33,8 +33,8 @@ class Item {
   }
 
   initializeSprite(app, container, itemData) {
-    this.sprite.x = itemData.location.x * 1400;
-    this.sprite.y = itemData.location.y * 800;
+    this.sprite.x = itemData.location.x * app.renderer.width;
+    this.sprite.y = itemData.location.y * app.renderer.height;
     this.sprite.zIndex = itemData.zIndex || 1;
     this.sprite.name = itemData.name;
     this.sprite.height = itemData.height;
@@ -56,7 +56,7 @@ class Item {
         outerStrength: 1.8,
         quality: 0.1,
         alpha: 0.6,
-        color: 'c061cb'
+        color: "c061cb",
       });
       this.sprite.filters = [glowEffect];
     } else {
@@ -64,6 +64,12 @@ class Item {
     }
 
     this.sprite.visible = itemData.visible;
+
+    if (itemData.name === "Back button") {
+      this.sprite.anchor.set(0, 0); // Anchor top-left corner
+      this.sprite.x = 0;
+      this.sprite.y = 0;
+    }
 
     // add the item to its container/scene
     container.addChild(this.sprite);

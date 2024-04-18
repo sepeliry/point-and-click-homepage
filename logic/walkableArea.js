@@ -2,10 +2,10 @@ import * as PIXI from "pixi.js";
 
 export const WALKABLE_AREA_POINTS = [
   [
-    new PIXI.Point(470, 580), // upper left corner (x, y)
-    new PIXI.Point(880, 580), // upper right corner (x, y)
-    new PIXI.Point(1300, 800), // bottom right corner (x, y)
-    new PIXI.Point(200, 800), // bottom left corner (x, y)
+    new PIXI.Point(500, window.innerHeight / 1.4), // upper left corner (x, y)
+    new PIXI.Point(1100, window.innerHeight / 1.4), // upper right corner (x, y)
+    new PIXI.Point(1450, window.innerHeight - 20), // bottom right corner (x, y)
+    new PIXI.Point(250, window.innerHeight - 20), // bottom left corner (x, y)
   ],
   /*
   [
@@ -38,7 +38,7 @@ export const createWalkableAreas = (app) => {
       walkableArea.beginFill(index === 0 ? 0x00ff00 : 0xffffff);
       walkableArea.drawPolygon(flatPoints);
       walkableArea.endFill();
-      walkableArea.visible = false;
+      walkableArea.visible = true;
       app.mainScene.addChild(walkableArea);
 
       // store the created area

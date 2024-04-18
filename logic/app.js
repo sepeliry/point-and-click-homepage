@@ -1,27 +1,38 @@
 import * as PIXI from "pixi.js";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
-
+import { ASPECT_RATIO } from "../constants/constants.js";
 import UI from "./UI";
 import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
-import { followPlayer } from "./utils/cameraUtils.js";
+import { followPlayer, updateCamera } from "./utils/cameraUtils.js";
 import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
 
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
-// isMobile = true enables the cameraContainer
-window.isMobile = windowWidth <= 800;
+function setupPixiApp() {
+  let targetHeight = window.innerHeight; // Target the full height of the window
+  let targetWidth = targetHeight * ASPECT_RATIO; // Calculate width based on aspect ratio
 
-// Create application on page load. desktop: 1400x800, mobile: use screensize
-const app = new PIXI.Application({
-  width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
-  height: window.isMobile ? Math.min(windowHeight, 800) : 800,
-  backgroundColor: 0xaaaaaa,
-});
+  const app = new PIXI.Application({
+    width: targetWidth,
+    height: targetHeight,
+    backgroundColor: 0x000000,
+    resolution: window.devicePixelRatio || 1, // Consider device pixel ratio for high DPI screens
+    autoDensity: true, // Adjust for device density
+  });
+
+  document.body.appendChild(app.view);
+  app.view.style.display = "block"; // Ensure the canvas uses full available space and no margins interfere
+
+  app.renderer.resize(targetWidth, targetHeight);
+  // app.screen.width = targetWidth;
+
+  return app;
+}
+
+const app = setupPixiApp();
 
 globalThis.__PIXI_APP__ = app;
 document.getElementById("game-container").appendChild(app.view);
@@ -33,6 +44,9 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);
+
+// update camera initially
+updateCamera(app, app.cameraContainer, Player.player);
 
 // this function should be run when the state changes (called from gameState.js)
 function onGameStateChange(property, newValue, oldValue) {
@@ -265,7 +279,7 @@ app.ticker.add((delta) => {
       //console.log(distance);
     } else {
       player.move(player.targetPosition, UI.solidObjects);
-      followPlayer(app, app.cameraContainer, Player.player);
+      updateCamera(app, app.cameraContainer, Player.player);
       app.mainScene.updateTransform();
     }
   }
@@ -274,19 +288,23 @@ app.ticker.add((delta) => {
 document.addEventListener("DOMContentLoaded", () => {
   openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
   // resize to window size
-  followPlayer(app, app.cameraContainer, Player.player);
-  resizeGame(app, app.mainScene);
+  //  followPlayer(app, app.cameraContainer, Player.player);
+  // resizeGame(app, app.mainScene);
 });
 
 window.addEventListener("resize", () => {
+  updateCamera(app, app.cameraContainer, Player.player);
+
+  /*
   for (let sceneName in app.scenes) {
     resizeGame(app, app.scenes[sceneName]);
   }
+  */
 });
 
 document.addEventListener("fullscreenchange", () => {
   for (let sceneName in app.scenes) {
-    resizeGame(app, app.scenes[sceneName]);
+    // resizeGame(app, app.scenes[sceneName]);
   }
 });
 

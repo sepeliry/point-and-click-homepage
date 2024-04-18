@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import { resizeGame } from "./utils/resize";
 import { checkDistance } from "./interactions/distanceCheckUtils.js";
 import { generateWikiList, showWikiList } from "./utils/markdownUtils.js";
-
+import { ASPECT_RATIO } from "../constants/constants.js";
 import { CRTFilter } from "@pixi/filter-crt";
 import { followPlayer, moveCamera } from "./utils/cameraUtils.js";
 import Book from "./book.js";
@@ -28,6 +28,8 @@ class UI {
 
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
+    // Create a camera container for the mobile view
+    this.createCameraContainer(app);
     createWalkableAreas(app);
     InventoryUI.initialize(app);
   }
@@ -47,14 +49,12 @@ class UI {
       if (sceneData.background) {
         const background = PIXI.Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
-        if (sceneName === "mainScene" && window.isMobile) {
-          // To support cameraContainer on mobile, set mainScene size to match gameworlds size
-          background.width = 1400;
-          background.height = 800;
-        } else {
-          background.width = app.renderer.width;
-          background.height = app.renderer.height;
-        }
+
+        console.log(screen.height);
+
+        background.width = app.renderer.width;
+        background.height = app.renderer.height;
+
         container.addChild(background);
       }
 
@@ -81,8 +81,6 @@ class UI {
         // hide other scenes by default
         container.visible = false;
       }
-      // Create a camera container for the mobile view
-      this.createCameraContainer(app);
     });
   }
 
@@ -169,15 +167,13 @@ class UI {
   }
 
   createCameraContainer(app) {
-    if (window.isMobile) {
-      let gameContainerDOM = document.getElementById("game-container");
-      gameContainerDOM.style.width = `${app.view.width}px`;
-      gameContainerDOM.style.height = `${app.view.height}px`;
-      const cameraContainer = new PIXI.Container();
-      app.cameraContainer = cameraContainer;
-      cameraContainer.addChild(app.mainScene);
-      app.stage.addChild(cameraContainer);
-    }
+    let gameContainerDOM = document.getElementById("game-container");
+    // gameContainerDOM.style.width = `${app.view.width}px`;
+    // gameContainerDOM.style.height = `${app.view.height}px`;
+    const cameraContainer = new PIXI.Container();
+    app.cameraContainer = cameraContainer;
+    cameraContainer.addChild(app.mainScene);
+    app.stage.addChild(cameraContainer);
   }
 }
 

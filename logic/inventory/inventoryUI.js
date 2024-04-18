@@ -7,9 +7,19 @@ class InventoryUI {
 
   static initialize(app) {
     this.app = app;
-    this.container.x = this.app.screen.width - 20;
+    this.container.x = window.innerWidth - 20;
     this.container.y = 20;
     this.app.stage.addChild(this.container);
+
+    window.addEventListener("resize", () => this.adjustPosition());
+  }
+
+  static adjustPosition() {
+    // Update the position only if the window width is less than 1400 or choose the smaller between 1400 and window.innerWidth
+    if (this.app) {
+      const maxScreenWidth = Math.min(1400, window.innerWidth);
+      this.container.x = maxScreenWidth - 20;
+    }
   }
 
   static updateInventoryUI() {

@@ -17,8 +17,8 @@ class Popup {
     let popupWidth = 600;
     const padding = 20;
 
-    if (this.app.screen.width <= 800) {
-      popupWidth = this.app.screen.width - 40;
+    if (window.innerWidth <= 800) {
+      popupWidth = window.innerWidth - 20;
     }
 
     const popupHeight = 90;
@@ -46,11 +46,11 @@ class Popup {
 
     // position of the popup
     if (!this.position) {
-      this.container.x = (this.app.screen.width - popupWidth) / 2;
-      this.container.y = this.app.screen.height - popupHeight - 20;
+      this.container.x = (window.innerWidth - popupWidth) / 2;
+      this.container.y = window.innerHeight - popupHeight - 20;
     } else {
-      this.container.x = this.position.x * this.app.screen.width;
-      this.container.y = this.position.y * this.app.screen.height;
+      this.container.x = this.position.x * window.innerWidth;
+      this.container.y = this.position.y * window.innerHeight;
     }
 
     this.app.stage.addChild(this.container);

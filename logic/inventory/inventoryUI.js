@@ -54,23 +54,72 @@ class InventoryUI {
       itemContainer.addChild(bg);
       itemContainer.addChild(itemSprite);
 
-      itemContainer.interactive = true;
-      itemContainer.buttonMode = true;
+      itemContainer.eventMode = "static";
+      // itemContainer.buttonMode = true;
       itemContainer.cursor = "pointer";
       itemContainer.on("pointerdown", () =>
         this.onItemClicked(itemContainer, entry, index)
       );
-
+      this.makeItemDraggable(itemContainer, entry);
       // Set the position of each item container within the main container
       itemContainer.x = -BG_WIDTH; // Reset this if needed to align correctly
       itemContainer.y = index * (BG_HEIGHT + 20); // Stack items vertically
 
       this.container.addChild(itemContainer);
+      this.adjustPosition();
     });
   }
 
   static onItemClicked(itemContainer, entry, index) {
     console.log(`Item clicked: ${entry.item}, at index: ${index}`);
+  }
+
+  static makeItemDraggable(itemContainer, entry) {
+    if (entry.item !== "Coffee") {
+      return;
+    }
+    let draggedItem = null;
+
+    const onDragMove = (event) => {
+      if (draggedItem) {
+        this.app.mainScene.toLocal(
+          event.data.global,
+          null,
+          draggedItem.position
+        );
+      }
+    };
+
+    const onDragEnd = () => {
+      if (draggedItem) {
+        this.app.mainScene.removeChild(draggedItem);
+        console.log("Item dropped at: ", draggedItem.x, draggedItem.y);
+        draggedItem = null;
+
+        // Remove the pointermove event listener from the mainScene
+        this.app.mainScene.off("pointermove", onDragMove);
+      }
+    };
+
+    const onDragStart = (event) => {
+      if (this.app.mainScene.visible) {
+        draggedItem = new Sprite(entry.sprite.texture);
+        draggedItem.anchor.set(0.5);
+        draggedItem.alpha = 0.6;
+        this.app.mainScene.toLocal(
+          event.data.global,
+          null,
+          draggedItem.position
+        );
+        this.app.mainScene.addChild(draggedItem);
+
+        this.app.mainScene.on("pointermove", onDragMove);
+      }
+    };
+    // Add event listeners to the itemContainer
+    itemContainer.on("pointerup", onDragEnd);
+    itemContainer.on("pointerupoutside", onDragEnd);
+    itemContainer.on("pointerdown", onDragStart);
   }
 }
 

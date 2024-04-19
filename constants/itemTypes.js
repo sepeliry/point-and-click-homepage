@@ -17,6 +17,7 @@ const ITEM_TYPES = new Proxy(
     book: "Book",
     desktopIcon: "Desktop Icon",
     text: "Text",
+    backButton: "Back Button",
   },
   itemTypesHandler
 );

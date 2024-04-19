@@ -2,23 +2,23 @@ import { Point, Graphics } from "pixi.js";
 
 export const WALKABLE_AREA_POINTS = [
   [
-    new Point(470, 580), // upper left corner (x, y)
-    new Point(880, 580), // upper right corner (x, y)
-    new Point(1300, 800), // bottom right corner (x, y)
-    new Point(200, 800), // bottom left corner (x, y)
+    new Point(500, window.innerHeight / 1.4), // upper left corner (x, y)
+    new Point(1100, window.innerHeight / 1.4), // upper right corner (x, y)
+    new Point(1450, window.innerHeight - 20), // bottom right corner (x, y)
+    new Point(250, window.innerHeight - 20), // bottom left corner (x, y)
   ],
   /*
   [
-    new PIXI.Point(370, 570), // upper left corner (x, y)
-    new PIXI.Point(450, 570), // upper right corner (x, y)
-    new PIXI.Point(370, 640), // bottom right corner (x, y)
-    new PIXI.Point(300, 640), // bottom left corner (x, y)
+    new Point(370, 570), // upper left corner (x, y)
+    new Point(450, 570), // upper right corner (x, y)
+    new Point(370, 640), // bottom right corner (x, y)
+    new Point(300, 640), // bottom left corner (x, y)
   ],
   [
-    new PIXI.Point(950, 570), // upper left corner (x, y)
-    new PIXI.Point(1050, 570), // upper right corner (x, y)
-    new PIXI.Point(1100, 600), // bottom right corner (x, y)
-    new PIXI.Point(997, 600), // bottom left corner (x, y)
+    new Point(950, 570), // upper left corner (x, y)
+    new Point(1050, 570), // upper right corner (x, y)
+    new Point(1100, 600), // bottom right corner (x, y)
+    new Point(997, 600), // bottom left corner (x, y)
   ],
   */
 ];

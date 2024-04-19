@@ -4,7 +4,7 @@
 import Player from "../logic/player.js";
 import Numpad from "../logic/numpad.js";
 
-/* 
+/*
  * INTERACTIONS
  */
 import updateSpriteTexture from "../logic/interactions/updateSpriteTexture.js";
@@ -65,7 +65,6 @@ import article_3 from "../resources/images/main_scene/article_3.png";
 // Arcade scene images
 import arcade_scene_bg from "../resources/images/arcade_scene/background.png";
 import telegraph_icon from "../resources/images/arcade_scene/telegraph_icon_upscaled.png";
-import vorax_icon from "../resources/images/arcade_scene/vorax_icon_upscaled.png";
 import on_time_icon from "../resources/images/arcade_scene/ontime_icon_upscaled.png";
 
 // Computer scene images
@@ -189,11 +188,7 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
-              [
-                sepeli_machine_1,
-                sepeli_machine_2,
-                sepeli_machine_3,
-              ],
+              [sepeli_machine_1, sepeli_machine_2, sepeli_machine_3],
               0.06,
               true
             );
@@ -226,9 +221,6 @@ const gameData = {
         image: numpad_small_closed,
         onStateChange: (app, item) => {
           if (gameState.hasUnlockedDoor) {
-            item.width = 128;
-            item.height = 80.2;
-            item.x = app.renderer.width / 2 + 96;
             updateSpriteTexture(item, numpad_small_open);
           }
         },
@@ -236,11 +228,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Lock",
         location: {
-          x: 0.55,
+          x: 0.565,
           y: 0.59,
         },
-        width: 74.6,
-        height: 80.2,
+        width: 1527 / 12,
+        height: 986 / 12,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
         onInteraction: (app) => () =>
@@ -371,8 +363,8 @@ const gameData = {
           x: 0.325,
           y: 0.708,
         },
-        width: 191,
-        height: 292,
+        width: 191 * 1.2,
+        height: 292 * 1.2,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
           checkDistance(app, 0.33, 0.73, "bookshelfScene", () =>
@@ -433,8 +425,8 @@ const gameData = {
           x: 0.78,
           y: 0.82,
         },
-        width: 277 * 0.8,
-        height: 339 * 0.8,
+        width: 277,
+        height: 339,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
         onInteraction: (app) => () => {
@@ -514,7 +506,7 @@ const gameData = {
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         name: "Back button",
         location: {
           x: 0.1,
@@ -664,14 +656,19 @@ const gameData = {
     ],
   },
   numpadScene: {
-    background: black_bg,
-    backgroundWidth: 1792,
+    background: numpad_scene_bg_closed,
+    backgroundWidth: 1796,
     backgroundHeight: 1024,
+    onStateChange: (app, item) => {
+      if (gameState.hasUnlockedDoor) {
+        updateSpriteTexture(item, numpad_scene_bg_open);
+      }
+    },
     items: [
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         name: "Back button",
         location: {
           x: 0.1,
@@ -709,6 +706,7 @@ const gameData = {
         },
         zIndex: 10,
       },
+      /*
       {
         image: numpad_scene_bg_closed,
         visible: true,
@@ -723,12 +721,13 @@ const gameData = {
           x: 0.5,
           y: 1,
         },
-        width: 1400,
-        height: 800,
+        width: 1792,
+        height: 1024,
         collisionHeight: 0, // not yet used
         onInteraction: null,
         zIndex: 0,
       },
+*/
       {
         image: red_button_img,
         visible: false,
@@ -743,8 +742,8 @@ const gameData = {
           x: 0.5,
           y: 0.666,
         },
-        width: 323 * 0.8,
-        height: 319 * 0.8,
+        width: 323,
+        height: 319,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           gameState.hasCompletedGame = true;
@@ -778,11 +777,10 @@ const gameData = {
           strokeThickness: 1,
           wordWrap: false,
           wordWrapWidth: 600,
-          lineHeight: 117,
         },
         location: {
-          x: 700,
-          y: 196,
+          x: 0.5,
+          y: 0.3,
         },
         zIndex: 12,
         onInteraction: null,
@@ -1080,15 +1078,12 @@ const gameData = {
     background: mousehole_scene_bg_1,
     backgroundWidth: 1400,
     backgroundHeight: 800,
-    animatedSpriteTextures: [
-      mousehole_scene_bg_1,
-      mousehole_scene_bg_2,
-    ],
+    animatedSpriteTextures: [mousehole_scene_bg_1, mousehole_scene_bg_2],
     items: [
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         onStateChange: null,
         name: "Back button",
         location: {
@@ -1100,6 +1095,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
+
           if (gameState.inventory.itemExists("PostIt 2")) {
             Player.maximizePlayer();
           }
@@ -1135,7 +1131,7 @@ const gameData = {
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         name: "Back button",
         location: {
           x: 0.1,
@@ -1188,7 +1184,7 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Coffee cup",
         location: {
-          x: 0.33,
+          x: 0.42,
           y: 0.73,
         },
         width: 100,
@@ -1211,7 +1207,7 @@ const gameData = {
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.item,
+        type: ITEM_TYPES.backButton,
         name: "Back button",
         location: {
           x: 0.1,
@@ -1220,59 +1216,101 @@ const gameData = {
         width: 164,
         height: 101,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => switchScene(app, "mainScene"),
+        onInteraction: (app) => () => {
+          switchScene(app, "mainScene");
+          if (gameState.inventory.itemExists("PostIt 2")) {
+            Player.maximizePlayer();
+          }
+        },
         zIndex: 10,
       },
+
       {
-        image: telegraph_icon,
+        type: ITEM_TYPES.text,
         visible: true,
-        type: ITEM_TYPES.desktopIcon,
-        title: "Telegraph",
-        name: "Telegraph game",
-        location: {
-          x: 0.42,
-          y: 0.49,
-        },
-        width: 64,
-        height: 64,
-        collisionHeight: 0, // not yet used
         onInteraction: (app) => () =>
           openUrlInNewTab("https://exigo.itch.io/telegraph-operator"),
-        zIndex: 1,
-      },
-      {
-        image: vorax_icon,
-        visible: true,
-        type: ITEM_TYPES.desktopIcon,
-        title: "Vorax",
-        name: "Vorax game",
+        text: "Telegraph",
+        identifier: "telegraphGameText",
+        style: {
+          breakWords: true,
+          dropShadow: true,
+          dropShadowAlpha: 0.1,
+          dropShadowAngle: 0.6,
+          dropShadowDistance: 3,
+          fill: "#fff0ff",
+          fontFamily: "VCR_OSD_MONO",
+          fontSize: 40,
+          align: "center",
+          fontWeight: "bold",
+          stroke: "#edceeb",
+          strokeThickness: 1,
+          wordWrap: false,
+          wordWrapWidth: 600,
+        },
         location: {
           x: 0.5,
-          y: 0.49,
+          y: 0.4,
         },
-        width: 64,
-        height: 64,
-        collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          openUrlInNewTab("https://exigo.itch.io/vorax"),
-        zIndex: 1,
+        zIndex: 12,
       },
       {
-        image: on_time_icon,
+        type: ITEM_TYPES.text,
         visible: true,
-        type: ITEM_TYPES.desktopIcon,
-        title: "On Time",
-        name: "On Time game",
-        location: {
-          x: 0.58,
-          y: 0.49,
+        onInteraction: (app) => () =>
+          openUrlInNewTab("https://exigo.itch.io/vorax"),
+        text: "Vorax",
+        identifier: "voraxGameText",
+        style: {
+          breakWords: true,
+          dropShadow: true,
+          dropShadowAlpha: 0.1,
+          dropShadowAngle: 0.6,
+          dropShadowDistance: 3,
+          fill: "#fff0ff",
+          fontFamily: "VCR_OSD_MONO",
+          fontSize: 40,
+          align: "center",
+          fontWeight: "bold",
+          stroke: "#edceeb",
+          strokeThickness: 1,
+          wordWrap: false,
+          wordWrapWidth: 600,
         },
-        width: 64,
-        height: 64,
-        collisionHeight: 0, // not yet used
+        location: {
+          x: 0.5,
+          y: 0.5,
+        },
+        zIndex: 12,
+      },
+      {
+        type: ITEM_TYPES.text,
+        visible: true,
         onInteraction: (app) => () =>
           openUrlInNewTab("https://serialkamikaze.itch.io/on-time"),
-        zIndex: 1,
+        text: "On Time",
+        identifier: "onTimeGameText",
+        style: {
+          breakWords: true,
+          dropShadow: true,
+          dropShadowAlpha: 0.1,
+          dropShadowAngle: 0.6,
+          dropShadowDistance: 3,
+          fill: "#fff0ff",
+          fontFamily: "VCR_OSD_MONO",
+          fontSize: 40,
+          align: "center",
+          fontWeight: "bold",
+          stroke: "#edceeb",
+          strokeThickness: 1,
+          wordWrap: false,
+          wordWrapWidth: 600,
+        },
+        location: {
+          x: 0.5,
+          y: 0.6,
+        },
+        zIndex: 12,
       },
     ],
   },

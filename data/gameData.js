@@ -276,8 +276,8 @@ const gameData = {
           x: 0.866,
           y: 0.51,
         },
-        width: 114 * 0.43,
-        height: 216 * 0.43,
+        width: 114 * 0.51,
+        height: 216 * 0.51,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => displayArticleImg(article_img_1),
         zIndex: 1,
@@ -291,15 +291,15 @@ const gameData = {
         name: "Article_2",
         location: {
           x: 0.711,
-          y: 0.48,
+          y: 0.479,
         },
-        width: 162 * 0.45,
-        height: 149 * 0.45,
+        width: 162 * 0.52,
+        height: 149 * 0.52,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => displayArticleImg(article_img_2),
         zIndex: 1,
       },
-      /*{
+      {
         visible: true,
         image: article_3,
         onStateChange: null,
@@ -307,15 +307,15 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Article_3",
         location: {
-          x: 0.801,
-          y: 0.465,
+          x: 0.802,
+          y: 0.46,
         },
-        width: 153 * 0.66,
-        height: 100 * 0.645,
+        width: 248 * 0.5,
+        height: 153 * 0.5,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => displayArticleImg(article_img_3),
         zIndex: 1,
-      },*/
+      },
       {
         visible: true,
         type: ITEM_TYPES.item,

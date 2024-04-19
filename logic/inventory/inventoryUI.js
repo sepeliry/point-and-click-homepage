@@ -1,6 +1,7 @@
 import { Container, Graphics, Sprite, Point, Rectangle } from "pixi.js";
 import gameState from "../../data/gameState";
 import openPopup from "../interactions/openPopup";
+import Player from "../player";
 
 class InventoryUI {
   static container = new Container();
@@ -79,6 +80,7 @@ class InventoryUI {
     if (entry.item !== "Coffee") {
       return;
     }
+    const player = Player.player;
     let draggedItem = null;
 
     const onDragMove = (event) => {
@@ -93,7 +95,6 @@ class InventoryUI {
 
     const onDragEnd = (event) => {
       if (draggedItem) {
-        console.log("Item dropped at: ", draggedItem.x, draggedItem.y);
         // A rectangle to represent the coffee maker's bounds
         let coffeeMakerBounds = new Rectangle(
           this.app.coffeeMaker.sprite.x - this.app.coffeeMaker.sprite.width / 2,
@@ -102,8 +103,7 @@ class InventoryUI {
           this.app.coffeeMaker.sprite.height
         );
         if (coffeeMakerBounds.contains(draggedItem.x, draggedItem.y)) {
-          console.log("Drag ended over the coffee maker");
-          openPopup(this.app, "Nyt tulee tujut kahvit!");
+          checkDistance();
         }
         this.app.mainScene.removeChild(draggedItem);
         draggedItem = null;
@@ -131,6 +131,24 @@ class InventoryUI {
     itemContainer.on("pointerup", onDragEnd);
     itemContainer.on("pointerupoutside", onDragEnd);
     itemContainer.on("pointerdown", onDragStart);
+    // To check if the player is close enough to the coffee maker
+    const checkDistance = () => {
+      if (!player) return;
+      const distance = Math.sqrt(
+        (player.x - this.app.coffeeMaker.sprite.x) ** 2 +
+          (player.y - this.app.coffeeMaker.sprite.y) ** 2
+      );
+      const maxDistance = 250;
+      if (distance <= maxDistance) {
+        if (gameState.inventory.itemExists("Coffee cup")) {
+          openPopup(this.app, "Nyt tulee tujut kahvit!");
+        } else {
+          openPopup(this.app, "Tuleepas tujut kahvit, mutta kuppi puuttuu...");
+        }
+      } else {
+        openPopup(this.app, "En aivan ylety kahvinkeittimeen.");
+      }
+    };
   }
 }
 

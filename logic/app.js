@@ -40,6 +40,10 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
   document.getElementById("wiki-wrapper").style.display = "none";
 });
 
+document.getElementById("hide-article-img").addEventListener("click", () => {
+  document.getElementById("article-img-container").style.display = "none";
+})
+
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);

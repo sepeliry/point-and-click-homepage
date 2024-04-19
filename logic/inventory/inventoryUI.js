@@ -1,5 +1,6 @@
-import { Container, Graphics, Sprite } from "pixi.js";
+import { Container, Graphics, Sprite, Point, Rectangle } from "pixi.js";
 import gameState from "../../data/gameState";
+import openPopup from "../interactions/openPopup";
 
 class InventoryUI {
   static container = new Container();
@@ -90,12 +91,22 @@ class InventoryUI {
       }
     };
 
-    const onDragEnd = () => {
+    const onDragEnd = (event) => {
       if (draggedItem) {
-        this.app.mainScene.removeChild(draggedItem);
         console.log("Item dropped at: ", draggedItem.x, draggedItem.y);
+        // A rectangle to represent the coffee maker's bounds
+        let coffeeMakerBounds = new Rectangle(
+          this.app.coffeeMaker.sprite.x - this.app.coffeeMaker.sprite.width / 2,
+          this.app.coffeeMaker.sprite.y - this.app.coffeeMaker.sprite.height,
+          this.app.coffeeMaker.sprite.width,
+          this.app.coffeeMaker.sprite.height
+        );
+        if (coffeeMakerBounds.contains(draggedItem.x, draggedItem.y)) {
+          console.log("Drag ended over the coffee maker");
+          openPopup(this.app, "Nyt tulee tujut kahvit!");
+        }
+        this.app.mainScene.removeChild(draggedItem);
         draggedItem = null;
-
         // Remove the pointermove event listener from the mainScene
         this.app.mainScene.off("pointermove", onDragMove);
       }

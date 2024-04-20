@@ -168,10 +168,6 @@ class UI {
           //  if (itemData.name === "Box" || itemData.name === "Computer Desk") {
           UI.solidObjects.push(item);
           //  }
-          // Store a reference to the coffee maker for use in inventoryUI.js
-          if (itemData.name === "Coffee maker") {
-            app.coffeeMaker = item;
-          }
         }
       } else if (itemData.type === ITEM_TYPES.backButton) {
         const backButton = new BackButton(app, container, itemData);

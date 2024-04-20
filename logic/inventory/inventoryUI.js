@@ -2,6 +2,7 @@ import { Container, Graphics, Sprite, Point, Rectangle } from "pixi.js";
 import gameState from "../../data/gameState";
 import openPopup from "../interactions/openPopup";
 import Player from "../player";
+import Item from "../item";
 
 class InventoryUI {
   static container = new Container();
@@ -30,7 +31,6 @@ class InventoryUI {
 
     const items = gameState.inventory.getItems();
     this.container.removeChildren();
-
     items.forEach((entry, index) => {
       const itemContainer = new Container();
 
@@ -62,7 +62,7 @@ class InventoryUI {
       itemContainer.on("pointerdown", () =>
         this.onItemClicked(itemContainer, entry, index)
       );
-      this.makeItemDraggable(itemContainer, entry);
+      this.makeItemDraggable(itemContainer, entry, itemSprite);
       // Set the position of each item container within the main container
       itemContainer.x = -BG_WIDTH; // Reset this if needed to align correctly
       itemContainer.y = index * (BG_HEIGHT + 20); // Stack items vertically
@@ -76,10 +76,21 @@ class InventoryUI {
     console.log(`Item clicked: ${entry.item}, at index: ${index}`);
   }
 
-  static makeItemDraggable(itemContainer, entry) {
-    if (entry.item !== "Coffee") {
+  static makeItemDraggable(itemContainer, entry, itemSprite) {
+    const gameObject = Item.gameObjects.find((obj) => obj.name === entry.item);
+    if (!gameObject && !gameObject.draggable) {
       return;
     }
+    // Find the dragtarget from gameObjects
+    const dragTarget = Item.gameObjects.find(
+      (obj) => obj.name === gameObject.dragTargetName
+    );
+    if (!dragTarget) {
+      console.log("Dragtarget not found");
+      return;
+    }
+    // A rectangle to represent the drag target's bounds
+    let dragTargetBounds = dragTarget.getBounds();
     const player = Player.player;
     let draggedItem = null;
 
@@ -95,15 +106,14 @@ class InventoryUI {
 
     const onDragEnd = (event) => {
       if (draggedItem) {
-        // A rectangle to represent the coffee maker's bounds
-        let coffeeMakerBounds = new Rectangle(
-          this.app.coffeeMaker.sprite.x - this.app.coffeeMaker.sprite.width / 2,
-          this.app.coffeeMaker.sprite.y - this.app.coffeeMaker.sprite.height,
-          this.app.coffeeMaker.sprite.width,
-          this.app.coffeeMaker.sprite.height
-        );
-        if (coffeeMakerBounds.contains(draggedItem.x, draggedItem.y)) {
-          checkDistance();
+        if (
+          dragTargetBounds.contains(event.data.global.x, event.data.global.y)
+        ) {
+          if (checkDistance(dragTarget.getGlobalPosition())) {
+            gameObject.onDragSuccess(this.app, dragTarget);
+          } else {
+            openPopup(this.app, `En aivan ylety ${dragTarget.name}iin.`);
+          }
         }
         this.app.mainScene.removeChild(draggedItem);
         draggedItem = null;
@@ -114,9 +124,12 @@ class InventoryUI {
 
     const onDragStart = (event) => {
       if (this.app.mainScene.visible) {
-        draggedItem = new Sprite(entry.sprite.texture);
+        draggedItem = new Sprite(itemSprite.texture);
         draggedItem.anchor.set(0.5);
         draggedItem.alpha = 0.6;
+        draggedItem.scale.set(itemSprite.scale.x, itemSprite.scale.y);
+        draggedItem.interactiveChildren = false;
+        draggedItem.eventMode = "none";
         this.app.mainScene.toLocal(
           event.data.global,
           null,
@@ -127,27 +140,23 @@ class InventoryUI {
         this.app.mainScene.on("pointermove", onDragMove);
       }
     };
+
     // Add event listeners to the itemContainer
     itemContainer.on("pointerup", onDragEnd);
     itemContainer.on("pointerupoutside", onDragEnd);
     itemContainer.on("pointerdown", onDragStart);
-    // To check if the player is close enough to the coffee maker
-    const checkDistance = () => {
-      if (!player) return;
+
+    // To check if the player is close enough to drag target
+    const checkDistance = (dragTargetPosition) => {
+      const dragTargetLocalPosition =
+        this.app.mainScene.toLocal(dragTargetPosition);
+      if (!player || !dragTargetPosition) return;
       const distance = Math.sqrt(
-        (player.x - this.app.coffeeMaker.sprite.x) ** 2 +
-          (player.y - this.app.coffeeMaker.sprite.y) ** 2
+        (player.x - dragTargetLocalPosition.x) ** 2 +
+          (player.y - dragTargetLocalPosition.y) ** 2
       );
       const maxDistance = 250;
-      if (distance <= maxDistance) {
-        if (gameState.inventory.itemExists("Coffee cup")) {
-          openPopup(this.app, "Nyt tulee tujut kahvit!");
-        } else {
-          openPopup(this.app, "Tuleepas tujut kahvit, mutta kuppi puuttuu...");
-        }
-      } else {
-        openPopup(this.app, "En aivan ylety kahvinkeittimeen.");
-      }
+      return distance <= maxDistance;
     };
   }
 }

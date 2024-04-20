@@ -254,6 +254,19 @@ const gameData = {
           }),
 
         zIndex: 2,
+        draggable: true,
+        dragTargetName: "Coffee maker",
+        onDragSuccess: (app, item) => {
+          if (gameState.inventory.itemExists("Coffee cup")) {
+            openPopup(app, "Nyt tulee tujut kahvit!");
+          } else {
+            openPopup(
+              app,
+              "Tuleepas tujut kahvit, mutta kuppi puuttuu...",
+              null
+            );
+          }
+        },
       },
       {
         visible: true,
@@ -1135,6 +1148,15 @@ const gameData = {
           openPopup(app, "Found the missing coffee cup", null);
         },
         zIndex: 2,
+        draggable: true,
+        dragTargetName: "Coffee maker",
+        onDragSuccess: (app, item) => {
+          if (gameState.inventory.itemExists("Coffee")) {
+            openPopup(app, "Santsikuppia, kiitos!");
+          } else {
+            openPopup(app, "Kuppi löytyy, mutta kaffea tarvis!.", null);
+          }
+        },
       },
     ],
   },

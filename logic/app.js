@@ -18,40 +18,19 @@ import { followPlayer, updateCamera } from "./utils/cameraUtils.js";
 import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
+import { glowFilter } from "./utils/glowFilter.js";
+import { setupPixiApp } from "./setupApp.js";
 
 // Fonts
 import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
 
-function setupPixiApp() {
-  const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
-  const targetWidth = targetHeight * ASPECT_RATIO; // Calculate width based on aspect ratio
-
-  const app = new Application({
-    width: targetWidth,
-    height: targetHeight,
-    backgroundColor: 0x000000,
-    resolution: window.devicePixelRatio || 1, // Consider device pixel ratio for high DPI screens
-    autoDensity: true, // Adjust for device density
-  });
-
-  document.body.appendChild(app.view);
-  app.view.style.display = "block"; // Ensure the canvas uses full available space and no margins interfere
-
-  app.renderer.resize(targetWidth, targetHeight);
-  // app.screen.width = targetWidth;
-
-  return app;
-}
-
-const app = setupPixiApp();
+app = setupPixiApp();
 
 globalThis.__PIXI_APP__ = app;
 
 // Add font files to the bundle
 Assets.addBundle("fonts", [{ alias: "VCR_OSD_MONO", src: VCR_OSD_MONO }]);
 Assets.loadBundle("fonts");
-
-document.getElementById("game-container").appendChild(app.view);
 
 document.getElementById("hide-wiki-content").addEventListener("click", () => {
   document.getElementById("wiki-wrapper").style.display = "none";
@@ -60,9 +39,6 @@ document.getElementById("hide-wiki-content").addEventListener("click", () => {
 // Construct contents in canvas
 const ui = new UI(app);
 const player = new Player(app);
-
-// update camera initially
-updateCamera(app, app.cameraContainer, Player.player);
 
 // this function should be run when the state changes (called from gameState.js)
 function onGameStateChange(property, newValue, oldValue) {
@@ -286,8 +262,30 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
   return intersects;
 }
 
+let count = 0;
+let delayFinished = false;
+let delayDuration = 30000; // 30 seconds
+let glowStrength = 0;
+
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
+  // Glow filter starts after 30 second delay from game load
+  if (!delayFinished) {
+    if (count * 16.67 >= delayDuration) {
+      delayFinished = true;
+      count = 0;
+    } else {
+      count += delta;
+    }
+  } else {
+    count += 0.015;
+    if (glowStrength < 1) {
+      glowStrength += 0.015; // Adjust the rate of increase as needed
+    }
+    const glowAmount = Math.cos(count);
+    glowFilter.outerStrength = 2 * glowAmount * glowStrength;
+  }
+
   if (player.targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - player.targetPosition.x, 2) +
@@ -300,32 +298,28 @@ app.ticker.add((delta) => {
       //console.log(distance);
     } else {
       player.move(player.targetPosition, UI.solidObjects);
-      updateCamera(app, app.cameraContainer, Player.player);
+      // followPlayer(app, app.cameraContainer, Player.player);
       app.mainScene.updateTransform();
     }
   }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
   // resize to window size
-  //  followPlayer(app, app.cameraContainer, Player.player);
-  // resizeGame(app, app.mainScene);
+  // followPlayer(app, app.cameraContainer, Player.player);
+  resizeGame(app, app.mainScene);
+  openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
 });
 
 window.addEventListener("resize", () => {
-  updateCamera(app, app.cameraContainer, Player.player);
-
-  /*
   for (let sceneName in app.scenes) {
     resizeGame(app, app.scenes[sceneName]);
   }
-  */
 });
 
 document.addEventListener("fullscreenchange", () => {
   for (let sceneName in app.scenes) {
-    // resizeGame(app, app.scenes[sceneName]);
+    resizeGame(app, app.scenes[sceneName]);
   }
 });
 

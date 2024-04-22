@@ -1,7 +1,9 @@
 // A function to resize scenes in the game while maintaining the original aspect ratio (7:4)
 // Resizes the PixiJs renderer and 'scene' container to match new width and height
 export const resizeGame = (app, scene) => {
-  if (scene.visible && !window.isMobile) {
+  if (
+    scene.visible //&& !window.isMobile
+  ) {
     // #game-container width and height
     const parent = app.view.parentNode;
     let newWidth = parent.clientWidth;

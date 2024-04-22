@@ -41,6 +41,14 @@ globalThis.__PIXI_APP__ = app;
 Assets.addBundle("fonts", [{ alias: "VCR_OSD_MONO", src: VCR_OSD_MONO }]);
 Assets.loadBundle("fonts");
 
+export const glowFilter = new GlowFilter({
+  innerStrength: 0,
+  outerStrength: 0,
+  quality: 0.1,
+  alpha: 0.6,
+  color: "c061cb",
+});
+
 document.getElementById("game-container").appendChild(app.view);
 
 document.getElementById("hide-wiki-content").addEventListener("click", () => {
@@ -274,14 +282,28 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
 }
 
 let count = 0;
+let delayFinished = false;
+let delayDuration = 30000; // 30 seconds
+let glowStrength = 0;
 
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
-  count += 0.015;
-
-  const glowAmount = Math.cos(count);
-
-  glowFilter.outerStrength = 2 * glowAmount;
+  // Glow filter starts after 30 second delay from game load
+  if (!delayFinished) {
+    if (count * 16.67 >= delayDuration) {
+      delayFinished = true;
+      count = 0;
+    } else {
+      count += delta;
+    }
+  } else {
+    count += 0.015;
+    if (glowStrength < 1) {
+      glowStrength += 0.015; // Adjust the rate of increase as needed
+    }
+    const glowAmount = Math.cos(count);
+    glowFilter.outerStrength = 2 * glowAmount * glowStrength;
+  }
 
   if (player.targetPosition) {
     const distance = Math.sqrt(

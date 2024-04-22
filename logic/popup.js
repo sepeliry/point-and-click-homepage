@@ -61,6 +61,9 @@ class Popup {
         this.closePopup();
         // remove the event listener after the popup is closed
         this.app.mainScene.off("pointertap", closePopupHandler);
+        if (this.closeCallback) {
+          this.closeCallback();
+        }
       };
       this.app.mainScene.on("pointertap", closePopupHandler);
     });
@@ -84,6 +87,10 @@ class Popup {
   closePopup() {
     this.app.stage.removeChild(this.container);
     Popup.activePopups = Popup.activePopups.filter((popup) => popup !== this);
+  }
+
+  onClose(callback) {
+    this.closeCallback = callback;
   }
 }
 

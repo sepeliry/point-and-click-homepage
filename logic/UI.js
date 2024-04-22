@@ -29,7 +29,7 @@ class UI {
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
     // Create a camera container for the mobile view
-    this.createCameraContainer(app);
+    // this.createCameraContainer(app);
     createWalkableAreas(app);
     InventoryUI.initialize(app);
   }
@@ -83,8 +83,6 @@ class UI {
         // hide other scenes by default
         container.visible = false;
       }
-      // Create a camera container for the mobile view
-      this.createCameraContainer(app);
     });
   }
 
@@ -103,8 +101,6 @@ class UI {
         if (itemData.identifier) {
           text.identifier = itemData.identifier;
         }
-
-        console.log(itemData);
 
         if (itemData.onInteraction) {
           text.interactive = true;

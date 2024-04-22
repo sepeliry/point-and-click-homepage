@@ -521,10 +521,10 @@ const gameData = {
         name: "Honesty",
         location: {
           x: 0.52,
-          y: 0.36,
+          y: 0.365,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -541,10 +541,10 @@ const gameData = {
         name: "Säännöt",
         location: {
           x: 0.44,
-          y: 0.36,
+          y: 0.365,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -561,10 +561,10 @@ const gameData = {
         name: "Wiki",
         location: {
           x: 0.44,
-          y: 0.23,
+          y: 0.225,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           openUrlInNewTab(
@@ -582,7 +582,7 @@ const gameData = {
           y: 0.5,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -601,7 +601,7 @@ const gameData = {
           y: 0.5,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -620,7 +620,7 @@ const gameData = {
           y: 0.64,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -639,7 +639,7 @@ const gameData = {
           y: 0.64,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           showPdf(
@@ -697,7 +697,11 @@ const gameData = {
           if (gameState.inventory.itemExists("PostIt 2")) {
             openPopup(app, "Täähän sopii tuohon toiseen palaseen!", null);
           } else {
-            openPopup(app, "Hmm, koodista näyttäis puuttuvan osa...", null);
+            openPopup(
+              app,
+              "Mitä ihmettä? Niinku tästä puuttuis palanen.",
+              null
+            );
           }
         },
         zIndex: 10,
@@ -744,7 +748,7 @@ const gameData = {
         onInteraction: (app) => () => {
           gameState.hasCompletedGame = true;
           switchScene(app, "mainScene");
-          openPopup(app, "wow the arcade machines turned on!", null);
+          openPopup(app, "Oho, arcade-koneet meni päälle!", null);
         },
         zIndex: 0,
       },
@@ -1143,8 +1147,8 @@ const gameData = {
         image: discord_icon,
         visible: true,
         type: ITEM_TYPES.desktopIcon,
-        title: "Sepeli Discord",
-        name: "Sepeli's Discord server",
+        title: "Sepelin Discord",
+        name: "Sepelin Discord-kanava",
         location: {
           x: 0.475,
           y: 0.49,
@@ -1160,8 +1164,8 @@ const gameData = {
         image: signup_icon,
         visible: true,
         type: ITEM_TYPES.desktopIcon,
-        title: "Join Sepeli",
-        name: "Join Sepeli as a member",
+        title: "Liity Sepeliin",
+        name: "Liity Sepelin jäseneksi",
         location: {
           x: 0.545,
           y: 0.49,
@@ -1189,7 +1193,11 @@ const gameData = {
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("Coffee cup", item);
           removeSprite(app, item);
-          openPopup(app, "Found the missing coffee cup", null);
+          openPopup(
+            app,
+            "A-ha! Löysin kahvikupin! Tuskin haittaa jos lainaan sitä...",
+            null
+          );
         },
         zIndex: 2,
         draggable: true,

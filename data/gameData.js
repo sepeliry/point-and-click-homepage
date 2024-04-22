@@ -300,7 +300,9 @@ const gameData = {
             gameState.inventory.removeItem("Coffee");
             gameState.inventory.removeItem("Coffee cup");
             Player.minimizePlayer();
-            openPopup(app, "Mitä tapahtuu??", null);
+            openPopup(app, "Mitä tapahtuu??", null, () => {
+              openPopup(app, "Mähän oon ihan snadi nyt. Ja kahvi pärisee!", null);
+            });
 
             app.scenes["mainScene"].updateTransform();
           }),

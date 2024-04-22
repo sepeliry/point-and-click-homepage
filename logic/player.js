@@ -121,11 +121,13 @@ class Player {
       }
     }
 
-    // Show player in front of / behind the closest object
-    if (Player.player.y > closestObj.sprite.y) {
-      Player.player.zIndex = 10;
-    } else {
-      Player.player.zIndex = 1;
+    if (closestObj) {
+      // Show player in front of / behind the closest object
+      if (Player.player.y > closestObj.sprite.y) {
+        Player.player.zIndex = 10;
+      } else {
+        Player.player.zIndex = 1;
+      }
     }
 
     // Check if the player is moving

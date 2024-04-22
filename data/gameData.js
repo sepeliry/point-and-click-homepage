@@ -200,7 +200,7 @@ const gameData = {
               switchScene(app, "arcadeScene");
             } else {
               console.log("please complete the game");
-              openPopup(app, "This item cannot be used yet", null);
+              openPopup(app, "Hmm, tämä ei näytä toimivan. Tuleekohan siihen virtaa..?", null);
             }
           }),
 
@@ -247,7 +247,7 @@ const gameData = {
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () =>
           checkDistance(app, 0.81, 0.895, "mainScene", () => {
-            openPopup(app, "Picked up some coffee", null);
+            openPopup(app, "Löysin kahvia! ... lattialta?", null);
 
             gameState.inventory.addItem("Coffee", item);
             removeSprite(app, item);
@@ -289,10 +289,10 @@ const gameData = {
         onInteraction: (app) => () =>
           checkDistance(app, 0.7, 0.595, "mainScene", () => {
             if (!gameState.inventory.itemExists("Coffee")) {
-              openPopup(app, "need more coffee", null);
+              openPopup(app, "Hmm, missä täällä säilytetään kahvinpuruja?", null);
               return;
             } else if (!gameState.inventory.itemExists("Coffee cup")) {
-              openPopup(app, "where is my coffee cup?", null);
+              openPopup(app, "Kahvinpurut check, mutta tarviin vielä kahvikupin!", null);
               return;
             }
 
@@ -300,7 +300,7 @@ const gameData = {
             gameState.inventory.removeItem("Coffee");
             gameState.inventory.removeItem("Coffee cup");
             Player.minimizePlayer();
-            openPopup(app, "whats happening to me??", null);
+            openPopup(app, "Mitä tapahtuu??", null);
 
             app.scenes["mainScene"].updateTransform();
           }),
@@ -384,12 +384,12 @@ const gameData = {
         onInteraction: (app) => () => {
           if (gameState.hasCompletedGame) {
             checkDistance(app, 0.78, 0.82, "mainScene", () =>
-              openPopup(app, "congraz! arcade machine is now on", null)
+              openPopup(app, "Onneksi olkoon, arcade-kone on nyt päällä!", null)
             );
           } else {
             console.log("please complete the game");
             checkDistance(app, 0.78, 0.82, "mainScene", () =>
-              openPopup(app, "This item cannot be used yet", null)
+              openPopup(app, "Tää ei mene päälle? Miksi täällä on vain rikkinäisiä koneita :/", null)
             );
           }
         },
@@ -418,7 +418,7 @@ const gameData = {
         onInteraction: (app) => () =>
           checkDistance(app, 0.88, 0.83, "mainScene", () => {
             if (!gameState.playerIsMiniSize) {
-              openPopup(app, "on kyl pieni hiirenkolo...", null);
+              openPopup(app, "On kyl pieni hiirenkolo...", null);
               return;
             }
             switchScene(app, "mouseholeScene");
@@ -653,7 +653,7 @@ const gameData = {
           if (gameState.inventory.itemExists("PostIt 2")) {
             openPopup(app, "Täähän sopii tuohon toiseen palaseen!", null);
           } else {
-            openPopup(app, "Hmm, koodista näyttäis puuttuvan osa...", null);
+            openPopup(app, "Mitä ihmettä? Niinku tästä puuttuis palanen.", null);
           }
         },
         zIndex: 10,
@@ -700,7 +700,7 @@ const gameData = {
         onInteraction: (app) => () => {
           gameState.hasCompletedGame = true;
           switchScene(app, "mainScene");
-          openPopup(app, "wow the arcade machines turned on!", null);
+          openPopup(app, "Oho, arcade-koneet meni päälle!", null);
         },
         zIndex: 0,
       },
@@ -1099,8 +1099,8 @@ const gameData = {
         image: discord_icon,
         visible: true,
         type: ITEM_TYPES.desktopIcon,
-        title: "Sepeli Discord",
-        name: "Sepeli's Discord server",
+        title: "Sepelin Discord",
+        name: "Sepelin Discord-kanava",
         location: {
           x: 0.475,
           y: 0.49,
@@ -1116,8 +1116,8 @@ const gameData = {
         image: signup_icon,
         visible: true,
         type: ITEM_TYPES.desktopIcon,
-        title: "Join Sepeli",
-        name: "Join Sepeli as a member",
+        title: "Liity Sepeliin",
+        name: "Liity Sepelin jäseneksi",
         location: {
           x: 0.545,
           y: 0.49,
@@ -1145,7 +1145,7 @@ const gameData = {
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("Coffee cup", item);
           removeSprite(app, item);
-          openPopup(app, "Found the missing coffee cup", null);
+          openPopup(app, "A-ha! Löysin kahvikupin! Tuskin haittaa jos lainaan sitä...", null);
         },
         zIndex: 2,
         draggable: true,

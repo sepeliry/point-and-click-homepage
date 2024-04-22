@@ -37,11 +37,8 @@ class Item {
   }
 
   initializeSprite(app, container, itemData) {
-    const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
-    const targetWidth = targetHeight * ASPECT_RATIO;
-
-    this.sprite.x = itemData.location.x * targetWidth;
-    this.sprite.y = itemData.location.y * targetHeight;
+    this.sprite.x = itemData.location.x * 1400;
+    this.sprite.y = itemData.location.y * 800;
     this.sprite.zIndex = itemData.zIndex || 1;
     this.sprite.name = itemData.name;
     this.sprite.height = itemData.height;
@@ -74,12 +71,6 @@ class Item {
     }
 
     this.sprite.visible = itemData.visible;
-
-    if (itemData.name === "Back button") {
-      this.sprite.anchor.set(0, 0); // Anchor top-left corner
-      this.sprite.x = 0;
-      this.sprite.y = 0;
-    }
 
     // add the item to its container/scene
     container.addChild(this.sprite);

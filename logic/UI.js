@@ -29,7 +29,7 @@ class UI {
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
     // Create a camera container for the mobile view
-    this.createCameraContainer(app);
+    // this.createCameraContainer(app);
     createWalkableAreas(app);
     InventoryUI.initialize(app);
   }
@@ -50,16 +50,12 @@ class UI {
         const background = Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
 
-        const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
-        const targetWidth = targetHeight * ASPECT_RATIO;
-
-        background.width = targetWidth;
-        background.height = targetHeight;
+        background.width = 1400;
+        background.height = 800;
 
         if (sceneData.onStateChange) {
           background.onStateChange = sceneData.onStateChange;
         }
-
         container.addChild(background);
       }
 
@@ -71,28 +67,20 @@ class UI {
         // set / show mainScene by default
         app.mainScene = container;
         container.visible = true;
+      } else if (
+        sceneName === "mouseholeScene" &&
+        sceneData.animatedSpriteTextures
+      ) {
+        // Call the createAnimatedSprite method
+        this.createAnimatedSprite(
+          app,
+          sceneData.animatedSpriteTextures,
+          container
+        );
+        container.visible = false;
       } else {
         // hide other scenes by default
-
-        if (sceneData.animatedSpriteTextures) {
-          this.createAnimatedSprite(
-            app,
-            sceneData.animatedSpriteTextures,
-            container
-          );
-        }
         container.visible = false;
-        // Calculate vertical centering
-
-        if (Math.min(window.innerWidth, screen.width) < MAX_WIDTH) {
-          const containerBounds = container.getBounds();
-          const containerWidth = containerBounds.width;
-
-          // Center the container horizontally so only the center is visible
-          const screenWidth = window.innerWidth; // Get the current width of the screen
-          container.x =
-            screenWidth / 2 - containerWidth / 2 - containerBounds.x;
-        }
       }
     });
   }
@@ -101,12 +89,9 @@ class UI {
     //console.log(items);
     items.forEach((itemData) => {
       if (itemData.type === ITEM_TYPES.text) {
-        const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
-        const targetWidth = targetHeight * ASPECT_RATIO;
-
         const text = new Text(itemData.text, itemData.style);
-        text.x = itemData.location.x * targetWidth;
-        text.y = itemData.location.y * targetHeight;
+        text.x = itemData.location.x * 1400;
+        text.y = itemData.location.y * 800;
         text.visible = true;
         text.zIndex = itemData.zIndex;
         text.onStateChange = itemData.onStateChange;
@@ -115,8 +100,6 @@ class UI {
         if (itemData.identifier) {
           text.identifier = itemData.identifier;
         }
-
-        console.log(itemData);
 
         if (itemData.onInteraction) {
           text.interactive = true;
@@ -171,8 +154,6 @@ class UI {
           UI.solidObjects.push(item);
           //  }
         }
-      } else if (itemData.type === ITEM_TYPES.backButton) {
-        const backButton = new BackButton(app, container, itemData);
       } else if (itemData.type === ITEM_TYPES.book) {
         // Create a Book instance instead of an Item instance
         const book = new Book(

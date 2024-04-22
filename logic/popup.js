@@ -14,16 +14,29 @@ class Popup {
   }
 
   createPopup() {
-    let popupWidth = 600;
+    let popupWidth = 700;
     const padding = 20;
 
+    // Adjust popup width for smaller screens
     if (window.innerWidth <= 800) {
       popupWidth = window.innerWidth - 20;
     }
 
-    const popupHeight = 90;
+    // Adjust popup height dynamically
+    let popupHeight = 90; // Default height for large screens
 
-    // background for the popup
+    // Adjust font size dynamically
+    let baseFontSize = 20;
+    if (window.innerWidth <= 800) {
+      baseFontSize = 16; // Smaller base font size for smaller screens
+      popupHeight = 70; // Slightly smaller height for medium screens
+    }
+    if (window.innerWidth < 500) {
+      baseFontSize = 14; // Even smaller for very small screens
+      popupHeight = 60; // Even smaller height for small screens
+    }
+
+    // Create background for the popup
     const background = new Graphics();
     background.lineStyle(2, "#F54483");
     background.beginFill("#020D26");
@@ -32,34 +45,37 @@ class Popup {
     background.alpha = 0.9;
     this.container.addChild(background);
 
-    // text for the popup
+    // Apply scaling factor for high DPI screens
+    const scaleFactor = window.devicePixelRatio > 1 ? 0.8 : 1;
+    const fontSize = baseFontSize * scaleFactor;
+
+    // Text configuration with dynamic font size and adjusted word wrap width
     const message = new Text("", {
       fontFamily: "VCR_OSD_MONO",
       fill: "#F54483",
-      fontSize: 20,
+      fontSize: fontSize,
       wordWrap: true,
-      wordWrapWidth: popupWidth - 40, // adjusted for padding
+      wordWrapWidth: popupWidth - 40,
     });
     message.anchor.set(0, 0);
     message.position.set(padding, padding);
     this.container.addChild(message);
 
-    // position of the popup
+    // Position of the popup
     if (!this.position) {
-      this.container.x = (window.innerWidth - popupWidth) / 2;
-      this.container.y = window.innerHeight - popupHeight - 20;
+      this.container.x = (this.app.screen.width - popupWidth) / 2;
+      this.container.y = this.app.screen.height - popupHeight - 10;
     } else {
-      this.container.x = this.position.x * window.innerWidth;
-      this.container.y = this.position.y * window.innerHeight;
+      this.container.x = this.position.x * this.app.screen.width;
+      this.container.y = this.position.y * this.app.screen.height;
     }
 
     this.app.stage.addChild(this.container);
 
-    // start typing and setup the closing event listener after it finishes
+    // Start typing and setup the closing event listener after it finishes
     this.typeText(message, () => {
       const closePopupHandler = () => {
         this.closePopup();
-        // remove the event listener after the popup is closed
         this.app.mainScene.off("pointertap", closePopupHandler);
         if (this.closeCallback) {
           this.closeCallback();

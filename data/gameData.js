@@ -194,15 +194,21 @@ const gameData = {
         height: 897 * 0.27,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.45, 0.7, "mainScene", () => {
-            if (gameState.hasCompletedGame) {
-              switchScene(app, "arcadeScene");
-            } else {
-              console.log("please complete the game");
-              openPopup(app, "This item cannot be used yet", null);
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "mainScene",
+            () => {
+              if (gameState.hasCompletedGame) {
+                switchScene(app, "arcadeScene");
+              } else {
+                console.log("please complete the game");
+                openPopup(app, "This item cannot be used yet", null);
+              }
             }
-          }),
+          ),
 
         zIndex: 0,
       },
@@ -225,9 +231,13 @@ const gameData = {
         height: 986 / 12,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.534, 0.61, "numpadScene", () =>
-            switchScene(app, "numpadScene")
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "numpadScene",
+            () => switchScene(app, "numpadScene")
           ),
         zIndex: 0,
       },
@@ -246,12 +256,18 @@ const gameData = {
         height: 400 * 0.25,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () =>
-          checkDistance(app, 0.81, 0.895, "mainScene", () => {
-            openPopup(app, "Picked up some coffee", null);
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "mainScene",
+            () => {
+              openPopup(app, "Picked up some coffee", null);
 
-            gameState.inventory.addItem("Coffee", item);
-            removeSprite(app, item);
-          }),
+              gameState.inventory.addItem("Coffee", item);
+              removeSprite(app, item);
+            }
+          ),
 
         zIndex: 2,
       },
@@ -273,24 +289,30 @@ const gameData = {
         width: 267 * 0.25,
         height: 400 * 0.25,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.7, 0.595, "mainScene", () => {
-            if (!gameState.inventory.itemExists("Coffee")) {
-              openPopup(app, "need more coffee", null);
-              return;
-            } else if (!gameState.inventory.itemExists("Coffee cup")) {
-              openPopup(app, "where is my coffee cup?", null);
-              return;
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "mainScene",
+            () => {
+              if (!gameState.inventory.itemExists("Coffee")) {
+                openPopup(app, "need more coffee", null);
+                return;
+              } else if (!gameState.inventory.itemExists("Coffee cup")) {
+                openPopup(app, "where is my coffee cup?", null);
+                return;
+              }
+
+              // remove coffee from inventory
+              gameState.inventory.removeItem("Coffee");
+              gameState.inventory.removeItem("Coffee cup");
+              Player.minimizePlayer();
+              openPopup(app, "whats happening to me??", null);
+
+              app.scenes["mainScene"].updateTransform();
             }
-
-            // remove coffee from inventory
-            gameState.inventory.removeItem("Coffee");
-            gameState.inventory.removeItem("Coffee cup");
-            Player.minimizePlayer();
-            openPopup(app, "whats happening to me??", null);
-
-            app.scenes["mainScene"].updateTransform();
-          }),
+          ),
         zIndex: 0,
       },
       {
@@ -305,9 +327,13 @@ const gameData = {
         width: 191 * 1.2,
         height: 292 * 1.2,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.33, 0.73, "bookshelfScene", () =>
-            switchScene(app, "bookshelfScene")
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.x,
+            "bookshelfScene",
+            () => switchScene(app, "bookshelfScene")
           ),
         zIndex: 0,
       },
@@ -330,9 +356,13 @@ const gameData = {
         height: 286,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.16, 0.92, "computerScene", () =>
-            switchScene(app, "computerScene")
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "computerScene",
+            () => switchScene(app, "computerScene")
           ),
         zIndex: 0,
       },
@@ -368,15 +398,23 @@ const gameData = {
         height: 339,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
-        onInteraction: (app) => () => {
+        onInteraction: (app, item) => () => {
           if (gameState.hasCompletedGame) {
-            checkDistance(app, 0.78, 0.82, "mainScene", () =>
-              openPopup(app, "congraz! arcade machine is now on", null)
+            checkDistance(
+              app,
+              item.position.x,
+              item.position.y,
+              "mainScene",
+              () => openPopup(app, "congraz! arcade machine is now on", null)
             );
           } else {
             console.log("please complete the game");
-            checkDistance(app, 0.78, 0.82, "mainScene", () =>
-              openPopup(app, "This item cannot be used yet", null)
+            checkDistance(
+              app,
+              item.position.x,
+              item.position.y,
+              "mainScene",
+              () => openPopup(app, "This item cannot be used yet", null)
             );
           }
         },
@@ -402,14 +440,20 @@ const gameData = {
         width: 44,
         height: 65,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.88, 0.83, "mainScene", () => {
-            if (!gameState.playerIsMiniSize) {
-              openPopup(app, "on kyl pieni hiirenkolo...", null);
-              return;
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "mainScene",
+            () => {
+              if (!gameState.playerIsMiniSize) {
+                openPopup(app, "on kyl pieni hiirenkolo...", null);
+                return;
+              }
+              switchScene(app, "mouseholeScene");
             }
-            switchScene(app, "mouseholeScene");
-          }),
+          ),
 
         zIndex: 0,
       },

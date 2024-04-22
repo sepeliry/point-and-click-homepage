@@ -182,7 +182,7 @@ app.mainScene.on("pointertap", (event) => {
         // Calculate distance from the original target position to the projection
         let distance = Math.sqrt(
           (player.targetPosition.x - projection.x) ** 2 +
-            (player.targetPosition.y - projection.y) ** 2
+          (player.targetPosition.y - projection.y) ** 2
         );
 
         // Update closest projection if this is the shortest distance found
@@ -296,19 +296,36 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
 }
 
 let count = 0;
+let delayFinished = false;
+let delayDuration = 30000; // 30 seconds
+let glowStrength = 0;
 
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
-  count += 0.015;
 
-  const glowAmount = Math.cos(count);
-
-  glowFilter.outerStrength = 2 * glowAmount;
+  // Glow filter starts after 30 second delay from game load
+  if (!delayFinished) {
+    if (count * 16.67 >= delayDuration) {
+      delayFinished = true;
+      count = 0;
+    }
+    else {
+      count += delta;
+    }
+  }
+  else {
+    count += 0.015;
+    if (glowStrength < 1) {
+      glowStrength += 0.015; // Adjust the rate of increase as needed
+    }
+    const glowAmount = Math.cos(count);
+    glowFilter.outerStrength = 2 * glowAmount * glowStrength;
+  }
 
   if (player.targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - player.targetPosition.x, 2) +
-        Math.pow(Player.player.y - player.targetPosition.y, 2)
+      Math.pow(Player.player.y - player.targetPosition.y, 2)
     );
 
     if (distance < 3) {

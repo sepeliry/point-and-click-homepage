@@ -176,8 +176,8 @@ class UI {
   createAnimatedSprite(app, frameUrls, container) {
     const textureArray = frameUrls.map((url) => Texture.from(url));
     const animatedSprite = new AnimatedSprite(textureArray);
-    animatedSprite.width = app.renderer.width;
-    animatedSprite.height = app.renderer.height;
+    animatedSprite.width = 1400;
+    animatedSprite.height = 800;
     animatedSprite.animationSpeed = 0.02;
     animatedSprite.loop = true;
     animatedSprite.play();

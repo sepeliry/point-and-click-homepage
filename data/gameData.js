@@ -228,7 +228,7 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Lock",
         location: {
-          x: 0.565,
+          x: 0.568,
           y: 0.59,
         },
         width: 1527 / 12,

@@ -10,52 +10,64 @@ class InventoryUI {
 
   static initialize(app) {
     this.app = app;
-    this.container.x = app.renderer.width - 20;
-    this.container.y = 20;
+    this.container.x = app.renderer.width - 10;
+    this.container.y = 10;
     this.app.stage.addChild(this.container);
   }
 
   static updateInventoryUI() {
-    const BG_WIDTH = 80;
-    const BG_HEIGHT = 80;
+    // Responsive size adjustments based on screen width
+    let bgWidth = 80; // Default width
+    let bgHeight = 80; // Default height
+
+    if (window.innerWidth <= 800) {
+      bgWidth = 60; // Smaller width for medium screens
+      bgHeight = 60; // Smaller height for medium screens
+    }
+    if (window.innerWidth < 500) {
+      bgWidth = 40; // Even smaller for small screens
+      bgHeight = 40; // Even smaller for small screens
+    }
 
     const items = gameState.inventory.getItems();
     this.container.removeChildren();
     items.forEach((entry, index) => {
       const itemContainer = new Container();
 
-      // create a new sprite for the item in the inventory
+      // Create a new sprite for the item in the inventory
       const itemSprite = new Sprite(entry.sprite.texture);
 
       // Calculate the scale factor to fit the sprite within the background dimensions
-      const scaleX = (BG_WIDTH - 20) / itemSprite.texture.width;
-      const scaleY = (BG_HEIGHT - 20) / itemSprite.texture.height;
+      const scaleX = (bgWidth - 20) / itemSprite.texture.width;
+      const scaleY = (bgHeight - 20) / itemSprite.texture.height;
       const scale = Math.min(scaleX, scaleY); // Use the smaller scale factor to ensure fit
       itemSprite.scale.set(scale, scale);
 
       // After scaling, recalculate the sprite's x and y to center it
-      itemSprite.x = (BG_WIDTH - itemSprite.width) / 2; // Center horizontally
-      itemSprite.y = (BG_HEIGHT - itemSprite.height) / 2; // Center vertically
+      itemSprite.x = (bgWidth - itemSprite.width) / 2; // Center horizontally
+      itemSprite.y = (bgHeight - itemSprite.height) / 2; // Center vertically
 
       const bg = new Graphics();
       bg.beginFill("#020D26", 0.9);
       bg.lineStyle(2, "#F54483");
-      bg.drawRect(0, 0, BG_WIDTH, BG_HEIGHT);
+      bg.drawRect(0, 0, bgWidth, bgHeight);
       bg.endFill();
 
       itemContainer.addChild(bg);
       itemContainer.addChild(itemSprite);
 
-      itemContainer.eventMode = "static";
-      // itemContainer.buttonMode = true;
+      // Adjusting interaction settings
+      itemContainer.interactive = true; // Ensuring item is interactive
+      itemContainer.buttonMode = true; // Shows pointer on hover
       itemContainer.cursor = "pointer";
       itemContainer.on("pointerdown", () =>
         this.onItemClicked(itemContainer, entry, index)
       );
       this.makeItemDraggable(itemContainer, entry, itemSprite);
+
       // Set the position of each item container within the main container
-      itemContainer.x = -BG_WIDTH; // Reset this if needed to align correctly
-      itemContainer.y = index * (BG_HEIGHT + 20); // Stack items vertically
+      itemContainer.x = -bgWidth; // Reset this if needed to align correctly
+      itemContainer.y = index * (bgHeight + 20); // Stack items vertically
 
       this.container.addChild(itemContainer);
     });

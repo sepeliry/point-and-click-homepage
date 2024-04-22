@@ -1,8 +1,11 @@
 import { Sprite, Texture, AnimatedSprite } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
 import { glowFilter } from "./app.js";
+import { ASPECT_RATIO } from "../constants/constants";
 
 class Item {
+  // Store gameObjects in a static array to access them later
+  static gameObjects = [];
   constructor(
     app,
     container,
@@ -34,8 +37,11 @@ class Item {
   }
 
   initializeSprite(app, container, itemData) {
-    this.sprite.x = itemData.location.x * 1400;
-    this.sprite.y = itemData.location.y * 800;
+    const targetHeight = Math.min(window.innerHeight, screen.height); // Target the full height of the window
+    const targetWidth = targetHeight * ASPECT_RATIO;
+
+    this.sprite.x = itemData.location.x * targetWidth;
+    this.sprite.y = itemData.location.y * targetHeight;
     this.sprite.zIndex = itemData.zIndex || 1;
     this.sprite.name = itemData.name;
     this.sprite.height = itemData.height;
@@ -43,6 +49,9 @@ class Item {
     this.sprite.anchor.set(0.5, 1); // Anchor to bottom left corner
 
     this.sprite.onStateChange = itemData.onStateChange;
+    this.sprite.draggable = itemData.draggable;
+    this.sprite.dragTargetName = itemData.dragTargetName;
+    this.sprite.onDragSuccess = itemData.onDragSuccess;
 
     // Check if the object has an interaction/callback
     if (itemData.onInteraction) {
@@ -57,7 +66,7 @@ class Item {
         outerStrength: 1.8,
         quality: 0.1,
         alpha: 0.6,
-        color: 'c061cb'
+        color: "c061cb",
       });
       this.sprite.filters = [glowFilter];
     } else {
@@ -66,8 +75,15 @@ class Item {
 
     this.sprite.visible = itemData.visible;
 
+    if (itemData.name === "Back button") {
+      this.sprite.anchor.set(0, 0); // Anchor top-left corner
+      this.sprite.x = 0;
+      this.sprite.y = 0;
+    }
+
     // add the item to its container/scene
     container.addChild(this.sprite);
+    Item.gameObjects.push(this.sprite);
   }
 }
 

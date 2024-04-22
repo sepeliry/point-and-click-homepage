@@ -477,10 +477,10 @@ const gameData = {
         name: "Honesty",
         location: {
           x: 0.52,
-          y: 0.36,
+          y: 0.365,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -497,10 +497,10 @@ const gameData = {
         name: "Säännöt",
         location: {
           x: 0.44,
-          y: 0.36,
+          y: 0.365,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -517,10 +517,10 @@ const gameData = {
         name: "Wiki",
         location: {
           x: 0.44,
-          y: 0.23,
+          y: 0.225,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           openUrlInNewTab(
@@ -538,7 +538,7 @@ const gameData = {
           y: 0.5,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -557,7 +557,7 @@ const gameData = {
           y: 0.5,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -576,7 +576,7 @@ const gameData = {
           y: 0.64,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -595,7 +595,7 @@ const gameData = {
           y: 0.64,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           showPdf(

@@ -1,6 +1,6 @@
 import { Container, Sprite, Text, Texture, AnimatedSprite } from "pixi.js";
 import { CRTFilter } from "@pixi/filter-crt";
-import { glowFilter } from "./app.js";
+import { glowFilter } from "./utils/glowFilter.js";
 import { GlowFilter } from "@pixi/filter-glow";
 import { createWalkableAreas } from "./walkableArea.js";
 import { ASPECT_RATIO, MAX_WIDTH } from "../constants/constants.js";

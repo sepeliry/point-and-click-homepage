@@ -18,60 +18,19 @@ import { followPlayer, updateCamera } from "./utils/cameraUtils.js";
 import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
-import { GlowFilter } from "@pixi/filter-glow";
+import { glowFilter } from "./utils/glowFilter.js";
+import { setupPixiApp } from "./setupApp.js";
 
 // Fonts
 import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
 
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
-// isMobile = true enables the cameraContainer
-window.isMobile = windowWidth <= 800;
-
-function setupPixiApp() {
-  const app = new Application({
-    width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
-    height: window.isMobile ? Math.min(windowHeight, 800) : 800,
-    backgroundColor: 0xaaaaaa,
-  });
-
-  document.getElementById("game-container").appendChild(app.view);
-  // #game-container width and height
-  const parent = app.view.parentNode;
-  let newWidth = parent.clientWidth;
-  let newHeight = parent.clientHeight;
-  let parentAspectRatio = newWidth / newHeight;
-  let gameAspectRatio = 1400 / 800;
-
-  // Resize PIXI application to match the new size of the #game-container div
-
-  if (parentAspectRatio < gameAspectRatio) {
-    newWidth = newHeight * gameAspectRatio;
-  } else {
-    newHeight = newWidth / gameAspectRatio;
-  }
-  app.renderer.resize(newWidth, newHeight);
-
-  // Create application on page load. desktop: 1400x800, mobile: use screensize
-
-  return app;
-}
-
-const app = setupPixiApp();
+app = setupPixiApp();
 
 globalThis.__PIXI_APP__ = app;
 
 // Add font files to the bundle
 Assets.addBundle("fonts", [{ alias: "VCR_OSD_MONO", src: VCR_OSD_MONO }]);
 Assets.loadBundle("fonts");
-
-export const glowFilter = new GlowFilter({
-  innerStrength: 0,
-  outerStrength: 0,
-  quality: 0.1,
-  alpha: 0.6,
-  color: "c061cb",
-});
 
 document.getElementById("hide-wiki-content").addEventListener("click", () => {
   document.getElementById("wiki-wrapper").style.display = "none";

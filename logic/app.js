@@ -1,4 +1,12 @@
-import { Application, Container, Graphics, Sprite, Point, Polygon, Assets } from "pixi.js";
+import {
+  Application,
+  Container,
+  Graphics,
+  Sprite,
+  Point,
+  Polygon,
+  Assets,
+} from "pixi.js";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
 
@@ -29,9 +37,7 @@ const app = new Application({
 globalThis.__PIXI_APP__ = app;
 
 // Add font files to the bundle
-Assets.addBundle("fonts", [
-  { alias: "VCR_OSD_MONO", src: VCR_OSD_MONO },
-]);
+Assets.addBundle("fonts", [{ alias: "VCR_OSD_MONO", src: VCR_OSD_MONO }]);
 Assets.loadBundle("fonts");
 
 document.getElementById("game-container").appendChild(app.view);
@@ -121,9 +127,7 @@ app.mainScene.on("pointertap", (event) => {
     const areaPoints = WALKABLE_AREA_POINTS[areaIndex];
 
     // Convert Graphics to a Polygon to use containsPoint method
-    const polygon = new Polygon(
-      areaPoints.map((p) => new Point(p.x, p.y))
-    );
+    const polygon = new Polygon(areaPoints.map((p) => new Point(p.x, p.y)));
 
     if (polygon.contains(player.targetPosition.x, player.targetPosition.y)) {
       // console.log("inside");
@@ -148,7 +152,7 @@ app.mainScene.on("pointertap", (event) => {
         // Calculate distance from the original target position to the projection
         let distance = Math.sqrt(
           (player.targetPosition.x - projection.x) ** 2 +
-          (player.targetPosition.y - projection.y) ** 2
+            (player.targetPosition.y - projection.y) ** 2
         );
 
         // Update closest projection if this is the shortest distance found
@@ -266,7 +270,7 @@ app.ticker.add((delta) => {
   if (player.targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - player.targetPosition.x, 2) +
-      Math.pow(Player.player.y - player.targetPosition.y, 2)
+        Math.pow(Player.player.y - player.targetPosition.y, 2)
     );
 
     if (distance < 3) {
@@ -275,17 +279,17 @@ app.ticker.add((delta) => {
       //console.log(distance);
     } else {
       player.move(player.targetPosition, UI.solidObjects);
-      followPlayer(app, app.cameraContainer, Player.player);
+      // followPlayer(app, app.cameraContainer, Player.player);
       app.mainScene.updateTransform();
     }
   }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
   // resize to window size
-  followPlayer(app, app.cameraContainer, Player.player);
+  // followPlayer(app, app.cameraContainer, Player.player);
   resizeGame(app, app.mainScene);
+  openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
 });
 
 window.addEventListener("resize", () => {

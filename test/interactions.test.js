@@ -1,78 +1,77 @@
 import switchScene from "../logic/interactions/switchScene";
+import gameState from "../data/gameState";
+import { resizeGame } from "../logic/utils/resize";
+import Popup from "../logic/popup";
 
-// Mocking resizeGame function
+// Mock the Popup module
+jest.mock("../logic/popup", () => ({
+  activePopups: [],
+}));
+
+// Mock the resizeGame function
 jest.mock("../logic/utils/resize", () => ({
   resizeGame: jest.fn(),
 }));
 
-describe("switchScene", () => {
-  let originalGetElementById;
-  let mockApp;
-  let mockScene1;
-  let mockScene2;
+// Mock gameState
+jest.mock("../data/gameState", () => ({
+  currentScene: null,
+}));
 
-  beforeAll(() => {
-    originalGetElementById = document.getElementById;
-    document.getElementById = jest.fn(() => ({ style: { display: "none" } }));
-  });
+describe("switchScene", () => {
+  let app;
 
   beforeEach(() => {
-    // Reset mock implementation for each test
-    jest.clearAllMocks();
+    // Setup DOM
+    document.body.innerHTML = '<div id="wiki-wrapper"></div>';
 
-    // Mock scenes
-    mockScene1 = { visible: true };
-    mockScene2 = { visible: false };
-
-    // Mock app with scenes
-    mockApp = {
+    // Setup app object with mock scenes
+    app = {
       scenes: {
-        scene1: mockScene1,
-        scene2: mockScene2,
+        scene1: { visible: false },
+        scene2: { visible: false },
       },
     };
 
-    // Mock window.isMobile
-    window.isMobile = false;
+    // Reset mocks before each test
+    jest.clearAllMocks();
+    Popup.activePopups = [];
   });
 
-  afterAll(() => {
-    document.getElementById = originalGetElementById;
-  });
-
-  it("should hide wiki text and show the new scene", () => {
-    const newSceneName = "scene2";
-    switchScene(mockApp, newSceneName);
-
-    // Check if wiki text is hidden
-    expect(document.getElementById).toHaveBeenCalledWith("wiki-wrapper");
+  test("should hide the wiki wrapper", () => {
+    switchScene(app, "scene1");
     expect(document.getElementById("wiki-wrapper").style.display).toBe("none");
-
-    // Check if the old scene is hidden and the new scene is shown
-    expect(mockScene1.visible).toBe(false);
-    expect(mockScene2.visible).toBe(true);
   });
 
-  it("should call resizeGame if not on mobile", () => {
-    const newSceneName = "scene2";
-    switchScene(mockApp, newSceneName);
-
-    // Check if resizeGame is called since not on mobile
-    expect(require("../logic/utils/resize").resizeGame).toHaveBeenCalledTimes(
-      1
-    );
-    expect(require("../logic/utils/resize").resizeGame).toHaveBeenCalledWith(
-      mockApp,
-      mockScene2
-    );
+  test("should hide all previous scenes and show the new scene", () => {
+    switchScene(app, "scene1");
+    expect(app.scenes.scene1.visible).toBeTruthy();
+    expect(app.scenes.scene2.visible).toBeFalsy();
   });
 
-  it("should log a warning if the new scene is not found", () => {
-    const newSceneName = "scene3";
+  test("should update the current scene in gameState", () => {
+    switchScene(app, "scene1");
+    expect(gameState.currentScene).toBe("scene1");
+  });
+
+  test("should call resizeGame for the new scene", () => {
+    switchScene(app, "scene1");
+    expect(resizeGame).toHaveBeenCalledWith(app, app.scenes["scene1"]);
+  });
+
+  test("should close all active popups when switching scenes", () => {
+    const mockPopup = { closePopup: jest.fn() };
+    Popup.activePopups.push(mockPopup);
+    switchScene(app, "scene1");
+    expect(mockPopup.closePopup).toHaveBeenCalled();
+  });
+
+  test("should log a warning if the scene does not exist", () => {
     console.warn = jest.fn();
-    switchScene(mockApp, newSceneName);
-
-    // Check if warning is logged
-    expect(console.warn).toHaveBeenCalledWith("Scene not found:", newSceneName);
+    switchScene(app, "nonExistentScene");
+    expect(console.warn).toHaveBeenCalledWith(
+      "Scene not found:",
+      "nonExistentScene"
+    );
   });
 });

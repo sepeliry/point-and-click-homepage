@@ -1,6 +1,6 @@
 import { Sprite, Texture, AnimatedSprite } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
-import { glowFilter } from "./app.js";
+import { glowFilter } from "./utils/glowFilter";
 import { ASPECT_RATIO } from "../constants/constants";
 
 class Item {

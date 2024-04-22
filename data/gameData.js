@@ -108,64 +108,6 @@ const gameData = {
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [
-      /*
-      {
-        image: boxPropImage,
-        visible: true,
-        onStateChange: null,
-        type: ITEM_TYPES.item,
-        name: "Box",
-        location: {
-          x: 0.61,
-          y: 0.93,
-        },
-        width: 100,
-        height: 100,
-        collisionHeight: 5, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.61, 0.93, "mainScene", () => {
-            console.log(gameState.inventory);
-            openPopup(
-              app,
-              "This is a box and arcade game is now on! check gameState :)",
-              null
-            );
-            gameState.hasCompletedGame = !gameState.hasCompletedGame;
-            console.log(gameState);
-          }),
-
-        zIndex: 2,
-      },
-
-      {
-        image: keyImage,
-        visible: true,
-        onStateChange: (app, item) => {
-
-        },
-        animation: null,
-        type: ITEM_TYPES.item,
-        name: "Key",
-        location: {
-          x: 0.47,
-          y: 0.9,
-        },
-        width: 267 * 0.25,
-        height: 400 * 0.25,
-        collisionHeight: 0, // not yet used
-        onInteraction: (app, item) => () =>
-          checkDistance(app, 0.47, 0.9, "mainScene", () => {
-            console.log("key clicked");
-            openPopup(app, "What is this key?", null);
-            gameState.hasUnlockedDoor = true;
-            console.log(item);
-            gameState.inventory.addItem("Key", item);
-            removeSprite(app, item);
-          }),
-
-        zIndex: 1,
-      },
- */
       {
         visible: true,
         animation: {

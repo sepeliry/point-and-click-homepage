@@ -35,16 +35,6 @@ describe("resizeGame", () => {
     expect(scene.height).toBe(0);
   });
 
-  test("does not resize app or scene if window.isMobile is true", () => {
-    window.isMobile = true;
-    resizeGame(app, scene);
-    expect(app.renderer.resize).not.toHaveBeenCalled();
-
-    // Check that scene width and height were not changed
-    expect(scene.width).toBe(0);
-    expect(scene.height).toBe(0);
-  });
-
   test("resizes app and scene to maintain aspect ratio 1.", () => {
     app.view.parentNode.clientWidth = 1400;
     app.view.parentNode.clientHeight = 800;

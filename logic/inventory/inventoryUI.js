@@ -1,9 +1,9 @@
-import { Container, Graphics, Sprite, Point, Rectangle } from "pixi.js";
+import { Container, Graphics, Sprite } from "pixi.js";
 import gameState from "../../data/gameState";
 import openPopup from "../interactions/openPopup";
 import Player from "../player";
 import Item from "../item";
-
+import { GlowFilter } from "@pixi/filter-glow";
 class InventoryUI {
   static container = new Container();
   static app = null;
@@ -89,6 +89,15 @@ class InventoryUI {
       console.log("Dragtarget not found");
       return;
     }
+    const originalFilters = dragTarget.filters;
+    const activeGlowEffect = new GlowFilter({
+      innerStrength: 0,
+      outerStrength: 3,
+      quality: 0.1,
+      alpha: 0.9,
+      color: "c061cb",
+    });
+
     // A rectangle to represent the drag target's bounds
     let dragTargetBounds = dragTarget.getBounds();
     const player = Player.player;
@@ -102,6 +111,7 @@ class InventoryUI {
           draggedItem.position
         );
       }
+      dragTarget.filters = [activeGlowEffect];
     };
 
     const onDragEnd = (event) => {
@@ -117,6 +127,7 @@ class InventoryUI {
         }
         this.app.mainScene.removeChild(draggedItem);
         draggedItem = null;
+        dragTarget.filters = originalFilters;
         // Remove the pointermove event listener from the mainScene
         this.app.mainScene.off("pointermove", onDragMove);
       }

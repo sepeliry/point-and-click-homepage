@@ -1,5 +1,7 @@
 import { Application, Container, Sprite, Text, Assets } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
+import { glowFilter } from "./app.js";
+import { ASPECT_RATIO } from "../constants/constants";
 /**
  * Class to create items
  * TODO: Parameter to choose if item is interactable

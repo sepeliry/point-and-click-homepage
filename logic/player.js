@@ -6,6 +6,7 @@ import { checkDistance } from "./interactions/distanceCheckUtils";
 import updateAnimatedSpriteTextures from "./interactions/updateAnimatedSpriteTextures";
 import openPopup from "./interactions/openPopup";
 
+import { ASPECT_RATIO } from "../constants/constants";
 import gameState from "../data/gameState";
 
 // Image imports
@@ -66,6 +67,7 @@ class Player {
     Player.app = app;
     // Create player sprite with idle animation
     Player.player = new AnimatedSprite(Player.playerIdleFrames);
+
     Player.player.position.set(450, 620);
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 10;
@@ -111,7 +113,7 @@ class Player {
     for (const obj of solidObjects) {
       const objDistance = Math.sqrt(
         (Player.player.x - obj.sprite.x) ** 2 +
-        (Player.player.y - obj.sprite.y) ** 2
+          (Player.player.y - obj.sprite.y) ** 2
       );
       if (objDistance < closestDistance) {
         closestObj = obj;
@@ -202,7 +204,7 @@ class Player {
     // Calculate the magnitude of the direction vector
     const magnitude = Math.sqrt(
       directionVector.x * directionVector.x +
-      directionVector.y * directionVector.y
+        directionVector.y * directionVector.y
     );
 
     // Check if the magnitude is greater than 0 (to avoid division by zero)

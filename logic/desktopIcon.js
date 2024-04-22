@@ -1,5 +1,6 @@
 import { Container, Sprite, Text } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
+import { ASPECT_RATIO } from "../constants/constants";
 
 class DesktopIcon {
   constructor(app, container, itemData) {
@@ -9,6 +10,7 @@ class DesktopIcon {
 
     // Create a container for the sprite and text
     this.iconContainer = new Container();
+
     this.iconContainer.x = itemData.location.x * app.renderer.width;
     this.iconContainer.y = itemData.location.y * app.renderer.height;
     this.iconContainer.zIndex = itemData.zIndex || 1;

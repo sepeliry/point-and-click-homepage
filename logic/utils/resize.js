@@ -21,5 +21,8 @@ export const resizeGame = (app, scene) => {
     app.renderer.resize(newWidth, newHeight);
     scene.width = newWidth;
     scene.height = newHeight;
+
+    console.log(parentAspectRatio);
+    console.log("gameaaa: ", gameAspectRatio);
   }
 };

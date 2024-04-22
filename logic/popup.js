@@ -17,8 +17,8 @@ class Popup {
     let popupWidth = 600;
     const padding = 20;
 
-    if (this.app.screen.width <= 800) {
-      popupWidth = this.app.screen.width - 40;
+    if (window.innerWidth <= 800) {
+      popupWidth = window.innerWidth - 20;
     }
 
     const popupHeight = 90;

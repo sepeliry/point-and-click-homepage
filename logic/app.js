@@ -9,15 +9,16 @@ import {
 } from "pixi.js";
 import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
-
+import { ASPECT_RATIO } from "../constants/constants.js";
 import UI from "./UI";
 import Popup from "./popup.js";
 import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
-import { followPlayer } from "./utils/cameraUtils.js";
+import { followPlayer, updateCamera } from "./utils/cameraUtils.js";
 import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
+import { GlowFilter } from "@pixi/filter-glow";
 
 // Fonts
 import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
@@ -59,6 +60,13 @@ function onGameStateChange(property, newValue, oldValue) {
   Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
     if (sceneData.children) {
       const childrenCopy = [...sceneData.children]; // Shallow copy of the children array
+
+      const sceneBackground = childrenCopy[0];
+
+      if (sceneBackground.onStateChange) {
+        sceneBackground.onStateChange(app, sceneBackground);
+      }
+
       childrenCopy.forEach((item) => {
         if (!item.onStateChange) {
           return;
@@ -101,7 +109,7 @@ function projectPointOntoLineSegment(px, py, ax, ay, bx, by) {
 }
 
 let targetPosition;
-
+const walkableAreas = createWalkableAreas(app);
 // Handle click event on the stage
 app.mainScene.eventMode = "static"; // Enable interaction
 app.mainScene.on("pointertap", (event) => {
@@ -116,7 +124,7 @@ app.mainScene.on("pointertap", (event) => {
     Player.player.pendingAction = null;
     Player.player.checkDistanceParams = null;
   }
-  const walkableAreas = createWalkableAreas(app);
+
   let insideAnyWalkableArea = false;
   let closestProjection = null;
   let minDistance = Infinity;
@@ -265,8 +273,16 @@ function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
   return intersects;
 }
 
+let count = 0;
+
 // Main game loop which runs every frame
 app.ticker.add((delta) => {
+  count += 0.015;
+
+  const glowAmount = Math.cos(count);
+
+  glowFilter.outerStrength = 2 * glowAmount;
+
   if (player.targetPosition) {
     const distance = Math.sqrt(
       Math.pow(Player.player.x - player.targetPosition.x, 2) +

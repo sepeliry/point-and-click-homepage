@@ -1,7 +1,9 @@
 import { Container, Sprite, Text, Texture, AnimatedSprite } from "pixi.js";
 import { CRTFilter } from "@pixi/filter-crt";
+import { glowFilter } from "./app.js";
+import { GlowFilter } from "@pixi/filter-glow";
 import { createWalkableAreas } from "./walkableArea.js";
-
+import { ASPECT_RATIO, MAX_WIDTH } from "../constants/constants.js";
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
@@ -11,6 +13,7 @@ import DesktopIcon from "./desktopIcon.js";
 
 // Constants
 import ITEM_TYPES from "../constants/itemTypes.js";
+import BackButton from "./backButton.js";
 
 class UI {
   static solidObjects = null;
@@ -25,6 +28,8 @@ class UI {
 
     // create scenes from gameData.js
     this.createScenesFromGameData(app, gameData);
+    // Create a camera container for the mobile view
+    this.createCameraContainer(app);
     createWalkableAreas(app);
     InventoryUI.initialize(app);
   }
@@ -93,10 +98,33 @@ class UI {
         text.visible = true;
         text.zIndex = itemData.zIndex;
         text.onStateChange = itemData.onStateChange;
-        text.anchor.set(0.475, 0);
+        text.anchor.set(0.5, 0);
+
         if (itemData.identifier) {
           text.identifier = itemData.identifier;
         }
+
+        console.log(itemData);
+
+        if (itemData.onInteraction) {
+          text.interactive = true;
+          text.buttonMode = true;
+          text.eventMode = "dynamic";
+          text.cursor = "pointer";
+          text.on("pointerdown", itemData.onInteraction(app, text));
+
+          const glowEffect = new GlowFilter({
+            innerStrength: 0,
+            outerStrength: 1.8,
+            quality: 0.1,
+            alpha: 0.6,
+            color: "c061cb",
+          });
+          text.filters = [glowEffect];
+        } else {
+          text.interactive = false;
+        }
+
         container.addChild(text);
 
         // set code text for numpad scene
@@ -117,7 +145,8 @@ class UI {
           itemData.height,
           itemData.width,
           itemData.name,
-          itemData.onInteraction
+          itemData.onInteraction,
+          glowFilter
         );
       } else if (itemData.type === ITEM_TYPES.desktopIcon) {
         new DesktopIcon(app, container, itemData);
@@ -130,8 +159,7 @@ class UI {
           UI.solidObjects.push(item);
           //  }
         }
-      }
-      if (itemData.type === "Book") {
+      } else if (itemData.type === ITEM_TYPES.book) {
         // Create a Book instance instead of an Item instance
         const book = new Book(
           app,
@@ -166,15 +194,14 @@ class UI {
   }
 
   createCameraContainer(app) {
-    if (window.isMobile) {
-      let gameContainerDOM = document.getElementById("game-container");
-      gameContainerDOM.style.width = `${app.view.width}px`;
-      gameContainerDOM.style.height = `${app.view.height}px`;
-      const cameraContainer = new Container();
-      app.cameraContainer = cameraContainer;
-      cameraContainer.addChild(app.mainScene);
-      app.stage.addChild(cameraContainer);
-    }
+    let gameContainerDOM = document.getElementById("game-container");
+    // gameContainerDOM.style.width = `${app.view.width}px`;
+    // gameContainerDOM.style.height = `${app.view.height}px`;
+    const cameraContainer = new Container();
+    app.cameraContainer = cameraContainer;
+    cameraContainer.addChild(app.mainScene);
+
+    app.stage.addChild(cameraContainer);
   }
 }
 

@@ -15,17 +15,11 @@ export const resizeGame = (app, scene) => {
 
     if (parentAspectRatio < gameAspectRatio) {
       newWidth = newHeight * gameAspectRatio;
-      console.log("new width", newWidth);
     } else {
       newHeight = newWidth / gameAspectRatio;
-      console.log("new height:", newHeight);
     }
     app.renderer.resize(newWidth, newHeight);
     scene.width = newWidth;
     scene.height = newHeight;
-
-    console.log(parentAspectRatio);
-    console.log("scene", scene.width);
-    console.log("scene height:", scene.height);
   }
 };

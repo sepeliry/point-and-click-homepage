@@ -10,23 +10,9 @@ class InventoryUI {
 
   static initialize(app) {
     this.app = app;
-<<<<<<< HEAD
-    this.container.x = this.app.view.parentNode.clientWidth - 20;
-=======
-    this.container.x = window.innerWidth - 20;
->>>>>>> fa0826151a4b3ba851d20c099852f8a9b53ce2c0
+    this.container.x = this.app.screen.width - 20;
     this.container.y = 20;
     this.app.stage.addChild(this.container);
-
-    window.addEventListener("resize", () => this.adjustPosition());
-  }
-
-  static adjustPosition() {
-    // Update the position only if the window width is less than 1400 or choose the smaller between 1400 and window.innerWidth
-    if (this.app) {
-      const maxScreenWidth = Math.min(1400, window.innerWidth);
-      this.container.x = maxScreenWidth - 20;
-    }
   }
 
   static updateInventoryUI() {
@@ -72,7 +58,6 @@ class InventoryUI {
       itemContainer.y = index * (BG_HEIGHT + 20); // Stack items vertically
 
       this.container.addChild(itemContainer);
-      this.adjustPosition();
     });
   }
 

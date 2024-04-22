@@ -57,6 +57,10 @@ class UI {
           background.width = app.renderer.width;
           background.height = app.renderer.height;
         }
+
+        if (sceneData.onStateChange) {
+          background.onStateChange = sceneData.onStateChange;
+        }
         container.addChild(background);
       }
 
@@ -91,8 +95,8 @@ class UI {
     items.forEach((itemData) => {
       if (itemData.type === ITEM_TYPES.text) {
         const text = new Text(itemData.text, itemData.style);
-        text.x = itemData.location.x;
-        text.y = itemData.location.y;
+        text.x = itemData.location.x * app.renderer.width;
+        text.y = itemData.location.y * app.renderer.height;
         text.visible = true;
         text.zIndex = itemData.zIndex;
         text.onStateChange = itemData.onStateChange;

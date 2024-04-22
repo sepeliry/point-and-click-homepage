@@ -68,7 +68,7 @@ class Player {
     // Create player sprite with idle animation
     Player.player = new AnimatedSprite(Player.playerIdleFrames);
 
-    Player.player.position.set(450, 620);
+    Player.player.position.set(1400 / 2, 800 * 0.85);
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 10;
     // To store a pending onInteraction action and neccesary parameters
@@ -297,7 +297,7 @@ class Player {
         Texture.from(player_walk_12),
       ];
       Player.player.loop = true;
-      openPopup(Player.app, "Back to normal size", null);
+      openPopup(Player.app, "Huh, onneks palasin normaalin kokoiseks!", null);
       Player.player.isTransforming = false;
     };
     Player.player.play();

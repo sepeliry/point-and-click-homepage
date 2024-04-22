@@ -205,7 +205,11 @@ const gameData = {
                 switchScene(app, "arcadeScene");
               } else {
                 console.log("please complete the game");
-                openPopup(app, "This item cannot be used yet", null);
+                openPopup(
+                  app,
+                  "Hmm, tämä ei näytä toimivan. Tuleekohan siihen virtaa..?",
+                  null
+                );
               }
             }
           ),
@@ -262,7 +266,7 @@ const gameData = {
             item.position.y,
             "mainScene",
             () => {
-              openPopup(app, "Picked up some coffee", null);
+              openPopup(app, "Löysin kahvia! ... lattialta?", null);
 
               gameState.inventory.addItem("Coffee", item);
               removeSprite(app, item);
@@ -310,10 +314,18 @@ const gameData = {
             "mainScene",
             () => {
               if (!gameState.inventory.itemExists("Coffee")) {
-                openPopup(app, "need more coffee", null);
+                openPopup(
+                  app,
+                  "Hmm, missä täällä säilytetään kahvinpuruja?",
+                  null
+                );
                 return;
               } else if (!gameState.inventory.itemExists("Coffee cup")) {
-                openPopup(app, "where is my coffee cup?", null);
+                openPopup(
+                  app,
+                  "Kahvinpurut check, mutta tarviin vielä kahvikupin!",
+                  null
+                );
                 return;
               }
 
@@ -321,7 +333,13 @@ const gameData = {
               gameState.inventory.removeItem("Coffee");
               gameState.inventory.removeItem("Coffee cup");
               Player.minimizePlayer();
-              openPopup(app, "whats happening to me??", null);
+              openPopup(app, "Mitä tapahtuu??", null, () => {
+                openPopup(
+                  app,
+                  "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
+                  null
+                );
+              });
 
               app.scenes["mainScene"].updateTransform();
             }
@@ -407,8 +425,8 @@ const gameData = {
           x: 0.78,
           y: 0.82,
         },
-        width: 277,
-        height: 339,
+        width: 277 * 0.8,
+        height: 339 * 0.8,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
         onInteraction: (app, item) => () => {
@@ -418,7 +436,12 @@ const gameData = {
               item.position.x,
               item.position.y,
               "mainScene",
-              () => openPopup(app, "congraz! arcade machine is now on", null)
+              () =>
+                openPopup(
+                  app,
+                  "Onneksi olkoon, arcade-kone on nyt päällä!",
+                  null
+                )
             );
           } else {
             console.log("please complete the game");
@@ -427,7 +450,12 @@ const gameData = {
               item.position.x,
               item.position.y,
               "mainScene",
-              () => openPopup(app, "This item cannot be used yet", null)
+              () =>
+                openPopup(
+                  app,
+                  "Tää ei mene päälle? Miksi täällä on vain rikkinäisiä koneita :/",
+                  null
+                )
             );
           }
         },
@@ -521,7 +549,7 @@ const gameData = {
         name: "Honesty",
         location: {
           x: 0.52,
-          y: 0.365,
+          y: 0.35,
         },
         width: 37,
         height: 100,
@@ -541,7 +569,7 @@ const gameData = {
         name: "Säännöt",
         location: {
           x: 0.44,
-          y: 0.365,
+          y: 0.35,
         },
         width: 37,
         height: 100,
@@ -561,7 +589,7 @@ const gameData = {
         name: "Wiki",
         location: {
           x: 0.44,
-          y: 0.225,
+          y: 0.21,
         },
         width: 37,
         height: 100,
@@ -579,7 +607,7 @@ const gameData = {
         name: "Vuodet",
         location: {
           x: 0.44,
-          y: 0.5,
+          y: 0.485,
         },
         width: 37,
         height: 100,
@@ -598,7 +626,7 @@ const gameData = {
         name: "Pelit",
         location: {
           x: 0.54,
-          y: 0.5,
+          y: 0.485,
         },
         width: 37,
         height: 100,
@@ -617,7 +645,7 @@ const gameData = {
         name: "Luento",
         location: {
           x: 0.49,
-          y: 0.64,
+          y: 0.62,
         },
         width: 37,
         height: 100,
@@ -636,7 +664,7 @@ const gameData = {
         name: "PDF",
         location: {
           x: 0.58,
-          y: 0.64,
+          y: 0.62,
         },
         width: 37,
         height: 100,
@@ -1184,7 +1212,7 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Coffee cup",
         location: {
-          x: 0.42,
+          x: 0.32,
           y: 0.73,
         },
         width: 100,

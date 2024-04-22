@@ -28,12 +28,36 @@ const windowHeight = window.innerHeight;
 // isMobile = true enables the cameraContainer
 window.isMobile = windowWidth <= 800;
 
-// Create application on page load. desktop: 1400x800, mobile: use screensize
-const app = new Application({
-  width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
-  height: window.isMobile ? Math.min(windowHeight, 800) : 800,
-  backgroundColor: 0xaaaaaa,
-});
+function setupPixiApp() {
+  const app = new Application({
+    width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
+    height: window.isMobile ? Math.min(windowHeight, 800) : 800,
+    backgroundColor: 0xaaaaaa,
+  });
+
+  document.getElementById("game-container").appendChild(app.view);
+  // #game-container width and height
+  const parent = app.view.parentNode;
+  let newWidth = parent.clientWidth;
+  let newHeight = parent.clientHeight;
+  let parentAspectRatio = newWidth / newHeight;
+  let gameAspectRatio = 1400 / 800;
+
+  // Resize PIXI application to match the new size of the #game-container div
+
+  if (parentAspectRatio < gameAspectRatio) {
+    newWidth = newHeight * gameAspectRatio;
+  } else {
+    newHeight = newWidth / gameAspectRatio;
+  }
+  app.renderer.resize(newWidth, newHeight);
+
+  // Create application on page load. desktop: 1400x800, mobile: use screensize
+
+  return app;
+}
+
+const app = setupPixiApp();
 
 globalThis.__PIXI_APP__ = app;
 
@@ -48,8 +72,6 @@ export const glowFilter = new GlowFilter({
   alpha: 0.6,
   color: "c061cb",
 });
-
-document.getElementById("game-container").appendChild(app.view);
 
 document.getElementById("hide-wiki-content").addEventListener("click", () => {
   document.getElementById("wiki-wrapper").style.display = "none";

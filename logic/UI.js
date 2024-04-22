@@ -49,14 +49,9 @@ class UI {
       if (sceneData.background) {
         const background = Sprite.from(sceneData.background);
         // Set the background to fill the entire renderer view
-        if (sceneName === "mainScene" && window.isMobile) {
-          // To support cameraContainer on mobile, set mainScene size to match gameworlds size
-          background.width = 1400;
-          background.height = 800;
-        } else {
-          background.width = app.renderer.width;
-          background.height = app.renderer.height;
-        }
+
+        background.width = 1400;
+        background.height = 800;
 
         if (sceneData.onStateChange) {
           background.onStateChange = sceneData.onStateChange;
@@ -95,8 +90,8 @@ class UI {
     items.forEach((itemData) => {
       if (itemData.type === ITEM_TYPES.text) {
         const text = new Text(itemData.text, itemData.style);
-        text.x = itemData.location.x * app.renderer.width;
-        text.y = itemData.location.y * app.renderer.height;
+        text.x = itemData.location.x * 1400;
+        text.y = itemData.location.y * 800;
         text.visible = true;
         text.zIndex = itemData.zIndex;
         text.onStateChange = itemData.onStateChange;

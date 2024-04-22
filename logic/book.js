@@ -1,7 +1,5 @@
 import { Application, Container, Sprite, Text, Assets } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
-import { glowFilter } from "./app.js";
-import { ASPECT_RATIO } from "../constants/constants";
 /**
  * Class to create items
  * TODO: Parameter to choose if item is interactable
@@ -28,8 +26,8 @@ class Book {
     onInteraction
   ) {
     this.book = Sprite.from(image);
-    this.book.x = x * app.renderer.width;
-    this.book.y = y * app.renderer.height;
+    this.book.x = x * 1400;
+    this.book.y = y * 800;
     this.book.visible = true;
     // this.book.width = width;
     // this.book.height = height;
@@ -38,8 +36,8 @@ class Book {
     const originalGameHeight = 800;
     const widthRatio = width / originalGameWidth;
     const heightRatio = height / originalGameHeight;
-    this.book.width = widthRatio * app.renderer.width;
-    this.book.height = heightRatio * app.renderer.height;
+    this.book.width = widthRatio * 1400;
+    this.book.height = heightRatio * 800;
     this.book.zIndex = zIndex;
 
     if (onInteraction) {
@@ -62,14 +60,14 @@ class Book {
     this.textContainer.zIndex = 2;
 
     // // Calculate a fontsize relative to original fontsize (20) on desktop (1400x800)
-    const currentWidth = app.renderer.width;
-    const currentHeight = app.renderer.height;
+    const currentWidth = 1400;
+    const currentHeight = 800;
     const ratio = Math.min(
       currentWidth / originalGameWidth,
       currentHeight / originalGameHeight
     );
     //
-    const fontSize = Math.max(20 * ratio, 18);
+    const fontSize = 20; //Math.max(20 * ratio, 18);
 
     // Define the style for the text
     const textStyle = {

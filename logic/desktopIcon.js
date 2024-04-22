@@ -11,8 +11,8 @@ class DesktopIcon {
     // Create a container for the sprite and text
     this.iconContainer = new Container();
 
-    this.iconContainer.x = itemData.location.x * app.renderer.width;
-    this.iconContainer.y = itemData.location.y * app.renderer.height;
+    this.iconContainer.x = itemData.location.x * 1400;
+    this.iconContainer.y = itemData.location.y * 800;
     this.iconContainer.zIndex = itemData.zIndex || 1;
 
     // Create the sprite from an image

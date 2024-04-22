@@ -37,8 +37,8 @@ class Item {
   }
 
   initializeSprite(app, container, itemData) {
-    this.sprite.x = itemData.location.x * app.renderer.width;
-    this.sprite.y = itemData.location.y * app.renderer.height;
+    this.sprite.x = itemData.location.x * 1400;
+    this.sprite.y = itemData.location.y * 800;
     this.sprite.zIndex = itemData.zIndex || 1;
     this.sprite.name = itemData.name;
     this.sprite.height = itemData.height;

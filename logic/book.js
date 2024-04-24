@@ -65,18 +65,19 @@ class Book {
       currentHeight / originalGameHeight
     );
     const fontSize = 20; // Or Math.max(20 * ratio, 18)
-    const textStyle = {
-      fontFamily: "VCR_OSD_MONO",
-      fontSize: fontSize,
-      fill: 0xffffff,
-      stroke: 0x000000,
-      strokeThickness: 4,
-    };
+
     const characterSpacing = 11 * (currentHeight / originalGameHeight);
 
     for (let i = 0; i < itemData.name.length; i++) {
       const character = itemData.name[i];
-      const textObject = new Text({ text: character, textStyle });
+      const textStyle = {
+        fontFamily: "VCR_OSD_MONO",
+        fontSize: fontSize,
+        fill: 0xffffff,
+        stroke: 0x000000,
+        strokeThickness: 4,
+      };
+      const textObject = new Text({ text: character, style: textStyle });
       textObject.rotation = Math.PI / 2;
       const x = this.book.x + this.book.width - 18 * ratio;
       const y = this.book.y + (i + 1.5) * characterSpacing;

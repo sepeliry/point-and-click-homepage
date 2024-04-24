@@ -315,6 +315,8 @@ const app = new Application();
   let glowStrength = 0;
 
   fadeOutLoadingScreen();
+  resizeGame(app, app.mainScene);
+  openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
 
   // Main game loop which runs every frame
   Ticker.shared.add((ticker) => {
@@ -351,13 +353,6 @@ const app = new Application();
         // app.mainScene.updateTransform();
       }
     }
-  });
-
-  document.addEventListener("DOMContentLoaded", () => {
-    // resize to window size
-    // followPlayer(app, app.cameraContainer, Player.player);
-    resizeGame(app, app.mainScene);
-    openPopup(app, "Tervetuloa Sepeli ry:n kotisivuille :>");
   });
 
   window.addEventListener("resize", () => {

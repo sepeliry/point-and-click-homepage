@@ -4,7 +4,7 @@ describe("resizeGame", () => {
   beforeEach(() => {
     // Mock app and scene objects + isMobile property
     app = {
-      view: {
+      canvas: {
         parentNode: {
           clientWidth: 1400,
           clientHeight: 800,
@@ -36,8 +36,8 @@ describe("resizeGame", () => {
   });
 
   test("resizes app and scene to maintain aspect ratio 1.", () => {
-    app.view.parentNode.clientWidth = 1400;
-    app.view.parentNode.clientHeight = 800;
+    app.canvas.parentNode.clientWidth = 1400;
+    app.canvas.parentNode.clientHeight = 800;
     resizeGame(app, scene);
 
     expect(app.renderer.resize).toHaveBeenCalledWith(1400, 800);
@@ -46,8 +46,8 @@ describe("resizeGame", () => {
   });
 
   test("resizes app and scene to maintain aspect ratio 2. (Checking height)", () => {
-    app.view.parentNode.clientWidth = 700;
-    app.view.parentNode.clientHeight = 400;
+    app.canvas.parentNode.clientWidth = 700;
+    app.canvas.parentNode.clientHeight = 400;
     resizeGame(app, scene);
 
     const expectedWidth = 700;
@@ -62,8 +62,8 @@ describe("resizeGame", () => {
   });
 
   test("resizes app and scene to maintain aspect ratio 3. (Checking width)", () => {
-    app.view.parentNode.clientWidth = 2800;
-    app.view.parentNode.clientHeight = 1600;
+    app.canvas.parentNode.clientWidth = 2800;
+    app.canvas.parentNode.clientHeight = 1600;
     resizeGame(app, scene);
 
     const expectedWidth = 1600 * (1400 / 800);
@@ -78,8 +78,8 @@ describe("resizeGame", () => {
   });
 
   test("resizes app and scene to maintain aspect ratio when parentAspectRatio < gameAspectRatio", () => {
-    app.view.parentNode.clientWidth = 800;
-    app.view.parentNode.clientHeight = 1000;
+    app.canvas.parentNode.clientWidth = 800;
+    app.canvas.parentNode.clientHeight = 1000;
     resizeGame(app, scene);
 
     // If parentAspectRatio < gameAspectRatio, resizeGame should calculate a matching width for the game
@@ -96,8 +96,8 @@ describe("resizeGame", () => {
   });
 
   test("resizes app and scene to maintain aspect ratio when parentAspectRatio > gameAspectRatio", () => {
-    app.view.parentNode.clientWidth = 1400;
-    app.view.parentNode.clientHeight = 800;
+    app.canvas.parentNode.clientWidth = 1400;
+    app.canvas.parentNode.clientHeight = 800;
     resizeGame(app, scene);
 
     // If parentAspectRatio > gameAspectRatio, resizeGame should calculate a matching height for the game

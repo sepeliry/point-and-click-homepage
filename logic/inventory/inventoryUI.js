@@ -48,10 +48,9 @@ class InventoryUI {
       itemSprite.y = (bgHeight - itemSprite.height) / 2; // Center vertically
 
       const bg = new Graphics();
-      bg.beginFill("#020D26", 0.9);
-      bg.lineStyle(2, "#F54483");
-      bg.drawRect(0, 0, bgWidth, bgHeight);
-      bg.endFill();
+      bg.rect(0, 0, bgWidth, bgHeight);
+      bg.fill({ color: "#020D26", alpha: 0.9 });
+      bg.stroke({ width: 2, color: "#F54483" });
 
       itemContainer.addChild(bg);
       itemContainer.addChild(itemSprite);
@@ -78,13 +77,13 @@ class InventoryUI {
   }
 
   static makeItemDraggable(itemContainer, entry, itemSprite) {
-    const gameObject = Item.gameObjects.find((obj) => obj.name === entry.item);
+    const gameObject = Item.gameObjects.find((obj) => obj.label === entry.item);
     if (!gameObject && !gameObject.draggable) {
       return;
     }
     // Find the dragtarget from gameObjects
     const dragTarget = Item.gameObjects.find(
-      (obj) => obj.name === gameObject.dragTargetName
+      (obj) => obj.label === gameObject.dragTargetName
     );
     if (!dragTarget) {
       console.log("Dragtarget not found");

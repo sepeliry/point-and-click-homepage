@@ -808,7 +808,7 @@ const gameData = {
         },
         location: {
           x: 0.5,
-          y: 0.3,
+          y: 0.295,
         },
         zIndex: 12,
         onInteraction: null,

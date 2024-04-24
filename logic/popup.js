@@ -38,10 +38,9 @@ class Popup {
 
     // Create background for the popup
     const background = new Graphics();
-    background.lineStyle(2, "#F54483");
-    background.beginFill("#020D26");
-    background.drawRect(0, 0, popupWidth, popupHeight);
-    background.endFill();
+    background.rect(0, 0, popupWidth, popupHeight);
+    background.fill("#020D26");
+    background.stroke({ width: 2, color: "#F54483" });
     background.alpha = 0.9;
     this.container.addChild(background);
 
@@ -50,13 +49,14 @@ class Popup {
     const fontSize = baseFontSize * scaleFactor;
 
     // Text configuration with dynamic font size and adjusted word wrap width
-    const message = new Text("", {
+    const style = {
       fontFamily: "VCR_OSD_MONO",
       fill: "#F54483",
       fontSize: fontSize,
       wordWrap: true,
       wordWrapWidth: popupWidth - 40,
-    });
+    };
+    const message = new Text({ text: "", style });
     message.anchor.set(0, 0);
     message.position.set(padding, padding);
     this.container.addChild(message);

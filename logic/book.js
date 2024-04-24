@@ -70,14 +70,13 @@ class Book {
 
     for (let i = 0; i < itemData.name.length; i++) {
       const character = itemData.name[i];
-      const textStyle = {
+      const style = {
         fontFamily: "VCR_OSD_MONO",
         fontSize: fontSize,
         fill: 0xffffff,
-        stroke: 0x000000,
-        strokeThickness: 4,
+        stroke: { width: 4, color: 0x000000 },
       };
-      const textObject = new Text({ text: character, style: textStyle });
+      const textObject = new Text({ text: character, style });
       textObject.rotation = Math.PI / 2;
       const x = this.book.x + this.book.width - 18 * ratio;
       const y = this.book.y + (i + 1.5) * characterSpacing;

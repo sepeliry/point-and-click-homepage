@@ -8,10 +8,9 @@ jest.mock("pixi.js", () => ({
     removeChild: jest.fn(),
   })),
   Graphics: jest.fn().mockImplementation(() => ({
-    lineStyle: jest.fn(),
-    beginFill: jest.fn(),
-    drawRect: jest.fn(),
-    endFill: jest.fn(),
+    stroke: jest.fn(),
+    fill: jest.fn(),
+    rect: jest.fn(),
     addChild: jest.fn(),
   })),
   Text: jest.fn().mockImplementation(() => ({

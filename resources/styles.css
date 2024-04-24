@@ -143,3 +143,26 @@ td {
   width: 100%;
   height: 100%;
 }
+
+#article-img-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 70%;
+  height: auto;
+  max-height: 60%;
+  background-color: #020D26;
+  color: black;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  display: none; /* Hidden by default */
+}
+
+#article-img-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

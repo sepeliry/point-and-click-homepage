@@ -18,10 +18,15 @@ export function checkDistance(app, x, y, sceneName, action) {
     return;
 
   // Calculate the distance between the player and the clickable area
-  const distance = Math.sqrt(
-    (player.x - x * app.mainScene.width) ** 2 +
-      (player.y - y * app.mainScene.height) ** 2
-  );
+  const distance = Math.sqrt((player.x - x) ** 2 + (player.y - y) ** 2);
+
+  console.log(x);
+  console.log(player.x);
+
+  console.log(y);
+  console.log(player.y);
+
+  console.log("distance: ", distance);
 
   // Check if the player is within the maximum distance. If not store the action to be called later
   if (distance <= maxDistance) {

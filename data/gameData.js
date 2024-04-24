@@ -118,64 +118,6 @@ const gameData = {
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [
-      /*
-      {
-        image: boxPropImage,
-        visible: true,
-        onStateChange: null,
-        type: ITEM_TYPES.item,
-        name: "Box",
-        location: {
-          x: 0.61,
-          y: 0.93,
-        },
-        width: 100,
-        height: 100,
-        collisionHeight: 5, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.61, 0.93, "mainScene", () => {
-            console.log(gameState.inventory);
-            openPopup(
-              app,
-              "This is a box and arcade game is now on! check gameState :)",
-              null
-            );
-            gameState.hasCompletedGame = !gameState.hasCompletedGame;
-            console.log(gameState);
-          }),
-
-        zIndex: 2,
-      },
-
-      {
-        image: keyImage,
-        visible: true,
-        onStateChange: (app, item) => {
-
-        },
-        animation: null,
-        type: ITEM_TYPES.item,
-        name: "Key",
-        location: {
-          x: 0.47,
-          y: 0.9,
-        },
-        width: 267 * 0.25,
-        height: 400 * 0.25,
-        collisionHeight: 0, // not yet used
-        onInteraction: (app, item) => () =>
-          checkDistance(app, 0.47, 0.9, "mainScene", () => {
-            console.log("key clicked");
-            openPopup(app, "What is this key?", null);
-            gameState.hasUnlockedDoor = true;
-            console.log(item);
-            gameState.inventory.addItem("Key", item);
-            removeSprite(app, item);
-          }),
-
-        zIndex: 1,
-      },
- */
       {
         visible: true,
         animation: {
@@ -204,15 +146,25 @@ const gameData = {
         height: 897 * 0.27,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.45, 0.7, "mainScene", () => {
-            if (gameState.hasCompletedGame) {
-              switchScene(app, "arcadeScene");
-            } else {
-              console.log("please complete the game");
-              openPopup(app, "This item cannot be used yet", null);
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "mainScene",
+            () => {
+              if (gameState.hasCompletedGame) {
+                switchScene(app, "arcadeScene");
+              } else {
+                console.log("please complete the game");
+                openPopup(
+                  app,
+                  "Hmm, tämä ei näytä toimivan. Tuleekohan siihen virtaa..?",
+                  null
+                );
+              }
             }
-          }),
+          ),
 
         zIndex: 0,
       },
@@ -228,16 +180,20 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Lock",
         location: {
-          x: 0.565,
+          x: 0.568,
           y: 0.59,
         },
         width: 1527 / 12,
         height: 986 / 12,
         collisionHeight: 5, // not yet used
         maxDistance: 250,
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.534, 0.61, "numpadScene", () =>
-            switchScene(app, "numpadScene")
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "numpadScene",
+            () => switchScene(app, "numpadScene")
           ),
         zIndex: 0,
       },
@@ -256,14 +212,33 @@ const gameData = {
         height: 400 * 0.25,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () =>
-          checkDistance(app, 0.81, 0.895, "mainScene", () => {
-            openPopup(app, "Picked up some coffee", null);
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "mainScene",
+            () => {
+              openPopup(app, "Löysin kahvia! ... lattialta?", null);
 
-            gameState.inventory.addItem("Coffee", item);
-            removeSprite(app, item);
-          }),
+              gameState.inventory.addItem("Coffee", item);
+              removeSprite(app, item);
+            }
+          ),
 
         zIndex: 2,
+        draggable: true,
+        dragTargetName: "Coffee maker",
+        onDragSuccess: (app, item) => {
+          if (gameState.inventory.itemExists("Coffee cup")) {
+            openPopup(app, "Nyt tulee tujut kahvit!");
+          } else {
+            openPopup(
+              app,
+              "Tuleepas tujut kahvit, mutta kuppi puuttuu...",
+              null
+            );
+          }
+        },
       },
       {
         visible: true,
@@ -334,24 +309,44 @@ const gameData = {
         width: 267 * 0.25,
         height: 400 * 0.25,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.7, 0.595, "mainScene", () => {
-            if (!gameState.inventory.itemExists("Coffee")) {
-              openPopup(app, "need more coffee", null);
-              return;
-            } else if (!gameState.inventory.itemExists("Coffee cup")) {
-              openPopup(app, "where is my coffee cup?", null);
-              return;
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "mainScene",
+            () => {
+              if (!gameState.inventory.itemExists("Coffee")) {
+                openPopup(
+                  app,
+                  "Hmm, missä täällä säilytetään kahvinpuruja?",
+                  null
+                );
+                return;
+              } else if (!gameState.inventory.itemExists("Coffee cup")) {
+                openPopup(
+                  app,
+                  "Kahvinpurut check, mutta tarviin vielä kahvikupin!",
+                  null
+                );
+                return;
+              }
+
+              // remove coffee from inventory
+              gameState.inventory.removeItem("Coffee");
+              gameState.inventory.removeItem("Coffee cup");
+              Player.minimizePlayer();
+              openPopup(app, "Mitä tapahtuu??", null, () => {
+                openPopup(
+                  app,
+                  "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
+                  null
+                );
+              });
+
+              app.scenes["mainScene"].updateTransform();
             }
-
-            // remove coffee from inventory
-            gameState.inventory.removeItem("Coffee");
-            gameState.inventory.removeItem("Coffee cup");
-            Player.minimizePlayer();
-            openPopup(app, "whats happening to me??", null);
-
-            app.scenes["mainScene"].updateTransform();
-          }),
+          ),
         zIndex: 0,
       },
       {
@@ -366,9 +361,13 @@ const gameData = {
         width: 191 * 1.2,
         height: 292 * 1.2,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.33, 0.73, "bookshelfScene", () =>
-            switchScene(app, "bookshelfScene")
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.x,
+            "bookshelfScene",
+            () => switchScene(app, "bookshelfScene")
           ),
         zIndex: 0,
       },
@@ -391,9 +390,13 @@ const gameData = {
         height: 286,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.16, 0.92, "computerScene", () =>
-            switchScene(app, "computerScene")
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "computerScene",
+            () => switchScene(app, "computerScene")
           ),
         zIndex: 0,
       },
@@ -425,19 +428,37 @@ const gameData = {
           x: 0.78,
           y: 0.82,
         },
-        width: 277,
-        height: 339,
+        width: 277 * 0.8,
+        height: 339 * 0.8,
         collisionHeight: 0, // not yet used
         interactionRange: 50,
-        onInteraction: (app) => () => {
+        onInteraction: (app, item) => () => {
           if (gameState.hasCompletedGame) {
-            checkDistance(app, 0.78, 0.82, "mainScene", () =>
-              openPopup(app, "congraz! arcade machine is now on", null)
+            checkDistance(
+              app,
+              item.position.x,
+              item.position.y,
+              "mainScene",
+              () =>
+                openPopup(
+                  app,
+                  "Onneksi olkoon, arcade-kone on nyt päällä!",
+                  null
+                )
             );
           } else {
             console.log("please complete the game");
-            checkDistance(app, 0.78, 0.82, "mainScene", () =>
-              openPopup(app, "This item cannot be used yet", null)
+            checkDistance(
+              app,
+              item.position.x,
+              item.position.y,
+              "mainScene",
+              () =>
+                openPopup(
+                  app,
+                  "Tää ei mene päälle? Miksi täällä on vain rikkinäisiä koneita :/",
+                  null
+                )
             );
           }
         },
@@ -463,14 +484,20 @@ const gameData = {
         width: 44,
         height: 65,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () =>
-          checkDistance(app, 0.88, 0.83, "mainScene", () => {
-            if (!gameState.playerIsMiniSize) {
-              openPopup(app, "on kyl pieni hiirenkolo...", null);
-              return;
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.y,
+            "mainScene",
+            () => {
+              if (!gameState.playerIsMiniSize) {
+                openPopup(app, "on kyl pieni hiirenkolo...", null);
+                return;
+              }
+              switchScene(app, "mouseholeScene");
             }
-            switchScene(app, "mouseholeScene");
-          }),
+          ),
 
         zIndex: 0,
       },
@@ -506,7 +533,7 @@ const gameData = {
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.backButton,
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -525,10 +552,10 @@ const gameData = {
         name: "Honesty",
         location: {
           x: 0.52,
-          y: 0.36,
+          y: 0.35,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -545,10 +572,10 @@ const gameData = {
         name: "Säännöt",
         location: {
           x: 0.44,
-          y: 0.36,
+          y: 0.35,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -565,10 +592,10 @@ const gameData = {
         name: "Wiki",
         location: {
           x: 0.44,
-          y: 0.23,
+          y: 0.21,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           openUrlInNewTab(
@@ -583,10 +610,10 @@ const gameData = {
         name: "Vuodet",
         location: {
           x: 0.44,
-          y: 0.5,
+          y: 0.485,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -602,10 +629,10 @@ const gameData = {
         name: "Pelit",
         location: {
           x: 0.54,
-          y: 0.5,
+          y: 0.485,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -621,10 +648,10 @@ const gameData = {
         name: "Luento",
         location: {
           x: 0.49,
-          y: 0.64,
+          y: 0.62,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           displayWikiPage(
@@ -640,10 +667,10 @@ const gameData = {
         name: "PDF",
         location: {
           x: 0.58,
-          y: 0.64,
+          y: 0.62,
         },
         width: 37,
-        height: 85,
+        height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
           showPdf(
@@ -668,7 +695,7 @@ const gameData = {
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.backButton,
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -701,7 +728,11 @@ const gameData = {
           if (gameState.inventory.itemExists("PostIt 2")) {
             openPopup(app, "Täähän sopii tuohon toiseen palaseen!", null);
           } else {
-            openPopup(app, "Hmm, koodista näyttäis puuttuvan osa...", null);
+            openPopup(
+              app,
+              "Mitä ihmettä? Niinku tästä puuttuis palanen.",
+              null
+            );
           }
         },
         zIndex: 10,
@@ -748,7 +779,7 @@ const gameData = {
         onInteraction: (app) => () => {
           gameState.hasCompletedGame = true;
           switchScene(app, "mainScene");
-          openPopup(app, "wow the arcade machines turned on!", null);
+          openPopup(app, "Oho, arcade-koneet meni päälle!", null);
         },
         zIndex: 0,
       },
@@ -1083,7 +1114,7 @@ const gameData = {
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.backButton,
+        type: ITEM_TYPES.item,
         onStateChange: null,
         name: "Back button",
         location: {
@@ -1131,7 +1162,7 @@ const gameData = {
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.backButton,
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,
@@ -1147,8 +1178,8 @@ const gameData = {
         image: discord_icon,
         visible: true,
         type: ITEM_TYPES.desktopIcon,
-        title: "Sepeli Discord",
-        name: "Sepeli's Discord server",
+        title: "Sepelin Discord",
+        name: "Sepelin Discord-kanava",
         location: {
           x: 0.475,
           y: 0.49,
@@ -1164,8 +1195,8 @@ const gameData = {
         image: signup_icon,
         visible: true,
         type: ITEM_TYPES.desktopIcon,
-        title: "Join Sepeli",
-        name: "Join Sepeli as a member",
+        title: "Liity Sepeliin",
+        name: "Liity Sepelin jäseneksi",
         location: {
           x: 0.545,
           y: 0.49,
@@ -1184,7 +1215,7 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Coffee cup",
         location: {
-          x: 0.42,
+          x: 0.32,
           y: 0.73,
         },
         width: 100,
@@ -1193,9 +1224,22 @@ const gameData = {
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("Coffee cup", item);
           removeSprite(app, item);
-          openPopup(app, "Found the missing coffee cup", null);
+          openPopup(
+            app,
+            "A-ha! Löysin kahvikupin! Tuskin haittaa jos lainaan sitä...",
+            null
+          );
         },
         zIndex: 2,
+        draggable: true,
+        dragTargetName: "Coffee maker",
+        onDragSuccess: (app, item) => {
+          if (gameState.inventory.itemExists("Coffee")) {
+            openPopup(app, "Santsikuppia, kiitos!");
+          } else {
+            openPopup(app, "Kuppi löytyy, mutta kaffea tarvis!.", null);
+          }
+        },
       },
     ],
   },
@@ -1207,7 +1251,7 @@ const gameData = {
       {
         image: backarrow_img,
         visible: true,
-        type: ITEM_TYPES.backButton,
+        type: ITEM_TYPES.item,
         name: "Back button",
         location: {
           x: 0.1,

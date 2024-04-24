@@ -1,4 +1,4 @@
-import { Application, Texture, AnimatedSprite, Point } from "pixi.js";
+import { Application, Texture, AnimatedSprite, Point, Assets } from "pixi.js";
 import { playerCollides } from "./collisionUtils";
 
 // Interactions
@@ -40,52 +40,101 @@ import player_shrink_2 from "../resources/images/player_images/player_idle0_smal
  * Class for players
  */
 class Player {
-  /**
-   * @constructor - Creates the player object, loads the idle/walk animation frames and adds the player to stage
-   * @param {Application} app - Application where the player is added to
-   */
   static player = null;
   static app = null;
-  constructor(app) {
-    // Load player idle and walk animation frames
-    Player.playerIdleFrames = [Texture.from(player_idle)];
-    Player.playerWalkFrames = [
-      Texture.from(player_walk_1),
-      Texture.from(player_walk_2),
-      Texture.from(player_walk_3),
-      Texture.from(player_walk_4),
-      Texture.from(player_walk_5),
-      Texture.from(player_walk_6),
-      Texture.from(player_walk_7),
-      Texture.from(player_walk_8),
-      Texture.from(player_walk_9),
-      Texture.from(player_walk_10),
-      Texture.from(player_walk_11),
-      Texture.from(player_walk_12),
-    ];
-    // this.destinationReached = true;
-    Player.app = app;
-    // Create player sprite with idle animation
-    Player.player = new AnimatedSprite(Player.playerIdleFrames);
 
+  static async initialize(app) {
+    Player.app = app;
+
+    // Define frame assets
+    const playerIdleFrames = [player_idle];
+    const playerWalkFrames = [
+      player_walk_1,
+      player_walk_2,
+      player_walk_3,
+      player_walk_4,
+      player_walk_5,
+      player_walk_6,
+      player_walk_7,
+      player_walk_8,
+      player_walk_9,
+      player_walk_10,
+      player_walk_11,
+      player_walk_12,
+    ];
+
+    const playerMiniWalkFrames = [
+      player_walk_mini_1,
+      player_walk_mini_2,
+      player_walk_mini_3,
+      player_walk_mini_4,
+      player_walk_mini_5,
+      player_walk_mini_6,
+      player_walk_mini_7,
+      player_walk_mini_8,
+      player_walk_mini_9,
+    ];
+
+    const shrinkingAnimationFrames = [
+      player_shrink_1,
+      player_shrink_2,
+      player_idle_mini,
+    ];
+
+    const growingAnimationFrames = [
+      player_idle_mini,
+      player_shrink_2,
+      player_shrink_1,
+    ];
+
+    // Load all frames
+    await Assets.load([
+      ...playerIdleFrames,
+      ...playerWalkFrames,
+      ...shrinkingAnimationFrames,
+      ...playerMiniWalkFrames,
+      ...growingAnimationFrames,
+    ]);
+
+    // Create textures from the loaded assets
+    Player.playerIdleFrames = playerIdleFrames.map((frame) =>
+      Texture.from(frame)
+    );
+    Player.playerNormalWalkFrames = playerWalkFrames.map((frame) =>
+      Texture.from(frame)
+    );
+
+    Player.shrinkingAnimationFrames = shrinkingAnimationFrames.map((frame) =>
+      Texture.from(frame)
+    );
+
+    Player.growingAnimationFrames = growingAnimationFrames.map((frame) =>
+      Texture.from(frame)
+    );
+
+    Player.playerMiniWalkFrames = playerMiniWalkFrames.map((frame) =>
+      Texture.from(frame)
+    );
+
+    // set default walk frames for normal size
+    Player.playerWalkFrames = Player.playerNormalWalkFrames;
+
+    // Create the player sprite with idle animation
+    Player.player = new AnimatedSprite(Player.playerIdleFrames);
     Player.player.position.set(1400 / 2, 800 * 0.85);
     Player.player.anchor.set(0.5, 1);
     Player.player.zIndex = 10;
-    // To store a pending onInteraction action and neccesary parameters
-    Player.player.pendingAction = null;
-    Player.player.checkDistanceParams = null;
-
-    Player.player.eventMode = "none";
     Player.player.animationSpeed = 0.05;
-    Player.player.loop = true; // Set the loop property to true
+    Player.player.loop = true;
     Player.player.play();
     Player.player.eventMode = "none";
     app.mainScene.addChild(Player.player);
-    this.targetPosition = new Point(Player.player.x, Player.player.y);
     Player.player.isTransforming = false;
+
+    Player.player.targetPosition = new Point(Player.player.x, Player.player.y);
   }
 
-  move(targetPosition, solidObjects) {
+  static move(targetPosition, solidObjects) {
     /**
      * Method to move the player to position
      * @param {number} targetPosition - Coordinate where the player is moved to
@@ -109,8 +158,10 @@ class Player {
     let closestObj = null;
     let closestDistance = Infinity;
 
+    /*
     // Find the closest object to player
     for (const obj of solidObjects) {
+      console.log(obj);
       const objDistance = Math.sqrt(
         (Player.player.x - obj.sprite.x) ** 2 +
           (Player.player.y - obj.sprite.y) ** 2
@@ -119,7 +170,7 @@ class Player {
         closestObj = obj;
         closestDistance = objDistance;
       }
-    }
+    }*/
 
     if (closestObj) {
       // Show player in front of / behind the closest object
@@ -162,7 +213,7 @@ class Player {
     }
   }
 
-  setIdle() {
+  static setIdle() {
     if (Player.player.textures !== Player.playerIdleFrames) {
       Player.player.textures = Player.playerIdleFrames;
       Player.player.animationSpeed = 0.05; // Set animation speed for idle animation
@@ -183,7 +234,7 @@ class Player {
     }
   }
 
-  adjustTargetPosition(targetPosition) {
+  static adjustTargetPosition(targetPosition) {
     /**
      * Method to move the player to position
      * @param {number} targetPosition - Coordinate where the player is moved to
@@ -235,29 +286,14 @@ class Player {
 
     Player.player.isTransforming = true;
     gameState.playerIsMiniSize = true;
-    const animationTextures = [
-      Texture.from(player_shrink_1),
-      Texture.from(player_shrink_2),
-      Texture.from(player_idle_mini),
-    ];
 
-    Player.player.textures = animationTextures;
+    Player.player.textures = Player.shrinkingAnimationFrames;
     Player.player.loop = false;
 
     Player.player.onComplete = () => {
       Player.playerIdleFrames = [Texture.from(player_idle_mini)];
       Player.player.textures = Player.playerIdleFrames;
-      Player.playerWalkFrames = [
-        Texture.from(player_walk_mini_1),
-        Texture.from(player_walk_mini_2),
-        Texture.from(player_walk_mini_3),
-        Texture.from(player_walk_mini_4),
-        Texture.from(player_walk_mini_5),
-        Texture.from(player_walk_mini_6),
-        Texture.from(player_walk_mini_7),
-        Texture.from(player_walk_mini_8),
-        Texture.from(player_walk_mini_9),
-      ];
+      Player.playerWalkFrames = Player.playerMiniWalkFrames;
       Player.player.loop = true;
       Player.player.isTransforming = false;
     };
@@ -272,32 +308,14 @@ class Player {
 
     Player.player.isTransforming = true;
     gameState.playerIsMiniSize = false;
-    const animationTextures = [
-      Texture.from(player_idle_mini),
-      Texture.from(player_shrink_2),
-      Texture.from(player_shrink_1),
-    ];
 
-    Player.player.textures = animationTextures;
+    Player.player.textures = Player.growingAnimationFrames;
     Player.player.loop = false;
 
     Player.player.onComplete = () => {
       Player.playerIdleFrames = [Texture.from(player_idle)];
       Player.player.textures = Player.playerIdleFrames;
-      Player.playerWalkFrames = [
-        Texture.from(player_walk_1),
-        Texture.from(player_walk_2),
-        Texture.from(player_walk_3),
-        Texture.from(player_walk_4),
-        Texture.from(player_walk_5),
-        Texture.from(player_walk_6),
-        Texture.from(player_walk_7),
-        Texture.from(player_walk_8),
-        Texture.from(player_walk_9),
-        Texture.from(player_walk_10),
-        Texture.from(player_walk_11),
-        Texture.from(player_walk_12),
-      ];
+      Player.playerWalkFrames = Player.playerNormalWalkFrames;
       Player.player.loop = true;
       openPopup(Player.app, "Huh, onneks palasin normaalin kokoiseks!", null);
       Player.player.isTransforming = false;

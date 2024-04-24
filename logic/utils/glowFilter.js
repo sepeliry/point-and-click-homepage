@@ -5,5 +5,5 @@ export const glowFilter = new GlowFilter({
   outerStrength: 0,
   quality: 0.1,
   alpha: 0.6,
-  color: "c061cb",
+  color: "#c061cb",
 });

@@ -100,7 +100,7 @@ class InventoryUI {
     });
 
     // A rectangle to represent the drag target's bounds
-    let dragTargetBounds = dragTarget.getBounds();
+    let dragTargetBounds = dragTarget.getBounds().rectangle;
     const player = Player.player;
     let draggedItem = null;
 

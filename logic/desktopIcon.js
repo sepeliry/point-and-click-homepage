@@ -1,4 +1,4 @@
-import { Container, Sprite, Text } from "pixi.js";
+import { Container, Sprite, Text, Assets } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
 import { ASPECT_RATIO } from "../constants/constants";
 
@@ -7,28 +7,53 @@ class DesktopIcon {
     this.app = app;
     this.container = container;
     this.itemData = itemData;
-
-    // Create a container for the sprite and text
     this.iconContainer = new Container();
+  }
 
-    this.iconContainer.x = itemData.location.x * 1400;
-    this.iconContainer.y = itemData.location.y * 800;
-    this.iconContainer.zIndex = itemData.zIndex || 1;
+  static async create(app, container, itemData) {
+    const icon = new DesktopIcon(app, container, itemData);
+    await icon.initialize();
+    return icon;
+  }
 
-    // Create the sprite from an image
-    this.sprite = Sprite.from(itemData.image);
-    this.sprite.name = itemData.name;
-    this.sprite.height = itemData.height;
-    this.sprite.width = itemData.width;
+  async initialize() {
+    // Load the asset
+    await Assets.load([this.itemData.image]);
+
+    // Setup the container properties
+    this.iconContainer.x = this.itemData.location.x * 1400;
+    this.iconContainer.y = this.itemData.location.y * 800;
+    this.iconContainer.zIndex = this.itemData.zIndex || 1;
+
+    // Create the sprite from the loaded image
+    this.sprite = Sprite.from(this.itemData.image);
+    this.sprite.label = this.itemData.name;
+    this.sprite.height = this.itemData.height;
+    this.sprite.width = this.itemData.width;
     this.sprite.anchor.set(0.5, 1);
 
-    // add text label under the sprite
-    this.textLabel = new Text(itemData.title || "", {
+    // Setup text label
+    this.setupTextLabel();
+
+    // Add children
+    this.iconContainer.addChild(this.sprite);
+    this.iconContainer.addChild(this.textLabel);
+
+    // Setup interactions if applicable
+    if (this.itemData.onInteraction) {
+      this.setupInteraction(this.itemData.onInteraction);
+    }
+
+    this.iconContainer.visible = true;
+    this.container.addChild(this.iconContainer);
+  }
+
+  setupTextLabel() {
+    const style = {
       fontFamily: "VCR_OSD_MONO",
       fontSize: 18,
       fill: 0xffffff,
-      stroke: 0x000000, // Black outline color
-      strokeThickness: 4,
+      stroke: { color: 0x000000, width: 4 },
       align: "center",
       wordWrap: true,
       wordWrapWidth: this.sprite.width + 10,
@@ -36,35 +61,18 @@ class DesktopIcon {
       dropShadowColor: 0x000000,
       dropShadowBlur: 6,
       dropShadowDistance: 4,
-    });
-    this.textLabel.anchor.set(0.5, 0); // anchor text at the center top
-    this.textLabel.y = this.sprite.y + 10; // position text right below the sprite
-
-    this.iconContainer.addChild(this.sprite);
-    this.iconContainer.addChild(this.textLabel);
-
-    if (itemData.onInteraction) {
-      this.setupInteraction(itemData.onInteraction);
-    }
-
-    this.iconContainer.visible = true;
-    container.addChild(this.iconContainer);
+    };
+    this.textLabel = new Text({ text: this.itemData.title || "", style });
+    this.textLabel.anchor.set(0.5, 0);
+    this.textLabel.y = this.sprite.y + 10;
   }
 
   setupInteraction(onInteraction) {
     this.iconContainer.interactive = true;
     this.iconContainer.buttonMode = true;
     this.iconContainer.cursor = "pointer";
-
     this.iconContainer.on("pointerdown", onInteraction(this.app));
-
-    const glowEffect = new GlowFilter({
-      innerStrength: 1,
-      outerStrength: 1,
-      quality: 0.1,
-    });
-
-    //  this.iconContainer.filters = [glowEffect];
+    // Optional: Apply effects like a glow filter here
   }
 }
 

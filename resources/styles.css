@@ -3,6 +3,21 @@
   src: url(../resources/fonts/VCR_OSD_MONO.ttf);
 }
 
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 1s ease-out;
+  opacity: 1;
+}
+
 body {
   font-family: "VCR_OSD_Mono";
   display: flex;

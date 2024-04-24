@@ -5,7 +5,7 @@ export const resizeGame = (app, scene) => {
     scene.visible //&& !window.isMobile
   ) {
     // #game-container width and height
-    const parent = app.view.parentNode;
+    const parent = app.canvas.parentNode;
     let newWidth = parent.clientWidth;
     let newHeight = parent.clientHeight;
     let parentAspectRatio = newWidth / newHeight;

@@ -19,12 +19,38 @@ import gameState, { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
 import { glowFilter } from "./utils/glowFilter.js";
-import { setupPixiApp } from "./setupApp.js";
 
 // Fonts
 import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
 
-app = setupPixiApp();
+const windowWidth = window.innerWidth;
+const windowHeight = window.innerHeight;
+// isMobile = true enables the cameraContainer
+window.isMobile = windowWidth <= 800;
+
+const app = new Application({
+  width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
+  height: window.isMobile ? Math.min(windowHeight, 800) : 800,
+  backgroundColor: 0xaaaaaa,
+});
+
+const container = document.getElementById("game-container");
+
+container.appendChild(app.view);
+
+const parent = app.view.parentNode;
+let newWidth = parent.clientWidth;
+let newHeight = parent.clientHeight;
+let parentAspectRatio = newWidth / newHeight;
+let gameAspectRatio = 1400 / 800;
+
+if (parentAspectRatio < gameAspectRatio) {
+  newWidth = newHeight * gameAspectRatio;
+} else {
+  newHeight = newWidth / gameAspectRatio;
+}
+
+app.renderer.resize(newWidth, newHeight);
 
 globalThis.__PIXI_APP__ = app;
 
@@ -35,6 +61,10 @@ Assets.loadBundle("fonts");
 document.getElementById("hide-wiki-content").addEventListener("click", () => {
   document.getElementById("wiki-wrapper").style.display = "none";
 });
+
+document.getElementById("hide-article-img").addEventListener("click", () => {
+  document.getElementById("article-img-container").style.display = "none";
+})
 
 // Construct contents in canvas
 const ui = new UI(app);

@@ -15,6 +15,7 @@ import openPopup from "../logic/interactions/openPopup.js";
 import switchScene from "../logic/interactions/switchScene.js";
 import openUrlInNewTab from "../logic/interactions/openUrlInNewTab.js";
 import displayWikiPage from "../logic/interactions/displayWikiPage.js";
+import displayArticleImg from "../logic/interactions/displayArticleImg.js";
 
 /*
  * UTILS
@@ -57,6 +58,9 @@ import coffee_maker_3 from "../resources/images/main_scene/coffee_maker_frame3.p
 import plant_img from "../resources/images/main_scene/plant.png";
 import coffee_packet_img from "../resources/images/main_scene/coffee_packet_bean.png";
 import potion_img from "../resources/images/main_scene/potion.png";
+import article_1 from "../resources/images/main_scene/article_1.png";
+import article_2 from "../resources/images/main_scene/article_2.png";
+import article_3 from "../resources/images/main_scene/article_3.png";
 
 // Arcade scene images
 import arcade_scene_bg from "../resources/images/arcade_scene/background.png";
@@ -101,6 +105,12 @@ import button_9 from "../resources/images/numpad_scene/button9.png";
 import button_0 from "../resources/images/numpad_scene/button0.png";
 import reset_button from "../resources/images/numpad_scene/resetButton.png";
 import enter_button from "../resources/images/numpad_scene/enterButton.png";
+
+//Article images
+import article_img_1 from "../resources/images/article_images/article_1.png";
+import article_img_2 from "../resources/images/article_images/article_2.png";
+import article_img_3 from "../resources/images/article_images/article_3.png";
+
 
 const gameData = {
   mainScene: {
@@ -229,6 +239,57 @@ const gameData = {
             );
           }
         },
+      },
+      {
+        visible: true,
+        image: article_1,
+        onStateChange: null,
+        animation: null,
+        type: ITEM_TYPES.item,
+        name: "Article_1",
+        location: {
+          x: 0.866,
+          y: 0.51,
+        },
+        width: 114 * 0.43,
+        height: 216 * 0.43,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => displayArticleImg(article_img_1),
+        zIndex: 1,
+      },
+      {
+        visible: true,
+        image: article_2,
+        onStateChange: null,
+        animation: null,
+        type: ITEM_TYPES.item,
+        name: "Article_2",
+        location: {
+          x: 0.711,
+          y: 0.479,
+        },
+        width: 162 * 0.43,
+        height: 149 * 0.43,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => displayArticleImg(article_img_2),
+        zIndex: 1,
+      },
+      {
+        visible: true,
+        image: article_3,
+        onStateChange: null,
+        animation: null,
+        type: ITEM_TYPES.item,
+        name: "Article_3",
+        location: {
+          x: 0.802,
+          y: 0.46,
+        },
+        width: 248 * 0.42,
+        height: 153 * 0.42,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => displayArticleImg(article_img_3),
+        zIndex: 1,
       },
       {
         visible: true,

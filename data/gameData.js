@@ -111,7 +111,6 @@ import article_img_1 from "../resources/images/article_images/article_1.png";
 import article_img_2 from "../resources/images/article_images/article_2.png";
 import article_img_3 from "../resources/images/article_images/article_3.png";
 
-
 const gameData = {
   mainScene: {
     background: main_scene_bg,
@@ -224,19 +223,23 @@ const gameData = {
               removeSprite(app, item);
             }
           ),
-
         zIndex: 2,
         draggable: true,
         dragTargetName: "Coffee maker",
         onDragSuccess: (app, item) => {
-          if (gameState.inventory.itemExists("Coffee cup")) {
-            openPopup(app, "Nyt tulee tujut kahvit!");
-          } else {
-            openPopup(
-              app,
-              "Tuleepas tujut kahvit, mutta kuppi puuttuu...",
-              null
-            );
+          if (!gameState.coffeeBrewed) {
+            if (!gameState.inventory.itemExists("Coffee cup")) {
+              openPopup(
+                app,
+                "Nyt tulee tujut kahvit, mutta kahvikupin vielä tarvitsen!",
+                null
+              );
+            } else {
+              openPopup(app, "Nyt tulee tujut kahvit!");
+            }
+
+            gameState.coffeeBrewed = true;
+            gameState.inventory.removeItem("Coffee");
           }
         },
       },
@@ -293,15 +296,25 @@ const gameData = {
       },
       {
         visible: true,
+        image: coffee_maker_1,
         type: ITEM_TYPES.item,
         name: "Coffee maker",
+        onStateChange: (app, item) => {
+          if (gameState.coffeeBrewed) {
+            updateAnimatedSpriteTextures(
+              item,
+              [coffee_maker_2, coffee_maker_3, coffee_maker_1],
+              0.02,
+              true
+            );
+          }
+        },
         animation: {
-          frames: [coffee_maker_1, coffee_maker_2, coffee_maker_3],
+          frames: [coffee_maker_1],
           animationSpeed: 0.04,
           loop: true,
           interval: 3000, //ms
         },
-        onStateChange: null,
         location: {
           x: 0.67,
           y: 0.595,
@@ -316,35 +329,40 @@ const gameData = {
             item.position.y,
             "mainScene",
             () => {
-              if (!gameState.inventory.itemExists("Coffee")) {
-                openPopup(
-                  app,
-                  "Hmm, missä täällä säilytetään kahvinpuruja?",
-                  null
-                );
-                return;
-              } else if (!gameState.inventory.itemExists("Coffee cup")) {
-                openPopup(
-                  app,
-                  "Kahvinpurut check, mutta tarviin vielä kahvikupin!",
-                  null
-                );
-                return;
+              if (!gameState.coffeeBrewed) {
+                if (!gameState.inventory.itemExists("Coffee")) {
+                  openPopup(
+                    app,
+                    "Hmm, missä täällä säilytetään kahvinpuruja?",
+                    null
+                  );
+                  return;
+                } else if (!gameState.inventory.itemExists("Coffee cup")) {
+                  openPopup(
+                    app,
+                    "Kahvinpurut check, mutta tarviin vielä kahvikupin!",
+                    null
+                  );
+                  return;
+                } else {
+                  openPopup(
+                    app,
+                    "Kahvinpurut check, kahvikuppi check, nyt vaan keittämään!",
+                    null
+                  );
+                }
               }
-
-              // remove coffee from inventory
-              gameState.inventory.removeItem("Coffee");
-              gameState.inventory.removeItem("Coffee cup");
-              Player.minimizePlayer();
-              openPopup(app, "Mitä tapahtuu??", null, () => {
-                openPopup(
-                  app,
-                  "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
-                  null
-                );
-              });
-
-              app.scenes["mainScene"].updateTransform();
+              if (gameState.coffeeBrewed) {
+                Player.minimizePlayer();
+                openPopup(app, "Mitä tapahtuu??", null, () => {
+                  openPopup(
+                    app,
+                    "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
+                    null
+                  );
+                });
+                app.scenes["mainScene"].updateTransform();
+              }
             }
           ),
         zIndex: 0,
@@ -1127,9 +1145,7 @@ const gameData = {
         onInteraction: (app) => () => {
           switchScene(app, "mainScene");
 
-          if (gameState.inventory.itemExists("PostIt 2")) {
-            Player.maximizePlayer();
-          }
+          Player.maximizePlayer();
         },
         zIndex: 10,
       },
@@ -1231,15 +1247,15 @@ const gameData = {
           );
         },
         zIndex: 2,
-        draggable: true,
-        dragTargetName: "Coffee maker",
-        onDragSuccess: (app, item) => {
-          if (gameState.inventory.itemExists("Coffee")) {
-            openPopup(app, "Santsikuppia, kiitos!");
-          } else {
-            openPopup(app, "Kuppi löytyy, mutta kaffea tarvis!.", null);
-          }
-        },
+        // draggable: true,
+        // dragTargetName: "Coffee maker",
+        // onDragSuccess: (app, item) => {
+        //   if (gameState.inventory.itemExists("Coffee")) {
+        //     openPopup(app, "Santsikuppia, kiitos!");
+        //   } else {
+        //     openPopup(app, "Kuppi löytyy, mutta kaffea tarvis!.", null);
+        //   }
+        // },
       },
     ],
   },

@@ -251,8 +251,8 @@ const gameData = {
           x: 0.866,
           y: 0.51,
         },
-        width: 114 * 0.51,
-        height: 216 * 0.51,
+        width: 114 * 0.43,
+        height: 216 * 0.43,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => displayArticleImg(article_img_1),
         zIndex: 1,
@@ -268,8 +268,8 @@ const gameData = {
           x: 0.711,
           y: 0.479,
         },
-        width: 162 * 0.52,
-        height: 149 * 0.52,
+        width: 162 * 0.43,
+        height: 149 * 0.43,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => displayArticleImg(article_img_2),
         zIndex: 1,
@@ -285,8 +285,8 @@ const gameData = {
           x: 0.802,
           y: 0.46,
         },
-        width: 248 * 0.5,
-        height: 153 * 0.5,
+        width: 248 * 0.42,
+        height: 153 * 0.42,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => displayArticleImg(article_img_3),
         zIndex: 1,

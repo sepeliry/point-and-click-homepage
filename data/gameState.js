@@ -49,6 +49,7 @@ const gameState = new Proxy(
     hasUnlockedDoor: false,
     currentScene: "mainScene",
     playerIsMiniSize: false,
+    coffeeBrewed: false,
     inventory: new Inventory(notifyInventoryChange), // for listening to changes in inventory as well
   },
   gameStateHandler

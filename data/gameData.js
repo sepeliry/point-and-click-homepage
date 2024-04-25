@@ -204,11 +204,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Coffee",
         location: {
-          x: 0.81,
-          y: 0.895,
+          x: 0.825,
+          y: 0.665,
         },
-        width: 267 * 0.25,
-        height: 400 * 0.25,
+        width: 267 * 0.18,
+        height: 400 * 0.18,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () =>
           checkDistance(
@@ -353,6 +353,14 @@ const gameData = {
                 }
               }
               if (gameState.coffeeBrewed) {
+                if (!gameState.inventory.itemExists("Coffee cup")) {
+                  openPopup(
+                    app,
+                    "Kahvi on jo keitetty, mutta tarvitsen kahvikupin!",
+                    null
+                  );
+                  return;
+                }
                 Player.minimizePlayer();
                 openPopup(app, "Mitä tapahtuu??", null, () => {
                   openPopup(

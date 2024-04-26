@@ -28,7 +28,7 @@ class Numpad {
         gameState.hasUnlockedDoor = true;
       }, 1000);
     } else {
-      this.updateText("*Incorrect*");
+      this.updateText("*ERROR*");
 
       // Wait before resetting the screen
       setTimeout(() => {

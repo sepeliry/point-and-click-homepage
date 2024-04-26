@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
-    "@pixi/filter-crt": "^5.1.1",
     "@pixi/filter-glow": "^5.2.1",
     "marked": "^12.0.0",
-    "pixi.js": "^7.3.3"
+    "pixi-filters": "^6.0.3",
+    "pixi.js": "^8.1.0"
   },
   "type": "module",
   "author": "",

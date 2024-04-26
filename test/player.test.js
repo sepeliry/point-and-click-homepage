@@ -15,6 +15,9 @@ jest.mock("pixi.js", () => ({
     scale: { y: 1 },
     onComplete: null,
   })),
+  Assets: {
+    load: jest.fn().mockResolvedValue(true),
+  },
   Texture: {
     from: jest.fn().mockImplementation((image) => ({ image })),
   },
@@ -45,31 +48,28 @@ describe("Player", () => {
     };
   });
 
-  test("Move player with no transformation", () => {
-    const player = new Player(app);
-    player.targetPosition = new Point(100, 100);
+  test("Move player with no transformation", async () => {
+    await Player.initialize(app);
+    Player.targetPosition = new Point(100, 100);
     const solidObjects = [{ sprite: { x: 150, y: 150 } }];
-    player.move(player.targetPosition, solidObjects);
+    Player.move(Player.targetPosition, solidObjects);
     expect(Player.player.position.set).toHaveBeenCalledTimes(1);
   });
 
   test("Player set idle", () => {
-    const player = new Player(app);
-    player.setIdle();
+    Player.setIdle();
     expect(Player.player.play).toHaveBeenCalled();
   });
 
   test("Minimize player", () => {
-    const player = new Player(app);
     Player.minimizePlayer();
-    expect(Player.player.textures).not.toEqual(player.playerIdleFrames); // Initial textures should be changed
+    expect(Player.player.textures).not.toEqual(Player.playerIdleFrames); // Initial textures should be changed
     expect(Player.player.onComplete).toBeDefined();
   });
 
   test("Maximize player", () => {
-    const player = new Player(app);
     Player.maximizePlayer();
-    expect(Player.player.textures).not.toEqual(player.playerIdleFrames); // Initial textures should be changed
+    expect(Player.player.textures).not.toEqual(Player.playerIdleFrames); // Initial textures should be changed
     expect(Player.player.onComplete).toBeDefined();
   });
 });

@@ -9,7 +9,7 @@ import {
 } from "pixi.js";
 import { CRTFilter, AdvancedBloomFilter } from "pixi-filters";
 import { glowFilter } from "./utils/glowFilter.js";
-import { GlowFilter } from "@pixi/filter-glow";
+import { GlowFilter } from "pixi-filters";
 import { createWalkableAreas } from "./walkableArea.js";
 import { ASPECT_RATIO, MAX_WIDTH } from "../constants/constants.js";
 import Book from "./book.js";

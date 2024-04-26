@@ -1,6 +1,4 @@
 import * as PIXI from "pixi.js";
-import { GlowFilter } from "@pixi/filter-glow";
-import { ASPECT_RATIO } from "../constants/constants";
 
 class BackButton {
   constructor(app, container, itemData) {

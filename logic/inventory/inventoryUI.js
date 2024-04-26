@@ -3,7 +3,7 @@ import gameState from "../../data/gameState";
 import openPopup from "../interactions/openPopup";
 import Player from "../player";
 import Item from "../item";
-import { GlowFilter } from "@pixi/filter-glow";
+import { GlowFilter } from "pixi-filters";
 class InventoryUI {
   static container = new Container();
   static app = null;

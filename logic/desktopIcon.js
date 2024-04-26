@@ -1,6 +1,4 @@
 import { Container, Sprite, Text, Assets } from "pixi.js";
-import { GlowFilter } from "@pixi/filter-glow";
-import { ASPECT_RATIO } from "../constants/constants";
 
 class DesktopIcon {
   constructor(app, container, itemData) {

@@ -347,7 +347,7 @@ const gameData = {
                 } else {
                   openPopup(
                     app,
-                    "Kahvinpurut check, kahvikuppi check, nyt vaan keittämään!",
+                    "Kahvinpurut check, kahvikuppi check, mitenköhän saisin kahvipurut koneeseen...",
                     null
                   );
                 }

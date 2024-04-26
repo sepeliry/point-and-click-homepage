@@ -1,4 +1,4 @@
-import { GlowFilter } from "@pixi/filter-glow";
+import { GlowFilter } from "pixi-filters";
 
 export const glowFilter = new GlowFilter({
   innerStrength: 0,

@@ -1,46 +1,55 @@
-import { Sprite, Texture, AnimatedSprite } from "pixi.js";
+import { Sprite, Texture, AnimatedSprite, Assets } from "pixi.js";
 import { GlowFilter } from "@pixi/filter-glow";
 import { glowFilter } from "./utils/glowFilter";
 import { ASPECT_RATIO } from "../constants/constants";
 
 class Item {
-  // Store gameObjects in a static array to access them later
   static gameObjects = [];
-  constructor(
-    app,
-    container,
-    itemData // Pass itemData as a single parameter to handle both static and animated items
-  ) {
-    // check if the item should be animated or not
-    if (itemData.animation) {
-      // create an animated sprite
-      const textures = itemData.animation.frames.map((frame) =>
-        Texture.from(frame)
-      );
-      this.sprite = new AnimatedSprite(textures);
 
-      this.sprite.animationSpeed = itemData.animation.animationSpeed || 0.02;
-      this.sprite.loop =
-        itemData.animation.loop !== undefined ? itemData.animation.loop : true;
+  static async create(app, container, itemData) {
+    const item = new Item();
+    await item.initialize(app, container, itemData);
+    return item;
+  }
 
-      // play the animation only if there are more than 1 frames
-      if (itemData.animation.frames.length > 1) {
-        this.sprite.play();
+  async initialize(app, container, itemData) {
+    try {
+      // Check if the item should be animated or not and preload the required assets
+      if (itemData.animation) {
+        // Preload all frames for animations
+        await Assets.load(itemData.animation.frames);
+
+        // After preloading, create textures from the loaded assets
+        const textures = itemData.animation.frames.map((frame) =>
+          Texture.from(frame)
+        );
+        this.sprite = new AnimatedSprite(textures);
+        this.sprite.animationSpeed = itemData.animation.animationSpeed || 0.02;
+        this.sprite.loop =
+          itemData.animation.loop !== undefined
+            ? itemData.animation.loop
+            : true;
+        if (itemData.animation.frames.length > 1) {
+          this.sprite.play();
+        }
+      } else {
+        // Preload static image
+        await Assets.load([itemData.image]);
+        this.sprite = Sprite.from(itemData.image);
       }
-    } else {
-      // if the item has no animation, create a static sprite
-      this.sprite = Sprite.from(itemData.image);
-    }
 
-    // common properties for both static and animated sprites
-    this.initializeSprite(app, container, itemData);
+      // Initialize common sprite properties
+      this.initializeSprite(app, container, itemData);
+    } catch (error) {
+      console.error("Error loading assets:", error);
+    }
   }
 
   initializeSprite(app, container, itemData) {
     this.sprite.x = itemData.location.x * 1400;
     this.sprite.y = itemData.location.y * 800;
-    this.sprite.zIndex = itemData.zIndex || 1;
-    this.sprite.name = itemData.name;
+    this.sprite.zIndex = itemData.zIndex || 0;
+    this.sprite.label = itemData.name;
     this.sprite.height = itemData.height;
     this.sprite.width = itemData.width;
     this.sprite.anchor.set(0.5, 1); // Anchor to bottom left corner

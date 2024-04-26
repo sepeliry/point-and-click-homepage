@@ -375,28 +375,7 @@ const gameData = {
           ),
         zIndex: 0,
       },
-      {
-        visible: true,
-        image: bookshelf_img,
-        type: ITEM_TYPES.item,
-        name: "Bookshelf",
-        location: {
-          x: 0.325,
-          y: 0.708,
-        },
-        width: 191 * 1.2,
-        height: 292 * 1.2,
-        collisionHeight: 0, // not yet used
-        onInteraction: (app, item) => () =>
-          checkDistance(
-            app,
-            item.position.x,
-            item.position.x,
-            "bookshelfScene",
-            () => switchScene(app, "bookshelfScene")
-          ),
-        zIndex: 0,
-      },
+
       {
         visible: true,
         image: computer_desk_with_coffee_img,
@@ -424,9 +403,30 @@ const gameData = {
             "computerScene",
             () => switchScene(app, "computerScene")
           ),
+        zIndex: 2,
+      },
+      {
+        visible: true,
+        image: bookshelf_img,
+        type: ITEM_TYPES.item,
+        name: "Bookshelf",
+        location: {
+          x: 0.325,
+          y: 0.708,
+        },
+        width: 191 * 1.2,
+        height: 292 * 1.2,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () =>
+          checkDistance(
+            app,
+            item.position.x,
+            item.position.x,
+            "bookshelfScene",
+            () => switchScene(app, "bookshelfScene")
+          ),
         zIndex: 0,
       },
-
       {
         visible: true,
         image: pong_machine_off,
@@ -831,13 +831,13 @@ const gameData = {
           align: "center",
           fontWeight: "bold",
           stroke: "#edceeb",
-          strokeThickness: 1,
+          //  strokeThickness: 1,
           wordWrap: false,
           wordWrapWidth: 600,
         },
         location: {
           x: 0.5,
-          y: 0.3,
+          y: 0.295,
         },
         zIndex: 12,
         onInteraction: null,
@@ -1312,7 +1312,7 @@ const gameData = {
           align: "center",
           fontWeight: "bold",
           stroke: "#edceeb",
-          strokeThickness: 1,
+          // strokeThickness: 1,
           wordWrap: false,
           wordWrapWidth: 600,
         },
@@ -1341,7 +1341,7 @@ const gameData = {
           align: "center",
           fontWeight: "bold",
           stroke: "#edceeb",
-          strokeThickness: 1,
+          //    strokeThickness: 1,
           wordWrap: false,
           wordWrapWidth: 600,
         },
@@ -1370,7 +1370,7 @@ const gameData = {
           align: "center",
           fontWeight: "bold",
           stroke: "#edceeb",
-          strokeThickness: 1,
+          //     strokeThickness: 1,
           wordWrap: false,
           wordWrapWidth: 600,
         },

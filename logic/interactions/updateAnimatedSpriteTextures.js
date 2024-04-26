@@ -1,4 +1,4 @@
-import { Texture, AnimatedSprite } from "pixi.js";
+import { Texture, AnimatedSprite, Assets } from "pixi.js";
 
 /**
  * Updates the textures of an animated sprite based on provided frame identifiers.
@@ -9,37 +9,30 @@ import { Texture, AnimatedSprite } from "pixi.js";
  * @param {number} animationSpeed - The speed at which the animation should play
  * @param {boolean} loop - whether the animation should loop.
  */
-function updateAnimatedSpriteTextures(
+async function updateAnimatedSpriteTextures(
   animatedSprite,
   frameIdentifiers,
   animationSpeed,
   loop
 ) {
+  if (!(animatedSprite instanceof AnimatedSprite)) {
+    console.error("Provided item is not an instance of AnimatedSprite");
+    return;
+  }
+  // Load all textures first
+  await Assets.load(frameIdentifiers);
+
+  // Create textures from the loaded resources
   const newTextures = frameIdentifiers.map((frame) => Texture.from(frame));
 
-  const areTexturesLoaded = newTextures.every(
-    (texture) => texture.baseTexture.valid
-  );
+  animatedSprite.textures = newTextures;
+  animatedSprite.animationSpeed = animationSpeed;
+  animatedSprite.loop = loop;
 
-  function applyTextures() {
-    animatedSprite.textures = newTextures;
-    animatedSprite.animationSpeed = animationSpeed;
-    animatedSprite.loop = loop;
-
-    if (loop) {
-      animatedSprite.play();
-    } else {
-      animatedSprite.gotoAndPlay(0);
-    }
-  }
-
-  if (areTexturesLoaded) {
-    applyTextures();
+  if (loop) {
+    animatedSprite.play();
   } else {
-    // wait for textures to load
-    newTextures.forEach((texture) => {
-      texture.baseTexture.on("loaded", applyTextures);
-    });
+    animatedSprite.gotoAndPlay(0);
   }
 }
 

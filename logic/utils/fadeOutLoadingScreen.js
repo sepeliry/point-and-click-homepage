@@ -1,3 +1,4 @@
+// Controls the fade out loading screen on initial site load.
 export default function fadeOutLoadingScreen() {
   const loadingScreen = document.getElementById("loading-screen");
 

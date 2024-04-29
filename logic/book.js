@@ -1,4 +1,4 @@
-import { Application, Container, Sprite, Text, Assets } from "pixi.js";
+import { Container, Sprite, Text, Assets } from "pixi.js";
 import { GlowFilter } from "pixi-filters";
 /**
  * Class to create items

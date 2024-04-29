@@ -70,7 +70,6 @@ class DesktopIcon {
     this.iconContainer.buttonMode = true;
     this.iconContainer.cursor = "pointer";
     this.iconContainer.on("pointerdown", onInteraction(this.app));
-    // Optional: Apply effects like a glow filter here
   }
 }
 

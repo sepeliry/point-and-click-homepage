@@ -50,6 +50,7 @@ const gameState = new Proxy(
     currentScene: "mainScene",
     playerIsMiniSize: false,
     coffeeBrewed: false,
+    coffeeUsed: false,
     inventory: new Inventory(notifyInventoryChange), // for listening to changes in inventory as well
   },
   gameStateHandler

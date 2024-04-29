@@ -2,7 +2,6 @@ import { Application } from "pixi.js";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
-// isMobile = true enables the cameraContainer
 window.isMobile = windowWidth <= 800;
 
 export function setupPixiApp() {
@@ -12,7 +11,7 @@ export function setupPixiApp() {
     return null; // Or handle this scenario appropriately
   }
 
-  const app = new Application({
+  const app = new Application < Renderer > ({
     width: window.isMobile ? Math.min(windowWidth, 1400) : 1400,
     height: window.isMobile ? Math.min(windowHeight, 800) : 800,
     backgroundColor: 0xaaaaaa,

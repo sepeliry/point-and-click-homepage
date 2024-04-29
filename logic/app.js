@@ -8,15 +8,10 @@ import {
   Assets,
   Ticker,
 } from "pixi.js";
-import { playerCollides, directionFunctions } from "./collisionUtils";
 import Player from "./player";
-import { ASPECT_RATIO } from "../constants/constants.js";
 import UI from "./UI";
-import Popup from "./popup.js";
-import { setupPdf } from "./utils/pdfUtils.js";
 import { resizeGame } from "./utils/resize.js";
-import { followPlayer, updateCamera } from "./utils/cameraUtils.js";
-import gameState, { addObserver } from "../data/gameState.js";
+import { addObserver } from "../data/gameState.js";
 import { WALKABLE_AREA_POINTS, createWalkableAreas } from "./walkableArea.js";
 import openPopup from "./interactions/openPopup.js";
 import { glowFilter } from "./utils/glowFilter.js";
@@ -27,7 +22,6 @@ import VCR_OSD_MONO from "url:../resources/fonts/VCR_OSD_MONO.ttf";
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
-// isMobile = true enables the cameraContainer
 window.isMobile = windowWidth <= 800;
 
 const app = new Application();
@@ -139,7 +133,6 @@ const app = new Application();
     return new Point(projX, projY);
   }
 
-  let targetPosition;
   const walkableAreas = createWalkableAreas(app);
   // Handle click event on the stage
   app.mainScene.eventMode = "static"; // Enable interaction
@@ -147,7 +140,6 @@ const app = new Application();
     const clickedItem = getItemAtPosition(event.global, event.target);
     const localPosition = app.mainScene.toLocal(event.global);
     const yCoordinate = localPosition.y > 603 ? localPosition.y : 602;
-    // const targetPosition =
     Player.player.targetPosition = new Point(localPosition.x, yCoordinate);
     // If a item is not clicked, clear the pending action and checkDistanceParams. (To ensure unecceary actions are not performed)
     if (!clickedItem) {
@@ -174,11 +166,9 @@ const app = new Application();
           Player.player.targetPosition.y
         )
       ) {
-        // console.log("inside");
         insideAnyWalkableArea = true;
         return; // If inside any area, we can stop checking further
       } else {
-        // console.log("outside");
         // For projection, iterate over the specific area's points
         for (let i = 0; i < areaPoints.length; i++) {
           let start = areaPoints[i];
@@ -196,7 +186,7 @@ const app = new Application();
           // Calculate distance from the original target position to the projection
           let distance = Math.sqrt(
             (Player.player.targetPosition.x - projection.x) ** 2 +
-              (Player.player.targetPosition.y - projection.y) ** 2
+            (Player.player.targetPosition.y - projection.y) ** 2
           );
 
           // Update closest projection if this is the shortest distance found
@@ -212,102 +202,8 @@ const app = new Application();
     if (!insideAnyWalkableArea && closestProjection) {
       console.log("Mapped to closest projection:", closestProjection);
       Player.player.targetPosition = closestProjection; // Update targetPosition to the projection
-
-      /*
-    // add a red dot for the adjusted targetPosition
-    let redDot = new Graphics();
-    redDot.beginFill(0xff0000);
-    redDot.drawCircle(targetPosition.x, targetPosition.y, 5);
-    redDot.endFill();
-    app.mainScene.addChild(redDot);
-    */
     }
-
-    /*
-  // check for object collision
-  for (const object of UI.solidObjects) {
-    const bounds = object.getBounds();
-    const itemBounds = {
-      name: object.name,
-      x: bounds.x,
-      y: bounds.y,
-      width: bounds.width,
-      height: bounds.height,
-    };
-
-    if (
-      simplifiedLineIntersectsRect(
-        Player.player.position,
-        targetPosition,
-        itemBounds
-      )
-    ) {
-      console.log(`Path blocked by ${object.name}`);
-
-      // Adjust targetPosition here. This logic will depend on your specific game's needs.
-      // Example: Adjust targetPosition to stop in front of the object.
-      // You may want to refine how you adjust targetPosition based on the object's position and size.
-
-      // Calculate direction vector from player to target
-      let dir = {
-        x: targetPosition.x - Player.player.position.x,
-        y: targetPosition.y - Player.player.position.y,
-      };
-
-      // Normalize the direction vector
-      let magnitude = Math.sqrt(dir.x * dir.x + dir.y * dir.y);
-      dir.x /= magnitude;
-      dir.y /= magnitude;
-
-      // Determine which edge of the object is closest to the line of movement
-      // Assume we want to stop a small distance away from the object (e.g., 5 pixels)
-      let buffer = 5; // Distance from the object's edge
-
-      // Simple heuristic: check direction to decide which side of the object to target
-      if (Math.abs(dir.x) > Math.abs(dir.y)) {
-        // Movement is more horizontal
-        if (dir.x > 0) {
-          // Moving right; target the left edge of the object
-          targetPosition.x = itemBounds.x - buffer;
-        } else {
-          // Moving left; target the right edge of the object
-          targetPosition.x = itemBounds.x + itemBounds.width + buffer;
-        }
-      } else {
-        // Movement is more vertical
-        if (dir.y > 0) {
-          // Moving down; target the top edge of the object
-          targetPosition.y = itemBounds.y - buffer;
-        } else {
-          // Moving up; target the bottom edge of the object
-          targetPosition.y = itemBounds.y + itemBounds.height + buffer;
-        }
-      }
-
-      break; // Optional: break if you only care about the first intersection
-    }
-
-  }
-  */
   });
-
-  function simplifiedLineIntersectsRect(playerPosition, targetPosition, rect) {
-    // Find min and max X, Y for the line segment
-    const minX = Math.min(playerPosition.x, targetPosition.x);
-    const maxX = Math.max(playerPosition.x, targetPosition.x);
-    const minY = Math.min(playerPosition.y, targetPosition.y);
-    const maxY = Math.max(playerPosition.y, targetPosition.y);
-
-    // Check if the bounding box of the line segment intersects with the rect
-    const intersects = !(
-      maxX < rect.x ||
-      minX > rect.x + rect.width ||
-      maxY < rect.y ||
-      minY > rect.y + rect.height
-    );
-
-    return intersects;
-  }
 
   let count = 0;
   let delayFinished = false;
@@ -340,17 +236,14 @@ const app = new Application();
     if (Player.player.targetPosition) {
       const distance = Math.sqrt(
         Math.pow(Player.player.x - Player.player.targetPosition.x, 2) +
-          Math.pow(Player.player.y - Player.player.targetPosition.y, 2)
+        Math.pow(Player.player.y - Player.player.targetPosition.y, 2)
       );
 
       if (distance < 3) {
         Player.player.targetPosition = null;
         Player.setIdle();
-        //console.log(distance);
       } else {
         Player.move(Player.player.targetPosition, UI.solidObjects);
-        // followPlayer(app, app.cameraContainer, Player.player);
-        // app.mainScene.updateTransform();
       }
     }
   });
@@ -366,8 +259,4 @@ const app = new Application();
       resizeGame(app, app.scenes[sceneName]);
     }
   });
-
-  // window.addEventListener("resize", () => resizeGame(app, app.pdfContainer));
-  // }
-  // setupPdf(app, app.mainScene);
 })();

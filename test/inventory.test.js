@@ -11,7 +11,7 @@ describe("Inventory", () => {
   let mockChangeCallback;
 
   beforeEach(() => {
-    jest.spyOn(console, "log").mockImplementation(() => {});
+    jest.spyOn(console, "log").mockImplementation(() => { });
     mockChangeCallback = jest.fn();
     inventory = new Inventory(mockChangeCallback);
   });

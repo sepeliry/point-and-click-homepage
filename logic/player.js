@@ -1,40 +1,37 @@
-import { Application, Texture, AnimatedSprite, Point, Assets } from "pixi.js";
+import { Texture, AnimatedSprite, Point, Assets } from "pixi.js";
 import { playerCollides } from "./collisionUtils";
+import gameState from "../data/gameState";
 
 // Interactions
 import { checkDistance } from "./interactions/distanceCheckUtils";
-import updateAnimatedSpriteTextures from "./interactions/updateAnimatedSpriteTextures";
 import openPopup from "./interactions/openPopup";
 
-import { ASPECT_RATIO } from "../constants/constants";
-import gameState from "../data/gameState";
-
 // Image imports
-import player_idle from "../resources/images/player_images/player_idle0minimalbackground.png";
-import player_idle_mini from "../resources/images/player_images/player_idleA1.png";
-import player_walk_1 from "../resources/images/player_images/player_walk1.png";
-import player_walk_2 from "../resources/images/player_images/player_walk2.png";
-import player_walk_3 from "../resources/images/player_images/player_walk3.png";
-import player_walk_4 from "../resources/images/player_images/player_walk4.png";
-import player_walk_5 from "../resources/images/player_images/player_walk5.png";
-import player_walk_6 from "../resources/images/player_images/player_walk6.png";
-import player_walk_7 from "../resources/images/player_images/player_walk7.png";
-import player_walk_8 from "../resources/images/player_images/player_walk8.png";
-import player_walk_9 from "../resources/images/player_images/player_walk9.png";
-import player_walk_10 from "../resources/images/player_images/player_walk10.png";
-import player_walk_11 from "../resources/images/player_images/player_walk11.png";
-import player_walk_12 from "../resources/images/player_images/player_walk12.png";
-import player_walk_mini_1 from "../resources/images/player_images/player_walkA1.png";
-import player_walk_mini_2 from "../resources/images/player_images/player_walkA2.png";
-import player_walk_mini_3 from "../resources/images/player_images/player_walkA3.png";
-import player_walk_mini_4 from "../resources/images/player_images/player_walkA4.png";
-import player_walk_mini_5 from "../resources/images/player_images/player_walkA5.png";
-import player_walk_mini_6 from "../resources/images/player_images/player_walkA6.png";
-import player_walk_mini_7 from "../resources/images/player_images/player_walkA7.png";
-import player_walk_mini_8 from "../resources/images/player_images/player_walkA8.png";
-import player_walk_mini_9 from "../resources/images/player_images/player_walkA9.png";
-import player_shrink_1 from "../resources/images/player_images/player_idle0_small.png";
-import player_shrink_2 from "../resources/images/player_images/player_idle0_smallest.png";
+import player_idle from "../resources/images/player_images/player_idle_0.png";
+import player_idle_mini from "../resources/images/player_images/player_idle_A1.png";
+import player_walk_1 from "../resources/images/player_images/player_walk_1.png";
+import player_walk_2 from "../resources/images/player_images/player_walk_2.png";
+import player_walk_3 from "../resources/images/player_images/player_walk_3.png";
+import player_walk_4 from "../resources/images/player_images/player_walk_4.png";
+import player_walk_5 from "../resources/images/player_images/player_walk_5.png";
+import player_walk_6 from "../resources/images/player_images/player_walk_6.png";
+import player_walk_7 from "../resources/images/player_images/player_walk_7.png";
+import player_walk_8 from "../resources/images/player_images/player_walk_8.png";
+import player_walk_9 from "../resources/images/player_images/player_walk_9.png";
+import player_walk_10 from "../resources/images/player_images/player_walk_10.png";
+import player_walk_11 from "../resources/images/player_images/player_walk_11.png";
+import player_walk_12 from "../resources/images/player_images/player_walk_12.png";
+import player_walk_mini_1 from "../resources/images/player_images/player_walk_mini_1.png";
+import player_walk_mini_2 from "../resources/images/player_images/player_walk_mini_2.png";
+import player_walk_mini_3 from "../resources/images/player_images/player_walk_mini_3.png";
+import player_walk_mini_4 from "../resources/images/player_images/player_walk_mini_4.png";
+import player_walk_mini_5 from "../resources/images/player_images/player_walk_mini_5.png";
+import player_walk_mini_6 from "../resources/images/player_images/player_walk_mini_6.png";
+import player_walk_mini_7 from "../resources/images/player_images/player_walk_mini_7.png";
+import player_walk_mini_8 from "../resources/images/player_images/player_walk_mini_8.png";
+import player_walk_mini_9 from "../resources/images/player_images/player_walk_mini_9.png";
+import player_shrink_1 from "../resources/images/player_images/player_idle_0_small.png";
+import player_shrink_2 from "../resources/images/player_images/player_idle_0_smallest.png";
 
 /**
  * Class for players
@@ -156,21 +153,6 @@ class Player {
 
     // Variables for finding closest object
     let closestObj = null;
-    let closestDistance = Infinity;
-
-    /*
-    // Find the closest object to player
-    for (const obj of solidObjects) {
-      console.log(obj);
-      const objDistance = Math.sqrt(
-        (Player.player.x - obj.sprite.x) ** 2 +
-          (Player.player.y - obj.sprite.y) ** 2
-      );
-      if (objDistance < closestDistance) {
-        closestObj = obj;
-        closestDistance = objDistance;
-      }
-    }*/
 
     if (closestObj) {
       // Show player in front of / behind the closest object
@@ -230,7 +212,6 @@ class Player {
           Player.player.pendingAction
         );
       }
-      // this.targetPosition = null;
     }
   }
 
@@ -243,11 +224,6 @@ class Player {
     // Clone the target position
     let adjustedPosition = targetPosition.clone();
 
-    // Check if the target position is already within the walkable area
-    //if (this.walkableArea.containsPoint(adjustedPosition)) {
-    //   return adjustedPosition;
-    //  }
-
     // Calculate the direction vector from the current player position towards the target position
     const directionVector = new Point(
       targetPosition.x - Player.player.x,
@@ -257,7 +233,7 @@ class Player {
     // Calculate the magnitude of the direction vector
     const magnitude = Math.sqrt(
       directionVector.x * directionVector.x +
-        directionVector.y * directionVector.y
+      directionVector.y * directionVector.y
     );
 
     // Check if the magnitude is greater than 0 (to avoid division by zero)

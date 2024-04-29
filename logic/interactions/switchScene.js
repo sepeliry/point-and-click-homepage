@@ -2,6 +2,8 @@ import { resizeGame } from "../utils/resize";
 import gameState from "../../data/gameState";
 import Popup from "../popup";
 
+// Switch between game scenes
+
 function switchScene(app, newSceneName) {
   // hide wiki text
   document.getElementById("wiki-wrapper").style.display = "none";

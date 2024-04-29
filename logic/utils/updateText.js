@@ -1,6 +1,6 @@
 import { Text } from "pixi.js";
 
-// update PixiJS Text object
+// update a PixiJS Text object
 function updateText(textObject, newText) {
   if (textObject instanceof Text) {
     textObject.text = newText;

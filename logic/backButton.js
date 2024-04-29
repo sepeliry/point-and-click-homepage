@@ -22,9 +22,6 @@ class BackButton {
 
     // Add the sprite to the application stage
     app.stage.addChild(this.sprite);
-
-    // Add event listener to reposition the button on window resize
-    //window.addEventListener("resize", () => this.adjustPosition());
   }
 
   adjustPosition() {

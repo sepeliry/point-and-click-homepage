@@ -1,3 +1,4 @@
+import updateSpriteTexture from "../interactions/updateSpriteTexture";
 import InventoryUI from "./inventoryUI";
 
 class Inventory {
@@ -31,12 +32,21 @@ class Inventory {
     }
   }
 
+  updateItemSprite(item, newTexturePath) {
+    updateSpriteTexture(item.sprite, newTexturePath);
+    InventoryUI.updateInventoryUI();
+  }
+
   itemExists(itemName) {
     return this.items.some((entry) => entry.item === itemName);
   }
 
   getItems() {
     return this.items;
+  }
+  getItem(itemName) {
+    const item = this.items.find((entry) => entry.item === itemName);
+    return item;
   }
 }
 

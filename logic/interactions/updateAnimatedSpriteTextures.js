@@ -9,6 +9,7 @@ import { Texture, AnimatedSprite, Assets } from "pixi.js";
  * @param {number} animationSpeed - The speed at which the animation should play
  * @param {boolean} loop - whether the animation should loop.
  */
+
 async function updateAnimatedSpriteTextures(
   animatedSprite,
   frameIdentifiers,

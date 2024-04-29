@@ -2,6 +2,7 @@
 
 import { marked } from "marked";
 
+// Function to display wiki pages fetched from URL links
 async function displayWikiPage(rawUrl, wikiUrl) {
   try {
     const wikiWrapper = document.getElementById("wiki-wrapper");
@@ -24,6 +25,7 @@ async function displayWikiPage(rawUrl, wikiUrl) {
   }
 }
 
+// Function to process markdown content and return it as HTML markup
 function preprocessMarkdown(mdContent) {
   // Replace found patterns with Markdown links (or HTML anchors)
   const processedContent = mdContent.replace(

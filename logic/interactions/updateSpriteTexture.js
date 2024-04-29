@@ -6,6 +6,7 @@ import { Sprite, Texture, Assets } from "pixi.js";
  * @param {string} newTexturePath
  * @returns
  */
+
 async function updateSpriteTexture(sprite, newTexturePath) {
   if (!(sprite instanceof Sprite)) {
     console.error("Provided item is not an instance of Sprite");

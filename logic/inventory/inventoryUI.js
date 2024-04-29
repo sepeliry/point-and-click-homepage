@@ -4,6 +4,7 @@ import openPopup from "../interactions/openPopup";
 import Player from "../player";
 import Item from "../item";
 import { GlowFilter } from "pixi-filters";
+
 class InventoryUI {
   static container = new Container();
   static app = null;
@@ -164,7 +165,7 @@ class InventoryUI {
       if (!player || !dragTargetPosition) return;
       const distance = Math.sqrt(
         (player.x - dragTargetLocalPosition.x) ** 2 +
-          (player.y - dragTargetLocalPosition.y) ** 2
+        (player.y - dragTargetLocalPosition.y) ** 2
       );
       const maxDistance = 250;
       return distance <= maxDistance;

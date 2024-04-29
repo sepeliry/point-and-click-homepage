@@ -1,5 +1,4 @@
-import gameState from "../../data/gameState";
-import { ASPECT_RATIO, MAX_HEIGHT, MAX_WIDTH } from "../../constants/constants";
+import { ASPECT_RATIO } from "../../constants/constants";
 
 export const moveCamera = (app, cameraContainer, direction) => {
   const gameWorldWidth = 1400;
@@ -17,13 +16,6 @@ export const moveCamera = (app, cameraContainer, direction) => {
 };
 
 export const updateCamera = (app, cameraContainer, player) => {
-  /*
-  if (window.innerWidth >= MAX_WIDTH) {
-    cameraContainer.x = 0;
-    cameraContainer.y = 0;
-    return;
-  }
-  */
 
   const targetHeight = Math.min(window.innerHeight, screen.height); // Always use the full height of the window
   let targetWidth = targetHeight * ASPECT_RATIO; // Calculate width based on the aspect ratio

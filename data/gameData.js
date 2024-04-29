@@ -51,10 +51,10 @@ import computer_desk_img from "../resources/images/main_scene/computer_desk_colo
 import computer_desk_with_coffee_img from "../resources/images/main_scene/computer_desk_with_coffee_cup_coloured.png";
 import pong_machine_off from "../resources/images/main_scene/arcade_machine_off.png";
 import pong_machine_on from "../resources/images/main_scene/arcade_machine_on.png";
-import coffee_maker_img from "../resources/images/main_scene/coffee_maker.png";
-import coffee_maker_1 from "../resources/images/main_scene/coffee_maker_frame1.png";
-import coffee_maker_2 from "../resources/images/main_scene/coffee_maker_frame2.png";
-import coffee_maker_3 from "../resources/images/main_scene/coffee_maker_frame3.png";
+import coffee_maker_img from "../resources/images/main_scene/coffee_maker_empty.png";
+import coffee_maker_1 from "../resources/images/main_scene/coffee_maker_frame01.png";
+import coffee_maker_2 from "../resources/images/main_scene/coffee_maker_frame02.png";
+import coffee_maker_3 from "../resources/images/main_scene/coffee_maker_frame03.png";
 import plant_img from "../resources/images/main_scene/plant.png";
 import coffee_packet_img from "../resources/images/main_scene/coffee_packet_bean.png";
 import potion_img from "../resources/images/main_scene/potion.png";
@@ -72,6 +72,8 @@ import computer_scene_bg from "../resources/images/computer_scene/computer_scene
 import discord_icon from "../resources/images/computer_scene/discord_icon.png";
 import signup_icon from "../resources/images/computer_scene/signup_icon.png";
 import coffee_cup from "../resources/images/computer_scene/coffee_cup.png";
+import coffee_cup_empty from "../resources/images/computer_scene/coffee_cup_empty.png";
+import coffee_cup_full from "../resources/images/computer_scene/coffee_cup_full.png";
 
 // Mousehole scene images
 import mousehole_scene_bg_1 from "../resources/images/mousehole_scene/mousehole1.png";
@@ -1233,7 +1235,7 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: coffee_cup,
+        image: coffee_cup_empty,
         visible: true,
         onStateChange: null,
         type: ITEM_TYPES.item,

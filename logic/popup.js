@@ -11,8 +11,36 @@ class Popup {
     this.currentIndex = 0; // index for typing animation
     this.createPopup();
     Popup.activePopups.push(this);
-  }
 
+    const updatePosition = () => {
+      setTimeout(() => this.updatePopupPosition(), 100);
+    };
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("fullscreenchange", updatePosition);
+    window.addEventListener("orientationchange", updatePosition);
+  }
+  updatePopupPosition() {
+    let popupWidth = 700;
+    if (window.innerWidth <= 800) {
+      popupWidth = window.innerWidth - 20;
+    }
+
+    let popupHeight = 90;
+    if (window.innerWidth <= 800) {
+      popupHeight = 70;
+    }
+    if (window.innerWidth < 500) {
+      popupHeight = 60;
+    }
+
+    if (!this.position) {
+      this.container.x = (this.app.screen.width - popupWidth) / 2;
+      this.container.y = this.app.screen.height - popupHeight - 10;
+    } else {
+      this.container.x = this.position.x * this.app.screen.width;
+      this.container.y = this.position.y * this.app.screen.height;
+    }
+  }
   createPopup() {
     let popupWidth = 700;
     const padding = 20;

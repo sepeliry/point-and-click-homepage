@@ -69,9 +69,12 @@ import coffee_cup_empty from "../resources/images/computer_scene/coffee_cup_empt
 import coffee_cup_full from "../resources/images/computer_scene/coffee_cup_full.png";
 
 // Mousehole scene images
-import mousehole_bg_frame01 from "../resources/images/mousehole_scene/mousehole_frame01.png";
-import mousehole_bg_frame02 from "../resources/images/mousehole_scene/mousehole_frame02.png";
 import postit_16 from "../resources/images/mousehole_scene/postit_16.png";
+import mouse_frame01 from "../resources/images/mousehole_scene/mouse_frame01.png";
+import mouse_frame02 from "../resources/images/mousehole_scene/mouse_frame02.png";
+import mousehole_bg from "../resources/images/mousehole_scene/mousehole_background.png";
+import hanging_cheese_frame01 from "../resources/images/mousehole_scene/hanging_cheese_frame01.png";
+import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_cheese_frame02.png";
 
 // Generic
 import back_arrow from "../resources/images/back_arrow.png";
@@ -294,13 +297,22 @@ const gameData = {
           if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
             updateAnimatedSpriteTextures(
               item,
-              [coffee_maker_frame01, coffee_maker_frame02, coffee_maker_frame03],
+              [
+                coffee_maker_frame01,
+                coffee_maker_frame02,
+                coffee_maker_frame03,
+              ],
               0.02,
               true
             );
           }
           if (gameState.playerIsMiniSize) {
-            updateAnimatedSpriteTextures(item, [coffee_maker_empty], 0.02, true);
+            updateAnimatedSpriteTextures(
+              item,
+              [coffee_maker_empty],
+              0.02,
+              true
+            );
           }
         },
         animation: {
@@ -325,14 +337,9 @@ const gameData = {
             () => {
               if (!gameState.coffeeBrewed) {
                 if (gameState.coffeeUsed) {
-                  openPopup(
-                    app,
-                    "Join jo kaiken kahvin!",
-                    null
-                  );
+                  openPopup(app, "Join jo kaiken kahvin!", null);
                   return;
-                }
-                else if (!gameState.inventory.itemExists("Coffee")) {
+                } else if (!gameState.inventory.itemExists("Coffee")) {
                   openPopup(
                     app,
                     "Hmm, missä täällä säilytetään kahvinpuruja?",
@@ -372,7 +379,6 @@ const gameData = {
                   );
                   gameState.coffeeBrewed = false;
                 });
-                app.scenes["mainScene"].updateTransform();
               }
             }
           ),
@@ -521,7 +527,11 @@ const gameData = {
             "mainScene",
             () => {
               if (!gameState.playerIsMiniSize) {
-                openPopup(app, "on kyl pieni hiirenkolo...", null);
+                openPopup(
+                  app,
+                  "Kylläpä pienestä hiirenkolosta pilkottaa pelottavat silmät...",
+                  null
+                );
                 return;
               }
               switchScene(app, "mouseholeScene");
@@ -627,7 +637,8 @@ const gameData = {
         height: 100,
         collisionHeight: 5, // not yet used
         onInteraction: (app) => () =>
-          openUrlInNewTab(
+          displayWikiPage(
+            "https://raw.githubusercontent.com/wiki/sepeliry/YhdistyksenToiminta/Home.md",
             "https://github.com/sepeliry/YhdistyksenToiminta/wiki"
           ),
         zIndex: 1,
@@ -1127,10 +1138,9 @@ const gameData = {
     ],
   },
   mouseholeScene: {
-    background: mousehole_bg_frame01,
+    background: mousehole_bg,
     backgroundWidth: 1400,
     backgroundHeight: 800,
-    animatedSpriteTextures: [mousehole_bg_frame01, mousehole_bg_frame02],
     items: [
       {
         image: back_arrow,
@@ -1168,6 +1178,53 @@ const gameData = {
           gameState.inventory.addItem("PostIt 2", item);
           removeSprite(app, item);
           openPopup(app, "16...?", null);
+        },
+        zIndex: 10,
+      },
+      {
+        animation: {
+          frames: [mouse_frame01, mouse_frame02],
+          animationSpeed: 0.02,
+          loop: true,
+          interval: 3000, //ms
+        },
+        visible: true,
+        type: ITEM_TYPES.item,
+        name: "Sleeping mouse",
+        location: {
+          x: 0.55,
+          y: 0.702,
+        },
+        width: 203 * 0.8,
+        height: 233 * 0.8,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () => {
+          openPopup(app, "Nukkuupa hiiri sikeästi...");
+        },
+        zIndex: 10,
+      },
+      {
+        animation: {
+          frames: [hanging_cheese_frame01, hanging_cheese_frame02],
+          animationSpeed: 0.02,
+          loop: true,
+          interval: 3000, //ms
+        },
+        visible: true,
+        type: ITEM_TYPES.item,
+        name: "Hanging cheese",
+        location: {
+          x: 0.375,
+          y: 0.57,
+        },
+        width: 169 * 0.8,
+        height: 381 * 0.8,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app, item) => () => {
+          openPopup(
+            app,
+            "Miksiköhän juusto roikkuu katosta? Muistuttaa tekoälyllä tehtyjen grafiikkojen sekoiluja..."
+          );
         },
         zIndex: 10,
       },
@@ -1231,7 +1288,10 @@ const gameData = {
         image: coffee_cup_empty,
         visible: true,
         onStateChange: (app, item) => {
-          if (gameState.coffeeBrewed && gameState.inventory.itemExists("Coffee cup")) {
+          if (
+            gameState.coffeeBrewed &&
+            gameState.inventory.itemExists("Coffee cup")
+          ) {
             const cup = gameState.inventory.getItem("Coffee cup");
             // If coffee is brewed, change the texture to full coffee cup
             gameState.inventory.updateItemSprite(cup, coffee_cup_full);

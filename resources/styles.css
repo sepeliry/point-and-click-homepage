@@ -115,6 +115,7 @@ td {
   position: relative;
   display: block;
   font-size: 16px;
+  line-height: 1.4;
 }
 
 /* For screens wider than 600px */

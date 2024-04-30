@@ -117,17 +117,6 @@ class UI {
         // set / show mainScene by default
         app.mainScene = container;
         container.visible = true;
-      } else if (
-        sceneName === "mouseholeScene" &&
-        sceneData.animatedSpriteTextures
-      ) {
-        // Call the createAnimatedSprite method
-        this.createAnimatedSprite(
-          app,
-          sceneData.animatedSpriteTextures,
-          container
-        );
-        container.visible = false;
       } else {
         // hide other scenes by default
         container.visible = false;
@@ -191,27 +180,6 @@ class UI {
         }
       }
     });
-  }
-
-  async createAnimatedSprite(app, frameUrls, container) {
-    // Load all frame assets first
-    await Assets.load(frameUrls);
-
-    // After ensuring all assets are loaded, create textures from these assets
-    const textureArray = frameUrls.map((url) => Texture.from(url));
-
-    // Create an animated sprite with these textures
-    const animatedSprite = new AnimatedSprite(textureArray);
-    animatedSprite.width = 1400;
-    animatedSprite.height = 800;
-    animatedSprite.animationSpeed = 0.02;
-    animatedSprite.loop = true;
-
-    // Adding the sprite to the container
-    container.addChild(animatedSprite);
-
-    // Play the animation
-    animatedSprite.play();
   }
 
   getScene(app, sceneName) {

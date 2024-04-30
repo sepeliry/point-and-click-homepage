@@ -1,6 +1,4 @@
 import { Container, Sprite, Text, Assets } from "pixi.js";
-import { GlowFilter } from "@pixi/filter-glow";
-import { ASPECT_RATIO } from "../constants/constants";
 
 class DesktopIcon {
   constructor(app, container, itemData) {
@@ -72,7 +70,6 @@ class DesktopIcon {
     this.iconContainer.buttonMode = true;
     this.iconContainer.cursor = "pointer";
     this.iconContainer.on("pointerdown", onInteraction(this.app));
-    // Optional: Apply effects like a glow filter here
   }
 }
 

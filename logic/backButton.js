@@ -1,6 +1,4 @@
 import * as PIXI from "pixi.js";
-import { GlowFilter } from "@pixi/filter-glow";
-import { ASPECT_RATIO } from "../constants/constants";
 
 class BackButton {
   constructor(app, container, itemData) {
@@ -24,9 +22,6 @@ class BackButton {
 
     // Add the sprite to the application stage
     app.stage.addChild(this.sprite);
-
-    // Add event listener to reposition the button on window resize
-    //window.addEventListener("resize", () => this.adjustPosition());
   }
 
   adjustPosition() {

@@ -1,7 +1,5 @@
 import { Sprite, Texture, AnimatedSprite, Assets } from "pixi.js";
-import { GlowFilter } from "@pixi/filter-glow";
 import { glowFilter } from "./utils/glowFilter";
-import { ASPECT_RATIO } from "../constants/constants";
 
 class Item {
   static gameObjects = [];
@@ -66,14 +64,6 @@ class Item {
       this.sprite.eventMode = "dynamic";
       this.sprite.cursor = "pointer";
       this.sprite.on("pointerdown", itemData.onInteraction(app, this.sprite));
-
-      const glowEffect = new GlowFilter({
-        innerStrength: 0,
-        outerStrength: 1.8,
-        quality: 0.1,
-        alpha: 0.6,
-        color: "c061cb",
-      });
       this.sprite.filters = [glowFilter];
     } else {
       this.sprite.interactive = false;

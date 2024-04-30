@@ -1,6 +1,7 @@
 import { pages } from "../../data/pages";
 import { marked } from "marked";
 import { resizeGame } from "./resize";
+
 const markdownContainer = document.getElementById("markdown-container");
 const showPdf = document.getElementById("show-pdf");
 const ulElem = document.getElementById("wiki-list");

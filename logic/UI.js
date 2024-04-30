@@ -7,11 +7,9 @@ import {
   CRTFilter,
   Assets,
 } from "pixi.js";
-import { CRTFilter, AdvancedBloomFilter } from "pixi-filters";
-import { glowFilter } from "./utils/glowFilter.js";
-import { GlowFilter } from "@pixi/filter-glow";
+import { CRTFilter } from "pixi-filters";
+import { GlowFilter } from "pixi-filters";
 import { createWalkableAreas } from "./walkableArea.js";
-import { ASPECT_RATIO, MAX_WIDTH } from "../constants/constants.js";
 import Book from "./book.js";
 import Item from "./item.js";
 import gameData from "../data/gameData.js";
@@ -21,7 +19,6 @@ import DesktopIcon from "./desktopIcon.js";
 
 // Constants
 import ITEM_TYPES from "../constants/itemTypes.js";
-import BackButton from "./backButton.js";
 
 class UI {
   static solidObjects = null;
@@ -90,17 +87,8 @@ class UI {
         container.label = sceneName;
         container.sortableChildren = true;
         container.filters = [
-          /* new AdvancedBloomFilter({
-            threshold: 0.95,
-            blur: 16,
-            quality: 4,
-            pixelSize: { x: 0.1, y: 0.1 },
-          }),
-          */
           new CRTFilter({
             lineContrast: 0.06,
-            //noise: 0.1,
-            //  noiseSize: 0.1,
             vignettingAlpha: 1,
             vignettingBlur: 0.5,
             vignetting: 0.25,
@@ -148,7 +136,6 @@ class UI {
   }
 
   createObjectsFromGameData(app, items, container) {
-    //console.log(items);
     items.forEach((itemData) => {
       if (itemData.type === ITEM_TYPES.text) {
         const style = itemData.style;
@@ -200,12 +187,10 @@ class UI {
         const item = Item.create(app, container, itemData);
         // push solid items to solidObjects array
         if (container.label === "mainScene") {
-          // console.log(item);
           UI.solidObjects.push(item);
         }
       }
     });
-    // console.log(container);
   }
 
   async createAnimatedSprite(app, frameUrls, container) {
@@ -234,9 +219,6 @@ class UI {
   }
 
   createCameraContainer(app) {
-    let gameContainerDOM = document.getElementById("game-container");
-    // gameContainerDOM.style.width = `${app.view.width}px`;
-    // gameContainerDOM.style.height = `${app.view.height}px`;
     const cameraContainer = new Container();
     app.cameraContainer = cameraContainer;
     cameraContainer.addChild(app.mainScene);

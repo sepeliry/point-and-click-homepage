@@ -1,5 +1,6 @@
-import { GlowFilter } from "@pixi/filter-glow";
+import { GlowFilter } from "pixi-filters";
 
+// Universal glow filter that's manipulated by app ticker
 export const glowFilter = new GlowFilter({
   innerStrength: 0,
   outerStrength: 0,

@@ -1,4 +1,5 @@
 import Player from "../player";
+
 /**
  * Function to perform a distance check between the player and a clickable area
  * @param {PIXI.DisplayObject} player - The player object
@@ -6,6 +7,7 @@ import Player from "../player";
  * @param {number} maxDistance - The maximum distance within which the player can interact with the clickable area
  * @param {Function} action - The action to perform if the player is within the maximum distance
  */
+
 export function checkDistance(app, x, y, sceneName, action) {
   const maxDistance = 250;
   const player = Player.player;

@@ -18,6 +18,20 @@
   opacity: 1;
 }
 
+#loading-screen .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30%;
+  box-sizing: border-box;
+}
+
+#loading-screen img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 body {
   font-family: "VCR_OSD_Mono";
   display: flex;

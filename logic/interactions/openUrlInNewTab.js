@@ -1,3 +1,4 @@
+// Open page from URL in a new tab
 function openUrlInNewTab(url) {
   // Create an anchor element
   const anchor = document.createElement("a");

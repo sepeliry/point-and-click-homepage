@@ -3,7 +3,8 @@ import gameState from "../../data/gameState";
 import openPopup from "../interactions/openPopup";
 import Player from "../player";
 import Item from "../item";
-import { GlowFilter } from "@pixi/filter-glow";
+import { GlowFilter } from "pixi-filters";
+
 class InventoryUI {
   static container = new Container();
   static app = null;
@@ -13,6 +14,14 @@ class InventoryUI {
     this.container.x = app.renderer.width - 10;
     this.container.y = 10;
     this.app.stage.addChild(this.container);
+    // Update the inventory UI position when the window is resized or orientation changes.
+    // Timeout to ensure event has finished before updating position
+    const updatePosition = () => {
+      setTimeout(() => this.updateInventoryUIPosition(app), 100);
+    };
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("fullscreenchange", updatePosition);
+    window.addEventListener("orientationchange", updatePosition);
   }
 
   static updateInventoryUI() {
@@ -54,7 +63,6 @@ class InventoryUI {
 
       itemContainer.addChild(bg);
       itemContainer.addChild(itemSprite);
-
       // Adjusting interaction settings
       itemContainer.interactive = true; // Ensuring item is interactive
       itemContainer.buttonMode = true; // Shows pointer on hover
@@ -169,6 +177,12 @@ class InventoryUI {
       const maxDistance = 250;
       return distance <= maxDistance;
     };
+  }
+  static updateInventoryUIPosition(app) {
+    console.log("Updating inventory UI position" + app.renderer.width);
+    this.container.x = app.renderer.width - 10;
+    this.container.y = 10;
+    this.updateInventoryUI(); // To update itemContainer backgrounds and item sprites
   }
 }
 

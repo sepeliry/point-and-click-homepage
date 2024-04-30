@@ -20,7 +20,6 @@ import displayArticleImg from "../logic/interactions/displayArticleImg.js";
 /*
  * UTILS
  */
-import { showWikiList } from "../logic/utils/markdownUtils.js";
 import showPdf from "../logic/utils/pdfUtils.js";
 import gameState from "./gameState.js";
 
@@ -34,52 +33,48 @@ import ITEM_TYPES from "../constants/itemTypes.js";
  */
 
 // Main scene images
-import box_img from "../resources/images/main_scene/box_prop.png";
-import main_scene_bg from "../resources/images/main_scene/background.png";
-import bookshelf_img from "../resources/images/main_scene/bookshelf_cropped.png";
-import mousehole_img from "../resources/images/main_scene/mousehole_in_wall_tilted_contrasted_s.png";
-import mousehole_img_eyes from "../resources/images/main_scene/mousehole_in_wall_tilted_eyes_contrasted_s.png";
-import lamp1_on from "../resources/images/main_scene/lamp_1_on.png";
-import lamp1_off from "../resources/images/main_scene/lamp_1_off.png";
-import sepeli_machine_off from "../resources/images/main_scene/arcade_machine_2_test.png";
-import sepeli_machine_1 from "../resources/images/main_scene/arcade_machine_2_on_frame1.png";
-import sepeli_machine_2 from "../resources/images/main_scene/arcade_machine_2_on_frame2.png";
-import sepeli_machine_3 from "../resources/images/main_scene/arcade_machine_2_on_frame3.png";
-import numpad_small_closed from "../resources/images/main_scene/num_pad.png";
-import numpad_small_open from "../resources/images/main_scene/num_pad_open.png";
-import computer_desk_img from "../resources/images/main_scene/computer_desk_coloured.png";
-import computer_desk_with_coffee_img from "../resources/images/main_scene/computer_desk_with_coffee_cup_coloured.png";
-import pong_machine_off from "../resources/images/main_scene/arcade_machine_off.png";
-import pong_machine_on from "../resources/images/main_scene/arcade_machine_on.png";
-import coffee_maker_img from "../resources/images/main_scene/coffee_maker.png";
-import coffee_maker_1 from "../resources/images/main_scene/coffee_maker_frame1.png";
-import coffee_maker_2 from "../resources/images/main_scene/coffee_maker_frame2.png";
-import coffee_maker_3 from "../resources/images/main_scene/coffee_maker_frame3.png";
-import plant_img from "../resources/images/main_scene/plant.png";
-import coffee_packet_img from "../resources/images/main_scene/coffee_packet_bean.png";
-import potion_img from "../resources/images/main_scene/potion.png";
+import main_scene_bg from "../resources/images/main_scene/main_scene_bg.png";
+import bookshelf from "../resources/images/main_scene/bookshelf.png";
+import mousehole_frame01 from "../resources/images/main_scene/mousehole_frame01.png";
+import mousehole_frame02 from "../resources/images/main_scene/mousehole_frame02.png";
+import lamp_1_on from "../resources/images/main_scene/lamp_1_on.png";
+import lamp_1_off from "../resources/images/main_scene/lamp_1_off.png";
+import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_off.png";
+import sepeli_machine_1 from "../resources/images/main_scene/sepeli_machine_frame01.png";
+import sepeli_machine_2 from "../resources/images/main_scene/sepeli_machine_frame02.png";
+import sepeli_machine_3 from "../resources/images/main_scene/sepeli_machine_frame03.png";
+import numpad_small_closed from "../resources/images/main_scene/numpad_small_closed.png";
+import numpad_small_open from "../resources/images/main_scene/numpad_small_open.png";
+import computer_desk from "../resources/images/main_scene/computer_desk.png";
+import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
+import pong_machine_off from "../resources/images/main_scene/pong_machine_off.png";
+import pong_machine_on from "../resources/images/main_scene/pong_machine_on.png";
+import coffee_maker_empty from "../resources/images/main_scene/coffee_maker_empty.png";
+import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_frame01.png";
+import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.png";
+import coffee_maker_frame03 from "../resources/images/main_scene/coffee_maker_frame03.png";
+import coffee_packet_bean from "../resources/images/main_scene/coffee_packet_bean.png";
 import article_1 from "../resources/images/main_scene/article_1.png";
 import article_2 from "../resources/images/main_scene/article_2.png";
 import article_3 from "../resources/images/main_scene/article_3.png";
 
 // Arcade scene images
 import arcade_scene_bg from "../resources/images/arcade_scene/background.png";
-import telegraph_icon from "../resources/images/arcade_scene/telegraph_icon_upscaled.png";
-import on_time_icon from "../resources/images/arcade_scene/ontime_icon_upscaled.png";
 
 // Computer scene images
 import computer_scene_bg from "../resources/images/computer_scene/computer_scene_coloured.jpg";
 import discord_icon from "../resources/images/computer_scene/discord_icon.png";
 import signup_icon from "../resources/images/computer_scene/signup_icon.png";
-import coffee_cup from "../resources/images/computer_scene/coffee_cup.png";
+import coffee_cup_empty from "../resources/images/computer_scene/coffee_cup_empty.png";
+import coffee_cup_full from "../resources/images/computer_scene/coffee_cup_full.png";
 
 // Mousehole scene images
-import mousehole_scene_bg_1 from "../resources/images/mousehole_scene/mousehole1.png";
-import mousehole_scene_bg_2 from "../resources/images/mousehole_scene/mousehole2.png";
-import postit_2_img from "../resources/images/mousehole_scene/postitwithcode2.png";
+import mousehole_bg_frame01 from "../resources/images/mousehole_scene/mousehole_frame01.png";
+import mousehole_bg_frame02 from "../resources/images/mousehole_scene/mousehole_frame02.png";
+import postit_16 from "../resources/images/mousehole_scene/postit_16.png";
 
 // Generic
-import backarrow_img from "../resources/images/back_arrow.png";
+import back_arrow from "../resources/images/back_arrow.png";
 
 // Bookshelf scene images
 import bookshelf_scene_bg from "../resources/images/bookshelf_scene/bookshelf_background.png";
@@ -87,24 +82,22 @@ import book_1_img from "../resources/images/bookshelf_scene/book_placeholder.png
 import book_2_img from "../resources/images/bookshelf_scene/book2_placeholder.png";
 
 // Numpad scene images
-import numpad_scene_bg_closed from "../resources/images/numpad_scene/numpad_backgroundclosed.png";
-import numpad_scene_bg_open from "../resources/images/numpad_scene/numpad_backgroundopen.png";
-import numpad_scene_bg from "../resources/images/numpad_scene/numpad_background.png";
-import red_button_img from "../resources/images/numpad_scene/red_button.png";
-import postit_1_img from "../resources/images//numpad_scene/postitwithcode1.png";
-import black_bg from "../resources/images/numpad_scene/black.png";
-import button_1 from "../resources/images/numpad_scene/button1.png";
-import button_2 from "../resources/images/numpad_scene/button2.png";
-import button_3 from "../resources/images/numpad_scene/button3.png";
-import button_4 from "../resources/images/numpad_scene/button4.png";
-import button_5 from "../resources/images/numpad_scene/button5.png";
-import button_6 from "../resources/images/numpad_scene/button6.png";
-import button_7 from "../resources/images/numpad_scene/button7.png";
-import button_8 from "../resources/images/numpad_scene/button8.png";
-import button_9 from "../resources/images/numpad_scene/button9.png";
-import button_0 from "../resources/images/numpad_scene/button0.png";
-import reset_button from "../resources/images/numpad_scene/resetButton.png";
-import enter_button from "../resources/images/numpad_scene/enterButton.png";
+import numpad_bg_closed from "../resources/images/numpad_scene/numpad_background_closed.png";
+import numpad_bg_open from "../resources/images/numpad_scene/numpad_background_open.png";
+import red_button from "../resources/images/numpad_scene/red_button.png";
+import postit_32 from "../resources/images//numpad_scene/postit_32.png";
+import button_1 from "../resources/images/numpad_scene/button_1.png";
+import button_2 from "../resources/images/numpad_scene/button_2.png";
+import button_3 from "../resources/images/numpad_scene/button_3.png";
+import button_4 from "../resources/images/numpad_scene/button_4.png";
+import button_5 from "../resources/images/numpad_scene/button_5.png";
+import button_6 from "../resources/images/numpad_scene/button_6.png";
+import button_7 from "../resources/images/numpad_scene/button_7.png";
+import button_8 from "../resources/images/numpad_scene/button_8.png";
+import button_9 from "../resources/images/numpad_scene/button_9.png";
+import button_0 from "../resources/images/numpad_scene/button_0.png";
+import reset_button from "../resources/images/numpad_scene/reset_button.png";
+import enter_button from "../resources/images/numpad_scene/enter_button.png";
 
 //Article images
 import article_img_1 from "../resources/images/article_images/article_1.png";
@@ -198,7 +191,7 @@ const gameData = {
       },
       {
         visible: true,
-        image: coffee_packet_img,
+        image: coffee_packet_bean,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -217,7 +210,7 @@ const gameData = {
             item.position.y,
             "mainScene",
             () => {
-              openPopup(app, "Löysin kahvia! ... lattialta?", null);
+              openPopup(app, "Löysin kahvia!", null);
 
               gameState.inventory.addItem("Coffee", item);
               removeSprite(app, item);
@@ -227,20 +220,18 @@ const gameData = {
         draggable: true,
         dragTargetName: "Coffee maker",
         onDragSuccess: (app, item) => {
-          if (!gameState.coffeeBrewed) {
-            if (!gameState.inventory.itemExists("Coffee cup")) {
-              openPopup(
-                app,
-                "Nyt tulee tujut kahvit, mutta kahvikupin vielä tarvitsen!",
-                null
-              );
-            } else {
-              openPopup(app, "Nyt tulee tujut kahvit!");
-            }
-
-            gameState.coffeeBrewed = true;
-            gameState.inventory.removeItem("Coffee");
+          gameState.coffeeBrewed = true;
+          if (!gameState.inventory.itemExists("Coffee cup")) {
+            openPopup(
+              app,
+              "Nyt tulee tujut kahvit, mutta tarviin vielä kahvikupin!",
+              null
+            );
+          } else {
+            openPopup(app, "Nyt tulee tujut kahvit!");
           }
+          gameState.inventory.removeItem("Coffee");
+          gameState.coffeeUsed = true;
         },
       },
       {
@@ -296,21 +287,24 @@ const gameData = {
       },
       {
         visible: true,
-        image: coffee_maker_1,
+        image: coffee_maker_empty,
         type: ITEM_TYPES.item,
         name: "Coffee maker",
         onStateChange: (app, item) => {
-          if (gameState.coffeeBrewed) {
+          if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
             updateAnimatedSpriteTextures(
               item,
-              [coffee_maker_2, coffee_maker_3, coffee_maker_1],
+              [coffee_maker_frame01, coffee_maker_frame02, coffee_maker_frame03],
               0.02,
               true
             );
           }
+          if (gameState.playerIsMiniSize) {
+            updateAnimatedSpriteTextures(item, [coffee_maker_empty], 0.02, true);
+          }
         },
         animation: {
-          frames: [coffee_maker_1],
+          frames: [coffee_maker_empty],
           animationSpeed: 0.04,
           loop: true,
           interval: 3000, //ms
@@ -330,7 +324,15 @@ const gameData = {
             "mainScene",
             () => {
               if (!gameState.coffeeBrewed) {
-                if (!gameState.inventory.itemExists("Coffee")) {
+                if (gameState.coffeeUsed) {
+                  openPopup(
+                    app,
+                    "Join jo kaiken kahvin!",
+                    null
+                  );
+                  return;
+                }
+                else if (!gameState.inventory.itemExists("Coffee")) {
                   openPopup(
                     app,
                     "Hmm, missä täällä säilytetään kahvinpuruja?",
@@ -347,12 +349,12 @@ const gameData = {
                 } else {
                   openPopup(
                     app,
-                    "Kahvinpurut check, kahvikuppi check, nyt vaan keittämään!",
+                    "Kahvinpurut check, kahvikuppi check, mitenköhän saisin kahvipurut koneeseen...",
                     null
                   );
                 }
               }
-              if (gameState.coffeeBrewed) {
+              if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
                 if (!gameState.inventory.itemExists("Coffee cup")) {
                   openPopup(
                     app,
@@ -368,6 +370,7 @@ const gameData = {
                     "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
                     null
                   );
+                  gameState.coffeeBrewed = false;
                 });
                 app.scenes["mainScene"].updateTransform();
               }
@@ -378,11 +381,11 @@ const gameData = {
 
       {
         visible: true,
-        image: computer_desk_with_coffee_img,
+        image: computer_desk_with_cup,
         type: ITEM_TYPES.item,
         onStateChange: (app, item) => {
           if (gameState.inventory.itemExists("Coffee cup")) {
-            updateSpriteTexture(item, computer_desk_img);
+            updateSpriteTexture(item, computer_desk);
           }
         },
         animation: null,
@@ -407,7 +410,7 @@ const gameData = {
       },
       {
         visible: true,
-        image: bookshelf_img,
+        image: bookshelf,
         type: ITEM_TYPES.item,
         name: "Bookshelf",
         location: {
@@ -493,11 +496,11 @@ const gameData = {
 
       {
         visible: true,
-        image: mousehole_img,
+        image: mousehole_frame01,
         type: ITEM_TYPES.item,
         name: "Mousehole",
         animation: {
-          frames: [mousehole_img, mousehole_img_eyes],
+          frames: [mousehole_frame01, mousehole_frame02],
           animationSpeed: 0.02,
           loop: true,
           interval: 3000, //ms
@@ -528,11 +531,11 @@ const gameData = {
         zIndex: 0,
       },
       {
-        image: lamp1_off,
+        image: lamp_1_off,
         visible: true,
         onStateChange: (app, item) => {
           if (gameState.hasCompletedGame) {
-            updateSpriteTexture(item, lamp1_on);
+            updateSpriteTexture(item, lamp_1_on);
           }
         },
 
@@ -557,7 +560,7 @@ const gameData = {
     backgroundHeight: 800,
     items: [
       {
-        image: backarrow_img,
+        image: back_arrow,
         visible: true,
         type: ITEM_TYPES.item,
         name: "Back button",
@@ -709,17 +712,17 @@ const gameData = {
     ],
   },
   numpadScene: {
-    background: numpad_scene_bg_closed,
+    background: numpad_bg_closed,
     backgroundWidth: 1796,
     backgroundHeight: 1024,
     onStateChange: (app, item) => {
       if (gameState.hasUnlockedDoor) {
-        updateSpriteTexture(item, numpad_scene_bg_open);
+        updateSpriteTexture(item, numpad_bg_open);
       }
     },
     items: [
       {
-        image: backarrow_img,
+        image: back_arrow,
         visible: true,
         type: ITEM_TYPES.item,
         name: "Back button",
@@ -734,7 +737,7 @@ const gameData = {
         zIndex: 10,
       },
       {
-        image: postit_1_img,
+        image: postit_32,
         visible: true,
         onStateChange: (app, item) => {
           if (gameState.hasUnlockedDoor) {
@@ -786,7 +789,7 @@ const gameData = {
       },
 */
       {
-        image: red_button_img,
+        image: red_button,
         visible: false,
         onStateChange: (app, item) => {
           if (gameState.hasUnlockedDoor) {
@@ -884,7 +887,6 @@ const gameData = {
         height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          //console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(2);
         },
         zIndex: 10,
@@ -908,7 +910,6 @@ const gameData = {
         height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          //console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(3);
         },
         zIndex: 10,
@@ -932,7 +933,6 @@ const gameData = {
         height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          //console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(4);
         },
         zIndex: 10,
@@ -956,7 +956,6 @@ const gameData = {
         height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          //console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(5);
         },
         zIndex: 10,
@@ -980,7 +979,6 @@ const gameData = {
         height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          //console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(6);
         },
         zIndex: 10,
@@ -1004,7 +1002,6 @@ const gameData = {
         height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          //console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(7);
         },
         zIndex: 10,
@@ -1028,7 +1025,6 @@ const gameData = {
         height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          //console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(8);
         },
         zIndex: 10,
@@ -1052,7 +1048,6 @@ const gameData = {
         height: 66,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
-          //console.log(app.scenes["numpadScene"].children);
           Numpad.inputCode(9);
         },
         zIndex: 10,
@@ -1132,13 +1127,13 @@ const gameData = {
     ],
   },
   mouseholeScene: {
-    background: mousehole_scene_bg_1,
+    background: mousehole_bg_frame01,
     backgroundWidth: 1400,
     backgroundHeight: 800,
-    animatedSpriteTextures: [mousehole_scene_bg_1, mousehole_scene_bg_2],
+    animatedSpriteTextures: [mousehole_bg_frame01, mousehole_bg_frame02],
     items: [
       {
-        image: backarrow_img,
+        image: back_arrow,
         visible: true,
         type: ITEM_TYPES.item,
         onStateChange: null,
@@ -1158,7 +1153,7 @@ const gameData = {
         zIndex: 10,
       },
       {
-        image: postit_2_img,
+        image: postit_16,
         visible: true,
         type: ITEM_TYPES.item,
         name: "PostIt 2",
@@ -1184,7 +1179,7 @@ const gameData = {
     backgroundHeight: 800,
     items: [
       {
-        image: backarrow_img,
+        image: back_arrow,
         visible: true,
         type: ITEM_TYPES.item,
         name: "Back button",
@@ -1233,9 +1228,15 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: coffee_cup,
+        image: coffee_cup_empty,
         visible: true,
-        onStateChange: null,
+        onStateChange: (app, item) => {
+          if (gameState.coffeeBrewed && gameState.inventory.itemExists("Coffee cup")) {
+            const cup = gameState.inventory.getItem("Coffee cup");
+            // If coffee is brewed, change the texture to full coffee cup
+            gameState.inventory.updateItemSprite(cup, coffee_cup_full);
+          }
+        },
         type: ITEM_TYPES.item,
         name: "Coffee cup",
         location: {
@@ -1273,7 +1274,7 @@ const gameData = {
     backgroundHeight: 800,
     items: [
       {
-        image: backarrow_img,
+        image: back_arrow,
         visible: true,
         type: ITEM_TYPES.item,
         name: "Back button",

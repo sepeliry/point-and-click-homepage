@@ -14,8 +14,20 @@ class InventoryUI {
     this.container.x = app.renderer.width - 10;
     this.container.y = 10;
     this.app.stage.addChild(this.container);
+    // Update the inventory UI position when the window is resized or orientation changes.
+    // Timeout to ensure event has finished before updating position
+    const updatePosition = () => {
+      setTimeout(() => this.updateInventoryUIPosition(app), 100);
+    };
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("fullscreenchange", updatePosition);
+    window.addEventListener("orientationchange", updatePosition);
   }
-
+  static updateInventoryUIPosition(app) {
+    console.log("Updating inventory UI position" + app.renderer.width);
+    this.container.x = app.renderer.width - 10;
+    this.container.y = 10;
+  }
   static updateInventoryUI() {
     // Responsive size adjustments based on screen width
     let bgWidth = 80; // Default width
@@ -165,7 +177,7 @@ class InventoryUI {
       if (!player || !dragTargetPosition) return;
       const distance = Math.sqrt(
         (player.x - dragTargetLocalPosition.x) ** 2 +
-        (player.y - dragTargetLocalPosition.y) ** 2
+          (player.y - dragTargetLocalPosition.y) ** 2
       );
       const maxDistance = 250;
       return distance <= maxDistance;

@@ -118,27 +118,6 @@ td {
   line-height: 1.4;
 }
 
-/* For screens wider than 600px */
-@media (min-width: 800px) {
-  #wiki-text {
-    font-size: 18px;
-  }
-}
-
-/* For screens wider than 1000px */
-@media (min-width: 1000px) {
-  #wiki-text {
-    font-size: 18px;
-  }
-}
-
-/* For screens narrower than 600px */
-@media (max-width: 599px) {
-  #wiki-text {
-    font-size: 14px;
-  }
-}
-
 #wiki-text td {
   min-width: 30%;
   margin: 5px;
@@ -146,11 +125,14 @@ td {
 
 /* close button for wiki content */
 #hide-wiki-content {
+  all: unset;
   font-family: inherit;
   position: absolute;
   top: 20px;
   right: 20px;
   cursor: pointer;
+  font-size: x-large;
+  font-weight: bold;
 }
 
 #back-btn {
@@ -183,7 +165,7 @@ td {
   width: 100%;
   max-width: 70%;
   height: auto;
-  max-height: 60%;
+  max-height: 100%;
   background-color: #020d26;
   color: black;
   overflow-y: auto;
@@ -196,4 +178,55 @@ td {
   display: block;
   width: 100%;
   height: auto;
+}
+
+#hide-article-img {
+  all: unset;
+  color: #fff;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: x-large;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+
+/* For screens wider than 600px */
+@media (min-width: 600px) {
+  #wiki-text {
+    font-size: 16px;
+  }
+  #hide-article-img {
+    font-size: 16px;
+    padding-bottom: 14px;
+  }
+  #article-img-container {
+    padding: 14px;
+  }
+  #hide-wiki-content {
+    font-size: 16px;
+  }
+}
+
+/* For screens wider than 1000px */
+@media (min-width: 1000px) {
+  #wiki-text {
+    font-size: 18px;
+  }
+  #hide-wiki-content {
+    font-size: x-large;
+  }
+  #hide-article-img {
+    font-size: x-large;
+    padding-bottom: 20px;
+  }
+  #article-img-container {
+    padding: 20px;
+  }
+}
+
+/* For screens narrower than 600px */
+@media (max-width: 599px) {
+  #wiki-text {
+    font-size: 14px;
+  }
 }

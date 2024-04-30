@@ -27,21 +27,56 @@ async function displayWikiPage(rawUrl, wikiUrl) {
 
 // Function to process markdown content and return it as HTML markup
 function preprocessMarkdown(mdContent) {
-  // Replace found patterns with Markdown links (or HTML anchors)
+  // Function to encode URL components correctly
+  function encodeWikiUrl(urlPart) {
+    return encodeURIComponent(urlPart)
+      .replace(/%20/g, "-") // Replace spaces with hyphens
+      .replace(/%3A/g, ":-") // Keep colons but ensure they are correctly displayed
+      .replace(/%E2%80%93/g, "–") // Handle en dash
+      .replace(/%2F/g, "/") // Ensure forward slashes are not encoded
+      .replace(/%C2%A0/g, "-") // Convert non-breaking spaces to hyphens
+      .replace(/--+/g, "-"); // Convert multiple hyphens to a single hyphen
+  }
+
+  // Process markdown links of the form [text](target)
+  mdContent = mdContent.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    (match, linkText, linkTarget) => {
+      // Check if linkTarget is a direct link (http or https)
+      if (
+        linkTarget.startsWith("http://") ||
+        linkTarget.startsWith("https://")
+      ) {
+        // Use the link as-is for direct URLs
+        return `<a href="${linkTarget}" target="_blank" rel="noopener noreferrer">${linkText.trim()}</a>`;
+      } else {
+        // Normalize the link target for GitHub wiki
+        const url = `https://github.com/sepeliry/YhdistyksenToiminta/wiki/${encodeWikiUrl(
+          linkTarget
+        )}`;
+
+        // Return the link as an HTML anchor tag
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${linkText.trim()}</a>`;
+      }
+    }
+  );
+
+  // Then, replace wiki links of the form [[Page Name]] or [[URL]]
   const processedContent = mdContent.replace(
     /\[\[(.*?)\]\]/g,
-    (match, pageName) => {
-      // Normalize the page name to match GitHub wiki URL encoding conventions
-      const normalizedPageName = pageName
-        .trim()
-        .replace(/\s+/g, "-") // Replace spaces with hyphens
-        .replace(/–/g, "%E2%80%93") // encode en dash
-        .replace(/:/g, "%3A"); // encode colon
+    (match, content) => {
+      if (content.startsWith("http://") || content.startsWith("https://")) {
+        // If it's a direct URL, use it as is
+        return `<a href="${content.trim()}" target="_blank" rel="noopener noreferrer">${content.trim()}</a>`;
+      } else {
+        // Normalize the page name to match GitHub wiki URL encoding conventions
+        const url = `https://github.com/sepeliry/YhdistyksenToiminta/wiki/${encodeWikiUrl(
+          content
+        )}`;
 
-      const url = `https://github.com/sepeliry/YhdistyksenToiminta/wiki/${normalizedPageName}`;
-
-      // return the wiki link as an anchor tag
-      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${pageName.trim()}</a>`;
+        // Return the wiki link as an anchor tag
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${content.trim()}</a>`;
+      }
     }
   );
 

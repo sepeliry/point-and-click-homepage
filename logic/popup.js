@@ -12,6 +12,8 @@ class Popup {
     this.createPopup();
     Popup.activePopups.push(this);
 
+    // Update popup position when the window is resized or orientation changes.
+    // Timeout to ensure event has finished before updating position
     const updatePosition = () => {
       setTimeout(() => this.updatePopupPosition(), 100);
     };
@@ -19,28 +21,7 @@ class Popup {
     window.addEventListener("fullscreenchange", updatePosition);
     window.addEventListener("orientationchange", updatePosition);
   }
-  updatePopupPosition() {
-    let popupWidth = 700;
-    if (window.innerWidth <= 800) {
-      popupWidth = window.innerWidth - 20;
-    }
 
-    let popupHeight = 90;
-    if (window.innerWidth <= 800) {
-      popupHeight = 70;
-    }
-    if (window.innerWidth < 500) {
-      popupHeight = 60;
-    }
-
-    if (!this.position) {
-      this.container.x = (this.app.screen.width - popupWidth) / 2;
-      this.container.y = this.app.screen.height - popupHeight - 10;
-    } else {
-      this.container.x = this.position.x * this.app.screen.width;
-      this.container.y = this.position.y * this.app.screen.height;
-    }
-  }
   createPopup() {
     let popupWidth = 700;
     const padding = 20;
@@ -65,13 +46,18 @@ class Popup {
     }
 
     // Create background for the popup
-    const background = new Graphics();
-    background.rect(0, 0, popupWidth, popupHeight);
-    background.fill("#020D26");
-    background.stroke({ width: 2, color: "#F54483" });
-    background.alpha = 0.9;
-    this.container.addChild(background);
-
+    // const background = new Graphics();
+    // background.rect(0, 0, popupWidth, popupHeight);
+    // background.fill("#020D26");
+    // background.stroke({ width: 2, color: "#F54483" });
+    // background.alpha = 0.9;
+    // this.container.addChild(background);
+    this.background = new Graphics();
+    this.background.rect(0, 0, popupWidth, popupHeight);
+    this.background.fill("#020D26");
+    this.background.stroke({ width: 2, color: "#F54483" });
+    this.background.alpha = 0.9;
+    this.container.addChild(this.background);
     // Apply scaling factor for high DPI screens
     const scaleFactor = window.devicePixelRatio > 1 ? 0.8 : 1;
     const fontSize = baseFontSize * scaleFactor;
@@ -135,6 +121,32 @@ class Popup {
 
   onClose(callback) {
     this.closeCallback = callback;
+  }
+  updatePopupPosition() {
+    let popupWidth = 700;
+    if (window.innerWidth <= 800) {
+      popupWidth = window.innerWidth - 20;
+    }
+
+    let popupHeight = 90;
+    if (window.innerWidth <= 800) {
+      popupHeight = 70;
+    }
+    if (window.innerWidth < 500) {
+      popupHeight = 60;
+    }
+    this.background.clear();
+    this.background.rect(0, 0, popupWidth, popupHeight);
+    this.background.fill("#020D26");
+    this.background.stroke({ width: 2, color: "#F54483" });
+    this.background.alpha = 0.9;
+    if (!this.position) {
+      this.container.x = (this.app.screen.width - popupWidth) / 2;
+      this.container.y = this.app.screen.height - popupHeight - 10;
+    } else {
+      this.container.x = this.position.x * this.app.screen.width;
+      this.container.y = this.position.y * this.app.screen.height;
+    }
   }
 }
 

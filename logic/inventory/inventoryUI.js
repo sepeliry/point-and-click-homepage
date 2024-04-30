@@ -23,11 +23,7 @@ class InventoryUI {
     window.addEventListener("fullscreenchange", updatePosition);
     window.addEventListener("orientationchange", updatePosition);
   }
-  static updateInventoryUIPosition(app) {
-    console.log("Updating inventory UI position" + app.renderer.width);
-    this.container.x = app.renderer.width - 10;
-    this.container.y = 10;
-  }
+
   static updateInventoryUI() {
     // Responsive size adjustments based on screen width
     let bgWidth = 80; // Default width
@@ -182,6 +178,11 @@ class InventoryUI {
       const maxDistance = 250;
       return distance <= maxDistance;
     };
+  }
+  static updateInventoryUIPosition(app) {
+    console.log("Updating inventory UI position" + app.renderer.width);
+    this.container.x = app.renderer.width - 10;
+    this.container.y = 10;
   }
 }
 

@@ -63,7 +63,6 @@ class InventoryUI {
 
       itemContainer.addChild(bg);
       itemContainer.addChild(itemSprite);
-
       // Adjusting interaction settings
       itemContainer.interactive = true; // Ensuring item is interactive
       itemContainer.buttonMode = true; // Shows pointer on hover
@@ -183,6 +182,7 @@ class InventoryUI {
     console.log("Updating inventory UI position" + app.renderer.width);
     this.container.x = app.renderer.width - 10;
     this.container.y = 10;
+    this.updateInventoryUI(); // To update itemContainer backgrounds and item sprites
   }
 }
 

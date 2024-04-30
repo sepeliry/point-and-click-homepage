@@ -3,43 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="icon"
-      href="./resources/images/favicon.ico"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="./resources/images/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/resources/styles.css" />
     <title>Sepeli</title>
   </head>
   <body>
     <div id="loading-screen">
-      <img src="./resources/images/favicon.ico" alt="Loading" 
-      style="position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%);"/>
+      <div class="container">
+        <img src="./resources/images/favicon.ico" alt="Loading" />
+      </div>
     </div>
     <div id="game-container">
       <script type="module" src="./logic/app.js"></script>
       <div id="wiki-wrapper">
         <button id="hide-wiki-content">Close</button>
-
-        <a
-          class="wikiLink"
-          href="https://github.com/sepeliry/YhdistyksenToiminta/wiki"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Avaa Sepelin wikissä</a
-        >
-
-        <div id="wiki-text"></div>
+        <a class="wikiLink"
+           href="https://github.com/sepeliry/YhdistyksenToiminta/wiki"
+           target="_blank"
+           rel="noopener noreferrer">Avaa Sepelin wikissä</a
+          >
+          <div id="wiki-text"></div>
+        </div>
+        <div id="article-img-container">
+          <button id="hide-article-img">Close</button>
+          <img id="article-img" alt="article" />
+        </div>
       </div>
-      <div id="article-img-container">
-        <button id="hide-article-img">Close</button>
-        <img id="article-img" alt="article" />
+      <div id="pdf-viewer-container">
+        <object id="pdf-object"></object>
+        <button class="button" id="close-pdf">Sulje PDF</button>
       </div>
-    </div>
-
-    <div id="pdf-viewer-container">
-      <object id="pdf-object"></object>
-      <button class="button" id="close-pdf">Sulje PDF</button>
-    </div>
-  </body>
-</html>
+    </body>
+  </html>

@@ -47,8 +47,14 @@ import numpad_small_closed from "../resources/images/main_scene/numpad_small_clo
 import numpad_small_open from "../resources/images/main_scene/numpad_small_open.png";
 import computer_desk from "../resources/images/main_scene/computer_desk.png";
 import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
-import pong_machine_off from "../resources/images/main_scene/pong_machine_off.png";
+import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";
 import pong_machine_on from "../resources/images/main_scene/pong_machine_on.png";
+import conway_machine_on_1 from "../resources/images/main_scene/conway_machine_on_1.png";
+import conway_machine_on_2 from "../resources/images/main_scene/conway_machine_on_2.png";
+import conway_machine_on_3 from "../resources/images/main_scene/conway_machine_on_3.png";
+import conway_machine_on_4 from "../resources/images/main_scene/conway_machine_on_4.png";
+import conway_machine_on_5 from "../resources/images/main_scene/conway_machine_on_5.png";
+import conway_machine_on_6 from "../resources/images/main_scene/conway_machine_on_6.png";
 import coffee_maker_empty from "../resources/images/main_scene/coffee_maker_empty.png";
 import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_frame01.png";
 import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.png";
@@ -438,7 +444,7 @@ const gameData = {
       },
       {
         visible: true,
-        image: pong_machine_off,
+        image: conway_machine_off,
         type: ITEM_TYPES.item,
         name: "Arcade machine",
 
@@ -446,7 +452,12 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
-              [pong_machine_on, pong_machine_off],
+              [conway_machine_on_1,
+                conway_machine_on_2,
+                conway_machine_on_3,
+                conway_machine_on_4,
+                conway_machine_on_5,
+                conway_machine_on_6],
               0.02,
               true
             );
@@ -454,7 +465,7 @@ const gameData = {
         },
 
         animation: {
-          frames: [pong_machine_off],
+          frames: [conway_machine_off],
           animationSpeed: 0.02,
           loop: true,
           interval: 3000, //ms

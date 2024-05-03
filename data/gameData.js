@@ -43,8 +43,8 @@ import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_of
 import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.png";
 import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.png";
 import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.png";
-import numpad_small_closed from "../resources/images/main_scene/numpad_closed.png";
-import numpad_small_open from "../resources/images/main_scene/numpad_open.png";
+import numpad_closed from "../resources/images/main_scene/numpad_closed.png";
+import numpad_open from "../resources/images/main_scene/numpad_open.png";
 import computer_desk from "../resources/images/main_scene/computer_desk.png";
 import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
 import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";
@@ -86,9 +86,10 @@ import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_
 import back_arrow from "../resources/images/back_arrow.png";
 
 // Bookshelf scene images
-import bookshelf_scene_bg from "../resources/images/bookshelf_scene/bookshelf_background.png";
-import book_1_img from "../resources/images/bookshelf_scene/book_placeholder.png";
-import book_2_img from "../resources/images/bookshelf_scene/book2_placeholder.png";
+import bookshelf_scene_bg from "../resources/images/bookshelf_scene/bookshelf_scene_bg.jpg";
+import book_end_blue from "../resources/images/bookshelf_scene/book_end_blue.png";
+import book_end_brown from "../resources/images/bookshelf_scene/book_end_brown.png";
+import book_end_green from "../resources/images/bookshelf_scene/book_end_green.png";
 
 // Numpad scene images
 import numpad_bg_closed from "../resources/images/numpad_scene/numpad_bg_closed.jpg";
@@ -175,10 +176,10 @@ const gameData = {
       },
       {
         visible: true,
-        image: numpad_small_closed,
+        image: numpad_closed,
         onStateChange: async (app, item) => {
           if (gameState.hasUnlockedDoor) {
-            await updateSpriteTexture(item, numpad_small_open);
+            await updateSpriteTexture(item, numpad_open);
           }
         },
         animation: null,
@@ -576,7 +577,7 @@ const gameData = {
         zIndex: 10,
       },
       {
-        image: book_1_img,
+        image: book_end_blue,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Honesty",
@@ -596,7 +597,7 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_1_img,
+        image: book_end_green,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Säännöt",
@@ -616,7 +617,7 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_2_img,
+        image: book_end_green,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Wiki",
@@ -635,7 +636,7 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_2_img,
+        image: book_end_green,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Vuodet",
@@ -654,7 +655,7 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_2_img,
+        image: book_end_blue,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Pelit",
@@ -673,7 +674,7 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_2_img,
+        image: book_end_blue,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Luento",
@@ -692,7 +693,7 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_1_img,
+        image: book_end_brown,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Design",
@@ -715,8 +716,8 @@ const gameData = {
   },
   numpadScene: {
     background: numpad_bg_closed,
-    backgroundWidth: 1796,
-    backgroundHeight: 1024,
+    backgroundWidth: 1400,
+    backgroundHeight: 800,
     onStateChange: async (app, item) => {
       if (gameState.hasUnlockedDoor) {
         await updateSpriteTexture(item, numpad_bg_open);
@@ -804,8 +805,8 @@ const gameData = {
           x: 0.5,
           y: 0.666,
         },
-        width: 323,
-        height: 319,
+        width: 255,
+        height: 260,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           gameState.hasCompletedGame = true;
@@ -1222,7 +1223,7 @@ const gameData = {
     ],
   },
   computerScene: {
-    background: computer_scene_bg, // TODO: add computerSceneBackground
+    background: computer_scene_bg,
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [

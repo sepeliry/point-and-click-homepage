@@ -13,6 +13,11 @@ async function updateSpriteTexture(sprite, newTexturePath) {
     return;
   }
 
+  if (sprite.texture.label === newTexturePath) {
+    // texture is already applied
+    return;
+  }
+
   await Assets.load(newTexturePath);
   const texture = Texture.from(newTexturePath);
 

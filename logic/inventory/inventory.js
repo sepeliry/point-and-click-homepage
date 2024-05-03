@@ -32,8 +32,8 @@ class Inventory {
     }
   }
 
-  updateItemSprite(item, newTexturePath) {
-    updateSpriteTexture(item.sprite, newTexturePath);
+  async updateItemSprite(item, newTexturePath) {
+    await updateSpriteTexture(item.sprite, newTexturePath);
     InventoryUI.updateInventoryUI();
   }
 

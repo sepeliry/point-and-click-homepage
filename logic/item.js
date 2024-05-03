@@ -57,6 +57,8 @@ class Item {
     this.sprite.dragTargetName = itemData.dragTargetName;
     this.sprite.onDragSuccess = itemData.onDragSuccess;
 
+    this.sprite.onInventoryInteraction = itemData.onInventoryInteraction;
+
     // Check if the object has an interaction/callback
     if (itemData.onInteraction) {
       this.sprite.interactive = true;

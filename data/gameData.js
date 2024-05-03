@@ -33,18 +33,18 @@ import ITEM_TYPES from "../constants/itemTypes.js";
  */
 
 // Main scene images
-import main_scene_bg from "../resources/images/main_scene/main_scene_bg.png";
-import bookshelf from "../resources/images/main_scene/bookshelf.png";
+import main_scene_bg from "../resources/images/main_scene/main_scene_bg.webp";
+import bookshelf from "../resources/images/main_scene/bookshelf.webp";
 import mousehole_frame01 from "../resources/images/main_scene/mousehole_frame01.png";
 import mousehole_frame02 from "../resources/images/main_scene/mousehole_frame02.png";
 import lamp_1_on from "../resources/images/main_scene/lamp_1_on.png";
 import lamp_1_off from "../resources/images/main_scene/lamp_1_off.png";
-import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_off.png";
-import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.png";
-import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.png";
-import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.png";
-import numpad_closed from "../resources/images/main_scene/numpad_closed.png";
-import numpad_open from "../resources/images/main_scene/numpad_open.png";
+import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_off.webp";
+import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.webp";
+import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.webp";
+import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.webp";
+import numpad_closed from "../resources/images/main_scene/numpad_closed.webp";
+import numpad_open from "../resources/images/main_scene/numpad_open.webp";
 import computer_desk from "../resources/images/main_scene/computer_desk.png";
 import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
 import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";
@@ -60,25 +60,25 @@ import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_fr
 import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.png";
 import coffee_maker_frame03 from "../resources/images/main_scene/coffee_maker_frame03.png";
 import coffee_packet_bean from "../resources/images/main_scene/coffee_packet_bean.png";
-import article_1 from "../resources/images/main_scene/article_1.png";
-import article_2 from "../resources/images/main_scene/article_2.png";
-import article_3 from "../resources/images/main_scene/article_3.png";
+import wall_article_1 from "../resources/images/main_scene/wall_article_1.png";
+import wall_article_2 from "../resources/images/main_scene/wall_article_2.png";
+import wall_article_3 from "../resources/images/main_scene/wall_article_3.png";
 
 // Arcade scene images
 import arcade_scene_bg from "../resources/images/arcade_scene/arcade_scene_bg.jpg";
 
 // Computer scene images
-import computer_scene_bg from "../resources/images/computer_scene/computer_scene_coloured.jpg";
+import computer_scene_bg from "../resources/images/computer_scene/computer_scene_bg.jpg";
 import discord_icon from "../resources/images/computer_scene/discord_icon.png";
 import signup_icon from "../resources/images/computer_scene/signup_icon.png";
 import coffee_cup_empty from "../resources/images/computer_scene/coffee_cup_empty.png";
 import coffee_cup_full from "../resources/images/computer_scene/coffee_cup_full.png";
 
 // Mousehole scene images
+import mousehole_scene_bg from "../resources/images/mousehole_scene/mousehole_scene_bg.jpg";
 import postit_16 from "../resources/images/mousehole_scene/postit_16.png";
 import mouse_frame01 from "../resources/images/mousehole_scene/mouse_frame01.png";
 import mouse_frame02 from "../resources/images/mousehole_scene/mouse_frame02.png";
-import mousehole_bg from "../resources/images/mousehole_scene/mousehole_background.png";
 import hanging_cheese_frame01 from "../resources/images/mousehole_scene/hanging_cheese_frame01.png";
 import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_cheese_frame02.png";
 
@@ -86,13 +86,14 @@ import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_
 import back_arrow from "../resources/images/back_arrow.png";
 
 // Bookshelf scene images
-import bookshelf_scene_bg from "../resources/images/bookshelf_scene/bookshelf_background.png";
-import book_1_img from "../resources/images/bookshelf_scene/book_placeholder.png";
-import book_2_img from "../resources/images/bookshelf_scene/book2_placeholder.png";
+import bookshelf_scene_bg from "../resources/images/bookshelf_scene/bookshelf_scene_bg.jpg";
+import book_end_blue from "../resources/images/bookshelf_scene/book_end_blue.png";
+import book_end_brown from "../resources/images/bookshelf_scene/book_end_brown.png";
+import book_end_green from "../resources/images/bookshelf_scene/book_end_green.png";
 
 // Numpad scene images
-import numpad_bg_closed from "../resources/images/numpad_scene/numpad_bg_closed.png";
-import numpad_bg_open from "../resources/images/numpad_scene/numpad_bg_open.png";
+import numpad_bg_closed from "../resources/images/numpad_scene/numpad_bg_closed.jpg";
+import numpad_bg_open from "../resources/images/numpad_scene/numpad_bg_open.jpg";
 import red_button from "../resources/images/numpad_scene/red_button.png";
 import postit_32 from "../resources/images//numpad_scene/postit_32.png";
 import button_1 from "../resources/images/numpad_scene/button_1.png";
@@ -109,9 +110,9 @@ import reset_button from "../resources/images/numpad_scene/reset_button.png";
 import enter_button from "../resources/images/numpad_scene/enter_button.png";
 
 //Article images
-import article_img_1 from "../resources/images/article_images/article_1.png";
-import article_img_2 from "../resources/images/article_images/article_2.png";
-import article_img_3 from "../resources/images/article_images/article_3.png";
+import article_content_1 from "../resources/images/article_images/article_content_1.jpg";
+import article_content_2 from "../resources/images/article_images/article_content_2.jpg";
+import article_content_3 from "../resources/images/article_images/article_content_3.jpg";
 
 const gameData = {
   mainScene: {
@@ -127,9 +128,9 @@ const gameData = {
           loop: false,
           interval: 3000, //ms
         },
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.hasCompletedGame) {
-            updateAnimatedSpriteTextures(
+            await updateAnimatedSpriteTextures(
               item,
               [
                 sepeli_machine_frame01,
@@ -176,9 +177,9 @@ const gameData = {
       {
         visible: true,
         image: numpad_closed,
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.hasUnlockedDoor) {
-            updateSpriteTexture(item, numpad_open);
+            await updateSpriteTexture(item, numpad_open);
           }
         },
         animation: null,
@@ -216,6 +217,12 @@ const gameData = {
         width: 267 * 0.18,
         height: 400 * 0.18,
         collisionHeight: 0, // not yet used
+        onInventoryInteraction: (app, item) => {
+          openPopup(
+            app,
+            "Hmm voisikohan kahvin jotenkin vetää kahvinkeittimeen?"
+          );
+        },
         onInteraction: (app, item) => () =>
           checkDistance(
             app,
@@ -244,12 +251,11 @@ const gameData = {
             openPopup(app, "Nyt tulee tujut kahvit!");
           }
           gameState.inventory.removeItem("Coffee");
-          gameState.coffeeUsed = true;
         },
       },
       {
         visible: true,
-        image: article_1,
+        image: wall_article_1,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -261,12 +267,12 @@ const gameData = {
         width: 114 * 0.43,
         height: 216 * 0.43,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_1),
+        onInteraction: (app) => () => displayArticleImg(article_content_1),
         zIndex: 1,
       },
       {
         visible: true,
-        image: article_2,
+        image: wall_article_2,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -278,12 +284,12 @@ const gameData = {
         width: 162 * 0.43,
         height: 149 * 0.43,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_2),
+        onInteraction: (app) => () => displayArticleImg(article_content_2),
         zIndex: 1,
       },
       {
         visible: true,
-        image: article_3,
+        image: wall_article_3,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -295,7 +301,7 @@ const gameData = {
         width: 248 * 0.42,
         height: 153 * 0.42,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_3),
+        onInteraction: (app) => () => displayArticleImg(article_content_3),
         zIndex: 1,
       },
       {
@@ -303,23 +309,15 @@ const gameData = {
         image: coffee_maker_empty,
         type: ITEM_TYPES.item,
         name: "Coffee maker",
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
-            updateAnimatedSpriteTextures(
+            await updateAnimatedSpriteTextures(
               item,
               [
                 coffee_maker_frame01,
                 coffee_maker_frame02,
                 coffee_maker_frame03,
               ],
-              0.02,
-              true
-            );
-          }
-          if (gameState.playerIsMiniSize) {
-            updateAnimatedSpriteTextures(
-              item,
-              [coffee_maker_empty],
               0.02,
               true
             );
@@ -345,50 +343,27 @@ const gameData = {
             item.position.y,
             "mainScene",
             () => {
-              if (!gameState.coffeeBrewed) {
-                if (gameState.coffeeUsed) {
-                  openPopup(app, "Join jo kaiken kahvin!", null);
-                  return;
-                } else if (!gameState.inventory.itemExists("Coffee")) {
-                  openPopup(
-                    app,
-                    "Hmm, missä täällä säilytetään kahvinpuruja?",
-                    null
-                  );
-                  return;
-                } else if (!gameState.inventory.itemExists("Coffee cup")) {
-                  openPopup(
-                    app,
-                    "Kahvinpurut check, mutta tarviin vielä kahvikupin!",
-                    null
-                  );
-                  return;
-                } else {
-                  openPopup(
-                    app,
-                    "Kahvinpurut check, kahvikuppi check, mitenköhän saisin kahvipurut koneeseen...",
-                    null
-                  );
-                }
-              }
-              if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
-                if (!gameState.inventory.itemExists("Coffee cup")) {
-                  openPopup(
-                    app,
-                    "Kahvi on jo keitetty, mutta tarvitsen kahvikupin!",
-                    null
-                  );
-                  return;
-                }
-                Player.minimizePlayer();
-                openPopup(app, "Mitä tapahtuu??", null, () => {
-                  openPopup(
-                    app,
-                    "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
-                    null
-                  );
-                  gameState.coffeeBrewed = false;
-                });
+              if (
+                !gameState.inventory.itemExists("Coffee") &&
+                !gameState.coffeeBrewed
+              ) {
+                openPopup(app, "Hmm, missä täällä säilytetään kahvinpuruja?");
+                return;
+              } else if (!gameState.inventory.itemExists("Coffee cup")) {
+                openPopup(
+                  app,
+                  "Kahvinpurut check, mutta tarviin vielä kahvikupin!"
+                );
+                return;
+              } else if (!gameState.coffeeBrewed) {
+                openPopup(
+                  app,
+                  "Kahvinpurut check, kahvikuppi check, mitenköhän saisin kahvipurut koneeseen..."
+                );
+              } else if (!gameState.coffeeCupFilled) {
+                openPopup(app, "Nyt on kahvia koneessa!");
+              } else {
+                openPopup(app, "Vihdoin on kahvia!");
               }
             }
           ),
@@ -399,9 +374,9 @@ const gameData = {
         visible: true,
         image: computer_desk_with_cup,
         type: ITEM_TYPES.item,
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.inventory.itemExists("Coffee cup")) {
-            updateSpriteTexture(item, computer_desk);
+            await updateSpriteTexture(item, computer_desk);
           }
         },
         animation: null,
@@ -452,9 +427,9 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Arcade machine",
 
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.hasCompletedGame) {
-            updateAnimatedSpriteTextures(
+            await updateAnimatedSpriteTextures(
               item,
               [
                 conway_machine_frame01,
@@ -560,9 +535,9 @@ const gameData = {
       {
         image: lamp_1_off,
         visible: true,
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.hasCompletedGame) {
-            updateSpriteTexture(item, lamp_1_on);
+            await updateSpriteTexture(item, lamp_1_on);
           }
         },
 
@@ -602,12 +577,12 @@ const gameData = {
         zIndex: 10,
       },
       {
-        image: book_1_img,
+        image: book_end_blue,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Honesty",
         location: {
-          x: 0.52,
+          x: 0.524,
           y: 0.35,
         },
         width: 37,
@@ -622,12 +597,12 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_1_img,
+        image: book_end_green,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Säännöt",
         location: {
-          x: 0.44,
+          x: 0.445,
           y: 0.35,
         },
         width: 37,
@@ -642,13 +617,13 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_2_img,
+        image: book_end_green,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Wiki",
         location: {
-          x: 0.44,
-          y: 0.21,
+          x: 0.438,
+          y: 0.19,
         },
         width: 37,
         height: 100,
@@ -661,13 +636,13 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_2_img,
+        image: book_end_green,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Vuodet",
         location: {
-          x: 0.44,
-          y: 0.485,
+          x: 0.425,
+          y: 0.507,
         },
         width: 37,
         height: 100,
@@ -680,13 +655,13 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_2_img,
+        image: book_end_blue,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Pelit",
         location: {
-          x: 0.54,
-          y: 0.485,
+          x: 0.535,
+          y: 0.507,
         },
         width: 37,
         height: 100,
@@ -699,13 +674,13 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_2_img,
+        image: book_end_blue,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Luento",
         location: {
-          x: 0.49,
-          y: 0.62,
+          x: 0.495,
+          y: 0.67,
         },
         width: 37,
         height: 100,
@@ -718,13 +693,13 @@ const gameData = {
         zIndex: 1,
       },
       {
-        image: book_1_img,
+        image: book_end_brown,
         visible: true,
         type: ITEM_TYPES.book,
         name: "Design",
         location: {
           x: 0.58,
-          y: 0.62,
+          y: 0.67,
         },
         width: 37,
         height: 100,
@@ -741,11 +716,11 @@ const gameData = {
   },
   numpadScene: {
     background: numpad_bg_closed,
-    backgroundWidth: 1796,
-    backgroundHeight: 1024,
-    onStateChange: (app, item) => {
+    backgroundWidth: 1400,
+    backgroundHeight: 800,
+    onStateChange: async (app, item) => {
       if (gameState.hasUnlockedDoor) {
-        updateSpriteTexture(item, numpad_bg_open);
+        await updateSpriteTexture(item, numpad_bg_open);
       }
     },
     items: [
@@ -775,11 +750,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "PostIt 1",
         location: {
-          x: 0.5,
-          y: 0.22,
+          x: 0.365,
+          y: 0.275,
         },
-        width: 128,
-        height: 128,
+        width: 141,
+        height: 117,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           if (gameState.inventory.itemExists("PostIt 2")) {
@@ -830,8 +805,8 @@ const gameData = {
           x: 0.5,
           y: 0.666,
         },
-        width: 323,
-        height: 319,
+        width: 255,
+        height: 260,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
           gameState.hasCompletedGame = true;
@@ -1155,7 +1130,7 @@ const gameData = {
     ],
   },
   mouseholeScene: {
-    background: mousehole_bg,
+    background: mousehole_scene_bg,
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [
@@ -1188,8 +1163,8 @@ const gameData = {
           x: 0.5,
           y: 0.84,
         },
-        width: 96,
-        height: 96,
+        width: 80,
+        height: 87,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("PostIt 2", item);
@@ -1248,7 +1223,7 @@ const gameData = {
     ],
   },
   computerScene: {
-    background: computer_scene_bg, // TODO: add computerSceneBackground
+    background: computer_scene_bg,
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [
@@ -1304,14 +1279,16 @@ const gameData = {
       {
         image: coffee_cup_empty,
         visible: true,
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (
             gameState.coffeeBrewed &&
+            gameState.coffeeCupFilled &&
             gameState.inventory.itemExists("Coffee cup")
           ) {
+            console.log("CUP");
             const cup = gameState.inventory.getItem("Coffee cup");
             // If coffee is brewed, change the texture to full coffee cup
-            gameState.inventory.updateItemSprite(cup, coffee_cup_full);
+            await gameState.inventory.updateItemSprite(cup, coffee_cup_full);
           }
         },
         type: ITEM_TYPES.item,
@@ -1323,6 +1300,24 @@ const gameData = {
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
+        onInventoryInteraction: (app, item) => {
+          if (
+            gameState.coffeeBrewed &&
+            gameState.coffeeCupFilled &&
+            gameState.inventory.itemExists("Coffee cup")
+          ) {
+            Player.minimizePlayer();
+            openPopup(app, "Mitä tapahtuu??", null, () => {
+              openPopup(
+                app,
+                "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
+                null
+              );
+            });
+          } else {
+            openPopup(app, "Mitenköhän saisin kahvia tyhjään kahvikuppiin?");
+          }
+        },
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("Coffee cup", item);
           removeSprite(app, item);
@@ -1333,15 +1328,16 @@ const gameData = {
           );
         },
         zIndex: 2,
-        // draggable: true,
-        // dragTargetName: "Coffee maker",
-        // onDragSuccess: (app, item) => {
-        //   if (gameState.inventory.itemExists("Coffee")) {
-        //     openPopup(app, "Santsikuppia, kiitos!");
-        //   } else {
-        //     openPopup(app, "Kuppi löytyy, mutta kaffea tarvis!.", null);
-        //   }
-        // },
+        draggable: true,
+        dragTargetName: "Coffee maker",
+        onDragSuccess: (app, item) => {
+          if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
+            gameState.coffeeCupFilled = true;
+            openPopup(app, "Nyt on kahvia! Mitenköhän voisin juoda sen?");
+          } else {
+            openPopup(app, "Tarvitsisin kahvia kahvinkeittimeen ensin!");
+          }
+        },
       },
     ],
   },

@@ -75,30 +75,28 @@ const app = new Application();
 
   await Player.initialize(app);
 
-  // this function should be run when the state changes (called from gameState.js)
-  function onGameStateChange(property, newValue, oldValue) {
+  // This function should be run when the state changes (called from gameState.js)
+  async function onGameStateChange(property, newValue, oldValue) {
     console.log(`State "${property}" changed from ${oldValue} to ${newValue}`);
 
-    // loop through every item in every scene and check if they have onStateChange logic
-    // loop through every item in every scene and check if they have onStateChange logic
-    Object.entries(app.scenes).forEach(([sceneName, sceneData]) => {
+    // Loop through every item in every scene and check if they have onStateChange logic
+    for (const [sceneName, sceneData] of Object.entries(app.scenes)) {
       if (sceneData.children) {
         const childrenCopy = [...sceneData.children]; // Shallow copy of the children array
 
         const sceneBackground = childrenCopy[0];
 
-        if (sceneBackground.onStateChange) {
-          sceneBackground.onStateChange(app, sceneBackground);
+        if (sceneBackground && sceneBackground.onStateChange) {
+          await sceneBackground.onStateChange(app, sceneBackground);
         }
 
-        childrenCopy.forEach((item) => {
-          if (!item.onStateChange) {
-            return;
+        for (const item of childrenCopy) {
+          if (item && item.onStateChange) {
+            await item.onStateChange(app, item);
           }
-          item.onStateChange(app, item);
-        });
+        }
       }
-    });
+    }
   }
   // add onStateChange as an observer for gameState so it is run every time the gameState changes
   addObserver(onGameStateChange);
@@ -186,7 +184,7 @@ const app = new Application();
           // Calculate distance from the original target position to the projection
           let distance = Math.sqrt(
             (Player.player.targetPosition.x - projection.x) ** 2 +
-            (Player.player.targetPosition.y - projection.y) ** 2
+              (Player.player.targetPosition.y - projection.y) ** 2
           );
 
           // Update closest projection if this is the shortest distance found
@@ -236,7 +234,7 @@ const app = new Application();
     if (Player.player.targetPosition) {
       const distance = Math.sqrt(
         Math.pow(Player.player.x - Player.player.targetPosition.x, 2) +
-        Math.pow(Player.player.y - Player.player.targetPosition.y, 2)
+          Math.pow(Player.player.y - Player.player.targetPosition.y, 2)
       );
 
       if (distance < 3) {

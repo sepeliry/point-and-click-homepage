@@ -91,8 +91,8 @@ import book_1_img from "../resources/images/bookshelf_scene/book_placeholder.png
 import book_2_img from "../resources/images/bookshelf_scene/book2_placeholder.png";
 
 // Numpad scene images
-import numpad_bg_closed from "../resources/images/numpad_scene/numpad_background_closed.png";
-import numpad_bg_open from "../resources/images/numpad_scene/numpad_background_open.png";
+import numpad_bg_closed from "../resources/images/numpad_scene/numpad_bg_closed.png";
+import numpad_bg_open from "../resources/images/numpad_scene/numpad_bg_open.png";
 import red_button from "../resources/images/numpad_scene/red_button.png";
 import postit_32 from "../resources/images//numpad_scene/postit_32.png";
 import button_1 from "../resources/images/numpad_scene/button_1.png";

@@ -68,7 +68,7 @@ import wall_article_3 from "../resources/images/main_scene/wall_article_3.png";
 import arcade_scene_bg from "../resources/images/arcade_scene/arcade_scene_bg.jpg";
 
 // Computer scene images
-import computer_scene_bg from "../resources/images/computer_scene/computer_scene_coloured.jpg";
+import computer_scene_bg from "../resources/images/computer_scene/computer_scene_bg.jpg";
 import discord_icon from "../resources/images/computer_scene/discord_icon.png";
 import signup_icon from "../resources/images/computer_scene/signup_icon.png";
 import coffee_cup_empty from "../resources/images/computer_scene/coffee_cup_empty.png";
@@ -91,8 +91,8 @@ import book_1_img from "../resources/images/bookshelf_scene/book_placeholder.png
 import book_2_img from "../resources/images/bookshelf_scene/book2_placeholder.png";
 
 // Numpad scene images
-import numpad_bg_closed from "../resources/images/numpad_scene/numpad_bg_closed.png";
-import numpad_bg_open from "../resources/images/numpad_scene/numpad_bg_open.png";
+import numpad_bg_closed from "../resources/images/numpad_scene/numpad_bg_closed.jpg";
+import numpad_bg_open from "../resources/images/numpad_scene/numpad_bg_open.jpg";
 import red_button from "../resources/images/numpad_scene/red_button.png";
 import postit_32 from "../resources/images//numpad_scene/postit_32.png";
 import button_1 from "../resources/images/numpad_scene/button_1.png";
@@ -607,8 +607,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Honesty",
         location: {
-          x: 0.52,
-          y: 0.34,
+          x: 0.524,
+          y: 0.35,
         },
         width: 37,
         height: 100,
@@ -628,7 +628,7 @@ const gameData = {
         name: "Säännöt",
         location: {
           x: 0.445,
-          y: 0.34,
+          y: 0.35,
         },
         width: 37,
         height: 100,
@@ -647,8 +647,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Wiki",
         location: {
-          x: 0.44,
-          y: 0.185,
+          x: 0.438,
+          y: 0.19,
         },
         width: 37,
         height: 100,
@@ -666,8 +666,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Vuodet",
         location: {
-          x: 0.44,
-          y: 0.49,
+          x: 0.425,
+          y: 0.507,
         },
         width: 37,
         height: 100,
@@ -685,8 +685,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Pelit",
         location: {
-          x: 0.54,
-          y: 0.49,
+          x: 0.535,
+          y: 0.507,
         },
         width: 37,
         height: 100,
@@ -705,7 +705,7 @@ const gameData = {
         name: "Luento",
         location: {
           x: 0.495,
-          y: 0.65,
+          y: 0.67,
         },
         width: 37,
         height: 100,
@@ -724,7 +724,7 @@ const gameData = {
         name: "Design",
         location: {
           x: 0.58,
-          y: 0.65,
+          y: 0.67,
         },
         width: 37,
         height: 100,
@@ -775,11 +775,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "PostIt 1",
         location: {
-          x: 0.5,
-          y: 0.22,
+          x: 0.365,
+          y: 0.275,
         },
-        width: 128,
-        height: 128,
+        width: 141,
+        height: 117,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           if (gameState.inventory.itemExists("PostIt 2")) {
@@ -1188,8 +1188,8 @@ const gameData = {
           x: 0.5,
           y: 0.84,
         },
-        width: 96,
-        height: 96,
+        width: 80,
+        height: 87,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("PostIt 2", item);

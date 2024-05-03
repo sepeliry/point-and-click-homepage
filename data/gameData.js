@@ -131,7 +131,11 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
-              [sepeli_machine_frame01, sepeli_machine_frame02, sepeli_machine_frame03],
+              [
+                sepeli_machine_frame01,
+                sepeli_machine_frame02,
+                sepeli_machine_frame03,
+              ],
               0.06,
               true
             );
@@ -452,12 +456,14 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
-              [conway_machine_frame01,
+              [
+                conway_machine_frame01,
                 conway_machine_frame02,
                 conway_machine_frame03,
                 conway_machine_frame04,
                 conway_machine_frame05,
-                conway_machine_frame06],
+                conway_machine_frame06,
+              ],
               0.02,
               true
             );
@@ -715,7 +721,7 @@ const gameData = {
         image: book_1_img,
         visible: true,
         type: ITEM_TYPES.book,
-        name: "PDF",
+        name: "Design",
         location: {
           x: 0.58,
           y: 0.62,

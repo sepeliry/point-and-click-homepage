@@ -43,8 +43,8 @@ import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_of
 import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.png";
 import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.png";
 import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.png";
-import numpad_closed from "../resources/images/main_scene/numpad_closed.png";
-import numpad_open from "../resources/images/main_scene/numpad_open.png";
+import numpad_small_closed from "../resources/images/main_scene/numpad_closed.png";
+import numpad_small_open from "../resources/images/main_scene/numpad_open.png";
 import computer_desk from "../resources/images/main_scene/computer_desk.png";
 import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
 import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";
@@ -127,9 +127,9 @@ const gameData = {
           loop: false,
           interval: 3000, //ms
         },
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.hasCompletedGame) {
-            updateAnimatedSpriteTextures(
+            await updateAnimatedSpriteTextures(
               item,
               [
                 sepeli_machine_frame01,
@@ -175,10 +175,10 @@ const gameData = {
       },
       {
         visible: true,
-        image: numpad_closed,
-        onStateChange: (app, item) => {
+        image: numpad_small_closed,
+        onStateChange: async (app, item) => {
           if (gameState.hasUnlockedDoor) {
-            updateSpriteTexture(item, numpad_open);
+            await updateSpriteTexture(item, numpad_small_open);
           }
         },
         animation: null,
@@ -216,6 +216,12 @@ const gameData = {
         width: 267 * 0.18,
         height: 400 * 0.18,
         collisionHeight: 0, // not yet used
+        onInventoryInteraction: (app, item) => {
+          openPopup(
+            app,
+            "Hmm voisikohan kahvin jotenkin vetää kahvinkeittimeen?"
+          );
+        },
         onInteraction: (app, item) => () =>
           checkDistance(
             app,
@@ -244,7 +250,6 @@ const gameData = {
             openPopup(app, "Nyt tulee tujut kahvit!");
           }
           gameState.inventory.removeItem("Coffee");
-          gameState.coffeeUsed = true;
         },
       },
       {
@@ -303,23 +308,15 @@ const gameData = {
         image: coffee_maker_empty,
         type: ITEM_TYPES.item,
         name: "Coffee maker",
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
-            updateAnimatedSpriteTextures(
+            await updateAnimatedSpriteTextures(
               item,
               [
                 coffee_maker_frame01,
                 coffee_maker_frame02,
                 coffee_maker_frame03,
               ],
-              0.02,
-              true
-            );
-          }
-          if (gameState.playerIsMiniSize) {
-            updateAnimatedSpriteTextures(
-              item,
-              [coffee_maker_empty],
               0.02,
               true
             );
@@ -345,50 +342,27 @@ const gameData = {
             item.position.y,
             "mainScene",
             () => {
-              if (!gameState.coffeeBrewed) {
-                if (gameState.coffeeUsed) {
-                  openPopup(app, "Join jo kaiken kahvin!", null);
-                  return;
-                } else if (!gameState.inventory.itemExists("Coffee")) {
-                  openPopup(
-                    app,
-                    "Hmm, missä täällä säilytetään kahvinpuruja?",
-                    null
-                  );
-                  return;
-                } else if (!gameState.inventory.itemExists("Coffee cup")) {
-                  openPopup(
-                    app,
-                    "Kahvinpurut check, mutta tarviin vielä kahvikupin!",
-                    null
-                  );
-                  return;
-                } else {
-                  openPopup(
-                    app,
-                    "Kahvinpurut check, kahvikuppi check, mitenköhän saisin kahvipurut koneeseen...",
-                    null
-                  );
-                }
-              }
-              if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
-                if (!gameState.inventory.itemExists("Coffee cup")) {
-                  openPopup(
-                    app,
-                    "Kahvi on jo keitetty, mutta tarvitsen kahvikupin!",
-                    null
-                  );
-                  return;
-                }
-                Player.minimizePlayer();
-                openPopup(app, "Mitä tapahtuu??", null, () => {
-                  openPopup(
-                    app,
-                    "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
-                    null
-                  );
-                  gameState.coffeeBrewed = false;
-                });
+              if (
+                !gameState.inventory.itemExists("Coffee") &&
+                !gameState.coffeeBrewed
+              ) {
+                openPopup(app, "Hmm, missä täällä säilytetään kahvinpuruja?");
+                return;
+              } else if (!gameState.inventory.itemExists("Coffee cup")) {
+                openPopup(
+                  app,
+                  "Kahvinpurut check, mutta tarviin vielä kahvikupin!"
+                );
+                return;
+              } else if (!gameState.coffeeBrewed) {
+                openPopup(
+                  app,
+                  "Kahvinpurut check, kahvikuppi check, mitenköhän saisin kahvipurut koneeseen..."
+                );
+              } else if (!gameState.coffeeCupFilled) {
+                openPopup(app, "Nyt on kahvia koneessa!");
+              } else {
+                openPopup(app, "Vihdoin on kahvia!");
               }
             }
           ),
@@ -399,9 +373,9 @@ const gameData = {
         visible: true,
         image: computer_desk_with_cup,
         type: ITEM_TYPES.item,
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.inventory.itemExists("Coffee cup")) {
-            updateSpriteTexture(item, computer_desk);
+            await updateSpriteTexture(item, computer_desk);
           }
         },
         animation: null,
@@ -452,9 +426,9 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "Arcade machine",
 
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.hasCompletedGame) {
-            updateAnimatedSpriteTextures(
+            await updateAnimatedSpriteTextures(
               item,
               [
                 conway_machine_frame01,
@@ -560,9 +534,9 @@ const gameData = {
       {
         image: lamp_1_off,
         visible: true,
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (gameState.hasCompletedGame) {
-            updateSpriteTexture(item, lamp_1_on);
+            await updateSpriteTexture(item, lamp_1_on);
           }
         },
 
@@ -743,9 +717,9 @@ const gameData = {
     background: numpad_bg_closed,
     backgroundWidth: 1796,
     backgroundHeight: 1024,
-    onStateChange: (app, item) => {
+    onStateChange: async (app, item) => {
       if (gameState.hasUnlockedDoor) {
-        updateSpriteTexture(item, numpad_bg_open);
+        await updateSpriteTexture(item, numpad_bg_open);
       }
     },
     items: [
@@ -1304,14 +1278,16 @@ const gameData = {
       {
         image: coffee_cup_empty,
         visible: true,
-        onStateChange: (app, item) => {
+        onStateChange: async (app, item) => {
           if (
             gameState.coffeeBrewed &&
+            gameState.coffeeCupFilled &&
             gameState.inventory.itemExists("Coffee cup")
           ) {
+            console.log("CUP");
             const cup = gameState.inventory.getItem("Coffee cup");
             // If coffee is brewed, change the texture to full coffee cup
-            gameState.inventory.updateItemSprite(cup, coffee_cup_full);
+            await gameState.inventory.updateItemSprite(cup, coffee_cup_full);
           }
         },
         type: ITEM_TYPES.item,
@@ -1323,6 +1299,24 @@ const gameData = {
         width: 100,
         height: 100,
         collisionHeight: 5, // not yet used
+        onInventoryInteraction: (app, item) => {
+          if (
+            gameState.coffeeBrewed &&
+            gameState.coffeeCupFilled &&
+            gameState.inventory.itemExists("Coffee cup")
+          ) {
+            Player.minimizePlayer();
+            openPopup(app, "Mitä tapahtuu??", null, () => {
+              openPopup(
+                app,
+                "Mähän oon ihan snadi nyt. Ja kahvi pärisee!",
+                null
+              );
+            });
+          } else {
+            openPopup(app, "Mitenköhän saisin kahvia tyhjään kahvikuppiin?");
+          }
+        },
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("Coffee cup", item);
           removeSprite(app, item);
@@ -1333,15 +1327,16 @@ const gameData = {
           );
         },
         zIndex: 2,
-        // draggable: true,
-        // dragTargetName: "Coffee maker",
-        // onDragSuccess: (app, item) => {
-        //   if (gameState.inventory.itemExists("Coffee")) {
-        //     openPopup(app, "Santsikuppia, kiitos!");
-        //   } else {
-        //     openPopup(app, "Kuppi löytyy, mutta kaffea tarvis!.", null);
-        //   }
-        // },
+        draggable: true,
+        dragTargetName: "Coffee maker",
+        onDragSuccess: (app, item) => {
+          if (gameState.coffeeBrewed && !gameState.playerIsMiniSize) {
+            gameState.coffeeCupFilled = true;
+            openPopup(app, "Nyt on kahvia! Mitenköhän voisin juoda sen?");
+          } else {
+            openPopup(app, "Tarvitsisin kahvia kahvinkeittimeen ensin!");
+          }
+        },
       },
     ],
   },

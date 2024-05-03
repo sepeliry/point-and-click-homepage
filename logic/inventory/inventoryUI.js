@@ -81,7 +81,10 @@ class InventoryUI {
   }
 
   static onItemClicked(itemContainer, entry, index) {
-    console.log(`Item clicked: ${entry.item}, at index: ${index}`);
+    console.log(entry);
+    if (entry.sprite.onInventoryInteraction) {
+      entry.sprite.onInventoryInteraction(this.app, entry.sprite);
+    }
   }
 
   static makeItemDraggable(itemContainer, entry, itemSprite) {
@@ -135,17 +138,23 @@ class InventoryUI {
         }
         this.app.mainScene.removeChild(draggedItem);
         draggedItem = null;
-        dragTarget.filters = originalFilters;
+        // remove glow from drag target
+        dragTarget.filters = [];
         // Remove the pointermove event listener from the mainScene
         this.app.mainScene.off("pointermove", onDragMove);
       }
     };
 
     const onDragStart = (event) => {
+      // disable drag when player is mini size
+      if (gameState.playerIsMiniSize) {
+        return;
+      }
       if (this.app.mainScene.visible) {
         draggedItem = new Sprite(itemSprite.texture);
         draggedItem.anchor.set(0.5);
         draggedItem.alpha = 0.6;
+        draggedItem.zIndex = 1000;
         draggedItem.scale.set(itemSprite.scale.x, itemSprite.scale.y);
         draggedItem.interactiveChildren = false;
         draggedItem.eventMode = "none";

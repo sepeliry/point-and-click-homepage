@@ -65,7 +65,7 @@ import article_2 from "../resources/images/main_scene/article_2.png";
 import article_3 from "../resources/images/main_scene/article_3.png";
 
 // Arcade scene images
-import arcade_scene_bg from "../resources/images/arcade_scene/background.png";
+import arcade_scene_bg from "../resources/images/arcade_scene/arcade_scene_bg.jpg";
 
 // Computer scene images
 import computer_scene_bg from "../resources/images/computer_scene/computer_scene_coloured.jpg";

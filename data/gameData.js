@@ -33,18 +33,18 @@ import ITEM_TYPES from "../constants/itemTypes.js";
  */
 
 // Main scene images
-import main_scene_bg from "../resources/images/main_scene/main_scene_bg.png";
-import bookshelf from "../resources/images/main_scene/bookshelf.png";
+import main_scene_bg from "../resources/images/main_scene/main_scene_bg.webp";
+import bookshelf from "../resources/images/main_scene/bookshelf.webp";
 import mousehole_frame01 from "../resources/images/main_scene/mousehole_frame01.png";
 import mousehole_frame02 from "../resources/images/main_scene/mousehole_frame02.png";
 import lamp_1_on from "../resources/images/main_scene/lamp_1_on.png";
 import lamp_1_off from "../resources/images/main_scene/lamp_1_off.png";
-import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_off.png";
-import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.png";
-import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.png";
-import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.png";
-import numpad_closed from "../resources/images/main_scene/numpad_closed.png";
-import numpad_open from "../resources/images/main_scene/numpad_open.png";
+import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_off.webp";
+import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.webp";
+import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.webp";
+import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.webp";
+import numpad_closed from "../resources/images/main_scene/numpad_closed.webp";
+import numpad_open from "../resources/images/main_scene/numpad_open.webp";
 import computer_desk from "../resources/images/main_scene/computer_desk.png";
 import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
 import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";

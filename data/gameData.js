@@ -40,39 +40,45 @@ import mousehole_frame02 from "../resources/images/main_scene/mousehole_frame02.
 import lamp_1_on from "../resources/images/main_scene/lamp_1_on.png";
 import lamp_1_off from "../resources/images/main_scene/lamp_1_off.png";
 import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_off.png";
-import sepeli_machine_1 from "../resources/images/main_scene/sepeli_machine_frame01.png";
-import sepeli_machine_2 from "../resources/images/main_scene/sepeli_machine_frame02.png";
-import sepeli_machine_3 from "../resources/images/main_scene/sepeli_machine_frame03.png";
-import numpad_small_closed from "../resources/images/main_scene/numpad_small_closed.png";
-import numpad_small_open from "../resources/images/main_scene/numpad_small_open.png";
+import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.png";
+import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.png";
+import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.png";
+import numpad_closed from "../resources/images/main_scene/numpad_closed.png";
+import numpad_open from "../resources/images/main_scene/numpad_open.png";
 import computer_desk from "../resources/images/main_scene/computer_desk.png";
 import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
-import pong_machine_off from "../resources/images/main_scene/pong_machine_off.png";
+import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";
 import pong_machine_on from "../resources/images/main_scene/pong_machine_on.png";
+import conway_machine_frame01 from "../resources/images/main_scene/conway_machine_frame01.png";
+import conway_machine_frame02 from "../resources/images/main_scene/conway_machine_frame02.png";
+import conway_machine_frame03 from "../resources/images/main_scene/conway_machine_frame03.png";
+import conway_machine_frame04 from "../resources/images/main_scene/conway_machine_frame04.png";
+import conway_machine_frame05 from "../resources/images/main_scene/conway_machine_frame05.png";
+import conway_machine_frame06 from "../resources/images/main_scene/conway_machine_frame06.png";
 import coffee_maker_empty from "../resources/images/main_scene/coffee_maker_empty.png";
 import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_frame01.png";
 import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.png";
 import coffee_maker_frame03 from "../resources/images/main_scene/coffee_maker_frame03.png";
 import coffee_packet_bean from "../resources/images/main_scene/coffee_packet_bean.png";
-import article_1 from "../resources/images/main_scene/article_1.png";
-import article_2 from "../resources/images/main_scene/article_2.png";
-import article_3 from "../resources/images/main_scene/article_3.png";
+import wall_article_1 from "../resources/images/main_scene/wall_article_1.png";
+import wall_article_2 from "../resources/images/main_scene/wall_article_2.png";
+import wall_article_3 from "../resources/images/main_scene/wall_article_3.png";
 
 // Arcade scene images
-import arcade_scene_bg from "../resources/images/arcade_scene/background.png";
+import arcade_scene_bg from "../resources/images/arcade_scene/arcade_scene_bg.jpg";
 
 // Computer scene images
-import computer_scene_bg from "../resources/images/computer_scene/computer_scene_coloured.jpg";
+import computer_scene_bg from "../resources/images/computer_scene/computer_scene_bg.jpg";
 import discord_icon from "../resources/images/computer_scene/discord_icon.png";
 import signup_icon from "../resources/images/computer_scene/signup_icon.png";
 import coffee_cup_empty from "../resources/images/computer_scene/coffee_cup_empty.png";
 import coffee_cup_full from "../resources/images/computer_scene/coffee_cup_full.png";
 
 // Mousehole scene images
+import mousehole_scene_bg from "../resources/images/mousehole_scene/mousehole_scene_bg.jpg";
 import postit_16 from "../resources/images/mousehole_scene/postit_16.png";
 import mouse_frame01 from "../resources/images/mousehole_scene/mouse_frame01.png";
 import mouse_frame02 from "../resources/images/mousehole_scene/mouse_frame02.png";
-import mousehole_bg from "../resources/images/mousehole_scene/mousehole_background.png";
 import hanging_cheese_frame01 from "../resources/images/mousehole_scene/hanging_cheese_frame01.png";
 import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_cheese_frame02.png";
 
@@ -85,8 +91,8 @@ import book_1_img from "../resources/images/bookshelf_scene/book_placeholder.png
 import book_2_img from "../resources/images/bookshelf_scene/book2_placeholder.png";
 
 // Numpad scene images
-import numpad_bg_closed from "../resources/images/numpad_scene/numpad_background_closed.png";
-import numpad_bg_open from "../resources/images/numpad_scene/numpad_background_open.png";
+import numpad_bg_closed from "../resources/images/numpad_scene/numpad_bg_closed.jpg";
+import numpad_bg_open from "../resources/images/numpad_scene/numpad_bg_open.jpg";
 import red_button from "../resources/images/numpad_scene/red_button.png";
 import postit_32 from "../resources/images//numpad_scene/postit_32.png";
 import button_1 from "../resources/images/numpad_scene/button_1.png";
@@ -103,9 +109,9 @@ import reset_button from "../resources/images/numpad_scene/reset_button.png";
 import enter_button from "../resources/images/numpad_scene/enter_button.png";
 
 //Article images
-import article_img_1 from "../resources/images/article_images/article_1.png";
-import article_img_2 from "../resources/images/article_images/article_2.png";
-import article_img_3 from "../resources/images/article_images/article_3.png";
+import article_content_1 from "../resources/images/article_images/article_content_1.jpg";
+import article_content_2 from "../resources/images/article_images/article_content_2.jpg";
+import article_content_3 from "../resources/images/article_images/article_content_3.jpg";
 
 const gameData = {
   mainScene: {
@@ -125,7 +131,11 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             await updateAnimatedSpriteTextures(
               item,
-              [sepeli_machine_1, sepeli_machine_2, sepeli_machine_3],
+              [
+                sepeli_machine_frame01,
+                sepeli_machine_frame02,
+                sepeli_machine_frame03,
+              ],
               0.06,
               true
             );
@@ -165,10 +175,17 @@ const gameData = {
       },
       {
         visible: true,
+<<<<<<< HEAD
         image: numpad_small_closed,
         onStateChange: async (app, item) => {
           if (gameState.hasUnlockedDoor) {
             await updateSpriteTexture(item, numpad_small_open);
+=======
+        image: numpad_closed,
+        onStateChange: (app, item) => {
+          if (gameState.hasUnlockedDoor) {
+            updateSpriteTexture(item, numpad_open);
+>>>>>>> 76e76e4758a34d66a99555def79d89d8e1241640
           }
         },
         animation: null,
@@ -244,7 +261,7 @@ const gameData = {
       },
       {
         visible: true,
-        image: article_1,
+        image: wall_article_1,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -256,12 +273,12 @@ const gameData = {
         width: 114 * 0.43,
         height: 216 * 0.43,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_1),
+        onInteraction: (app) => () => displayArticleImg(article_content_1),
         zIndex: 1,
       },
       {
         visible: true,
-        image: article_2,
+        image: wall_article_2,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -273,12 +290,12 @@ const gameData = {
         width: 162 * 0.43,
         height: 149 * 0.43,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_2),
+        onInteraction: (app) => () => displayArticleImg(article_content_2),
         zIndex: 1,
       },
       {
         visible: true,
-        image: article_3,
+        image: wall_article_3,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -290,7 +307,7 @@ const gameData = {
         width: 248 * 0.42,
         height: 153 * 0.42,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_3),
+        onInteraction: (app) => () => displayArticleImg(article_content_3),
         zIndex: 1,
       },
       {
@@ -412,7 +429,7 @@ const gameData = {
       },
       {
         visible: true,
-        image: pong_machine_off,
+        image: conway_machine_off,
         type: ITEM_TYPES.item,
         name: "Arcade machine",
 
@@ -420,7 +437,14 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             await updateAnimatedSpriteTextures(
               item,
-              [pong_machine_on, pong_machine_off],
+              [
+                conway_machine_frame01,
+                conway_machine_frame02,
+                conway_machine_frame03,
+                conway_machine_frame04,
+                conway_machine_frame05,
+                conway_machine_frame06,
+              ],
               0.02,
               true
             );
@@ -428,7 +452,7 @@ const gameData = {
         },
 
         animation: {
-          frames: [pong_machine_off],
+          frames: [conway_machine_off],
           animationSpeed: 0.02,
           loop: true,
           interval: 3000, //ms
@@ -564,7 +588,7 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Honesty",
         location: {
-          x: 0.52,
+          x: 0.524,
           y: 0.35,
         },
         width: 37,
@@ -584,7 +608,7 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Säännöt",
         location: {
-          x: 0.44,
+          x: 0.445,
           y: 0.35,
         },
         width: 37,
@@ -604,8 +628,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Wiki",
         location: {
-          x: 0.44,
-          y: 0.21,
+          x: 0.438,
+          y: 0.19,
         },
         width: 37,
         height: 100,
@@ -623,8 +647,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Vuodet",
         location: {
-          x: 0.44,
-          y: 0.485,
+          x: 0.425,
+          y: 0.507,
         },
         width: 37,
         height: 100,
@@ -642,8 +666,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Pelit",
         location: {
-          x: 0.54,
-          y: 0.485,
+          x: 0.535,
+          y: 0.507,
         },
         width: 37,
         height: 100,
@@ -661,8 +685,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Luento",
         location: {
-          x: 0.49,
-          y: 0.62,
+          x: 0.495,
+          y: 0.67,
         },
         width: 37,
         height: 100,
@@ -678,10 +702,10 @@ const gameData = {
         image: book_1_img,
         visible: true,
         type: ITEM_TYPES.book,
-        name: "PDF",
+        name: "Design",
         location: {
           x: 0.58,
-          y: 0.62,
+          y: 0.67,
         },
         width: 37,
         height: 100,
@@ -732,11 +756,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "PostIt 1",
         location: {
-          x: 0.5,
-          y: 0.22,
+          x: 0.365,
+          y: 0.275,
         },
-        width: 128,
-        height: 128,
+        width: 141,
+        height: 117,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           if (gameState.inventory.itemExists("PostIt 2")) {
@@ -1112,7 +1136,7 @@ const gameData = {
     ],
   },
   mouseholeScene: {
-    background: mousehole_bg,
+    background: mousehole_scene_bg,
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [
@@ -1145,8 +1169,8 @@ const gameData = {
           x: 0.5,
           y: 0.84,
         },
-        width: 96,
-        height: 96,
+        width: 80,
+        height: 87,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           gameState.inventory.addItem("PostIt 2", item);

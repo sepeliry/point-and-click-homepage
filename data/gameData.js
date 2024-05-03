@@ -40,21 +40,21 @@ import mousehole_frame02 from "../resources/images/main_scene/mousehole_frame02.
 import lamp_1_on from "../resources/images/main_scene/lamp_1_on.png";
 import lamp_1_off from "../resources/images/main_scene/lamp_1_off.png";
 import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_off.png";
-import sepeli_machine_1 from "../resources/images/main_scene/sepeli_machine_frame01.png";
-import sepeli_machine_2 from "../resources/images/main_scene/sepeli_machine_frame02.png";
-import sepeli_machine_3 from "../resources/images/main_scene/sepeli_machine_frame03.png";
-import numpad_small_closed from "../resources/images/main_scene/numpad_small_closed.png";
-import numpad_small_open from "../resources/images/main_scene/numpad_small_open.png";
+import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.png";
+import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.png";
+import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.png";
+import numpad_closed from "../resources/images/main_scene/numpad_closed.png";
+import numpad_open from "../resources/images/main_scene/numpad_open.png";
 import computer_desk from "../resources/images/main_scene/computer_desk.png";
 import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
 import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";
 import pong_machine_on from "../resources/images/main_scene/pong_machine_on.png";
-import conway_machine_on_1 from "../resources/images/main_scene/conway_machine_on_1.png";
-import conway_machine_on_2 from "../resources/images/main_scene/conway_machine_on_2.png";
-import conway_machine_on_3 from "../resources/images/main_scene/conway_machine_on_3.png";
-import conway_machine_on_4 from "../resources/images/main_scene/conway_machine_on_4.png";
-import conway_machine_on_5 from "../resources/images/main_scene/conway_machine_on_5.png";
-import conway_machine_on_6 from "../resources/images/main_scene/conway_machine_on_6.png";
+import conway_machine_frame01 from "../resources/images/main_scene/conway_machine_frame01.png";
+import conway_machine_frame02 from "../resources/images/main_scene/conway_machine_frame02.png";
+import conway_machine_frame03 from "../resources/images/main_scene/conway_machine_frame03.png";
+import conway_machine_frame04 from "../resources/images/main_scene/conway_machine_frame04.png";
+import conway_machine_frame05 from "../resources/images/main_scene/conway_machine_frame05.png";
+import conway_machine_frame06 from "../resources/images/main_scene/conway_machine_frame06.png";
 import coffee_maker_empty from "../resources/images/main_scene/coffee_maker_empty.png";
 import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_frame01.png";
 import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.png";
@@ -131,7 +131,7 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
-              [sepeli_machine_1, sepeli_machine_2, sepeli_machine_3],
+              [sepeli_machine_frame01, sepeli_machine_frame02, sepeli_machine_frame03],
               0.06,
               true
             );
@@ -171,10 +171,10 @@ const gameData = {
       },
       {
         visible: true,
-        image: numpad_small_closed,
+        image: numpad_closed,
         onStateChange: (app, item) => {
           if (gameState.hasUnlockedDoor) {
-            updateSpriteTexture(item, numpad_small_open);
+            updateSpriteTexture(item, numpad_open);
           }
         },
         animation: null,
@@ -452,12 +452,12 @@ const gameData = {
           if (gameState.hasCompletedGame) {
             updateAnimatedSpriteTextures(
               item,
-              [conway_machine_on_1,
-                conway_machine_on_2,
-                conway_machine_on_3,
-                conway_machine_on_4,
-                conway_machine_on_5,
-                conway_machine_on_6],
+              [conway_machine_frame01,
+                conway_machine_frame02,
+                conway_machine_frame03,
+                conway_machine_frame04,
+                conway_machine_frame05,
+                conway_machine_frame06],
               0.02,
               true
             );

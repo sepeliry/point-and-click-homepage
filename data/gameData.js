@@ -608,7 +608,7 @@ const gameData = {
         name: "Honesty",
         location: {
           x: 0.52,
-          y: 0.35,
+          y: 0.34,
         },
         width: 37,
         height: 100,
@@ -627,8 +627,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Säännöt",
         location: {
-          x: 0.44,
-          y: 0.35,
+          x: 0.445,
+          y: 0.34,
         },
         width: 37,
         height: 100,
@@ -648,7 +648,7 @@ const gameData = {
         name: "Wiki",
         location: {
           x: 0.44,
-          y: 0.21,
+          y: 0.185,
         },
         width: 37,
         height: 100,
@@ -667,7 +667,7 @@ const gameData = {
         name: "Vuodet",
         location: {
           x: 0.44,
-          y: 0.485,
+          y: 0.49,
         },
         width: 37,
         height: 100,
@@ -686,7 +686,7 @@ const gameData = {
         name: "Pelit",
         location: {
           x: 0.54,
-          y: 0.485,
+          y: 0.49,
         },
         width: 37,
         height: 100,
@@ -704,8 +704,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Luento",
         location: {
-          x: 0.49,
-          y: 0.62,
+          x: 0.495,
+          y: 0.65,
         },
         width: 37,
         height: 100,
@@ -724,7 +724,7 @@ const gameData = {
         name: "Design",
         location: {
           x: 0.58,
-          y: 0.62,
+          y: 0.65,
         },
         width: 37,
         height: 100,

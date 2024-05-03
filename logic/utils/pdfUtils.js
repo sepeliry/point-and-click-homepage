@@ -1,28 +1,35 @@
-// Pikaiset kokeilut PDF esittämiseen käyttäen HTMl <Object>
-// PDFJs avulla luultavasti saa viimeisellymmän näkymän ja sulavemmin sisälletyä sisällöt peliin
-
 const pdfViewer = document.getElementById("pdf-viewer-container");
 const pdfObject = document.getElementById("pdf-object");
 const mainSceneHTML = document.getElementById("game-container");
 const closePdfBtn = document.getElementById("close-pdf");
 
-// Displays a pdf file
+/**
+ * A function to display a PDF file in the game. Hides the PIXIJs mainScene and shows the PDF viewer.
+ * Used in gameData for PDF book onInteraction callback.
+ * @param {PIXI.Application} app - PIXI.Application
+ * @param {PIXI.Container} mainScene - PIXI.Container that holds the game's main scene
+ * @param {String} pdfPath - Path to the PDF file to be displayed
+ */
 function showPdf(app, mainScene, pdfPath) {
   mainScene.visible = !mainScene.visible;
-  pdfViewer.style.display = "flex";
   mainScene.eventMode = "none";
   app.stage.visible = "false";
+  pdfViewer.style.display = "flex";
   mainSceneHTML.style.display = "none";
-  pdfObject.data = pdfPath;
+  pdfObject.data = pdfPath; // HTML object element to display the PDF
   closePdfBtn.addEventListener("click", () => closePdf(app, mainScene));
 }
-// Closes the pdf viewer and makes the game visible again
+/**
+ * A function to close the PDF viewer and show the PIXIJs mainScene. Used for the button to close the PDF viewer.
+ * @param {PIXI.Application} app - PIXI.Application
+ * @param {PIXI.Container} mainScene - PIXI.Container that holds the game's main scene
+ */
 function closePdf(app, mainScene) {
   mainScene.visible = !mainScene.visible;
-  mainSceneHTML.style.display = "";
-  app.stage.visible = "true";
   mainScene.eventMode = "static";
+  app.stage.visible = "true";
   pdfViewer.style.display = "none";
+  mainSceneHTML.style.display = "";
   closePdfBtn.removeEventListener("click", () => closePdf(app, mainScene));
 }
 export default showPdf;

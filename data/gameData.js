@@ -60,9 +60,9 @@ import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_fr
 import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.png";
 import coffee_maker_frame03 from "../resources/images/main_scene/coffee_maker_frame03.png";
 import coffee_packet_bean from "../resources/images/main_scene/coffee_packet_bean.png";
-import article_1 from "../resources/images/main_scene/article_1.png";
-import article_2 from "../resources/images/main_scene/article_2.png";
-import article_3 from "../resources/images/main_scene/article_3.png";
+import wall_article_1 from "../resources/images/main_scene/wall_article_1.png";
+import wall_article_2 from "../resources/images/main_scene/wall_article_2.png";
+import wall_article_3 from "../resources/images/main_scene/wall_article_3.png";
 
 // Arcade scene images
 import arcade_scene_bg from "../resources/images/arcade_scene/arcade_scene_bg.jpg";
@@ -75,10 +75,10 @@ import coffee_cup_empty from "../resources/images/computer_scene/coffee_cup_empt
 import coffee_cup_full from "../resources/images/computer_scene/coffee_cup_full.png";
 
 // Mousehole scene images
+import mousehole_scene_bg from "../resources/images/mousehole_scene/mousehole_scene_bg.jpg";
 import postit_16 from "../resources/images/mousehole_scene/postit_16.png";
 import mouse_frame01 from "../resources/images/mousehole_scene/mouse_frame01.png";
 import mouse_frame02 from "../resources/images/mousehole_scene/mouse_frame02.png";
-import mousehole_bg from "../resources/images/mousehole_scene/mousehole_background.png";
 import hanging_cheese_frame01 from "../resources/images/mousehole_scene/hanging_cheese_frame01.png";
 import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_cheese_frame02.png";
 
@@ -109,9 +109,9 @@ import reset_button from "../resources/images/numpad_scene/reset_button.png";
 import enter_button from "../resources/images/numpad_scene/enter_button.png";
 
 //Article images
-import article_img_1 from "../resources/images/article_images/article_1.png";
-import article_img_2 from "../resources/images/article_images/article_2.png";
-import article_img_3 from "../resources/images/article_images/article_3.png";
+import article_content_1 from "../resources/images/article_images/article_content_1.jpg";
+import article_content_2 from "../resources/images/article_images/article_content_2.jpg";
+import article_content_3 from "../resources/images/article_images/article_content_3.jpg";
 
 const gameData = {
   mainScene: {
@@ -249,7 +249,7 @@ const gameData = {
       },
       {
         visible: true,
-        image: article_1,
+        image: wall_article_1,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -261,12 +261,12 @@ const gameData = {
         width: 114 * 0.43,
         height: 216 * 0.43,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_1),
+        onInteraction: (app) => () => displayArticleImg(article_content_1),
         zIndex: 1,
       },
       {
         visible: true,
-        image: article_2,
+        image: wall_article_2,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -278,12 +278,12 @@ const gameData = {
         width: 162 * 0.43,
         height: 149 * 0.43,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_2),
+        onInteraction: (app) => () => displayArticleImg(article_content_2),
         zIndex: 1,
       },
       {
         visible: true,
-        image: article_3,
+        image: wall_article_3,
         onStateChange: null,
         animation: null,
         type: ITEM_TYPES.item,
@@ -295,7 +295,7 @@ const gameData = {
         width: 248 * 0.42,
         height: 153 * 0.42,
         collisionHeight: 0, // not yet used
-        onInteraction: (app) => () => displayArticleImg(article_img_3),
+        onInteraction: (app) => () => displayArticleImg(article_content_3),
         zIndex: 1,
       },
       {
@@ -608,7 +608,7 @@ const gameData = {
         name: "Honesty",
         location: {
           x: 0.52,
-          y: 0.35,
+          y: 0.34,
         },
         width: 37,
         height: 100,
@@ -627,8 +627,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Säännöt",
         location: {
-          x: 0.44,
-          y: 0.35,
+          x: 0.445,
+          y: 0.34,
         },
         width: 37,
         height: 100,
@@ -648,7 +648,7 @@ const gameData = {
         name: "Wiki",
         location: {
           x: 0.44,
-          y: 0.21,
+          y: 0.185,
         },
         width: 37,
         height: 100,
@@ -667,7 +667,7 @@ const gameData = {
         name: "Vuodet",
         location: {
           x: 0.44,
-          y: 0.485,
+          y: 0.49,
         },
         width: 37,
         height: 100,
@@ -686,7 +686,7 @@ const gameData = {
         name: "Pelit",
         location: {
           x: 0.54,
-          y: 0.485,
+          y: 0.49,
         },
         width: 37,
         height: 100,
@@ -704,8 +704,8 @@ const gameData = {
         type: ITEM_TYPES.book,
         name: "Luento",
         location: {
-          x: 0.49,
-          y: 0.62,
+          x: 0.495,
+          y: 0.65,
         },
         width: 37,
         height: 100,
@@ -724,7 +724,7 @@ const gameData = {
         name: "Design",
         location: {
           x: 0.58,
-          y: 0.62,
+          y: 0.65,
         },
         width: 37,
         height: 100,
@@ -1155,7 +1155,7 @@ const gameData = {
     ],
   },
   mouseholeScene: {
-    background: mousehole_bg,
+    background: mousehole_scene_bg,
     backgroundWidth: 1400,
     backgroundHeight: 800,
     items: [

@@ -43,8 +43,8 @@ import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_of
 import sepeli_machine_frame01 from "../resources/images/main_scene/sepeli_machine_frame01.png";
 import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machine_frame02.png";
 import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.png";
-import numpad_closed from "../resources/images/main_scene/numpad_closed.png";
-import numpad_open from "../resources/images/main_scene/numpad_open.png";
+import numpad_small_closed from "../resources/images/main_scene/numpad_closed.png";
+import numpad_small_open from "../resources/images/main_scene/numpad_open.png";
 import computer_desk from "../resources/images/main_scene/computer_desk.png";
 import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
 import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";
@@ -175,17 +175,10 @@ const gameData = {
       },
       {
         visible: true,
-<<<<<<< HEAD
         image: numpad_small_closed,
         onStateChange: async (app, item) => {
           if (gameState.hasUnlockedDoor) {
             await updateSpriteTexture(item, numpad_small_open);
-=======
-        image: numpad_closed,
-        onStateChange: (app, item) => {
-          if (gameState.hasUnlockedDoor) {
-            updateSpriteTexture(item, numpad_open);
->>>>>>> 76e76e4758a34d66a99555def79d89d8e1241640
           }
         },
         animation: null,

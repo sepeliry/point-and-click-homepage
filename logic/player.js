@@ -8,7 +8,6 @@ import openPopup from "./interactions/openPopup";
 
 // Image imports
 import player_idle from "../resources/images/player_images/player_idle_0.png";
-import player_idle_mini from "../resources/images/player_images/player_idle_A1.png";
 import player_walk_1 from "../resources/images/player_images/player_walk_1.png";
 import player_walk_2 from "../resources/images/player_images/player_walk_2.png";
 import player_walk_3 from "../resources/images/player_images/player_walk_3.png";
@@ -21,15 +20,16 @@ import player_walk_9 from "../resources/images/player_images/player_walk_9.png";
 import player_walk_10 from "../resources/images/player_images/player_walk_10.png";
 import player_walk_11 from "../resources/images/player_images/player_walk_11.png";
 import player_walk_12 from "../resources/images/player_images/player_walk_12.png";
-import player_walk_mini_1 from "../resources/images/player_images/player_walk_mini_1.png";
-import player_walk_mini_2 from "../resources/images/player_images/player_walk_mini_2.png";
-import player_walk_mini_3 from "../resources/images/player_images/player_walk_mini_3.png";
-import player_walk_mini_4 from "../resources/images/player_images/player_walk_mini_4.png";
-import player_walk_mini_5 from "../resources/images/player_images/player_walk_mini_5.png";
-import player_walk_mini_6 from "../resources/images/player_images/player_walk_mini_6.png";
-import player_walk_mini_7 from "../resources/images/player_images/player_walk_mini_7.png";
-import player_walk_mini_8 from "../resources/images/player_images/player_walk_mini_8.png";
-import player_walk_mini_9 from "../resources/images/player_images/player_walk_mini_9.png";
+import player_mini_idle from "../resources/images/player_images/player_mini_idle.png";
+import player_mini_walk_frame01 from "../resources/images/player_images/player_mini_walk_frame01.png";
+import player_mini_walk_frame02 from "../resources/images/player_images/player_mini_walk_frame02.png";
+import player_mini_walk_frame03 from "../resources/images/player_images/player_mini_walk_frame03.png";
+import player_mini_walk_frame04 from "../resources/images/player_images/player_mini_walk_frame04.png";
+import player_mini_walk_frame05 from "../resources/images/player_images/player_mini_walk_frame05.png";
+import player_mini_walk_frame06 from "../resources/images/player_images/player_mini_walk_frame06.png";
+import player_mini_walk_frame07 from "../resources/images/player_images/player_mini_walk_frame07.png";
+import player_mini_walk_frame08 from "../resources/images/player_images/player_mini_walk_frame08.png";
+import player_mini_walk_frame09 from "../resources/images/player_images/player_mini_walk_frame09.png";
 import player_shrink_1 from "../resources/images/player_images/player_idle_0_small.png";
 import player_shrink_2 from "../resources/images/player_images/player_idle_0_smallest.png";
 
@@ -61,25 +61,25 @@ class Player {
     ];
 
     const playerMiniWalkFrames = [
-      player_walk_mini_1,
-      player_walk_mini_2,
-      player_walk_mini_3,
-      player_walk_mini_4,
-      player_walk_mini_5,
-      player_walk_mini_6,
-      player_walk_mini_7,
-      player_walk_mini_8,
-      player_walk_mini_9,
+      player_mini_walk_frame01,
+      player_mini_walk_frame02,
+      player_mini_walk_frame03,
+      player_mini_walk_frame04,
+      player_mini_walk_frame05,
+      player_mini_walk_frame06,
+      player_mini_walk_frame07,
+      player_mini_walk_frame08,
+      player_mini_walk_frame09,
     ];
 
     const shrinkingAnimationFrames = [
       player_shrink_1,
       player_shrink_2,
-      player_idle_mini,
+      player_mini_idle,
     ];
 
     const growingAnimationFrames = [
-      player_idle_mini,
+      player_mini_idle,
       player_shrink_2,
       player_shrink_1,
     ];
@@ -267,7 +267,7 @@ class Player {
     Player.player.loop = false;
 
     Player.player.onComplete = () => {
-      Player.playerIdleFrames = [Texture.from(player_idle_mini)];
+      Player.playerIdleFrames = [Texture.from(player_mini_idle)];
       Player.player.textures = Player.playerIdleFrames;
       Player.playerWalkFrames = Player.playerMiniWalkFrames;
       Player.player.loop = true;

@@ -466,11 +466,7 @@ const gameData = {
               item.position.y,
               "mainScene",
               () =>
-                openPopup(
-                  app,
-                  "Hei, täähän on se Conwayn Game of Life!",
-                  null
-                )
+                openPopup(app, "Hei, täähän on se Conwayn Game of Life!", null)
             );
           } else {
             console.log("please complete the game");
@@ -749,11 +745,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "PostIt 1",
         location: {
-          x: 0.365,
-          y: 0.275,
+          x: 0.5,
+          y: 0.25,
         },
-        width: 141,
-        height: 117,
+        width: 117,
+        height: 141,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           if (gameState.inventory.itemExists("PostIt 2")) {

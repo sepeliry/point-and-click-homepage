@@ -35,8 +35,8 @@ import ITEM_TYPES from "../constants/itemTypes.js";
 // Main scene images
 import main_scene_bg from "../resources/images/main_scene/main_scene_bg.webp";
 import bookshelf from "../resources/images/main_scene/bookshelf.webp";
-import mousehole_frame01 from "../resources/images/main_scene/mousehole_frame01.png";
-import mousehole_frame02 from "../resources/images/main_scene/mousehole_frame02.png";
+import mousehole_frame01 from "../resources/images/main_scene/mousehole_frame01.webp";
+import mousehole_frame02 from "../resources/images/main_scene/mousehole_frame02.webp";
 import lamp_1_on from "../resources/images/main_scene/lamp_1_on.png";
 import lamp_1_off from "../resources/images/main_scene/lamp_1_off.png";
 import sepeli_machine_off from "../resources/images/main_scene/sepeli_machine_off.webp";
@@ -45,24 +45,23 @@ import sepeli_machine_frame02 from "../resources/images/main_scene/sepeli_machin
 import sepeli_machine_frame03 from "../resources/images/main_scene/sepeli_machine_frame03.webp";
 import numpad_closed from "../resources/images/main_scene/numpad_closed.webp";
 import numpad_open from "../resources/images/main_scene/numpad_open.webp";
-import computer_desk from "../resources/images/main_scene/computer_desk.png";
-import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.png";
-import conway_machine_off from "../resources/images/main_scene/conway_machine_off.png";
-import pong_machine_on from "../resources/images/main_scene/pong_machine_on.png";
-import conway_machine_frame01 from "../resources/images/main_scene/conway_machine_frame01.png";
-import conway_machine_frame02 from "../resources/images/main_scene/conway_machine_frame02.png";
-import conway_machine_frame03 from "../resources/images/main_scene/conway_machine_frame03.png";
-import conway_machine_frame04 from "../resources/images/main_scene/conway_machine_frame04.png";
-import conway_machine_frame05 from "../resources/images/main_scene/conway_machine_frame05.png";
-import conway_machine_frame06 from "../resources/images/main_scene/conway_machine_frame06.png";
-import coffee_maker_empty from "../resources/images/main_scene/coffee_maker_empty.png";
-import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_frame01.png";
-import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.png";
-import coffee_maker_frame03 from "../resources/images/main_scene/coffee_maker_frame03.png";
+import computer_desk from "../resources/images/main_scene/computer_desk.webp";
+import computer_desk_with_cup from "../resources/images/main_scene/computer_desk_with_cup.webp";
+import conway_machine_off from "../resources/images/main_scene/conway_machine_off.webp";
+import conway_machine_frame01 from "../resources/images/main_scene/conway_machine_frame01.webp";
+import conway_machine_frame02 from "../resources/images/main_scene/conway_machine_frame02.webp";
+import conway_machine_frame03 from "../resources/images/main_scene/conway_machine_frame03.webp";
+import conway_machine_frame04 from "../resources/images/main_scene/conway_machine_frame04.webp";
+import conway_machine_frame05 from "../resources/images/main_scene/conway_machine_frame05.webp";
+import conway_machine_frame06 from "../resources/images/main_scene/conway_machine_frame06.webp";
+import coffee_maker_empty from "../resources/images/main_scene/coffee_maker_empty.webp";
+import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_frame01.webp";
+import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.webp";
+import coffee_maker_frame03 from "../resources/images/main_scene/coffee_maker_frame03.webp";
 import coffee_packet_bean from "../resources/images/main_scene/coffee_packet_bean.png";
-import wall_article_1 from "../resources/images/main_scene/wall_article_1.png";
-import wall_article_2 from "../resources/images/main_scene/wall_article_2.png";
-import wall_article_3 from "../resources/images/main_scene/wall_article_3.png";
+import wall_article_1 from "../resources/images/main_scene/wall_article_1.webp";
+import wall_article_2 from "../resources/images/main_scene/wall_article_2.webp";
+import wall_article_3 from "../resources/images/main_scene/wall_article_3.webp";
 
 // Arcade scene images
 import arcade_scene_bg from "../resources/images/arcade_scene/arcade_scene_bg.jpg";
@@ -79,8 +78,8 @@ import mousehole_scene_bg from "../resources/images/mousehole_scene/mousehole_sc
 import postit_16 from "../resources/images/mousehole_scene/postit_16.png";
 import mouse_frame01 from "../resources/images/mousehole_scene/mouse_frame01.png";
 import mouse_frame02 from "../resources/images/mousehole_scene/mouse_frame02.png";
-import hanging_cheese_frame01 from "../resources/images/mousehole_scene/hanging_cheese_frame01.png";
-import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_cheese_frame02.png";
+import hanging_cheese_frame01 from "../resources/images/mousehole_scene/hanging_cheese_frame01.webp";
+import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_cheese_frame02.webp";
 
 // Generic
 import back_arrow from "../resources/images/back_arrow.png";
@@ -94,7 +93,7 @@ import book_end_green from "../resources/images/bookshelf_scene/book_end_green.p
 // Numpad scene images
 import numpad_bg_closed from "../resources/images/numpad_scene/numpad_bg_closed.jpg";
 import numpad_bg_open from "../resources/images/numpad_scene/numpad_bg_open.jpg";
-import red_button from "../resources/images/numpad_scene/red_button.png";
+import red_button from "../resources/images/numpad_scene/red_button.webp";
 import postit_32 from "../resources/images//numpad_scene/postit_32.png";
 import button_1 from "../resources/images/numpad_scene/button_1.png";
 import button_2 from "../resources/images/numpad_scene/button_2.png";
@@ -110,9 +109,9 @@ import reset_button from "../resources/images/numpad_scene/reset_button.png";
 import enter_button from "../resources/images/numpad_scene/enter_button.png";
 
 //Article images
-import article_content_1 from "../resources/images/article_images/article_content_1.jpg";
-import article_content_2 from "../resources/images/article_images/article_content_2.jpg";
-import article_content_3 from "../resources/images/article_images/article_content_3.jpg";
+import article_content_1 from "../resources/images/article_images/article_content_1.webp";
+import article_content_2 from "../resources/images/article_images/article_content_2.webp";
+import article_content_3 from "../resources/images/article_images/article_content_3.webp";
 
 const gameData = {
   mainScene: {
@@ -220,7 +219,7 @@ const gameData = {
         onInventoryInteraction: (app, item) => {
           openPopup(
             app,
-            "Hmm voisikohan kahvin jotenkin vetää kahvinkeittimeen?"
+            "Hmm, voisikohan kahvin jotenkin vetää kahvinkeittimeen?"
           );
         },
         onInteraction: (app, item) => () =>
@@ -467,11 +466,7 @@ const gameData = {
               item.position.y,
               "mainScene",
               () =>
-                openPopup(
-                  app,
-                  "Onneksi olkoon, arcade-kone on nyt päällä!",
-                  null
-                )
+                openPopup(app, "Hei, täähän on se Conwayn Game of Life!", null)
             );
           } else {
             console.log("please complete the game");
@@ -750,11 +745,11 @@ const gameData = {
         type: ITEM_TYPES.item,
         name: "PostIt 1",
         location: {
-          x: 0.365,
-          y: 0.275,
+          x: 0.5,
+          y: 0.25,
         },
-        width: 141,
-        height: 117,
+        width: 117,
+        height: 141,
         collisionHeight: 0, // not yet used
         onInteraction: (app, item) => () => {
           if (gameState.inventory.itemExists("PostIt 2")) {
@@ -1335,7 +1330,7 @@ const gameData = {
             gameState.coffeeCupFilled = true;
             openPopup(app, "Nyt on kahvia! Mitenköhän voisin juoda sen?");
           } else {
-            openPopup(app, "Tarvitsisin kahvia kahvinkeittimeen ensin!");
+            openPopup(app, "Kahvinkeittimestä näyttää puuttuvan vielä kahvi!");
           }
         },
       },

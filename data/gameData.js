@@ -59,9 +59,9 @@ import coffee_maker_frame01 from "../resources/images/main_scene/coffee_maker_fr
 import coffee_maker_frame02 from "../resources/images/main_scene/coffee_maker_frame02.webp";
 import coffee_maker_frame03 from "../resources/images/main_scene/coffee_maker_frame03.webp";
 import coffee_packet_bean from "../resources/images/main_scene/coffee_packet_bean.png";
-import wall_article_1 from "../resources/images/main_scene/wall_article_1.png";
-import wall_article_2 from "../resources/images/main_scene/wall_article_2.png";
-import wall_article_3 from "../resources/images/main_scene/wall_article_3.png";
+import wall_article_1 from "../resources/images/main_scene/wall_article_1.webp";
+import wall_article_2 from "../resources/images/main_scene/wall_article_2.webp";
+import wall_article_3 from "../resources/images/main_scene/wall_article_3.webp";
 
 // Arcade scene images
 import arcade_scene_bg from "../resources/images/arcade_scene/arcade_scene_bg.jpg";
@@ -78,8 +78,8 @@ import mousehole_scene_bg from "../resources/images/mousehole_scene/mousehole_sc
 import postit_16 from "../resources/images/mousehole_scene/postit_16.png";
 import mouse_frame01 from "../resources/images/mousehole_scene/mouse_frame01.png";
 import mouse_frame02 from "../resources/images/mousehole_scene/mouse_frame02.png";
-import hanging_cheese_frame01 from "../resources/images/mousehole_scene/hanging_cheese_frame01.png";
-import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_cheese_frame02.png";
+import hanging_cheese_frame01 from "../resources/images/mousehole_scene/hanging_cheese_frame01.webp";
+import hanging_cheese_frame02 from "../resources/images/mousehole_scene/hanging_cheese_frame02.webp";
 
 // Generic
 import back_arrow from "../resources/images/back_arrow.png";

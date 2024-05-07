@@ -51,7 +51,7 @@ class Item {
     this.sprite.height = itemData.height;
     this.sprite.width = itemData.width;
     this.sprite.anchor.set(0.5, 1); // Anchor to bottom left corner
-
+    this.sprite.interactiveChildren = false;
     this.sprite.onStateChange = itemData.onStateChange;
     this.sprite.draggable = itemData.draggable;
     this.sprite.dragTargetName = itemData.dragTargetName;

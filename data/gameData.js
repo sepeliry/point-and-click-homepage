@@ -305,7 +305,6 @@ const gameData = {
       },
       {
         visible: true,
-        image: coffee_maker_empty,
         type: ITEM_TYPES.item,
         name: "Coffee maker",
         onStateChange: async (app, item) => {
@@ -565,7 +564,7 @@ const gameData = {
           x: 0.1,
           y: 0.2,
         },
-        width: 164,
+        width: 142,
         height: 101,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => switchScene(app, "mainScene"),
@@ -728,7 +727,7 @@ const gameData = {
           x: 0.1,
           y: 0.2,
         },
-        width: 164,
+        width: 142,
         height: 101,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => switchScene(app, "mainScene"),
@@ -1139,7 +1138,7 @@ const gameData = {
           x: 0.1,
           y: 0.2,
         },
-        width: 164,
+        width: 142,
         height: 101,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {
@@ -1231,7 +1230,7 @@ const gameData = {
           x: 0.1,
           y: 0.2,
         },
-        width: 164,
+        width: 142,
         height: 101,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => switchScene(app, "mainScene"),
@@ -1350,7 +1349,7 @@ const gameData = {
           x: 0.1,
           y: 0.2,
         },
-        width: 164,
+        width: 142,
         height: 101,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => {

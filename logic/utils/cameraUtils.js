@@ -1,4 +1,5 @@
 import { ASPECT_RATIO } from "../../constants/constants";
+// CAMERA UTILS ARE NOT USED IN THE CURRENT VERSION OF THE GAME
 
 export const moveCamera = (app, cameraContainer, direction) => {
   const gameWorldWidth = 1400;
@@ -16,7 +17,6 @@ export const moveCamera = (app, cameraContainer, direction) => {
 };
 
 export const updateCamera = (app, cameraContainer, player) => {
-
   const targetHeight = Math.min(window.innerHeight, screen.height); // Always use the full height of the window
   let targetWidth = targetHeight * ASPECT_RATIO; // Calculate width based on the aspect ratio
 

@@ -25,7 +25,7 @@ function showPdf(app, mainScene, pdfPath) {
   pdfObject.type = "application/pdf";
   // Fallback message if PDF is not supported or can't be opened
   pdfObject.innerHTML = `
-    <p>Selain ei tue PDF-tiedostoja ;( </p>
+    <p>Selaimesi ei tue PDF-tiedostoja ;( </p>
   
   `;
   closePdfBtn.addEventListener("click", () => closePdfEvent(app, mainScene));

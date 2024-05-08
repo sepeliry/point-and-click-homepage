@@ -157,6 +157,8 @@ td {
   display: none;
   height: 100%;
   width: 100%;
+  color: white;
+  text-align: center;
 }
 #pdf-object {
   object-fit: contain;

@@ -633,6 +633,25 @@ const gameData = {
         image: book_end_green,
         visible: true,
         type: ITEM_TYPES.book,
+        name: "Lisenssi",
+        location: {
+          x: 0.585,
+          y: 0.19,
+        },
+        width: 37,
+        height: 100,
+        collisionHeight: 5, // not yet used
+        onInteraction: (app) => () =>
+          displayWikiPage(
+            "https://raw.githubusercontent.com/sepeliry/point-and-click-homepage/main/LICENSE",
+            "https://github.com/sepeliry/point-and-click-homepage/blob/main/LICENSE"
+          ),
+        zIndex: 1,
+      },
+      {
+        image: book_end_green,
+        visible: true,
+        type: ITEM_TYPES.book,
         name: "Vuodet",
         location: {
           x: 0.425,

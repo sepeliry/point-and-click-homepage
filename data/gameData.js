@@ -62,6 +62,7 @@ import coffee_packet_bean from "../resources/images/main_scene/coffee_packet_bea
 import wall_article_1 from "../resources/images/main_scene/wall_article_1.webp";
 import wall_article_2 from "../resources/images/main_scene/wall_article_2.webp";
 import wall_article_3 from "../resources/images/main_scene/wall_article_3.webp";
+import wall_poster from "../resources/images/main_scene/wall_poster.webp";
 
 // Arcade scene images
 import arcade_scene_bg from "../resources/images/arcade_scene/arcade_scene_bg.jpg";
@@ -112,6 +113,8 @@ import enter_button from "../resources/images/numpad_scene/enter_button.png";
 import article_content_1 from "../resources/images/article_images/article_content_1.webp";
 import article_content_2 from "../resources/images/article_images/article_content_2.webp";
 import article_content_3 from "../resources/images/article_images/article_content_3.webp";
+import project_poster_s24 from "../resources/images/project_poster/project_poster_s24.webp";
+
 
 const gameData = {
   mainScene: {
@@ -301,6 +304,23 @@ const gameData = {
         height: 153 * 0.42,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => displayArticleImg(article_content_3),
+        zIndex: 1,
+      },
+      {
+        visible: true,
+        image: wall_poster,
+        onStateChange: null,
+        animation: null,
+        type: ITEM_TYPES.item,
+        name: "Wall_poster",
+        location: {
+          x: 0.802,
+          y: 0.38,
+        },
+        width: 237 * 0.67,
+        height: 410 * 0.42,
+        collisionHeight: 0, // not yet used
+        onInteraction: (app) => () => displayArticleImg(project_poster_s24),
         zIndex: 1,
       },
       {

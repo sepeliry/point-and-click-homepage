@@ -115,7 +115,6 @@ import article_content_2 from "../resources/images/article_images/article_conten
 import article_content_3 from "../resources/images/article_images/article_content_3.webp";
 import project_poster_s24 from "../resources/images/project_poster/project_poster_s24.webp";
 
-
 const gameData = {
   mainScene: {
     background: main_scene_bg,
@@ -317,8 +316,8 @@ const gameData = {
           x: 0.802,
           y: 0.38,
         },
-        width: 237 * 0.67,
-        height: 410 * 0.42,
+        width: 228 * 0.41,
+        height: 410 * 0.41,
         collisionHeight: 0, // not yet used
         onInteraction: (app) => () => displayArticleImg(project_poster_s24),
         zIndex: 1,
